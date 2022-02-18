@@ -17,10 +17,10 @@ class CreateAcessoUsersTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('acesso_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->timestamps();
-            $table->softDeletes();
             $table->foreign('acesso_id')->references('id')->on('acessos')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

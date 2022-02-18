@@ -18,8 +18,8 @@ class AcessoSeeder extends Seeder
             ['id' => 1],
             [
                 'id'  => 1,
-                'pagina' => 'Analytics',
-                'link' => 'analytics'
+                'pagina' => 'Tipo Sexo',
+                'link' => 'config/sexo'
             ]
         );
 
@@ -31,16 +31,6 @@ class AcessoSeeder extends Seeder
                 'link' => 'sales'
             ]
         );
-
-        Acesso::updateOrCreate(
-            ['id' => 3],
-            [
-                'id'  => 3,
-                'pagina' => 'Apps',
-                'link' => 'apps'
-            ]
-        );
-
 
     }
 }

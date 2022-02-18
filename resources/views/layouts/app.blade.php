@@ -24,17 +24,17 @@
         <div class="spinner-grow align-self-center"></div>
     </div></div></div>
     <!--  END LOADER -->
+    <div id="app">
 
-    @include('inc.navbar')
-    
-    <!--  BEGIN MAIN CONTAINER  -->
-    <div class="main-container" id="container">
+        @include('inc.navbar')
+        
+        <!--  BEGIN MAIN CONTAINER  -->
+        <div class="main-container" id="container">
 
         <div class="overlay"></div>
         <div class="search-overlay"></div>
 
-        @include('inc.sidebar')
-
+        
         <!--  BEGIN CONTENT PART  -->
         <div id="content" class="main-content">
 
@@ -42,14 +42,17 @@
 
             @if ($page_name ?? '' != 'account_settings')
                 @include('inc.footer')
-            @endif
+                @endif
+            </div>
+            <!--  END CONTENT PART  -->
+            
         </div>
-        <!--  END CONTENT PART  -->
-
+        <!-- END MAIN CONTAINER -->
     </div>
-    <!-- END MAIN CONTAINER -->
-
+        
     @include('inc.scripts')
+    @yield('scripts')
+    <script src="{{ url(mix('/js/app.js')) }}"></script>
 
 </body>
 </html>

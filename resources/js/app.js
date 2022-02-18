@@ -1,32 +1,50 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import moment from 'moment'
+import { debounce } from "debounce"
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import Notifications from 'vue-notification'
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/dist/vueDirectiveTooltip.css';
+import VeeValidate, { Validator, } from 'vee-validate'
+import pt_BR from 'vee-validate/dist/locale/pt_BR'
 
 require('./bootstrap');
 
-window.Vue = require('vue').default;
+import Vue from 'vue'
+window.moment = require('moment/moment');
+Vue.component('v-select', vSelect)
+Vue.use(Notifications)
+Vue.use(Tooltip);
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+Vue.use(VeeValidate);
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+Validator.localize('pt_BR', pt_BR)
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Validator.localize({
+    pt_BR: {
+        messages: {
+            date_format: 'Formato invalido',
+        },
+        
+        custom: {
+            email: {
+                emailCheck: 'E-mail já em uso'
+            },      
+            password: {
+                passCheck: 'Senha incorreta'
+            }
+        }
+    }
+});
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import SexoGrid from './components/config/sexo/SexoGrid.vue'
 
 const app = new Vue({
     el: '#app',
+    components: {
+        'sexo-grid': SexoGrid
+    }
 });

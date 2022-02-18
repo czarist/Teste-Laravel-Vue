@@ -32,14 +32,5 @@ class AcessoUserSeeder extends Seeder
             ]
         );
 
-        AcessoUser::updateOrCreate(
-            ['id' => 3],
-            [
-                'id'  => 3,
-                'acesso_id' => '3',
-                'user_id' => '1'
-            ]
-        );
-
     }
 }

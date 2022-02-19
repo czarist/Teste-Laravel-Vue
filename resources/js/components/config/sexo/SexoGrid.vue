@@ -1,5 +1,11 @@
 <template>
-    <div>
+    <div class="mt-4">
+        <h5 class="col-12 d-flex justify-content-between">
+            Sexos
+            <span class="btn btn-success btn-sm" @click="showForm(null)">
+                <i class="fas fa-plus-circle float-left d-none d-sm-block mt-1 mr-1"></i> Cadastrar
+            </span>
+        </h5>
         <div class="col-12">
             <div class="card">
                 <div class="card-body pb-2">
@@ -7,35 +13,27 @@
                         <h5 class="d-flex justify-content-center">Carregando...</h5>
                         <b-progress :value="value" :max="max" ></b-progress>
                     </div>
-                    <div class="row mb-3 d-flex flex-row-reverse justify-content-between" v-if="!loading">
-
-                        <div class="input-group input-group-sm col-12 col-sm-3 col-md-3 col-lg-2 text-right d-none d-sm-block">
-                            <div class="input-group-prepend">
-                                <span class="btn btn-primary">
-                                    <i class="fa fa-search"></i>
-                                </span>
-                            </div>
-                            <input
-                                style="cursor: text; background-color: #fff;"
-                                id="search"
-                                type="text"
-                                readonly
-                                @focus="removeReadonly('search')"
-                                class="form-control form-control-filter"
-                                placeholder="search..."
-                                v-model="search"
-                                @input="get()"
-                            >
-                        </div>
-                        <div class="col-12 col-sm-3 col-md-3 col-lg-2 text-right d-none d-sm-block">
-                            <span class="btn btn-success btn-sm" @click="showForm(null)">
-                                <i class="fas fa-plus-circle float-left d-none d-sm-block mt-1 mr-1"></i> Cadastrar
+                 
+                    <div class="input-group input-group-sm mb-3"  v-show="!loading">
+                        <div class="input-group-prepend">
+                            <span class="btn btn-primary">
+                                <i class="fas fa-search"></i>
                             </span>
                         </div>
-                        <h5 class="col-12 col-sm-3 col-md-3 col-lg-2 text-right d-none d-sm-block">
-                            Sexos
-                        </h5>
+                        <input
+                            style="cursor: text; background-color: #fff;"
+                            id="search"
+                            type="text"
+                            readonly
+                            @focus="removeReadonly('search')"
+                            class="form-control form-control-filter"
+                            placeholder="Pesquisar..."
+                            v-model="search"
+                            @input="get()"
+                        >
                     </div>
+                        
+                   
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
                         <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
                             <thead>
@@ -59,14 +57,14 @@
                                     <td class="align-middle text-center">
                                         <span class="d-flex justify-content-center">
                                             <span
-                                                class="btn btn-warning btn-sm mr-1"
+                                                class="btn btn-outline-primary btn-sm mr-1"
                                                 @click="showForm(registro)"
-                                            ><i class="fas fa-edit"></i></span>
+                                            ><i class="fas fa-edit"> Editar</i></span>
 
                                             <span
-                                               class="btn btn-danger btn-sm"
+                                               class="btn btn-outline-danger btn-sm"
                                               @click="showDelete(registro)"
-                                            ><i class="fas fa-trash"></i></span>
+                                            ><i class="fas fa-trash"></i> Deletar</span>
                                         </span>
                                     </td>
                                 </tr>
@@ -84,6 +82,8 @@
                 </div>
             </div>
         </div>
+        <form-sexo @store="store($event)" @update="update($event)" :selected="selected"></form-sexo>
+        <delete-modal @destroy="destroy"></delete-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -96,7 +96,10 @@
 
     export default {
         mixins: [GridMixin],
-
+        components: {
+            FormSexo: () => import('./FormSexo' /* webpackChunkName: "form-sexo" */),
+            DeleteModal: () => import('../../shared/components/DeleteModal' /* webpackChunkName: "delete-modal" */),
+        },
         data() {
             return {
                 value: 100,
@@ -112,7 +115,7 @@
             showForm(registro) {
                 this.selected = registro
                 $('#form').modal({backdrop: 'static', keyboard: false, show: true})
-                this.$bvModal.show('userModal')
+                this.$bvModal.show('sexoModal')
             },
             showDelete(registro) {
                 this.toDelete = registro
@@ -120,16 +123,16 @@
             },
             store($event) {
                 this.registros.splice(0, 0, $event)
-                this.$bvModal.hide('userModal')
+                this.$bvModal.hide('sexoModal')
                 this.total++
             },
             update($event) {
                 let index = this.registros.findIndex(registro => registro.id == this.selected.id)
                 this.registros.splice(index, 1, $event)
-                this.$bvModal.hide('userModal')
+                this.$bvModal.hide('sexoModal')
             },
             async destroy() {
-                await axios.delete(`${process.env.MIX_BASE_URL}/config/marcas/${this.toDelete.id}`).then(res => {
+                await axios.delete(`${process.env.MIX_BASE_URL}/${this.page}/${this.toDelete.id}`).then(res => {
                     if(res.status == 200) {
                         let index = this.registros.findIndex(registro => registro.id == this.toDelete.id)
                         this.registros.splice(index, 1)

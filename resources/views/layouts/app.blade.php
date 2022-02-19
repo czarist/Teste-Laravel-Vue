@@ -13,7 +13,10 @@
     <link rel="icon" type="image/x-icon" href="{{asset('storage/img/favicon.ico')}}"/>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-
+     <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+   
     <!-- Styles -->
     @include('inc.styles')  
 </head>
@@ -25,7 +28,9 @@
     </div></div></div>
     <!--  END LOADER -->
     <div id="app">
-
+         @auth
+            @include('layouts.nav')
+        @endauth
         @include('inc.navbar')
         
         <!--  BEGIN MAIN CONTAINER  -->

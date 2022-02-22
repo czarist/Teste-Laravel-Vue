@@ -67,5 +67,17 @@ observacao isentamos
 
 numero socio
 
+//USUARIO - LOGIN
+NOME 
+CPF
+email
+senha
 
 
+//USUARIO - ASSOCIADO
+//usuario inscricao (são diferentes)
+    CONGRESSO 
+envia trabalho academico 
+
+
+DEIXAR CREDITO E BOLETO

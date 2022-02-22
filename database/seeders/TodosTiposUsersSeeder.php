@@ -2,59 +2,47 @@
 
 namespace Database\Seeders;
 
-use App\Models\AcessoUser;
+use App\Models\TodosTiposUsers;
 use Illuminate\Database\Seeder;
 
-class AcessoUserSeeder extends Seeder
+class TodosTiposUsersSeeder extends Seeder
 {
     public function run()
     {
-        AcessoUser::updateOrCreate(
+        TodosTiposUsers::updateOrCreate(
             ['id' => 1],
             [
                 'id'  => 1,
-                'acesso_id' => '1',
+                'tipo_id' => '1',
                 'user_id' => '1'
             ]
         );
 
-        AcessoUser::updateOrCreate(
+        TodosTiposUsers::updateOrCreate(
             ['id' => 2],
             [
                 'id'  => 2,
-                'acesso_id' => '2',
+                'tipo_id' => '2',
                 'user_id' => '1'
             ]
         );
 
-        AcessoUser::updateOrCreate(
+        TodosTiposUsers::updateOrCreate(
             ['id' => 3],
             [
                 'id'  => 3,
-                'acesso_id' => '3',
+                'tipo_id' => '3',
                 'user_id' => '1'
             ]
         );
 
-        AcessoUser::updateOrCreate(
+        TodosTiposUsers::updateOrCreate(
             ['id' => 4],
             [
                 'id'  => 4,
-                'acesso_id' => '4',
+                'tipo_id' => '4',
                 'user_id' => '1'
             ]
         );
-
-        AcessoUser::updateOrCreate(
-            ['id' => 5],
-            [
-                'id'  => 5,
-                'acesso_id' => '5',
-                'user_id' => '1'
-            ]
-        );
-
-
-
     }
 }

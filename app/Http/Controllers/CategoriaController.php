@@ -13,7 +13,7 @@ class CategoriaController extends Controller
 {
      public function index()
     {
-        return view('config.categoria.index');
+        return view('admin.categoria.index');
     }
 
     public function get(Request $request)

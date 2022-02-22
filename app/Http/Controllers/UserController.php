@@ -19,20 +19,21 @@ class UserController extends Controller
      */
        public function usuarios()
     {
-        return User::select('id', 'name', 'email','tipo_users_id', 'ativo')
-                        ->with('tipo_user:id,descricao',
+        return User::select('id', 'name', 'email','ativo')
+                        ->with('acessos:id,pagina,link',
+                            'todos_tipos:id,descricao',
                             // 'empresa:id,razao_social',
                             // 'departamento:id,descricao',
                             // 'enderecos:id,cep,rua,numero,complemento,bairro,municipio_id,latitude,longitude,user_id',
                             // 'enderecos.municipio:id,estado_id,codigo,name','acessos:id,pagina,link',
                             // 'enderecos.municipio.estado:id,codigo,name,sigla,regiao',
-                            'acessos:id,pagina,link');
+                            );
     }
 
     public function index()
     {
         $registros = $this->usuarios()->get();
-        return view('config.usuario.index', compact('registros'));
+        return view('admin.usuarios.index', compact('registros'));
     }
 
     public function get(Request $request)
@@ -79,7 +80,7 @@ class UserController extends Controller
                     }
                 }
             }
-            $user->load('tipo_user:id,descricao',
+            $user->load('todos_tipos:id,descricao',
                     'empresa:id,name',
                     'departamento:id,descricao',
                     'enderecos:id,cep,rua,complemento,numero,bairro,municipio_id,latitude,longitude,user_id',
@@ -132,7 +133,7 @@ class UserController extends Controller
             }
             $user->acessos()->sync($post['acessos']);
             
-            $user->load('tipo_user:id,descricao',
+            $user->load('todos_tipos:id,descricao',
                         'empresa:id,name',
                         'departamento:id,descricao',
                         'enderecos:id,cep,rua,complemento,numero,bairro,municipio_id,latitude,longitude,user_id',

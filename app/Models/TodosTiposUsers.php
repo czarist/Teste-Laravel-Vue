@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class AcessoUser extends Model
+class TodosTiposUsers extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'acesso_user';
-    protected $fillable = [   
-        'acesso_id',
+    protected $table = 'todos_tipos_users';
+    protected $fillable = [
+        'tipo_id',
         'user_id',
     ];
+
 }

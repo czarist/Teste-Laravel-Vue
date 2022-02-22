@@ -19,7 +19,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 1,
                 'pagina' => 'Tipo Sexo',
-                'link' => 'config/sexo'
+                'link' => 'admin/sexo'
             ]
         );
 
@@ -27,8 +27,8 @@ class AcessoSeeder extends Seeder
             ['id' => 2],
             [
                 'id'  => 2,
-                'pagina' => 'Categoria',
-                'link' => 'config/categoria'
+                'pagina' => 'Associados',
+                'link' => 'admin/associados'
             ]
         );
 
@@ -36,8 +36,8 @@ class AcessoSeeder extends Seeder
             ['id' => 3],
             [
                 'id'  => 3,
-                'pagina' => 'Usuário',
-                'link' => 'config/usuario'
+                'pagina' => 'Usuários',
+                'link' => 'admin/usuarios'
             ]
         );
 
@@ -46,7 +46,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 4,
                 'pagina' => 'Instituição',
-                'link' => 'config/instituicao'
+                'link' => 'admin/instituicao'
             ]
         );
 
@@ -55,7 +55,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 5,
                 'pagina' => 'Titulação',
-                'link' => 'config/titulacao'
+                'link' => 'admin/titulacao'
             ]
         );
 

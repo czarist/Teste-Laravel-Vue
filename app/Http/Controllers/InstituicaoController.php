@@ -12,7 +12,7 @@ class InstituicaoController extends Controller
 {
     public function index()
     {
-        return view('config.instituicao.index');
+        return view('admin.instituicao.index');
     }
 
     public function get(Request $request)

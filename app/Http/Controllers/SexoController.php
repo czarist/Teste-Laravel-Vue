@@ -12,7 +12,7 @@ class SexoController extends Controller
 {
     public function index()
     {
-        return view('config.sexo.index');
+        return view('admin.sexo.index');
     }
 
     public function get(Request $request)

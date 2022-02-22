@@ -29,9 +29,6 @@ class UserSeeder extends Seeder
                 'telefone' => '123456789',
                 'celular' => '123456789',
                 'sexo_id' => 1,
-                'instituicao_id' => 1,
-                'titulacao_id' => 1,
-                'tipo_users_id' => 1,
             ]
         );
 

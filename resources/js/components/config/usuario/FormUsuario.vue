@@ -488,19 +488,19 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="tipo_user_id">Tipo de Acesso:</label><br />
+                        <label for="todos_tipos_id">Tipo de Acesso:</label><br />
                         <div class="btn-group" style="margin-bottom:-10px;">
                             <div class="switch-field">
                                 <template v-for="(userType, index) in usersTypes">
                                     <input
                                         :disabled="loading"
                                         :key="index"
-                                        :id="`tipo_user_${index}`"
-                                        name="tipo_user_id"
+                                        :id="`todos_tipos_${index}`"
+                                        name="todos_tipos_id"
                                         type="radio"
                                         :value="userType.id"
-                                        v-model="post.tipo_user_id"
-                                    ><label :key="`label_${index}`" :for="`tipo_user_${index}`">{{ userType.descricao }}</label>
+                                        v-model="post.todos_tipos_id"
+                                    ><label :key="`label_${index}`" :for="`todos_tipos_${index}`">{{ userType.descricao }}</label>
                                 </template>
                             </div>
                         </div>
@@ -508,7 +508,7 @@
                 </div>
             </div>
 
-            <div class="row" v-if="post.tipo_user_id != 1">
+            <div class="row" v-if="post.todos_tipos_id != 1">
                 <div class="col-12">
                     <label for="ativo">Acessos Permitidos:</label><br />
                     <div class="switch-field-one" >
@@ -566,7 +566,7 @@
                     id: null,
                     name: null,
                     email: null,
-                    tipo_user_id: 3,
+                    todos_tipos_id: 3,
                     tipo_contratacao: null,
                     ativo: 0,
                     acessos: [],
@@ -597,7 +597,7 @@
                     this.post.id = this.selected.id
                     this.post.name = this.selected.name
                     this.post.email = this.selected.email
-                    this.post.tipo_user_id = this.selected.tipo_user_id
+                    this.post.todos_tipos_id = this.selected.todos_tipos_id
                     // this.post.departamento_id = this.selected.departamento_id
                     // this.post.empresa = this.selected.empresa
                     // this.post.cnpj_cpf = this.selected.cnpj_cpf
@@ -721,7 +721,7 @@
                 this.post.id = null
                 this.post.email = null
                 this.post.name = null
-                this.post.tipo_user_id = 3
+                this.post.todos_tipos_id = 3
                 this.post.ativo = 0
                 this.post.tipo_contratacao = null
                 this.post.departamento_id = null

@@ -24,28 +24,15 @@ class User extends Authenticatable
         'telefone',
         'celular',
         'sexo_id',
-        'instituicao_id',
-        'titulacao_id',
-        'tipo_users_id',
         'ativo',
 
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -79,22 +66,42 @@ class User extends Authenticatable
 
     public function getIsRootAttribute()
     {
-        return $this->tipo_user_id == 1;
+        foreach (Auth::user()->todos_tipos as $tipo) {
+            if ($tipo->id == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getIsAdminAttribute()
     {
-        return $this->tipo_user_id == 2;
+        foreach (Auth::user()->todos_tipos as $tipo) {
+            if ($tipo->id == 2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getIsAssociadoAttribute()
     {
-        return $this->tipo_user_id == 2;
+        foreach (Auth::user()->todos_tipos as $tipo) {
+            if ($tipo->id == 3) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getIsUserAttribute()
     {
-        return $this->tipo_user_id == 2;
+        foreach (Auth::user()->todos_tipos as $tipo) {
+            if ($tipo->id == 4) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function acessos()
@@ -102,8 +109,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Acesso::class);
     }
 
-    public function tipo_user()
+    public function todos_tipos()
     {
-        return $this->belongsTo(TipoUsers::class);
+        return $this->belongsToMany(Tipo::class, 'todos_tipos_users');
     }
 }

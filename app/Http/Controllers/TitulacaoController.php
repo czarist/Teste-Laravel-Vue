@@ -12,7 +12,7 @@ class TitulacaoController extends Controller
 {
     public function index()
     {
-        return view('config.titulacao.index');
+        return view('admin.titulacao.index');
     }
 
     public function get(Request $request)

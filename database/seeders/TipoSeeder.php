@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\TipoUsers;
+use App\Models\Tipo;
 use Illuminate\Database\Seeder;
 
-class TipoUsersSeeder extends Seeder
+class TipoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class TipoUsersSeeder extends Seeder
      */
     public function run()
     {
-        TipoUsers::updateOrCreate(
+        Tipo::updateOrCreate(
             ['id'=>1],
             ['id'=>1,
                 'nome' => 'Root',
@@ -22,7 +22,7 @@ class TipoUsersSeeder extends Seeder
             ]
         );
 
-        TipoUsers::updateOrCreate(
+        Tipo::updateOrCreate(
             ['id'=>2],
             ['id'=>2,
                 'nome' => 'Administrador',
@@ -30,7 +30,7 @@ class TipoUsersSeeder extends Seeder
             ]
         );
 
-        TipoUsers::updateOrCreate(
+        Tipo::updateOrCreate(
             ['id'=>3],
             ['id'=>3,
                 'nome' => 'Associado',
@@ -38,7 +38,7 @@ class TipoUsersSeeder extends Seeder
             ]
         );
 
-        TipoUsers::updateOrCreate(
+        Tipo::updateOrCreate(
             ['id'=>4],
             ['id'=>4,
                 'nome' => 'Usuário',

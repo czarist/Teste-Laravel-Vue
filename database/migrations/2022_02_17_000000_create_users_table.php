@@ -6,38 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->date('data_nascimento');
             $table->boolean('estrangeiro')->nullable();
             $table->string('cpf')->unique()->nullable();
+            $table->date('data_nascimento')->nullable();
             $table->string('rg')->unique()->nullable();
             $table->string('orgao_expedidor')->nullable();
             $table->string('telefone')->nullable();
             $table->string('celular');
-
-            $table->bigInteger('sexo_id')->nullable();
-            $table->foreign('sexo_id')->references('id')->on('sexos');
-
-            $table->bigInteger('instituicao_id')->nullable();
-            $table->foreign('instituicao_id')->references('id')->on('tipo_users');
-
-            $table->bigInteger('titulacao_id')->nullable();
-            $table->foreign('titulacao_id')->references('id')->on('titulacaos');
-
-            $table->bigInteger('tipo_users_id')->default(1)->unsigned();
-            $table->foreign('tipo_users_id')->references('id')->on('tipo_users');
-
-
+            $table->unsignedBigInteger('sexo_id')->nullable();
+            $table->foreign('sexo_id')->references('id')->on('sexos')->onDelete('cascade');
+            $table->unsignedBigInteger('endereco_id')->nullable();
+            $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -47,11 +32,6 @@ class CreateUsersTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('users');

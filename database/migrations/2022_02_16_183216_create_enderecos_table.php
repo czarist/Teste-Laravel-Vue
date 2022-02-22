@@ -15,13 +15,11 @@ class CreateEnderecosTable extends Migration
     {
         Schema::create('enderecos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->longText('logadouro');
-            $table->string('cep');
-            $table->string('cidade_id');
-            $table->string('estado_id');
-            $table->string('pais_id');
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->longText('logadouro')->nullable();
+            $table->string('cep')->nullable();
+            $table->string('cidade_id')->nullable();
+            $table->string('estado_id')->nullable();
+            $table->string('pais_id')->nullable();
             $table->timestamps();
             $table->softDeletes();            
         });

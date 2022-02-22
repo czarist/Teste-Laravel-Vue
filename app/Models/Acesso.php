@@ -9,8 +9,6 @@ class Acesso extends Model
 {
     use SoftDeletes;
 
-    protected $hidden   = ['pivot'];
-
     protected $fillable =[
         'pagina', 'link'
     ];

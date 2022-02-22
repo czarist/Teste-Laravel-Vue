@@ -12,7 +12,7 @@ sexo - select
 email
 
 estrangeiro - (se escolher colocar Passaporte o login sera passaporte / campo CPF,RG e orgao expedidor desaparecer caso senha estrageiro)
-
+espanha -> apagar cpf, rg, orgao expedidor
 passaporte
 
 cpf - ira fazer login pelo CPF

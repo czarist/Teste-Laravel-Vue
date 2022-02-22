@@ -2,5 +2,9 @@
     "/js/app.js": "/js/app.js",
     "/js/form-sexo.js": "/js/form-sexo.js",
     "/js/delete-modal.js": "/js/delete-modal.js",
+    "/js/form-Instituicao.js": "/js/form-Instituicao.js",
+    "/js/form-titulacao.js": "/js/form-titulacao.js",
+    "/js/form-categoria.js": "/js/form-categoria.js",
+    "/js/form-usuario.js": "/js/form-usuario.js",
     "/css/app.css": "/css/app.css"
 }

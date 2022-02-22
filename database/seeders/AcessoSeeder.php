@@ -27,8 +27,35 @@ class AcessoSeeder extends Seeder
             ['id' => 2],
             [
                 'id'  => 2,
-                'pagina' => 'Sales',
-                'link' => 'sales'
+                'pagina' => 'Categoria',
+                'link' => 'config/categoria'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 3],
+            [
+                'id'  => 3,
+                'pagina' => 'Usuário',
+                'link' => 'config/usuario'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 4],
+            [
+                'id'  => 4,
+                'pagina' => 'Instituição',
+                'link' => 'config/instituicao'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 5],
+            [
+                'id'  => 5,
+                'pagina' => 'Titulação',
+                'link' => 'config/titulacao'
             ]
         );
 

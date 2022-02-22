@@ -14,13 +14,10 @@ class CreateAcessoUsersTable extends Migration
     public function up()
     {
         Schema::create('acesso_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
             $table->bigInteger('acesso_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('acesso_id')->references('id')->on('acessos')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 

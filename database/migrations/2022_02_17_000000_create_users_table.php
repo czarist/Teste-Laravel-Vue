@@ -24,14 +24,23 @@ class CreateUsersTable extends Migration
             $table->string('orgao_expedidor')->nullable();
             $table->string('telefone')->nullable();
             $table->string('celular');
+
             $table->bigInteger('sexo_id')->nullable();
+            $table->foreign('sexo_id')->references('id')->on('sexos');
+
             $table->bigInteger('instituicao_id')->nullable();
+            $table->foreign('instituicao_id')->references('id')->on('tipo_users');
+
             $table->bigInteger('titulacao_id')->nullable();
+            $table->foreign('titulacao_id')->references('id')->on('titulacaos');
+
+            $table->bigInteger('tipo_users_id')->default(1)->unsigned();
+            $table->foreign('tipo_users_id')->references('id')->on('tipo_users');
+
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->bigInteger('tipo_users_id')->default(1)->unsigned();
-            $table->foreign('tipo_users_id')->references('id')->on('tipo_users');
             $table->char('ativo')->default(1);
             $table->timestamps();
             $table->softDeletes();

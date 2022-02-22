@@ -39,67 +39,41 @@
             </li>
             @endif
 
-            @if(Auth::user()->is_root || array_intersect([
-            'financeiro/contaspagar',
-            'financeiro/contasreceber',
-            ], Auth::user()->roles()) || in_array('financeiro', Auth::user()->roles()))
-            <li class="nav-item dropdown {{ Request::is('financeiro*') || Request::is('financeiro*') ? 'ativo' : '' }}">
-                <a class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i  class="fas fa-money-bill mr-1 float-left d-none d-xl-block"></i> Financeiro
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="width: 200px;">
-                    @if(Auth::user()->is_root || in_array('financeiro/contaspagar', Auth::user()->roles()))
-                        <a  class="dropdown-item m-0 {{ Request::is('financeiro/contaspagar*') ? 'active' : '' }}"  href="{{ route('contaspagar.index') }}">
-                            <i class="fas fa-money-check mr-1 float-left d-none d-xl-block" style="width:20px;"></i>Contas a pagar
-                        </a>
-                    @endif   
-                </div>
-            </li>
-            @endif
-
-            @if(Auth::user()->is_root || in_array('ativos', Auth::user()->roles()))
-                <li class="nav-item {{ Request::is('ativos*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('ativos.index') }}">
-                        <i class="fas fa-dolly mr-1 float-left d-none d-xl-block"></i> Inventário
-                    </a>
-                </li>
-            @endif
-
-            @if(Auth::user()->is_root || in_array('comodatos', Auth::user()->roles()))
-                <li class="nav-item {{ Request::is('comodatos*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('comodatos.index') }}">
-                        <i class="fas fa-exchange-alt mr-1 float-left d-none d-xl-block"></i> Comodato
-                    </a>
-                </li>
-            @endif
-
-            @if(Auth::user()->is_root || array_intersect([
-            'relatorio/contaspagar',
-            ], Auth::user()->roles()) || in_array('relatorio', Auth::user()->roles()))
-            <li class="nav-item dropdown {{ Request::is('relatorio*') || Request::is('relatorio*') ? 'ativo' : '' }}">
-                <a class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i  class="fas fa-book mr-1 float-left d-none d-xl-block"></i> Relatórios
-                </a>
-                <div class="dropdown-menu" style="width: 200px;" aria-labelledby="navbarDropdownMenuLink">
-                    @if(Auth::user()->is_root || in_array('relatorio/contaspagar', Auth::user()->roles()))
-                        <a  class="dropdown-item {{ Request::is('relatorio/contaspagar*') ? 'active' : '' }}"  href="{{ route('relatorio.contaspagar.index') }}">
-                            <i class="fas fa-th float-left d-none d-xl-block" style="width:20px;"></i> Contas a pagar
-                        </a>
-                    @endif      
-                </div>
-            </li>
-            @endif
            
 
             @if(Auth::user()->is_root || array_intersect([
-            'config/usuarios'
+            'config/usuarios',
+            'config/categoria',
+            'config/titulacao',
+            'config/instituicao',
+            'config/sexo'
             ], Auth::user()->roles()) || in_array('config', Auth::user()->roles()))
             <li class="nav-item dropdown {{ Request::is('config*') || Request::is('config*') ? 'ativo' : '' }}">
                 <a class="nav-link dropdown-toggle" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-cogs mr-1 float-left d-none d-xl-block"></i> Config.
                 </a> 
-                    @if(Auth::user()->is_root || in_array('config/usuarios', Auth::user()->roles()))
-                        <a class="dropdown-item {{ Request::is('config/usuarios*') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
+                    @if(Auth::user()->is_root || in_array('config/instituicao', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('config/instituicao*') ? 'active' : '' }}" href="{{ route('instituicao.index') }}">
+                            <i class="fas fa-users mr-1 float-left d-none d-xl-block" style="width:20px;"></i> Instituição
+                        </a>
+                    @endif
+                    @if(Auth::user()->is_root || in_array('config/sexo', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('config/sexo*') ? 'active' : '' }}" href="{{ route('sexo.index') }}">
+                            <i class="fas fa-users mr-1 float-left d-none d-xl-block" style="width:20px;"></i> Sexo
+                        </a>
+                    @endif
+                    @if(Auth::user()->is_root || in_array('config/titulacao', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('config/titulacao*') ? 'active' : '' }}" href="{{ route('titulacao.index') }}">
+                            <i class="fas fa-users mr-1 float-left d-none d-xl-block" style="width:20px;"></i> Titulação
+                        </a>
+                    @endif
+                    @if(Auth::user()->is_root || in_array('config/categoria', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('config/categoria*') ? 'active' : '' }}" href="{{ route('categoria.index') }}">
+                            <i class="fas fa-users mr-1 float-left d-none d-xl-block" style="width:20px;"></i> Categoria
+                        </a>
+                    @endif
+                    @if(Auth::user()->is_root || in_array('config/usuario', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('config/usuario*') ? 'active' : '' }}" href="{{ route('usuario.index') }}">
                             <i class="fas fa-users mr-1 float-left d-none d-xl-block" style="width:20px;"></i> Usuários
                         </a>
                     @endif
@@ -110,9 +84,9 @@
        
         
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user mr-1 float-left d-none d-xl-block"></i> {{ explode(' ', Auth::user()->nome)[0] }}
+            <li class="nav-item dropdown"  style="color: aliceblue">
+                <a class="nav-link dropdown-toggle" style="color: aliceblue" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user mr-1 float-left d-none d-xl-block "></i> {{ explode(' ', Auth::user()->nome)[0] }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item " href="">

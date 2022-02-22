@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
-
+    protected $appends = ['is_root', 'is_admin'];
     protected $fillable = [
         'name',
         'email',
@@ -102,7 +102,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Acesso::class);
     }
 
-    public function tipo_users()
+    public function tipo_user()
     {
         return $this->belongsTo(TipoUsers::class);
     }

@@ -17,7 +17,7 @@ class PerfilController extends Controller
 
     public function senha()
     {
-        return view('perfil.index');
+        return view('auth.login');
     }
 
     public function senhaUpdate(Request $request)

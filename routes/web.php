@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\GetController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\SexoController;
@@ -70,8 +71,12 @@ Route::prefix('get')->group(function () {
     Route::get('users', [GetController::class, 'getUsers'])->name('get.user');
     Route::get('tiposusuarios', [GetController::class, 'tiposUsuarios'])->name('get.tiposUsuarios');
     Route::get('acessos', [GetController::class, 'acessos'])->name('get.acessos');
+    Route::get('estados', [GetController::class, 'getEstados'] )->name('get.estados');
+    Route::get('municipios/{estado_id}', [GetController::class, 'getMunicipios'])->name('get.municipios');
+    Route::get('tiposexo', [GetController::class, 'getTipoSexo'])->name('get.tiposexo');
     Route::get('titulacoes', [GetController::class, 'getTitulacoes'])->name('get.titulacao');
     Route::get('instituicoes', [GetController::class, 'getInstituicoes'])->name('get.instituicoes');
+
 });
 
 Route::get('/register', function() {
@@ -82,4 +87,7 @@ Route::get('/password/reset', function() {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+//GET no banco livres

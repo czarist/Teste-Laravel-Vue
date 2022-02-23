@@ -208,16 +208,15 @@
                     <label>Sexo</label>
                     <v-select
                         class="flex-fill"
-                        :options="estados"
-                        data-vv-as="estado"
+                        :options="tipo_sexo"
+                        :reduce="tipo_sexo => tipo_sexo.id"
+                        data-vv-as="Tipo de sexo"
                         :selectOnTab="true"
-                        v-model="post.sexo"
+                        v-model="post.tipo_sexo"
                         v-validate="{ required: true }"
                         :disabled="loading"
-                        :class="[ {'v-select-invalid': errors.has(`estado${indice}`)}]"        
-                        label="sigla"
-                        @input="getMunicipios(indice)"
-                        :name="`estado${indice}`"
+                        :class="[ {'v-select-invalid': errors.has(`tipo_sexo`)}]"        
+                        :name="`tipo_sexo`"
                         >
                         <template v-slot:no-options="{ search, searching }">
                             <template v-if="searching">
@@ -226,8 +225,8 @@
                             <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
                         </template>
                     </v-select>
-                    <span v-show="errors.has(`estado${indice}`)" class="v-select-invalid-feedback">
-                        {{ errors.first(`estado${indice}`) }}
+                    <span v-show="errors.has(`tipo_sexo`)" class="v-select-invalid-feedback">
+                        {{ errors.first(`tipo_sexo`) }}
                     </span>
                 </div>
 
@@ -558,6 +557,7 @@
                 acessos: [],
                 estados: [],
                 municipios: [],
+                tipo_sexo: [],
                 usersTypes: [],
                 loading: false,
                 location: null,
@@ -758,6 +758,12 @@
                
                 this.acessos = res.data
             })
+
+            axios.get(process.env.MIX_BASE_URL+'/get/tiposexo').then(res => {
+               
+                this.tipo_sexo = res.data
+            })
+
           
             this.getEstados()
         },

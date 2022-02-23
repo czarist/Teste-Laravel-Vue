@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Acesso;
 use App\Models\Instituicao;
+use App\Models\Acesso;
+use App\Models\Estado;
+use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
 use App\Models\User;
@@ -46,4 +48,21 @@ class GetController extends Controller
         }
         return $acesso->select('pagina', 'id')->orderBy('pagina')->get();
     }
+
+    public function getEstados(Estado $estado)
+    {
+        return $estado->select('nome', 'id')->orderBy('nome')->get();
+    }
+
+    public function getMunicipios( $municipio, $estado_id)
+    {
+        return $municipio->select('nome', 'id')->whereEstadoId($estado_id)->orderBy('nome')->get();
+    }
+
+    public function getTipoSexo(Sexo $sexo)
+    {
+        return $sexo->select('tipo_sexo', 'id')->orderBy('tipo_sexo')->get();
+    }
+
+
 }

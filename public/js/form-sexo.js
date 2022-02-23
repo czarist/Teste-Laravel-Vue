@@ -87,7 +87,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
           _this.loading = true;
+<<<<<<< Updated upstream
           axios.post("".concat("", "/admin/sexo").concat(_this.url), _this.post).then(function (res) {
+=======
+          axios.post("".concat("http://127.0.0.1:8000", "/config/sexo").concat(_this.url), _this.post).then(function (res) {
+>>>>>>> Stashed changes
             _this.clear();
 
             if (res.status == 201) {

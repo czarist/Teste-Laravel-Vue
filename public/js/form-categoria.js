@@ -170,7 +170,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    axios.get("".concat("", "/get/users")).then(function (res) {
+    axios.get("".concat("http://127.0.0.1:8000", "/get/users")).then(function (res) {
       _this.usuarios = res.data;
     });
   },
@@ -203,7 +203,11 @@ __webpack_require__.r(__webpack_exports__);
           _this2.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
           _this2.loading = true;
+<<<<<<< Updated upstream
           axios.post("".concat("", "/admin/categoria").concat(_this2.url), _this2.post).then(function (res) {
+=======
+          axios.post("".concat("http://127.0.0.1:8000", "/config/categoria").concat(_this2.url), _this2.post).then(function (res) {
+>>>>>>> Stashed changes
             _this2.clear();
 
             if (res.status == 201) {

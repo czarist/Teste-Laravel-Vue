@@ -32,8 +32,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $registros = $this->usuarios()->get();
-        return view('admin.usuarios.index', compact('registros'));
+        return view('admin.usuarios.index');
     }
 
     public function get(Request $request)

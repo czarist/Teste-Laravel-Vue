@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
         <h5 class="col-12 d-flex justify-content-between">
-            usuarios
+            Usuário
             <span class="btn btn-success btn-sm" @click="showForm(null)">
                 <i class="fas fa-plus-circle float-left d-none d-sm-block mt-1 mr-1"></i> Cadastrar
             </span>
@@ -103,7 +103,7 @@
             return {
                 value: 100,
                 max: 100,
-                page: 'admin/usuario',
+                page: 'admin/usuarios',
                 baseUrl: process.env.MIX_BASE_URL,
                 loading: true,
                 selected: null,

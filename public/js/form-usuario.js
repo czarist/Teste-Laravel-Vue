@@ -568,7 +568,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['selected', 'id'],
@@ -581,6 +580,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       acessos: [],
       estados: [],
       municipios: [],
+      tipo_sexo: [],
       usersTypes: []
     }, _defineProperty(_ref, "loading", false), _defineProperty(_ref, "location", null), _defineProperty(_ref, "verify", null), _defineProperty(_ref, "post", {
       id: null,
@@ -690,7 +690,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("".concat("", "/get/estados")).then(function (res) {
+                return axios.get("".concat("http://127.0.0.1:8000", "/get/estados")).then(function (res) {
                   _this2.estados = res.data;
                 });
 
@@ -747,7 +747,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     }());
 
                     setTimeout(function () {
+<<<<<<< Updated upstream
                       axios.post("".concat("", "/admin/usuarios").concat(_this3.url), _this3.post).then(function (res) {
+=======
+                      axios.post("".concat("http://127.0.0.1:8000", "/config/usuarios").concat(_this3.url), _this3.post).then(function (res) {
+>>>>>>> Stashed changes
                         _this3.clear();
 
                         if (res.status == 201) {
@@ -832,11 +836,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     var _this4 = this;
 
-    axios.get("" + '/get/tiposusuarios').then(function (res) {
+    axios.get("http://127.0.0.1:8000" + '/get/tiposusuarios').then(function (res) {
       _this4.usersTypes = res.data;
     });
-    axios.get("" + '/get/acessos').then(function (res) {
+    axios.get("http://127.0.0.1:8000" + '/get/acessos').then(function (res) {
       _this4.acessos = res.data;
+    });
+    axios.get("http://127.0.0.1:8000" + '/get/tiposexo').then(function (res) {
+      _this4.tipo_sexo = res.data;
     });
     this.getEstados();
   }
@@ -1807,23 +1814,16 @@ var render = function () {
                     },
                   ],
                   staticClass: "flex-fill",
-                  class: [
-                    {
-                      "v-select-invalid": _vm.errors.has("estado" + _vm.indice),
-                    },
-                  ],
+                  class: [{ "v-select-invalid": _vm.errors.has("tipo_sexo") }],
                   attrs: {
-                    options: _vm.estados,
-                    "data-vv-as": "estado",
+                    options: _vm.tipo_sexo,
+                    reduce: function (tipo_sexo) {
+                      return tipo_sexo.id
+                    },
+                    "data-vv-as": "Tipo de sexo",
                     selectOnTab: true,
                     disabled: _vm.loading,
-                    label: "sigla",
-                    name: "estado" + _vm.indice,
-                  },
-                  on: {
-                    input: function ($event) {
-                      return _vm.getMunicipios(_vm.indice)
-                    },
+                    name: "tipo_sexo",
                   },
                   scopedSlots: _vm._u([
                     {
@@ -1848,11 +1848,11 @@ var render = function () {
                     },
                   ]),
                   model: {
-                    value: _vm.post.sexo,
+                    value: _vm.post.tipo_sexo,
                     callback: function ($$v) {
-                      _vm.$set(_vm.post, "sexo", $$v)
+                      _vm.$set(_vm.post, "tipo_sexo", $$v)
                     },
-                    expression: "post.sexo",
+                    expression: "post.tipo_sexo",
                   },
                 }),
                 _vm._v(" "),
@@ -1863,8 +1863,8 @@ var render = function () {
                       {
                         name: "show",
                         rawName: "v-show",
-                        value: _vm.errors.has("estado" + _vm.indice),
-                        expression: "errors.has(`estado${indice}`)",
+                        value: _vm.errors.has("tipo_sexo"),
+                        expression: "errors.has(`tipo_sexo`)",
                       },
                     ],
                     staticClass: "v-select-invalid-feedback",
@@ -1872,7 +1872,7 @@ var render = function () {
                   [
                     _vm._v(
                       "\n                    " +
-                        _vm._s(_vm.errors.first("estado" + _vm.indice)) +
+                        _vm._s(_vm.errors.first("tipo_sexo")) +
                         "\n                "
                     ),
                   ]

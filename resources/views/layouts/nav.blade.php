@@ -38,7 +38,7 @@
             @endif
             @if(Auth::user()->root || array_intersect([
             'admin/usuarios',
-            'admin/associados',
+            'admin/associado',
             'admin/instituicao',
             'admin/titulacao',
             'admin/sexo',
@@ -48,11 +48,30 @@
                     <i class="mr-1 float-left d-none d-xl-block fas fa-cogs"></i> Area Administrativa
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
+                    @if(Auth::user()->root || in_array('admin/sexo', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('admin/sexo*') ? 'active' : '' }}" href="{{ route('sexo.index') }}">
+                            <i class="mr-1 float-left d-none d-xl-block fas fa-neuter" style="width:20px;"></i> Gêneros
+                        </a>
+                    @endif
+                    @if(Auth::user()->root || in_array('admin/associado', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('admin/associado*') ? 'active' : '' }}" href="{{ route('associado.index') }}">
+                            <i class="mr-1 float-left d-none d-xl-block fas fa-hands-helping" style="width:20px;"></i> Associados
+                        </a>
+                    @endif
+                    @if(Auth::user()->root || in_array('admin/instituicao', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('admin/instituicao*') ? 'active' : '' }}" href="{{ route('instituicao.index') }}">
+                            <i class="mr-1 float-left d-none d-xl-block fas fa-university" style="width:20px;"></i> Instituição
+                        </a>
+                    @endif
+                    @if(Auth::user()->root || in_array('admin/titulacao', Auth::user()->roles()))
+                        <a class="dropdown-item {{ Request::is('admin/titulacao*') ? 'active' : '' }}" href="{{ route('titulacao.index') }}">
+                            <i class="mr-1 float-left d-none d-xl-block fas fa-file-signature" style="width:20px;"></i> Titulação
+                        </a>
+                    @endif
                     @if(Auth::user()->root || in_array('admin/usuarios', Auth::user()->roles()))
-                    <a class="dropdown-item {{ Request::is('admin/usuarios*') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
-                        <i class="mr-1 float-left d-none d-xl-block fas fa-hands-helping" style="width:20px;"></i> Usuários
-                    </a>
+                        <a class="dropdown-item {{ Request::is('admin/usuarios*') ? 'active' : '' }}" href="{{ route('usuarios.index') }}">
+                            <i class="mr-1 float-left d-none d-xl-block fas fa-user" style="width:20px;"></i> Usuários
+                        </a>
                     @endif
                 </div>
             </li>

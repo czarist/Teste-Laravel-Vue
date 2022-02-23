@@ -19,4 +19,12 @@ class Associado extends Model
         'obs_isentamos',
     ];
 
+    public function instituicao()
+    {
+        return $this->belongsTo(Instituicao::class);
+    }
+    public function titulacao()
+    {
+        return $this->belongsTo(Titulacao::class);
+    }
 }

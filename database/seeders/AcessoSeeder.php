@@ -28,7 +28,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 2,
                 'pagina' => 'Associados',
-                'link' => 'admin/associados'
+                'link' => 'admin/associado'
             ]
         );
 

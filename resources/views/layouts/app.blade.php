@@ -31,7 +31,6 @@
          @auth
             @include('layouts.nav')
         @endauth
-        @include('inc.navbar')
         
         <!--  BEGIN MAIN CONTAINER  -->
         <div class="main-container" id="container">

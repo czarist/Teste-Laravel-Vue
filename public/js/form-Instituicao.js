@@ -1,10 +1,10 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["form-Instituicao"],{
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
           _this.loading = true;
-          axios.post("".concat("", "/config/instituicao").concat(_this.url), _this.post).then(function (res) {
+          axios.post("".concat("", "/admin/instituicao").concat(_this.url), _this.post).then(function (res) {
             _this.clear();
 
             if (res.status == 201) {
@@ -199,18 +199,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/config/instituicao/FormInstituicao.vue":
-/*!************************************************************************!*\
-  !*** ./resources/js/components/config/instituicao/FormInstituicao.vue ***!
-  \************************************************************************/
+/***/ "./resources/js/components/admin/instituicao/FormInstituicao.vue":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/admin/instituicao/FormInstituicao.vue ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormInstituicao.vue?vue&type=template&id=569f7183& */ "./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183&");
-/* harmony import */ var _FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormInstituicao.vue?vue&type=script&lang=js& */ "./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js&");
+/* harmony import */ var _FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormInstituicao.vue?vue&type=template&id=36b8094a& */ "./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a&");
+/* harmony import */ var _FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormInstituicao.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -221,8 +221,8 @@ __webpack_require__.r(__webpack_exports__);
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__.render,
-  _FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -232,46 +232,46 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/config/instituicao/FormInstituicao.vue"
+component.options.__file = "resources/js/components/admin/instituicao/FormInstituicao.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************/
+/***/ "./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormInstituicao.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormInstituicao.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183& ***!
-  \*******************************************************************************************************/
+/***/ "./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a& ***!
+  \******************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_569f7183___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormInstituicao.vue?vue&type=template&id=569f7183& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormInstituicao_vue_vue_type_template_id_36b8094a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FormInstituicao.vue?vue&type=template&id=36b8094a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a&");
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183&":
-/*!**********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/instituicao/FormInstituicao.vue?vue&type=template&id=569f7183& ***!
-  \**********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/instituicao/FormInstituicao.vue?vue&type=template&id=36b8094a& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -294,8 +294,8 @@ var render = function () {
             var close = ref.close
             return [
               _vm.post.id
-                ? _c("h5", [_vm._v("Editar instituicao")])
-                : _c("h5", [_vm._v("Cadastrar instituicao")]),
+                ? _c("h5", [_vm._v("Editar instituição")])
+                : _c("h5", [_vm._v("Cadastrar instituição")]),
               _vm._v(" "),
               _c(
                 "b-button",
@@ -367,7 +367,7 @@ var render = function () {
         _c(
           "b-form-group",
           {
-            attrs: { label: "Instituicao", "label-class": "font-weight-bold" },
+            attrs: { label: "Instituição", "label-class": "font-weight-bold" },
           },
           [
             _c("b-form-input", {

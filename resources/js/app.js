@@ -28,7 +28,7 @@ Validator.localize('pt_BR', pt_BR)
 
 Validator.extend("numeroSocioCheck", {
     validate: (numero_socio, id) => {
-        return axios.post(`${process.env.MIX_BASE_URL}/categoria/numerocheck`, {numero_socio, id}).then(res => {
+        return axios.post(`${process.env.MIX_BASE_URL}/admin/associado/check`, {numero_socio, id}).then(res => {
             return {
                 valid: res.data
             }
@@ -56,19 +56,21 @@ Validator.localize({
     }
 });
 
-import SexoGrid from './components/config/sexo/SexoGrid.vue'
-import InstituicaoGrid from './components/config/instituicao/InstituicaoGrid.vue'
-import TitulacaoGrid from './components/config/titulacao/TitulacaoGrid.vue'
-import CategoriaGrid from './components/config/categoria/CategoriaGrid.vue'
-import UsuarioGrid from './components/config/usuario/UsuarioGrid.vue'
+import SexoGrid from './components/admin/sexo/SexoGrid.vue'
+import InstituicaoGrid from './components/admin/instituicao/InstituicaoGrid.vue'
+import TitulacaoGrid from './components/admin/titulacao/TitulacaoGrid.vue'
+import AssociadoGrid from './components/admin/associado/AssociadoGrid.vue'
+import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
+import ProfilePage from './components/perfil/ProfilePage.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
+        'profile-page': ProfilePage,
         'sexo-grid': SexoGrid,
         'instituicao-grid': InstituicaoGrid,
         'titulacao-grid': TitulacaoGrid,
-        'categoria-grid': CategoriaGrid,
+        'associado-grid': AssociadoGrid,
         'usuario-grid': UsuarioGrid,
 
     }

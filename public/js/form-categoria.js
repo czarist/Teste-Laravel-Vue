@@ -203,7 +203,7 @@ __webpack_require__.r(__webpack_exports__);
           _this2.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
           _this2.loading = true;
-          axios.post("".concat("", "/config/categoria").concat(_this2.url), _this2.post).then(function (res) {
+          axios.post("".concat("", "/admin/categoria").concat(_this2.url), _this2.post).then(function (res) {
             _this2.clear();
 
             if (res.status == 201) {

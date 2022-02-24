@@ -12,23 +12,15 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
        public function usuarios()
     {
-        return User::select('id', 'name', 'email','ativo')
+        return User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
                         ->with('acessos:id,pagina,link',
-                            'todos_tipos:id,descricao',
-                            // 'empresa:id,razao_social',
-                            // 'departamento:id,descricao',
-                            // 'enderecos:id,cep,rua,numero,complemento,bairro,municipio_id,latitude,longitude,user_id',
-                            // 'enderecos.municipio:id,estado_id,codigo,name','acessos:id,pagina,link',
-                            // 'enderecos.municipio.estado:id,codigo,name,sigla,regiao',
-                            );
-    }
+                                'todos_tipos:id,descricao',
+                                'enderecos',
+                                'enderecos.municipio',
+                                'enderecos.municipio.estado');
+            }
 
     public function index()
     {
@@ -59,32 +51,26 @@ class UserController extends Controller
             $post['password'] = Hash::make($post['password']);
             $user = User::create($post);
             $user->acessos()->sync($post['acessos']);
-            if (count($post['enderecos'])) {
-                 foreach ($post['enderecos'] as $endereco) {
-                    if (!empty($endereco['cep'])) {
-                        Endereco::updateOrcreate(
-                            ['id' => $endereco['id'] ?? null],
-                            [
-                                'user_id' => $user->id,
-                                'municipio_id' => $endereco['municipio']['id'],
-                                'cep' => $endereco['cep'],
-                                'complemento' => $endereco['complemento'],
-                                'numero' => $endereco['numero'],
-                                'bairro' => $endereco['bairro'],
-                                'rua' => $endereco['rua'],
-                                'latitude' => $endereco['latitude'],
-                                'longitude' => $endereco['longitude']
-                            ]
-                        );
-                    }
-                }
+            $user->todos_tipos()->sync($post['todos_tipos_id']);
+
+            if (!empty($post['enderecos'])) {
+                Endereco::updateOrcreate(
+                    ['id' => $endereco['id'] ?? null],
+                    [
+                        'user_id' => $user->id,
+                        'municipio_id' => $post['enderecos']['municipio']['id'] ?? 1,
+                        'pais_id' => $post['enderecos']['pais']['id'] ?? 'Brasil',
+                        'cep' => $post['enderecos']['cep'] ?? 1,
+                        'logadouro' => $post['enderecos']['logradouro'],
+
+                    ]
+                );
             }
             $user->load('todos_tipos:id,descricao',
-                    'empresa:id,name',
-                    'departamento:id,descricao',
-                    'enderecos:id,cep,rua,complemento,numero,bairro,municipio_id,latitude,longitude,user_id',
-                    'enderecos.municipio:id,estado_id,codigo,name','acessos:id,pagina,link',
-                    'enderecos.municipio.estado:id,codigo,name,sigla,regiao');
+                        'todos_tipos:id,descricao',
+                        'enderecos',
+                        'enderecos.municipio',
+                        'enderecos.municipio.estado');
             Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 201);
         } catch (Exception $exception) {
@@ -96,8 +82,9 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $user = User::findOrFail($request->id);
+        $endereco = Endereco::whereUserId($user->id)->first();
         try { 
-            $user = User::findOrFail($request->id);
             if($request->filled('password')) {
                 $post = $request->all();
                 $post['password'] = Hash::make($request->input('password'));
@@ -105,39 +92,41 @@ class UserController extends Controller
                 $post = $request->except('password');
             }
             $user->update($post);
-            if (count($post['enderecos'])) {
-                foreach ($post['enderecos'] as $endereco) {
-                    if (!empty($endereco['cep'])) {
-                    
-                        if (($endereco['deleted'])) {
-                            Endereco::findOrFail($endereco['id'])->delete();
-                        } else {
-                            Endereco::updateOrcreate(
-                                ['id' => $endereco['id'] ?? null],
-                                [
-                                    'user_id' => $user->id,
-                                    'municipio_id' => $endereco['municipio']['id'],
-                                    'complemento' => $endereco['complemento'],
-                                    'cep' => $endereco['cep'],
-                                    'numero' => $endereco['numero'],
-                                    'bairro' => $endereco['bairro'],
-                                    'rua' => $endereco['rua'],
-                                    'latitude' => $endereco['latitude'],
-                                    'longitude' => $endereco['longitude']
-                                ]
-                            );
-                        }
-                    }
-                }
+
+            if (!empty($endereco)) {
+                Endereco::updateOrcreate(
+                    ['id' => $endereco['id']],
+                    [
+                        'user_id' => $user->id,
+                        'municipio_id' => $request->enderecos['municipio']['id'] ?? 1,
+                        'pais_id' => $request->enderecos['pais']['id'] ?? 'Brasil',
+                        'cep' => $request->enderecos['cep'] ?? 1,
+                        'logradouro' => $request->enderecos['logradouro'],
+                    ]
+                );
             }
+            else {
+
+                Endereco::create(
+                    [
+                        'user_id' => $user->id,
+                        'municipio_id' => $request->enderecos['municipio']['id'] ?? 1,
+                        'pais_id' => $request->enderecos['pais']['id'] ?? 'Brasil',
+                        'cep' => $request->enderecos['cep'] ?? 1,
+                        'logradouro' => $request->enderecos['logradouro'],
+                    ]
+                );
+            }
+
             $user->acessos()->sync($post['acessos']);
+            dd($user);
+            $user->todos_tipos()->sync($post['todos_tipos_id']);
             
             $user->load('todos_tipos:id,descricao',
-                        'empresa:id,name',
-                        'departamento:id,descricao',
-                        'enderecos:id,cep,rua,complemento,numero,bairro,municipio_id,latitude,longitude,user_id',
-                        'enderecos.municipio:id,estado_id,codigo,name','acessos:id,pagina,link',
-                        'enderecos.municipio.estado:id,codigo,name,sigla,regiao');
+                    'empresa:id,name',
+                    'enderecos',
+                    'enderecos.municipio',
+                    'enderecos.municipio.estado');
             Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 200);
         } catch (Exception $exception) {
@@ -152,6 +141,7 @@ class UserController extends Controller
         try { 
             $user = User::select('id')->findOrFail($id);
             $user->acessos()->sync([]);
+            $user->todos_tipos()->sync([]);
             $user->delete();
             Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode(['id' => $id]));
             return response()->json(['message' => 'success'], 200);

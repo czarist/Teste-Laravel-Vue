@@ -1,3 +1,9 @@
+<?php
+    $status = $_GET['status'] ?? 0;
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,13 +25,36 @@
 </head>
 
 <body class="form">
-
-
     <div class="form-container">
         <div class="form-form">
             <div class="form-form-wrap">
-                <div class="form-container">
+                <div class="form-container">                
                     <div class="form-content">
+                        <?php
+                        $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
+                            <h4 class='alert-heading'>Parabéns!</h4>
+                            <p><b>Seu cadastro foi feito  com sucesso</b></p>
+                            Você foi direcionado para a página de login.<br/>
+                            Caso não tenha recebido o email contendo login e senha, verifique sua caixa de spam.
+                        </div>";
+
+                        $div_status2 = "<div class='col-12 alert alert-success text-center' role='alert'>
+                                <h4 class='alert-heading'>Parabéns!</h4>
+                                <p><b>Seu pagamento está em processamento, acompanhe pela área de pedidos</b></p>
+                                Você foi direcionado para a página de login.<br/>
+                                Caso não tenha recebido o email contendo login e senha, verifique sua caixa de spam.
+                            </div>";
+
+                    
+                        if($status == 1){
+                            echo $div_status;
+                        }
+                        if($status == 2){
+                            echo $div_status2;
+                        }
+
+                    ?>
+        
 
                         <h2 class="">Login Intercon</h2>
 
@@ -74,7 +103,13 @@
 
                             </div>
                         </form>
-                        <p class="terms-conditions">© 2022 Intercon. </p>
+                        <div class="d-sm-flex justify-content-center mt-5">
+                            <div class="field-wrapper">
+                                <a type="button" class="btn btn-primary" href="{{ route('cadastro')}}">Inscrever-se</a>
+                            </div>
+                        </div>
+
+                        <p class="terms-conditions">© {{ date('Y') }} Intercon. </p>
 
                     </div>
                 </div>

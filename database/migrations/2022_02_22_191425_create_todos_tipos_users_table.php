@@ -12,8 +12,8 @@ class CreateTodosTiposUsersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('tipo_id')->unsigned();
             $table->unsignedBigInteger('user_id')->unsigned();
-            $table->foreign('tipo_id')->references('id')->on('tipos')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('tipo_id')->references('id')->on('tipos');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

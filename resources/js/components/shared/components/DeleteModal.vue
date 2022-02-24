@@ -32,3 +32,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+    ::v-deep .modal-backdrop {
+        opacity: 0.5 !important;
+    }
+</style>

@@ -87,11 +87,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
           _this.loading = true;
-<<<<<<< Updated upstream
-          axios.post("".concat("", "/admin/titulacao").concat(_this.url), _this.post).then(function (res) {
-=======
-          axios.post("".concat("http://127.0.0.1:8000", "/config/titulacao").concat(_this.url), _this.post).then(function (res) {
->>>>>>> Stashed changes
+          axios.post("".concat("http://127.0.0.1:8000", "/admin/titulacao").concat(_this.url), _this.post).then(function (res) {
             _this.clear();
 
             if (res.status == 201) {
@@ -137,45 +133,6 @@ __webpack_require__.r(__webpack_exports__);
       this.post.tipo_titulacao = null;
       this.post._method = 'post';
       this.$validator.reset('tipo_titulacao');
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/components/mixins/global-mixins.js":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/mixins/global-mixins.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      loading: false
-    };
-  },
-  methods: {
-    message: function message(title, _message, type) {
-      var duration = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-      this.$notify({
-        group: 'submit',
-        clean: true
-      });
-      this.$notify({
-        group: 'submit',
-        title: title,
-        text: _message,
-        type: type,
-        duration: duration ? duration : 3000
-      });
     }
   }
 });

@@ -18,6 +18,7 @@ class User extends Authenticatable
         'password',
         'data_nascimento',
         'estrangeiro',
+        'passaporte',
         'cpf',
         'rg',
         'orgao_expedidor',
@@ -112,5 +113,10 @@ class User extends Authenticatable
     public function todos_tipos()
     {
         return $this->belongsToMany(Tipo::class, 'todos_tipos_users');
+    }
+
+    public function enderecos()
+    {
+        return $this->hasMany(Endereco::class);
     }
 }

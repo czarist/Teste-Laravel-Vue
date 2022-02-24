@@ -67,18 +67,18 @@
                 <b-col cols="12" sm="6" lg="4">
                     <b-form-group label="Data de nascimento" label-class="font-weight-bold">
                         <b-form-input
-                            name="name"
+                            name="data_nascimento"
                             size="sm"
-                            v-model="post.name"
+                            v-model="post.data_nascimento"
                             type="date"
                             :disabled="loading"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`name`)}]"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`data_nascimento`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
-                            data-vv-as="name"
+                            data-vv-as="Data de nascimento"
                         ></b-form-input>
-                        <span v-show="errors.has(`name`)" class="invalid-feedback">
-                            {{ errors.first(`name`) }}
+                        <span v-show="errors.has(`data_nascimento`)" class="invalid-feedback">
+                            {{ errors.first(`data_nascimento`) }}
                         </span>
                     </b-form-group>
                 </b-col>
@@ -90,76 +90,96 @@
                         >
                         <b-form-radio-group
                             :disabled="loading"
-                            v-model="post.ativo"
+                            v-model="post.estrangeiro"
                             :options="options"
                             :button-variant="`outline-primary`" 
                             size="sm"
-                            v-validate="{ required: post.ativo == 0 ? true : false }"
-                            name="ativo"
+                            v-validate="{ required: post.estrangeiro == 0 ? true : false }"
+                            name="estrangeiro"
                             buttons
                         ></b-form-radio-group>
-                        <span v-show="errors.has(`ativo`)" class="invalid-feedback d-block">
-                            {{ errors.first(`ativo`) }}
+                        <span v-show="errors.has(`estrangeiro`)" class="invalid-feedback d-block">
+                            {{ errors.first(`estrangeiro`) }}
                         </span>
                     </b-form-group>
                 </b-col>
 
-                 <b-col cols="12" sm="6" lg="4">
-                    <b-form-group label="CNPJ" label-class="font-weight-bold">
+                <b-col cols="12" sm="6" lg="4" v-if="post.estrangeiro">
+                    <b-form-group label="Passaporte" label-class="font-weight-bold">
                         <b-form-input
-                            name="cnpj_cpf"
+                            name="passaporte"
                             size="sm"
                             :disabled="loading"
-                            v-model="post.cnpj_cpf"
+                            v-model="post.passaporte"
                             type="text"
-                            v-mask="['###.###.###-##', '##.###.###/####-##']"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cnpj_cpf`)}]"
+                            v-mask="'########'"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`passaporte`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
-                            data-vv-as="CNPJ/CPF"
+                            data-vv-as="Passaporte"
                         ></b-form-input>
-                        <span v-show="errors.has(`cnpj_cpf`)" class="invalid-feedback">
-                            {{ errors.first(`cnpj_cpf`) }}
+                        <span v-show="errors.has(`passaporte`)" class="invalid-feedback">
+                            {{ errors.first(`passaporte`) }}
                         </span>
                     </b-form-group>
                 </b-col>
 
-                <b-col cols="12" sm="6" lg="4">
+
+                <b-col cols="12" sm="6" lg="4" v-if="!post.estrangeiro">
+                    <b-form-group label="CPF" label-class="font-weight-bold">
+                        <b-form-input
+                            name="cpf"
+                            size="sm"
+                            :disabled="loading"
+                            v-model="post.cpf"
+                            type="text"
+                            v-mask="'###.###.###-##'"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf`)}]"
+                            v-validate="{ required: true }"
+                            aria-describedby="input-1-live-feedback"
+                            data-vv-as="CPF"
+                        ></b-form-input>
+                        <span v-show="errors.has(`cpf`)" class="invalid-feedback">
+                            {{ errors.first(`cpf`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+                <b-col cols="12" sm="6" lg="4" v-if="!post.estrangeiro">
                     <b-form-group label="RG" label-class="font-weight-bold">
                         <b-form-input
-                            name="cnpj_cpf"
+                            name="rg"
                             size="sm"
                             :disabled="loading"
-                            v-model="post.cnpj_cpf"
+                            v-model="post.rg"
                             type="text"
-                            v-mask="['###.###.###-##', '##.###.###/####-##']"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cnpj_cpf`)}]"
+                            v-mask="'##.###.###-#'"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`rg`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
-                            data-vv-as="CNPJ/CPF"
+                            data-vv-as="RG"
                         ></b-form-input>
-                        <span v-show="errors.has(`cnpj_cpf`)" class="invalid-feedback">
-                            {{ errors.first(`cnpj_cpf`) }}
+                        <span v-show="errors.has(`rg`)" class="invalid-feedback">
+                            {{ errors.first(`rg`) }}
                         </span>
                     </b-form-group>
                 </b-col>
 
-                <b-col cols="12" sm="6" lg="4">
+                <b-col cols="12" sm="6" lg="4" v-if="!post.estrangeiro">
                     <b-form-group label="Orgão expedidor" label-class="font-weight-bold">
                         <b-form-input
-                            name="cnpj_cpf"
+                            name="orgao_expedidor"
                             size="sm"
                             :disabled="loading"
-                            v-model="post.cnpj_cpf"
+                            v-model="post.orgao_expedidor"
                             type="text"
-                            v-mask="['###.###.###-##', '##.###.###/####-##']"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cnpj_cpf`)}]"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`orgao_expedidor`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
-                            data-vv-as="CNPJ/CPF"
+                            data-vv-as="Orgão expedidor"
                         ></b-form-input>
-                        <span v-show="errors.has(`cnpj_cpf`)" class="invalid-feedback">
-                            {{ errors.first(`cnpj_cpf`) }}
+                        <span v-show="errors.has(`orgao_expedidor`)" class="invalid-feedback">
+                            {{ errors.first(`orgao_expedidor`) }}
                         </span>
                     </b-form-group>
                 </b-col>
@@ -167,19 +187,19 @@
                 <b-col cols="12" sm="6" lg="4">
                     <b-form-group label="Telefone" label-class="font-weight-bold">
                         <b-form-input
-                            name="cnpj_cpf"
+                            name="telefone"
                             size="sm"
                             :disabled="loading"
-                            v-model="post.cnpj_cpf"
+                            v-model="post.telefone"
                             type="text"
-                            v-mask="['###.###.###-##', '##.###.###/####-##']"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cnpj_cpf`)}]"
+                            v-mask="['(##) #####-####', '(##) ####-####']"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="CNPJ/CPF"
                         ></b-form-input>
-                        <span v-show="errors.has(`cnpj_cpf`)" class="invalid-feedback">
-                            {{ errors.first(`cnpj_cpf`) }}
+                        <span v-show="errors.has(`telefone`)" class="invalid-feedback">
+                            {{ errors.first(`telefone`) }}
                         </span>
                     </b-form-group>
                 </b-col>
@@ -187,102 +207,45 @@
                 <b-col cols="12" sm="6" lg="4">
                     <b-form-group label="Celular" label-class="font-weight-bold">
                         <b-form-input
-                            name="cnpj_cpf"
+                            name="celular"
                             size="sm"
                             :disabled="loading"
-                            v-model="post.cnpj_cpf"
+                            v-model="post.celular"
                             type="text"
-                            v-mask="['###.###.###-##', '##.###.###/####-##']"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cnpj_cpf`)}]"
+                            v-mask="['(##) ####-####', '(##) #####-####']"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
-                            data-vv-as="CNPJ/CPF"
+                            data-vv-as="Celular"
                         ></b-form-input>
-                        <span v-show="errors.has(`cnpj_cpf`)" class="invalid-feedback">
-                            {{ errors.first(`cnpj_cpf`) }}
+                        <span v-show="errors.has(`celular`)" class="invalid-feedback">
+                            {{ errors.first(`celular`) }}
                         </span>
                     </b-form-group>
                 </b-col>
 
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <label>Sexo</label>
-                    <v-select
-                        class="flex-fill"
-                        :options="tipo_sexo"
-                        :reduce="tipo_sexo => tipo_sexo.id"
-                        data-vv-as="Tipo de sexo"
-                        :selectOnTab="true"
-                        v-model="post.tipo_sexo"
-                        v-validate="{ required: true }"
-                        :disabled="loading"
-                        :class="[ {'v-select-invalid': errors.has(`tipo_sexo`)}]"        
-                        :name="`tipo_sexo`"
+                <b-col cols="12" sm="6" lg="4">
+                    <b-form-group label="Gênero" label-class="font-weight-bold">
+                        <b-form-select
+                            :disabled="loading"
+                            name="generos"
+                            v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`generos`)}]"
+                            size="sm"
+                            data-vv-as="Gênero"
+                            class="form-control form-control-sm"
+                            v-model="post.sexo_id"
                         >
-                        <template v-slot:no-options="{ search, searching }">
-                            <template v-if="searching">
-                                Nada encontrado com <em>{{ search }}</em>.
-                            </template>
-                            <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
-                        </template>
-                    </v-select>
-                    <span v-show="errors.has(`tipo_sexo`)" class="v-select-invalid-feedback">
-                        {{ errors.first(`tipo_sexo`) }}
-                    </span>
-                </div>
-
-                <div class="form-group col-12 col-md-6 col-lg-4">
-                    <label>Instituição</label>
-                    <v-select
-                        class="flex-fill"
-                        :options="estados"
-                        data-vv-as="estado"
-                        :selectOnTab="true"
-                        v-model="post.sexo"
-                        v-validate="{ required: true }"
-                        :disabled="loading"
-                        :class="[ {'v-select-invalid': errors.has(`estado${indice}`)}]"        
-                        label="sigla"
-                        @input="getMunicipios(indice)"
-                        :name="`estado${indice}`"
-                        >
-                        <template v-slot:no-options="{ search, searching }">
-                            <template v-if="searching">
-                                Nada encontrado com <em>{{ search }}</em>.
-                            </template>
-                            <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
-                        </template>
-                    </v-select>
-                    <span v-show="errors.has(`estado${indice}`)" class="v-select-invalid-feedback">
-                        {{ errors.first(`estado${indice}`) }}
-                    </span>
-                </div>
-
-                 <div class="form-group col-12 col-md-6 col-lg-4">
-                    <label>Titulação</label>
-                    <v-select
-                        class="flex-fill"
-                        :options="estados"
-                        data-vv-as="estado"
-                        :selectOnTab="true"
-                        v-model="post.sexo"
-                        v-validate="{ required: true }"
-                        :disabled="loading"
-                        :class="[ {'v-select-invalid': errors.has(`estado${indice}`)}]"        
-                        label="sigla"
-                        @input="getMunicipios(indice)"
-                        :name="`estado${indice}`"
-                        >
-                        <template v-slot:no-options="{ search, searching }">
-                            <template v-if="searching">
-                                Nada encontrado com <em>{{ search }}</em>.
-                            </template>
-                            <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
-                        </template>
-                    </v-select>
-                    <span v-show="errors.has(`estado${indice}`)" class="v-select-invalid-feedback">
-                        {{ errors.first(`estado${indice}`) }}
-                    </span>
-                </div>
+                        <option :value="null">Selecione</option>
+                        <option v-for="genero in generos" :value="genero.id" :key="genero.id">
+                            {{ genero.tipo_sexo }}
+                        </option>
+                        </b-form-select>
+                        <span v-show="errors.has(`generos`)" class="invalid-feedback">
+                            {{ errors.first(`generos`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
 
                 <b-col cols="12" sm="6" lg="4">
                     <b-form-group
@@ -309,81 +272,25 @@
            <div class="row">
                 <div class="col-12 d-flex justify-content-between">
                     <label>Endereços</label>
-                    <b-button 
-                        size="sm" variant="outline-success" 
-                        @click="post.enderecos.push({ 
-                            cep:null,
-                            logradouro: null, 
-                            pais_id: null,
-                            municipio: null,
-                            municipio_id: null,
-                            estado: null,
-                            user_id: post.id ,
-                            deleted: false 
-                        })"
-                    >
-                        <i class="fas fa-plus"></i>
-                    </b-button>
                 </div>
-                <div class="col-12" v-for="(endereco, indice) in post.enderecos" :key="endereco.id">
-                      <div class="row">
-                        <div class="col-1">
-                            <span v-if="!selected && post.enderecos.length > 1" :style="post.enderecos[indice].deleted ? 'opacity: 0.5' : ''"
-                                @click="post.enderecos[indice].id
-                                        ? post.enderecos[indice].deleted = !post.enderecos[indice].deleted
-                                        : post.enderecos.splice(indice, 1)"
-                                    class="btn btn-outline-primary btn-sm mb-3"
-                                    v-tooltip.bottom="{
-                                    content: !post.enderecos[indice].deleted ? 'Deletar' : 'Restaurar',
-                                    delay: 0,
-                                    class: 'tooltip-custom tooltip-arrow'
-                                }"
-                                
-                            ><i
-                                class="fas"
-                                :class="{
-                                    'fa-trash': !post.enderecos[indice].deleted,
-                                    'fa-undo': post.enderecos[indice].deleted
-                                }"
-                            ></i>
-                            </span>
-
-                            <span v-if="selected && selected.enderecos.length > 0" :style="post.enderecos[indice].deleted ? 'opacity: 0.5' : ''"
-                                @click="verifyEndereco(indice)"
-                                    class="btn btn-outline-primary btn-sm mb-3"
-                                    v-tooltip.bottom="{
-                                    content: !post.enderecos[indice].deleted ? 'Deletar' : 'Restaurar',
-                                    delay: 0,
-                                    class: 'tooltip-custom tooltip-arrow'
-                                }"
-                                
-                            ><i
-                                class="fas"
-                                :class="{
-                                    'fa-trash': !post.enderecos[indice].deleted,
-                                    'fa-undo': post.enderecos[indice].deleted
-                                }"
-                            ></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row" :style="post.enderecos[indice].deleted ? 'opacity: 0.5' : ''">
+                <div class="col-12">
+                    <div class="row">
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="form-group ">
                                 <label for="">CEP</label>
                                 <b-form-input
                                     size="sm"
                                     v-validate="{ min: 9,required: true }"
-                                    :name="`cep_${indice}`" @change="getCep(indice)" v-mask="'#####-###'"
+                                    :name="`cep`" @change="getCep()" v-mask="'#####-###'"
                                     placeholder="Digite aqui"
-                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`cep_${indice}`)}]"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`cep`)}]"
                                     data-vv-as="CEP"
-                                    v-model="post.enderecos[indice].cep"
+                                    v-model="post.enderecos.cep"
                                     type="text"
                                     :disabled="loading"
                                 ></b-form-input>
-                                <span v-show="errors.has(`cep_${indice}`)" class="invalid-feedback d-block">
-                                    {{ errors.first(`cep_${indice}`) }}
+                                <span v-show="errors.has(`cep`)" class="invalid-feedback d-block">
+                                    {{ errors.first(`cep`) }}
                                 </span>
                             </div>
                         </div>
@@ -392,22 +299,20 @@
                                 <label for="">logradouro</label>
                                 <b-form-input
                                     size="sm"
-                                    :name="`logradouro_${indice}`"
+                                    :name="`logradouro`"
                                     v-validate="{ required: true }"
-                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`logradouro_${indice}`)}]"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`logradouro`)}]"
                                     data-vv-as="logradouro"
-                                    v-model="post.enderecos[indice].logradouro"
+                                    v-model="post.enderecos.logradouro"
                                     type="text"
                                     :disabled="loading"
                                 ></b-form-input>
-                                <span v-show="errors.has(`logradouro_${indice}`)" class="invalid-feedback d-block">
-                                    {{ errors.first(`logradouro_${indice}`) }}
+                                <span v-show="errors.has(`logradouro`)" class="invalid-feedback d-block">
+                                    {{ errors.first(`logradouro`) }}
                                 </span>
                             </div>
-                        </div>
-                    
-                      
-                    
+                        </div>                
+
                         <div class="form-group col-12 col-md-6 col-lg-4">
                             <label>Estado</label>
                             <v-select
@@ -415,13 +320,13 @@
                                 :options="estados"
                                 data-vv-as="estado"
                                 :selectOnTab="true"
-                                v-model="post.enderecos[indice].estado"
+                                v-model="post.enderecos.estado"
                                 v-validate="{ required: true }"
                                 :disabled="loading"
-                                :class="[ {'v-select-invalid': errors.has(`estado${indice}`)}]"        
+                                :class="[ {'v-select-invalid': errors.has(`estado`)}]"        
                                 label="sigla"
-                                @input="getMunicipios(indice)"
-                                :name="`estado${indice}`"
+                                @input="getMunicipios()"
+                                :name="`estado`"
                                 >
                                 <template v-slot:no-options="{ search, searching }">
                                     <template v-if="searching">
@@ -430,56 +335,53 @@
                                     <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
                                 </template>
                             </v-select>
-                            <span v-show="errors.has(`estado${indice}`)" class="v-select-invalid-feedback">
-                                {{ errors.first(`estado${indice}`) }}
+                            <span v-show="errors.has(`estado`)" class="v-select-invalid-feedback">
+                                {{ errors.first(`estado`) }}
                             </span>
                         </div>
+
 
                         <div class="form-group col-12 col-md-6 col-lg-4">
                             <label>Município</label>
                             <v-select
                                 class="flex-fill"
-                                :name="`municipio${indice}`"
+                                :name="`municipio`"
                                 :disabled="loading"
-                                :options="municipios[indice]"
+                                :options="municipios"
                                 :selectOnTab="false"
                                 v-validate="{ required: true }"
-                                v-model="post.enderecos[indice].municipio"
-                                label="name"
+                                v-model="post.enderecos.municipio"
+                                label="nome"
                                 data-vv-as="municipio"
-                                :class="{'v-select-invalid': errors.has(`municipio${indice}`)}"
+                                :class="{'v-select-invalid': errors.has(`municipio`)}"
                             ></v-select>
-                            <span v-show="errors.has(`municipio${indice}`)" class="v-select-invalid-feedback">
-                                {{ errors.first(`municipio${indice}`) }}
+                            <span v-show="errors.has(`municipio`)" class="v-select-invalid-feedback">
+                                {{ errors.first(`municipio`) }}
                             </span>
                         </div>
 
-                        <div class="form-group col-12 col-md-6 col-lg-4">
-                            <label>Pais</label>
-                            <v-select
-                                class="flex-fill"
-                                :options="paises"
-                                data-vv-as="pais"
-                                :selectOnTab="true"
-                                v-model="post.enderecos[indice].pais"
-                                v-validate="{ required: true }"
-                                :disabled="loading"
-                                :class="[ {'v-select-invalid': errors.has(`pais${indice}`)}]"        
-                                label="sigla"
-                                @input="getMunicipios(indice)"
-                                :name="`pais${indice}`"
+                        <!-- <b-col cols="12" sm="6" lg="4">
+                            <b-form-group label="País" label-class="font-weight-bold">
+                                <b-form-select
+                                    :disabled="loading"
+                                    name="paises"
+                                    v-validate="{ required: true }"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`paises`)}]"
+                                    size="sm"
+                                    data-vv-as="País"
+                                    class="form-control form-control-sm"
+                                    v-model="post.pais"
                                 >
-                                <template v-slot:no-options="{ search, searching }">
-                                    <template v-if="searching">
-                                        Nada encontrado com <em>{{ search }}</em>.
-                                    </template>
-                                    <em style="opacity: 0.5;" v-else>Começe a digitar algo.</em>
-                                </template>
-                            </v-select>
-                            <span v-show="errors.has(`pais${indice}`)" class="v-select-invalid-feedback">
-                                {{ errors.first(`pais${indice}`) }}
-                            </span>
-                        </div>
+                                <option :value="null">Selecione</option>
+                                <option v-for="pais in paises" :value="pais.id" :key="pais.id">
+                                    {{ pais.nome }}
+                                </option>
+                                </b-form-select>
+                                <span v-show="errors.has(`paises`)" class="invalid-feedback">
+                                    {{ errors.first(`paises`) }}
+                                </span>
+                            </b-form-group>
+                        </b-col> -->
                     </div>
                 </div>
             </div>
@@ -489,18 +391,26 @@
                     <div class="form-group">
                         <label for="todos_tipos_id">Tipo de Acesso:</label><br />
                         <div class="btn-group" style="margin-bottom:-10px;">
-                            <div class="switch-field">
-                                <template v-for="(userType, index) in usersTypes">
-                                    <input
-                                        :disabled="loading"
-                                        :key="index"
-                                        :id="`todos_tipos_${index}`"
-                                        name="todos_tipos_id"
-                                        type="radio"
-                                        :value="userType.id"
-                                        v-model="post.todos_tipos_id"
-                                    ><label :key="`label_${index}`" :for="`todos_tipos_${index}`">{{ userType.descricao }}</label>
-                                </template>
+                            <div class="switch-field" >
+                                <v-select
+                                    :disabled="loading"
+                                    style="background:#fff;"
+                                    class="flex-fill"
+                                    :class="{'v-select-invalid': errors.has('todos_tipos_id')}"
+                                    :options="usersTypes"
+                                    :reduce="userType => userType.id"
+                                    :selectOnTab="true"
+                                    v-model="post.todos_tipos_id"
+                                    label="descricao"
+                                    :name="`todos_tipos_id`"
+                                    v-validate="'required'"
+                                    data-vv-as="Tipo de Acesso"
+                                    multiple
+                                >
+                                </v-select>
+                                <span v-if="errors.has(`todos_tipos_id`)" class="v-select-invalid-feedback ml-3">
+                                    {{ errors.first(`todos_tipos_id`) }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -509,18 +419,26 @@
 
             <div class="row" v-if="post.todos_tipos_id != 1">
                 <div class="col-12">
-                    <label for="ativo">Acessos Permitidos:</label><br />
+                    <label for="ativo">Telas Liberadas:</label><br />
                     <div class="switch-field-one" >
-                        <span v-for="(acesso, index) in acessos" :key="index">
-                            <input
-                                :disabled="loading"
-                                :id="`ace_${index}`"
-                                class="form-control radio-inline radio_lista radio"
-                                name="acessos[]"
-                                type="checkbox"
-                                :value="acesso.id"
-                                v-model="post.acessos"
-                            ><label :key="`label_${index}`" :for="`ace_${index}`" class="mr-2">{{ acesso.pagina }}</label>
+                        <v-select
+                            :disabled="loading"
+                            style="background:#fff;"
+                            class="flex-fill"
+                            :class="{'v-select-invalid': errors.has('acessos')}"
+                            :options="acessos"
+                            :reduce="acesso => acesso.id"
+                            :selectOnTab="true"
+                            v-model="post.acessos"
+                            label="pagina"
+                            :name="`acessos[]`"
+                            v-validate="'required'"
+                            data-vv-as="Acessos Permitidos"
+                            multiple
+                        >
+                        </v-select>
+                        <span v-if="errors.has(`acessos`)" class="v-select-invalid-feedback ml-3">
+                            {{ errors.first(`acessos`) }}
                         </span>
                     </div>
                 </div>
@@ -557,30 +475,37 @@
                 acessos: [],
                 estados: [],
                 municipios: [],
-                tipo_sexo: [],
+                generos: [],
                 usersTypes: [],
-                loading: false,
                 location: null,
                 verify: null,
+                instituicoes: [],
+                paises: [],
+                titulacoes: [],
                 post: {
                     id: null,
                     name: null,
                     email: null,
+                    password: null,
+                    estrangeiro: 0,
+                    data_nascimento: null,
+                    orgao_expedidor: null,                    
+                    cpf: null,
+                    rg:null,
+                    telefone: null,
+                    celular: null,
+                    sexo_id: null,
                     todos_tipos_id: 3,
-                    tipo_contratacao: null,
                     ativo: 0,
                     acessos: [],
-                    enderecos: [{
+                    enderecos: {
+                        id: null,
                         cep: null,
-                        logradouro: null, 
-                        numero: null,
-                        complemento: null,
-                        bairro: null,
+                        logradouro: null,
+                        bairro: null, 
                         municipio: null,
-                        municipio_id: null,
                         estado: null,
-                        deleted: false
-                    }],
+                    },
                     _method: 'post'
                 },
                 options: [
@@ -597,47 +522,24 @@
                     this.post.id = this.selected.id
                     this.post.name = this.selected.name
                     this.post.email = this.selected.email
-                    this.post.todos_tipos_id = this.selected.todos_tipos_id
-                    // this.post.departamento_id = this.selected.departamento_id
-                    // this.post.empresa = this.selected.empresa
-                    // this.post.cnpj_cpf = this.selected.cnpj_cpf
-                    // this.post.empresa_id = this.selected.empresa_id
+                    this.post.todos_tipos_id = this.filterTipoUser
                     this.post.ativo = this.selected.ativo
-                    this.post.tipo_contratacao = this.selected.tipo_contratacao
                     this.post.acessos = this.access
                     this.post._method = 'put'
+                    this.post.data_nascimento = this.selected.data_nascimento
+                    this.post.orgao_expedidor = this.selected.orgao_expedidor
+                    this.post.cpf = this.selected.cpf
+                    this.post.rg = this.selected.rg
+                    this.post.telefone = this.selected.telefone
+                    this.post.celular = this.selected.celular
+                    this.post.sexo_id = this.selected.sexo_id
 
-                    this.post.enderecos = [{
-                        logradouro: null, 
-                        cep: null, 
-                        numero: null,
-                        bairro: null,
-                        complemento: null,
-                        municipio: null,
-                        municipio_id: null,
-                        estado: null,
-                        deleted: false
-                    }]
-                    if(this.selected.enderecos.length > 0) {
-                        this.post.enderecos = []
-                        this.selected.enderecos.forEach((endereco,indice) => {
-                            this.post.enderecos.push({
-                                id: endereco.id,
-                                cep: endereco.cep, 
-                                logradouro: endereco.logradouro, 
-                                numero: endereco.numero,
-                                complemento: endereco.complemento,
-                                bairro: endereco.bairro,
-                                municipio: endereco.municipio,
-                                estado: endereco.municipio.estado,
-                                municipio_id: endereco.municipio_id,
-                                latitude: endereco.latitude,
-                                longitude: endereco.longitude,
-                                user_id: this.post.id,
-                                deleted: false
-                            })
-                            return this.getMunicipios(indice)
-                        })
+                    this.post.enderecos = {
+                        id: this.selected && this.selected.enderecos ? this.selected.enderecos[0].id : null,
+                        cep: this.selected && this.selected.enderecos ? this.selected.enderecos[0].cep : null,
+                        logradouro: this.selected && this.selected.enderecos ? this.selected.enderecos[0].logradouro : null,
+                        municipio: this.selected && this.selected.enderecos ? this.selected.enderecos[0].municipio : null,
+                        estado: this.selected && this.selected.enderecos ? this.selected.enderecos[0].municipio.estado: null,
                     }
                 } else {
                     this.clear()
@@ -651,6 +553,12 @@
                     ? this.selected.acessos.map(res => res.id) 
                     : []
             },
+            filterTipoUser() {
+                return this.selected && this.selected.todos_tipos 
+                    ? this.selected.todos_tipos.map(res => res.id) 
+                    : []
+            },
+
             passRequired() {
                 return this.post && this.post.id ? false : true
             },
@@ -658,7 +566,7 @@
             url() {
                 return this.post && this.post.id ? `/${this.post.id}` : ''
             },
-            
+
         },
         methods: {
             async getEstados(){
@@ -666,20 +574,61 @@
                     this.estados = res.data
                 })
             },
+            async getMunicipios() {
+                if(this.post.enderecos && this.post.enderecos.estado) {
+                    await axios.get(`${process.env.MIX_BASE_URL}/get/municipios/${this.post.enderecos.estado.id}`).then(res => {
+                        this.municipios =  res.data
+                    }).then(() => {
+                        if(this.selected && this.selected.enderecos) {
+                            this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
+                            this.$validator.reset(`municipio${i}`)
+                        }
+                    })
+                }
+            },
+            async getCep() {
+                if(this.post.enderecos.cep.length > 8) {
+                    await fetch(`https://viacep.com.br/ws/${this.post.enderecos.cep}/json`).then(res => res.json())
+                        .then(res => {
+                            this.post.enderecos = {
+                                cep: this.post.enderecos.cep,
+                                logradouro: res.logradouro,
+                                bairro: res.bairro,
+                                estado: this.estados.find(uf => uf.sigla == res.uf),
+                                municipio: null,
+                                id: this.post.enderecos.id,
+                                numero: this.post.enderecos.numero,
+                                complemento: null,
+                                deleted: false
+
+                            }
+                            this.location = res.localidade
+
+                            if(res.erro == true) {
+                                this.$notify({
+                                    group: "submit",
+                                    title: "Erro",
+                                    text: 'Endereço não encontrado!, tente novamente.',
+                                    type: "error"
+                                })
+                                this.loading = false
+                            }
+                        })
+                      
+                    await this.getMunicipios()
+                        this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.location)
+                        this.$forceUpdate()                
+
+                }
+            },
     
             async save() {
                 this.loading = true
                 await this.$validator.validateAll().then((valid) => {
                     if(valid) {
                         this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
-                        this.post.enderecos.forEach(async (element,indice) => {
-                            if(element.logradouro && element.cep) {
-                              return await this.getAdress(element,indice)
-                            }
-                        })
 
                         setTimeout(() => {
-
                             axios.post(`${process.env.MIX_BASE_URL}/admin/usuarios${this.url}`, this.post).then( res => {
                                 this.clear()
                                 if(res.status == 201) {
@@ -689,7 +638,7 @@
                                     this.loading = false
                                     this.$emit('update', res.data.response)
                                 }
-                                this.message('Sucesso', res.status == 201 ? 'Registro cadastrado.' : 'Registro atualizado.', 'success');
+                                this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                
                             }).catch(error => {
                                 if(error.response.status == 422) {
@@ -723,11 +672,6 @@
                 this.post.name = null
                 this.post.todos_tipos_id = 3
                 this.post.ativo = 0
-                this.post.tipo_contratacao = null
-                this.post.departamento_id = null
-                this.post.cnpj_cpf = null
-                this.post.empresa_id = null
-                this.post.empresa = null
                 this.post.password = null
                 this.post.enderecos = [{
                     logradouro: null, 
@@ -736,9 +680,6 @@
                     complemento: null,
                     bairro: null,
                     municipio: null,
-                    municipio_id: null,
-                    latitude: null,
-                    longitude: null,
                     estado: null,
                     deleted: false
                 }]
@@ -761,12 +702,25 @@
 
             axios.get(process.env.MIX_BASE_URL+'/get/tiposexo').then(res => {
                
-                this.tipo_sexo = res.data
+                this.generos = res.data
             })
 
+            axios.get(`${process.env.MIX_BASE_URL}/get/instituicoes`).then(res => {
+                this.instituicoes = res.data;
+            })
+
+            axios.get(`${process.env.MIX_BASE_URL}/get/titulacoes`).then(res => {
+                this.titulacoes = res.data;
+            })
           
             this.getEstados()
         },
 
     }
 </script>
+
+<style scoped>
+    ::v-deep .modal-backdrop {
+        opacity: 0.5 !important;
+    }
+</style>

@@ -13,12 +13,14 @@ class CreateAssociadosTable extends Migration
             $table->string('numero_socio')->unique();
             $table->boolean('isencao')->nullable();
             $table->unsignedBigInteger('instituicao_id')->nullable();
-            $table->foreign('instituicao_id')->references('id')->on('instituicaos')->onDelete('cascade');
+            $table->foreign('instituicao_id')->references('id')->on('instituicaos');
             $table->unsignedBigInteger('titulacao_id')->nullable();
-            $table->foreign('titulacao_id')->references('id')->on('titulacaos')->onDelete('cascade');
+            $table->foreign('titulacao_id')->references('id')->on('titulacaos');
             $table->date('anuidade');
             $table->string('divisao_tematica');
             $table->string('obs_isentamos')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

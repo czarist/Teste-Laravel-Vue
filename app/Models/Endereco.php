@@ -11,17 +11,25 @@ class Endereco extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        'user_id',
         'cep',
-        'logadouro',
-        'cidade_id',
+        'logradouro',
+        'municipio_id',
         'estado_id',
         'pais_id',
-        'user_id',
+
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function municipio()
+    {
+        return $this->belongsTo(Municipio::class);
+    }
+
+
 
 }

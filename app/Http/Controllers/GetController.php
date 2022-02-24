@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Instituicao;
 use App\Models\Acesso;
 use App\Models\Estado;
+use App\Models\Municipio;
 use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
@@ -51,10 +52,10 @@ class GetController extends Controller
 
     public function getEstados(Estado $estado)
     {
-        return $estado->select('nome', 'id')->orderBy('nome')->get();
+        return $estado->select('nome', 'sigla', 'id')->orderBy('sigla')->get();
     }
 
-    public function getMunicipios( $municipio, $estado_id)
+    public function getMunicipios(Municipio $municipio, $estado_id)
     {
         return $municipio->select('nome', 'id')->whereEstadoId($estado_id)->orderBy('nome')->get();
     }

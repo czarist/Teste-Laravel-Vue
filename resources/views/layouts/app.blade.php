@@ -1,32 +1,37 @@
-@include('inc.function')
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ setTitle($page_name ?? '') }}</title>
-    <link rel="icon" type="image/x-icon" href="{{asset('storage/img/favicon.ico')}}"/>
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-   
-    <!-- Styles -->
-    @include('inc.styles')  
-</head>
-<body {{ ($has_scrollspy ?? '') ? scrollspy($scrollspy_offset) : '' }} class=" {{ ($alt_menu ?? '') ? 'alt-menu' : '' }} {{ ($page_name ?? '' === 'error404') ? 'error404 text-center' : '' }} {{ ($page_name ?? '' === 'error500') ? 'error500 text-center' : '' }} {{ ($page_name ?? '' === 'error503') ? 'error503 text-center' : '' }} {{ ($page_name ?? '' === 'maintenence') ? 'maintanence text-center' : '' }}">
+    <title>{{ env('APP_NAME') }}</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}"/>
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
+
+    <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet"/>
+    @yield('styles')
+
+    <style>
+        .layout-px-spacing {
+            min-height: calc(100vh - 140px)!important;
+        }
+
+    </style>
     
-    <!-- BEGIN LOADER -->
-    <div id="load_screen"> <div class="loader"> <div class="loader-content">
-        <div class="spinner-grow align-self-center"></div>
-    </div></div></div>
-    <!--  END LOADER -->
+</head>
+<body class="sidebar-noneoverflow">
+
+    @auth
+        @include('layouts.nav_vertical')
+    @endauth
+
     <div id="app">
          @auth
             @include('layouts.nav')
@@ -35,28 +40,44 @@
         <!--  BEGIN MAIN CONTAINER  -->
         <div class="main-container" id="container">
 
-        <div class="overlay"></div>
-        <div class="search-overlay"></div>
+            <div class="overlay"></div>
+            <div class="search-overlay"></div>
 
-        
-        <!--  BEGIN CONTENT PART  -->
-        <div id="content" class="main-content">
-
-            @yield('content')
-
-            @if ($page_name ?? '' != 'account_settings')
-                @include('inc.footer')
-                @endif
-            </div>
-            <!--  END CONTENT PART  -->
             
+            <!--  BEGIN CONTENT PART  -->
+            <div id="content" class="main-content">
+                <div class="layout-px-spacing">
+                    <div class="row layout-top-spacing">
+                    
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-wrapper">
+                    <div class="footer-section f-section-1">
+                        <p class="">Intercom 2022</p>
+                    </div>
+
+                    <div class="footer-section f-section-2">
+                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Materialize sua Ideia </p>
+                    </div>
+                </div>
+                    
+            </div>
+            <!-- END MAIN CONTAINER -->
         </div>
-        <!-- END MAIN CONTAINER -->
+
     </div>
-        
-    @include('inc.scripts')
-    @yield('scripts')
+           
     <script src="{{ url(mix('/js/app.js')) }}"></script>
+    <script src="{{ asset('/js/common.min.js') }}" ></script>
+    @yield('scripts')
+
+    {{-- Pagseguro --}}
+    <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+    {{-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
 
 </body>
 </html>

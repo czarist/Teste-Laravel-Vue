@@ -22,7 +22,8 @@ Route::match(['get', 'post'], 'register', function () {
 
 Route::group(['middleware' => 'auth'] , function() {
 
-    Route::get('perfil', [PerfilController::class , 'senha'])->name('perfil');
+    Route::get('/', [PerfilController::class , 'perfil']);
+    Route::get('perfil', [PerfilController::class , 'perfil'])->name('perfil');
     Route::put('perfil/senhaupdate', [PerfilController::class , 'senhaUpdate'])->name('perfil.senhaupdate');
     Route::post('perfil/passcheck', [PerfilController::class , 'passCheck'])->name('perfil.passcheck');
     Route::post('perfil/emailcheck', [PerfilController::class , 'emailCheck'])->name('perfil.emailcheck');

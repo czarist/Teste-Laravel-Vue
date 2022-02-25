@@ -113,14 +113,14 @@ import InstituicaoGrid from './components/admin/instituicao/InstituicaoGrid.vue'
 import TitulacaoGrid from './components/admin/titulacao/TitulacaoGrid.vue'
 import AssociadoGrid from './components/admin/associado/AssociadoGrid.vue'
 import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
-import ProfilePage from './components/perfil/ProfilePage.vue'
+import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
 import PagarModal from './components/cadastro/PagarModal.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
-        'profile-page': ProfilePage,
+        'form-perfil': FormPerfil,
         'sexo-grid': SexoGrid,
         'instituicao-grid': InstituicaoGrid,
         'titulacao-grid': TitulacaoGrid,

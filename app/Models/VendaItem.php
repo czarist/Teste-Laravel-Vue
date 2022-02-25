@@ -10,6 +10,10 @@ class VendaItem extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
+        'qtd',
+        'valor',
+        'valor_total',
+        'venda_id',
+        'produto_id',
     ];
 }

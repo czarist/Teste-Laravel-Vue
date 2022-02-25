@@ -49,6 +49,9 @@ class UserController extends Controller
         try { 
             $post = $request->all();
             $post['password'] = Hash::make($post['password']);
+            $post['acessos'] =[0 => 4];
+            $post[ 'todos_tipos_id'] = [0 => 4];            
+
             $user = User::create($post);
             $user->acessos()->sync($post['acessos']);
             $user->todos_tipos()->sync($post['todos_tipos_id']);

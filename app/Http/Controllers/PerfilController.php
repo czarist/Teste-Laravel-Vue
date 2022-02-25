@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
+use com_exception;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -15,9 +16,17 @@ class PerfilController extends Controller
 {
     public $header = ['Content-Type' => 'application/json; charset=UTF-8', 'charset' => 'utf-8'];
 
-    public function senha()
+    public function perfil()
     {
-        return view('auth.login');
+        $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
+                    ->with('acessos:id,pagina,link',
+                            'todos_tipos:id,descricao',
+                            'enderecos',
+                            'enderecos.municipio',
+                            'enderecos.municipio.estado')
+                                ->find(Auth::user()->id);
+                                
+        return view('perfil.index', compact('user'));
     }
 
     public function senhaUpdate(Request $request)

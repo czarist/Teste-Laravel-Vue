@@ -49,16 +49,16 @@ class CadastroController extends Controller
             $user;
             Log::info('Cadastro de usuario: ' . json_encode($post));
 
-            // $data = ['user' => $user, 'senha' => $senha];
-            // Mail::send('cadastro.email', $data, function ($email) use ($user) {
-            //     $email->subject('Cadastro de Usuário - INTERCON');
-            //     if (App::environment('production')) {
-            //         $email->to($user['email']);
-            //     } else {
-            //         $email->to('murilocarvalho2204@gmail.com');
-            //     }
-            //     Log::info('E-mail enviado apos o cadastro para :'. $user['nome'] .' com o email: '. json_encode($user['email']));
-            // });
+            $data = ['user' => $user, 'senha' => $senha];
+            Mail::send('cadastro.email', $data, function ($email) use ($user) {
+                $email->subject('Cadastro de Usuário - INTERCON');
+                if (App::environment('production')) {
+                    $email->to($user['email']);
+                } else {
+                    $email->to('murilocarvalho2204@gmail.com');
+                }
+                Log::info('E-mail enviado apos o cadastro para :'. $user['nome'] .' com o email: '. json_encode($user['email']));
+            });
 
             return response()->json(['message' => 'success', 'response' => $user], 201);
         } catch (Exception $exception) {

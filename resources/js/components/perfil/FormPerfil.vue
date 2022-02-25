@@ -8,7 +8,7 @@
                         <h1>  Cadastro </h1>
                 </div>
 
-                  <ul class="list-group list-group-flush text-center">
+                <ul class="list-group list-group-flush text-center">
                     <li class="list-group-item ">
                         <b-col cols="12" sm="12" lg="12" size="lg">
                             <b-form-group size="lg"
@@ -444,12 +444,13 @@
 
 <script>
   import MixinsGlobal from  '../mixins/global-mixins'
-  
+  import debounce from 'debounce'
+
       export default {
-        props: ['selected', 'id'],
+        props: ['user'],
         mixins: [ MixinsGlobal],
         components: {
-            'pagar-modal': () => import('./PagarModal'),
+            'pagar-modal': () => import('../cadastro/PagarModal.vue'),
         },
         data() {
             return {
@@ -479,7 +480,7 @@
                     celular: null,
                     sexo_id: null,
                     todos_tipos_id: 3,
-                    ativo: 1,
+                    ativo: 0,
                     acessos: [],
                     enderecos: {
                         id: null,
@@ -503,7 +504,32 @@
             }
         },
         watch: {
-            
+            user(){
+                debounce(this.getEstados(), 1000)
+                console.log(this.user)
+                if(this.user){
+                    this.post._method = "post"
+                    this.post.id = this.user.id
+                    this.post.name = this.user.name
+                    this.post.email = this.user.email
+                    this.post.password = this.user.password
+                    this.post.cpf = this.user.cpf
+                    this.post.rg = this.user.rg
+                    this.post.orgao_expedidor = this.user.orgao_expedidor
+                    this.post.estrangeiro = this.user.estrangeiro
+                    this.post.passaporte = this.user.passaporte
+                    this.post.data_nascimento = this.user.data_nascimento
+                    this.post.sexo_id = this.user.sexo_id
+                    this.post.celular = this.user.celular
+                    this.post.telefones = this.user.telefones
+                    this.post.enderecos = this.user.enderecos
+                    this.post.instituicao_id = this.user.instituicao_id
+                    this.post.titulacao_id = this.user.titulacao_id
+                    this.post.associado = this.user.associado
+                    this.post.ativo = this.user.ativo
+                }
+            }
+
         },
         computed: {
             passRequired() {
@@ -572,12 +598,14 @@
 
                         setTimeout(() => {
                             axios.post(`${process.env.MIX_BASE_URL}/cadastro/save`, this.post).then( res => {
-                                console.log(res.status)
+                                console.log(res)
                                 this.clear()
 
-                                //this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                 
+                                if(res.status == 201) {
                                     window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
+                                }
                                
                             }).catch(error => {
                                 if(error.response.status == 422) {

@@ -65,7 +65,6 @@
                         @if (Auth::user()->root || in_array('admin/associado', Auth::user()->roles()))
                             <li> <a href="{{ route('associado.index') }}"> Associados </a> </li>
                         @endif
-
                         @if (Auth::user()->root || in_array('admin/instituicao', Auth::user()->roles()))
                             <li> <a href="{{ route('instituicao.index') }}"> Instituição </a> </li>
                         @endif

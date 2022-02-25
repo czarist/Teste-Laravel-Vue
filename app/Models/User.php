@@ -59,17 +59,23 @@ class User extends Authenticatable
     public function roles()
     {
         $roles = array();
-        foreach (Auth::user()->acessos as $role) {
-            array_push($roles, $role->link);
-        };
+        if(Auth::user()){
+
+            foreach (Auth::user()->acessos as $role) {
+                array_push($roles, $role->link);
+            };
+        }
         return $roles;
     }
 
     public function getIsRootAttribute()
     {
-        foreach (Auth::user()->todos_tipos as $tipo) {
-            if ($tipo->id == 1) {
-                return true;
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 1) {
+                    return true;
+                }
             }
         }
         return false;
@@ -77,9 +83,12 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute()
     {
-        foreach (Auth::user()->todos_tipos as $tipo) {
-            if ($tipo->id == 2) {
-                return true;
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 2) {
+                    return true;
+                }
             }
         }
         return false;
@@ -87,9 +96,12 @@ class User extends Authenticatable
 
     public function getIsAssociadoAttribute()
     {
-        foreach (Auth::user()->todos_tipos as $tipo) {
-            if ($tipo->id == 3) {
-                return true;
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 3) {
+                    return true;
+                }
             }
         }
         return false;
@@ -97,9 +109,12 @@ class User extends Authenticatable
 
     public function getIsUserAttribute()
     {
-        foreach (Auth::user()->todos_tipos as $tipo) {
-            if ($tipo->id == 4) {
-                return true;
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 4) {
+                    return true;
+                }
             }
         }
         return false;

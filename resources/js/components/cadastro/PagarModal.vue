@@ -39,7 +39,7 @@
                                         <span v-show="errors.has(`numCartao`)" class="invalid-feedback">
                                             {{ errors.first(`numCartao`) }}
                                         </span>
-                                        <div class="container">
+                                        <div class="container" style="display:none !important">
                                             <div class="row">
                                                 <span class="col-6 input-group-text bandeira-cartao creditCard hidden" id="cartao-bandeira" style="background-color: #ffffff;"></span>
                                                 <span type="text" class="col-6 input-group-text cartao-nome creditCard form-login-help hidden" id="cartao-nome" style="background-color: #ffffff;"></span>
@@ -89,7 +89,7 @@
                                 </b-col>
 
                                 <b-col>
-                                    <div class="form-group">
+                                    <div class="form-group" style="display:none !important">
                                         <label for="qntParcelas" class="col-sm-3 control-label">Quantidade de Parcelas</label>
                                         <div class="col-sm-5 creditCard">                            
                                             <div class="input-group">
@@ -289,14 +289,10 @@
 
                         setTimeout(() => {
                             axios.post(`${process.env.MIX_BASE_URL}/pagseguro/associado/credito`, this.form).then( res => {
-                                console.log(res)
-                                this.clear()
 
                                 this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                 
-                                if(res.status == 201) {
-                                    window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
-                                }
+                                    window.location.href = `${process.env.MIX_BASE_URL}/login?status=2`
                                
                             }).catch(error => {
                                 if(error.response.status == 422) {

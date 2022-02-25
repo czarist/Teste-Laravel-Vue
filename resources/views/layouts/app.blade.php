@@ -14,7 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
 
-    <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet"/>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
     @yield('styles')
 
     <style>
@@ -70,7 +70,7 @@
 
     </div>
            
-    <script src="{{ url(mix('/js/app.js')) }}"></script>
+    <script src="{{ asset('/js/app.js') }}"></script>
     <script src="{{ asset('/js/common.min.js') }}" ></script>
     @yield('scripts')
     <script>

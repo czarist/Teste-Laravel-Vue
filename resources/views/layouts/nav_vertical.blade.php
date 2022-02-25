@@ -5,11 +5,11 @@
             <ul class="navbar-nav theme-brand flex-row  text-center">
                 <li class="nav-item theme-logo">
                     <a href="{{ env('APP_URL')}}">
-                        <img src="{{ asset('assets/img/logo.png') }}" class="navbar-logo" alt="logo">
+                        <img src="{{ asset('images/logo.png') }}" class="navbar-logo" alt="logo">
                     </a>
                 </li>
                 <li class="nav-item">
-                    <img src="{{ asset('assets/img/logo-principal.png') }}" height="46px"  style="margin-top: 10px;margin-left: -15px;" id="logodesk">  
+                    <img src="{{ asset('images/logo-nome.png') }}" height="46px"  style="margin-top: 10px;margin-left: -15px;" id="logodesk">  
 
                 </li>
                 <li class="nav-item toggle-sidebar">
@@ -26,7 +26,7 @@
                     <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
                         <div class="user-profile-section">
                             <div class="media mx-auto">
-                                <img src="" class="img-fluid mr-2" alt="avatar">
+                                <img src="{{ asset('images/90x90.jpg')}}" class="img-fluid mr-2" alt="avatar">
                                 <div class="media-body">
                                     <h5>Usuário</h5>
                                     

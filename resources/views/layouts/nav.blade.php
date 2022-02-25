@@ -6,7 +6,7 @@
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="" alt="avatar">
+                <img src="{{ asset('images/90x90.jpg') }}" alt="avatar">
                 <h6 class="">{{ Auth::user()->name }}</h6>
             </div>
         </div>

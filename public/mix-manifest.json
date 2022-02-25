@@ -6,5 +6,6 @@
     "/js/form-titulacao.js": "/js/form-titulacao.js",
     "/js/form-associado.js": "/js/form-associado.js",
     "/js/form-usuario.js": "/js/form-usuario.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/common.min.js": "/js/common.min.js"
 }

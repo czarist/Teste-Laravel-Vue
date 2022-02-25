@@ -13,7 +13,6 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
 
     <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet"/>
     @yield('styles')
@@ -74,6 +73,12 @@
     <script src="{{ url(mix('/js/app.js')) }}"></script>
     <script src="{{ asset('/js/common.min.js') }}" ></script>
     @yield('scripts')
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+    <script  type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 
     {{-- Pagseguro --}}
     <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>

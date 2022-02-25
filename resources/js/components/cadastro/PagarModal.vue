@@ -129,7 +129,7 @@
                 variant="outline-success"
                 @click="save()"
             >
-                {{ hasCredito == true ? "Crédito" : "Boleto" }}
+                {{ hasCredito == true ? "Pagar" : "Gerar Boleto" }}
             </b-button>
         </template>
     </b-modal>
@@ -290,9 +290,9 @@
                         setTimeout(() => {
                             axios.post(`${process.env.MIX_BASE_URL}/pagseguro/associado/credito`, this.form).then( res => {
 
-                                this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                // this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                 
-                                    window.location.href = `${process.env.MIX_BASE_URL}/login?status=2`
+                                window.location.href = `${process.env.MIX_BASE_URL}/login?status=2`
                                
                             }).catch(error => {
                                 if(error.response.status == 422) {

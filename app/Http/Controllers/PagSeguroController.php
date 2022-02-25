@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class PagSeguroController extends Controller
 {
@@ -46,27 +47,37 @@ class PagSeguroController extends Controller
     public function associadocredito(Request $request)
     { 
         $senha = $request['password'];
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'ativo' => 1,
-            'sexo_id' => $request->sexo_id,
-            'estrangeiro' => $request->estrangeiro,
-            'passaporte' => $request->passaporte,
-            'cpf' => $request->cpf,
-            'rg' => $request->rg,
-            'orgao_expedidor' => $request->orgao_expedidor,
-            'telefone' => $request->telefone,
-            'celular' => $request->celular,
-            'data_nascimento' => $request->data_nascimento,                
-        ]);
-        
-        $acessos =[0 => 4];
-        $todos_tipos_id = [0 => 4];            
-        $user->acessos()->sync($acessos);
-        $user->todos_tipos()->sync($todos_tipos_id);
 
+        if($request->id){
+            $user = User::find($request->id);
+            $user->update([
+                'sexo_id' => $request->sexo_id,
+                'telefone' => $request->telefone,
+                'celular' => $request->celular,
+                'data_nascimento' => $request->data_nascimento,                
+            ]);
+
+        } else{
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'ativo' => 1,
+                'sexo_id' => $request->sexo_id,
+                'estrangeiro' => $request->estrangeiro,
+                'passaporte' => $request->passaporte,
+                'cpf' => $request->cpf,
+                'rg' => $request->rg,
+                'orgao_expedidor' => $request->orgao_expedidor,
+                'telefone' => $request->telefone,
+                'celular' => $request->celular,
+                'data_nascimento' => $request->data_nascimento,                
+            ]);
+    
+            $todos_tipos_id = [0 => 4];            
+            $user->todos_tipos()->sync($todos_tipos_id);
+        }
+        
         if (!empty($request->enderecos)) {
             $endereco = Endereco::create(
                 [
@@ -80,27 +91,35 @@ class PagSeguroController extends Controller
         }
         Log::info('Cadastro de usuario: ' . json_encode($user));
 
-        $data = ['user' => $user, 'senha' => $senha];
-        Mail::send('cadastro.email', $data, function ($email) use ($user) {
-            $email->subject('Cadastro de Usuário - INTERCON');
-            if (App::environment('production')) {
-                $email->to($user['email']);
-            } else {
-                $email->to('murilocarvalho2204@gmail.com');
-            }
-            Log::info('E-mail enviado apos o cadastro para :'. $user['nome'] .' com o email: '. json_encode($user['email']));
-        });
+        if(!$request->id){
 
-        if(!empty($request->associado) && $request->associado == 1)
-        {
+            $data = ['user' => $user, 'senha' => $senha];
+
+            Mail::send('cadastro.email', $data, function ($email) use ($user) {
+                $email->subject('Cadastro de Usuário - INTERCON');
+                if (App::environment('production')) {
+                    $email->to($user['email']);
+                } else {
+                    $email->to('murilocarvalho2204@gmail.com');
+                }
+                Log::info('E-mail enviado apos o cadastro para :'. $user['nome'] .' com o email: '. json_encode($user['email']));
+            });
+        }
+
+        if(!empty($request->associado) && $request->associado == 1){
             $produto = Produto::findOrFail(1);
         }
-        $venda = Venda::create(['user_id' => $user['id']]);
 
+        $venda = Venda::create(['user_id' => $user['id']]);
         Log::info('Venda efetuada  com sucesso'. json_encode($venda));
 
-        $venda_item = VendaItem::create(['venda_id' => $venda->id, 'produto_id' => $produto->id, 'qtd' => $request->quantidade ?? 1, 'valor' => $produto->valor, 'valor_total' => $produto->valor * $request->quantidade]);
-
+        $venda_item = VendaItem::create([
+            'venda_id' => $venda->id, 
+            'produto_id' => $produto->id, 
+            'qtd' => $request->quantidade ?? 1, 
+            'valor' => $produto->valor, 
+            'valor_total' => $produto->valor * $request->quantidade
+        ]);
         Log::info('Venda de  item efetuado com sucesso'. json_encode($venda_item));
 
         //Formatação de dados para o PagSeguro
@@ -190,9 +209,14 @@ class PagSeguroController extends Controller
             'user_id' => $user['id'],
         ]);
 
+        $todos_tipos_id = [0 => 3];            
+        $user->todos_tipos()->sync($todos_tipos_id);
+
+
         Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
 
         return response()->json(['message' => 'success', 'response' => $user], 201);
     }
 
 }
+

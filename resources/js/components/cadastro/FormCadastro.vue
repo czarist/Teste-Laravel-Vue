@@ -5,15 +5,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                        <h1>  Cadastro </h1>
+                        <h1>  Filie-se </h1>
                 </div>
 
-                  <ul class="list-group list-group-flush text-center">
+                <ul class="list-group list-group-flush text-center">
                     <li class="list-group-item ">
                         <b-col cols="12" sm="12" lg="12" size="lg">
                             <b-form-group size="lg"
                             >
-                                
                                 <b-form-radio-group
                                     :disabled="loading"
                                     v-model="post.associado"
@@ -31,7 +30,6 @@
                         </b-col>
                     </li>
                 </ul>
-
 
                 <div class="card-body">
                     <b-row>
@@ -203,7 +201,7 @@
                                     :disabled="loading"
                                     v-model="post.telefone"
                                     type="text"
-                                    v-mask="['(##) #####-####', '(##) ####-####']"
+                                    v-mask="['(##) #####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -223,7 +221,7 @@
                                     :disabled="loading"
                                     v-model="post.celular"
                                     type="text"
-                                    v-mask="['(##) ####-####', '(##) #####-####']"
+                                    v-mask="['(##) ####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -417,23 +415,19 @@
                             </div>
                         </div>
                     </b-row> 
-
                 </div>
                 <div class="card-footer">
                     <div v-if="post.associado">
                         <b-button :disabled=" loading" size="md" variant="outline-success" @click="pagar(post)">
-                            Pagar
+                            Método de Pagamento
                         </b-button>
                     </div>
-
                     <div v-else>
                         <b-button :disabled=" loading" size="md" variant="outline-success" @click="save()">
                             Cadastrar
                         </b-button>
                     </div>
-
                 </div>
-
             </div>
         </div>
         <pagar-modal :selectedPagar="selectedPagar" v-if="post.associado"></pagar-modal>
@@ -497,7 +491,7 @@
                 ],
                 associado: [
                     { text: 'Usuário', value: 0 },
-                    { text: 'Associado', value: 1 },
+                    { text: 'Filie-se', value: 1 },
                 ],
 
             }
@@ -577,7 +571,7 @@
 
                                 //this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                 
-                                    window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
+                                window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
                                
                             }).catch(error => {
                                 if(error.response.status == 422) {

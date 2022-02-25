@@ -22,11 +22,14 @@ Route::match(['get', 'post'], 'register', function () {
 
 Route::group(['middleware' => 'auth'] , function() {
 
-    Route::get('/', [PerfilController::class , 'perfil']);
+    // Route::get('/', [PerfilController::class , 'perfil']);
     Route::get('perfil', [PerfilController::class , 'perfil'])->name('perfil');
     Route::put('perfil/senhaupdate', [PerfilController::class , 'senhaUpdate'])->name('perfil.senhaupdate');
     Route::post('perfil/passcheck', [PerfilController::class , 'passCheck'])->name('perfil.passcheck');
     Route::post('perfil/emailcheck', [PerfilController::class , 'emailCheck'])->name('perfil.emailcheck');
+
+    Route::get('filiese', [PerfilController::class , 'filiese'])->name('filiese');
+
 
 
     Route::prefix('admin')->group(function () {
@@ -89,7 +92,9 @@ Route::get('/password/reset', function() {
     return redirect('/login');    
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
+
 
 Route::get('/cadastro', [CadastroController::class, 'index'])->name('cadastro');
 Route::post('/cadastro/save', [CadastroController::class , 'store'])->name('cadastro.save');

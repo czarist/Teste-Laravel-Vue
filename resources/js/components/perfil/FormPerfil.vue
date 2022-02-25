@@ -42,7 +42,7 @@
                                     size="sm"
                                     v-model="post.name"
                                     type="text"
-                                    :disabled="loading"
+                                    :disabled="true"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`name`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -98,7 +98,7 @@
                                 label-class="font-weight-bold"
                                 >
                                 <b-form-radio-group
-                                    :disabled="loading"
+                                    :disabled="true"
                                     v-model="post.estrangeiro"
                                     :options="options"
                                     :button-variant="`outline-primary`" 
@@ -118,7 +118,7 @@
                                 <b-form-input
                                     name="passaporte"
                                     size="sm"
-                                    :disabled="loading"
+                                    :disabled="true"
                                     v-model="post.passaporte"
                                     type="text"
                                     v-mask="'########'"
@@ -139,7 +139,7 @@
                                 <b-form-input
                                     name="cpf"
                                     size="sm"
-                                    :disabled="loading"
+                                    :disabled="true"
                                     v-model="post.cpf"
                                     type="text"
                                     v-mask="'###.###.###-##'"
@@ -161,7 +161,7 @@
                                 <b-form-input
                                     name="rg"
                                     size="sm"
-                                    :disabled="loading"
+                                    :disabled="true"
                                     v-model="post.rg"
                                     type="text"
                                     v-mask="'##.###.###-#'"
@@ -181,7 +181,7 @@
                                 <b-form-input
                                     name="orgao_expedidor"
                                     size="sm"
-                                    :disabled="loading"
+                                    :disabled="true"
                                     v-model="post.orgao_expedidor"
                                     type="text"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`orgao_expedidor`)}]"
@@ -203,7 +203,7 @@
                                     :disabled="loading"
                                     v-model="post.telefone"
                                     type="text"
-                                    v-mask="['(##) #####-####', '(##) ####-####']"
+                                    v-mask="['(##) #####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -223,7 +223,7 @@
                                     :disabled="loading"
                                     v-model="post.celular"
                                     type="text"
-                                    v-mask="['(##) ####-####', '(##) #####-####']"
+                                    v-mask="['(##) ####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -498,7 +498,7 @@
                 ],
                 associado: [
                     { text: 'Usuário', value: 0 },
-                    { text: 'Associado', value: 1 },
+                    { text: 'Filie-se', value: 1 },
                 ],
 
             }

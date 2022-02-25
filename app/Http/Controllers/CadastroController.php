@@ -51,7 +51,7 @@ class CadastroController extends Controller
 
             $data = ['user' => $user, 'senha' => $senha];
             Mail::send('cadastro.email', $data, function ($email) use ($user) {
-                $email->subject('Cadastro de Usuário - INTERCON');
+                $email->subject('Cadastro de Usuário - INTERCOM');
                 if (App::environment('production')) {
                     $email->to($user['email']);
                 } else {

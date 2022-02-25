@@ -29,6 +29,20 @@ class PerfilController extends Controller
         return view('perfil.index', compact('user'));
     }
 
+    public function filiese()
+    {
+        $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
+                    ->with('acessos:id,pagina,link',
+                            'todos_tipos:id,descricao',
+                            'enderecos',
+                            'enderecos.municipio',
+                            'enderecos.municipio.estado')
+                                ->find(Auth::user()->id);
+                                
+        return view('cadastro.filiese', compact('user'));
+    }
+
+
     public function senhaUpdate(Request $request)
     {
         try {

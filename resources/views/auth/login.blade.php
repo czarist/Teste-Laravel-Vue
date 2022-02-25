@@ -3,7 +3,6 @@
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -11,11 +10,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Intercon</title>
+    <title>Intercom</title>
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/structure.css" rel="stylesheet" type="text/css" class="structure" />
     <link href="assets/css/authentication/form-1.css" rel="stylesheet" type="text/css" />
@@ -54,9 +53,7 @@
                         }
 
                     ?>
-        
-
-                        <h2 class="">Login Intercon</h2>
+                        <h2 class="">Login Intercom</h2>
 
                         <form class="text-left" method="POST" action="{{ route('login') }}">
                             @csrf
@@ -69,7 +66,7 @@
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    <input id="email" type="email" placeholder="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    <input id="cpf" type="text" placeholder="CPF" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" required autocomplete="cpf" autofocus pattern="^[0-9][0-9][0-9][.][0-9][0-9][0-9][.][0-9][0-9][0-9][-][0-9][0-9]$">
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-2">
@@ -105,11 +102,11 @@
                         </form>
                         <div class="d-sm-flex justify-content-center mt-5">
                             <div class="field-wrapper">
-                                <a type="button" class="btn btn-primary" href="{{ route('cadastro')}}">Inscrever-se</a>
+                                <a type="button" class="btn btn-primary" href="{{ route('cadastro')}}">Cadastre-se</a>
                             </div>
                         </div>
 
-                        <p class="terms-conditions">© {{ date('Y') }} Intercon. </p>
+                        <p class="terms-conditions">© {{ date('Y') }} Intercom. </p>
 
                     </div>
                 </div>
@@ -124,6 +121,9 @@
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="assets/js/libs/jquery-3.1.1.min.js"></script>
+	<script src="assets/js/jquery.mask.min.js"></script>
+    <script src="assets/js/maskara.js"></script>
+
     <script src="bootstrap/js/popper.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 

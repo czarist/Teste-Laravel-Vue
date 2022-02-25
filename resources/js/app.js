@@ -116,6 +116,7 @@ import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
 import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
 import PagarModal from './components/cadastro/PagarModal.vue'
+import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
 
 const app = new Vue({
     el: '#app',
@@ -128,6 +129,7 @@ const app = new Vue({
         'usuario-grid': UsuarioGrid,
         'form-cadastro': FormCadastro,
         'pagar-modal': PagarModal,
+        'filiese-cadastro': FilieseCadastro,
 
     }
 });

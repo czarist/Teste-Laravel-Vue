@@ -1736,8 +1736,8 @@ var render = function () {
                         {
                           name: "mask",
                           rawName: "v-mask",
-                          value: ["(##) #####-####", "(##) ####-####"],
-                          expression: "['(##) #####-####', '(##) ####-####']",
+                          value: ["(##) #####-####"],
+                          expression: "['(##) #####-####']",
                         },
                         {
                           name: "validate",
@@ -1813,8 +1813,8 @@ var render = function () {
                         {
                           name: "mask",
                           rawName: "v-mask",
-                          value: ["(##) ####-####", "(##) #####-####"],
-                          expression: "['(##) ####-####', '(##) #####-####']",
+                          value: ["(##) ####-####"],
+                          expression: "['(##) ####-####']",
                         },
                         {
                           name: "validate",

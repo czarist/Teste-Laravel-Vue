@@ -36,7 +36,7 @@
 
             
             <!--  BEGIN CONTENT PART  -->
-            <div id="" class="text-center ">
+            <div id="" class="">
                 <div class="layout-px-spacing">
                     <div class="row layout-top-spacing">
                     

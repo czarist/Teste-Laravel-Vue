@@ -28,21 +28,19 @@ class CadastroController extends Controller
             $post = $request->all();
             $senha = $post['password'];
             $post['password'] = Hash::make($post['password']);
-            $post['acessos'] =[0 => 4];
             $post[ 'todos_tipos_id'] = [0 => 4];            
             $user = User::create($post);
-            $user->acessos()->sync($post['acessos']);
             $user->todos_tipos()->sync($post['todos_tipos_id']);
 
             if (!empty($post['enderecos'])) {
                 Endereco::updateOrcreate(
                     ['id' => $endereco['id'] ?? null],
                     [
-                        'user_id' => $user->id,
-                        'municipio_id' => $post['enderecos']['municipio']['id'] ?? 1,
-                        'pais_id' => $post['enderecos']['pais']['id'] ?? 'Brasil',
-                        'cep' => $post['enderecos']['cep'] ?? 1,
-                        'logadouro' => $post['enderecos']['logradouro'],
+                        'user_id' => $user->id ?? null,
+                        'municipio_id' => $post['enderecos']['municipio']['id'] ?? null,
+                        'pais_id' => $post['enderecos']['pais']['id'] ?? null,
+                        'cep' => $post['enderecos']['cep'] ?? null,
+                        'logadouro' => $post['enderecos']['logradouro'] ?? null,
                     ]
                 );
             }
@@ -121,7 +119,6 @@ class CadastroController extends Controller
     {
         try {
             $usuario = User::select('id', 'passaporte')->whereCpf($request->passaporte)->withTrashed();
-            dd($usuario, $request->all());
             if($usuario->first()) {
                 if($usuario->first()->passaporte == $request->passaporte) {
                     return response()->json(false);

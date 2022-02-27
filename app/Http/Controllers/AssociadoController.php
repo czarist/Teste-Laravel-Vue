@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Associado;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,5 +101,24 @@ class AssociadoController extends Controller
             Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
         }
+    }
+
+    public function area()
+    {
+        if(Auth::user()){
+
+            $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
+                ->with('acessos:id,pagina,link',
+                        'todos_tipos:id,descricao',
+                        'enderecos',
+                        'enderecos.municipio',
+                        'enderecos.municipio.estado')
+                ->whereId(Auth::user()->id)->first();
+
+            return view('associado.index', compact('user'));
+
+        }
+
+        return view('associado.index');
     }
 }

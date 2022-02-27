@@ -1,7 +1,5 @@
 <div class="sidebar-wrapper sidebar-theme">
-
     <!--  Início do Menu  -->
-
     <nav id="sidebar">
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
@@ -35,7 +33,7 @@
 
             </li>
 
-            @if (Auth::user()->root || array_intersect(['admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
+            @if (Auth::user()->is_root || array_intersect(['admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
                 <li class="menu">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -58,22 +56,22 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
 
-                        @if (Auth::user()->root || in_array('admin/sexo', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/sexo', Auth::user()->roles()))
                             <li> <a href="{{ route('sexo.index') }}"> Gêneros </a> </li>
                         @endif
 
-                        @if (Auth::user()->root || in_array('admin/associado', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/associado', Auth::user()->roles()))
                             <li> <a href="{{ route('associado.index') }}"> Associados </a> </li>
                         @endif
-                        @if (Auth::user()->root || in_array('admin/instituicao', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/instituicao', Auth::user()->roles()))
                             <li> <a href="{{ route('instituicao.index') }}"> Instituição </a> </li>
                         @endif
 
-                        @if (Auth::user()->root || in_array('admin/titulacao', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/titulacao', Auth::user()->roles()))
                             <li> <a href="{{ route('titulacao.index') }}"> Titulação </a> </li>
                         @endif
 
-                        @if (Auth::user()->root || in_array('admin/usuarios', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/usuarios', Auth::user()->roles()))
                             <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
                         @endif
                     </ul>

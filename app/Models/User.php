@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
-    protected $appends = ['is_root', 'is_admin'];
+    protected $appends = ['is_root', 'is_admin', 'is_user', 'is_associado'];
     protected $fillable = [
         'name',
         'email',
@@ -70,6 +70,7 @@ class User extends Authenticatable
 
     public function getIsRootAttribute()
     {
+
         if(Auth::user()){
 
             foreach (Auth::user()->todos_tipos as $tipo) {
@@ -133,5 +134,10 @@ class User extends Authenticatable
     public function enderecos()
     {
         return $this->hasMany(Endereco::class);
+    }
+
+    public function associado()
+    {
+        return $this->hasOne(Associado::class);
     }
 }

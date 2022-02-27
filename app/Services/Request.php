@@ -25,12 +25,6 @@ class Request
 
         $client = new GuzzleHttp\Client();
 
-
-        
-        self::$credentials = [
-            'grant_type' => '',
-        ];
-
         $merge_headers = array_merge(self::$credentials,[
             'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
             'Host' => env('URL_PAGSEGURO')."transactions",
@@ -55,6 +49,7 @@ class Request
             Log::error('Request error: ', array($e));
         }
 
+        Log::info('Response de Request: '. $response);
 
         return $response;
     }

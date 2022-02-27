@@ -9,6 +9,7 @@ class Associado extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'associados';
     protected $fillable = [
         'numero_socio',
         'isencao',
@@ -17,6 +18,7 @@ class Associado extends Model
         'anuidade',
         'divisao_tematica',
         'obs_isentamos',
+        'user_id'
     ];
 
     public function instituicao()

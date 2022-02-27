@@ -36,7 +36,8 @@ class PerfilController extends Controller
                             'todos_tipos:id,descricao',
                             'enderecos',
                             'enderecos.municipio',
-                            'enderecos.municipio.estado')
+                            'enderecos.municipio.estado',
+                            'associado')
                                 ->find(Auth::user()->id);
                                 
         return view('cadastro.filiese', compact('user'));

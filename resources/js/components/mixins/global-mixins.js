@@ -6,7 +6,6 @@ export default {
         }
     },
 
-
     methods:{
         message(title, message, type, duration = null){
             this.$notify({

@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                        <h1>  Filie-se </h1>
+                        <h1>Cadastre-se</h1>
                 </div>
 
                 <ul class="list-group list-group-flush text-center">
@@ -491,7 +491,6 @@
                 ],
                 associado: [
                     { text: 'Usuário', value: 0 },
-                    { text: 'Filie-se', value: 1 },
                 ],
 
             }

@@ -115,8 +115,9 @@ import AssociadoGrid from './components/admin/associado/AssociadoGrid.vue'
 import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
 import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
-import PagarModal from './components/cadastro/PagarModal.vue'
+// import PagarModal from './components/cadastro/PagarModal.vue'
 import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
+import AssociadoArea from './components/associado/AssociadoArea.vue'
 
 const app = new Vue({
     el: '#app',
@@ -128,8 +129,10 @@ const app = new Vue({
         'associado-grid': AssociadoGrid,
         'usuario-grid': UsuarioGrid,
         'form-cadastro': FormCadastro,
-        'pagar-modal': PagarModal,
+        // 'pagar-modal': PagarModal,
         'filiese-cadastro': FilieseCadastro,
+        'associado-area': AssociadoArea,
+        // 'pagar-modal-anuidade': PagarModalAnuidade,
 
     }
 });

@@ -39,7 +39,7 @@
                                         <span v-show="errors.has(`numCartao`)" class="invalid-feedback">
                                             {{ errors.first(`numCartao`) }}
                                         </span>
-                                        <div class="container">
+                                        <div class="container hidden">
                                             <div class="row">
                                                 <span class="col-6 input-group-text bandeira-cartao creditCard hidden" id="cartao-bandeira" style="background-color: #ffffff;"></span>
                                                 <span type="text" class="col-6 input-group-text cartao-nome creditCard form-login-help hidden" id="cartao-nome" style="background-color: #ffffff;"></span>
@@ -91,7 +91,7 @@
                                 <b-col cols="12" sm="6" lg="6">
                                     <b-form-group label="Quantidade de Parcelas" label-class="font-weight-bold">
                                         <b-form-select
-                                            :disabled="loading"
+                                            :disabled="true"
                                             name="qntParcelas"
                                             id="qntParcelas"
                                             v-validate="{ required: true }"
@@ -114,28 +114,15 @@
                             <div class="hidden">
                                 <form method="post" accept-charset="utf-8" name="formPagamentoCartaoCredito" id="formPagamentoCartaoCredito" action="">
                                     <input type="hidden" name="recupHashCartao" id="recupHashCartao" value="">
-                                    <input type="hidden" name="associado" id="associado" :value="form.associado">
-                                    <input type="hidden" name="ativo" id="ativo" :value="form.ativo">
-                                    <input type="hidden" name="celular" id="celular" :value="form.celular">
-                                    <input type="hidden" name="cpf" id="cpf" :value="form.cpf">
-                                    <input type="hidden" name="cvv" id="cvv" :value="form.cvv">
-                                    <input type="hidden" name="id" id="id" :value="form.id">
-                                    <input type="hidden" name="instituicao_id" id="instituicao_id" :value="form.instituicao_id">
-                                    <input type="hidden" name="metodo" id="metodo" :value="form.metodo">
-                                    <input type="hidden" name="name" id="name" :value="form.name">
+                                    <input type="hidden" name="anuidade2022" id="anuidade2022" :value="1">
+                                    <input type="hidden" name="ativo" id="ativo" :value="selected.ativo">
+                                    <input type="hidden" name="cpf" id="cpf" :value="selected.cpf">
                                     <input type="hidden" name="numCartao" id="numCartao" :value="form.numCartao">
-                                    <input type="hidden" name="orgao_expedidor" id="orgao_expedidor" :value="form.orgao_expedidor">
-                                    <input type="hidden" name="sexo_id" id="sexo_id" :value="form.sexo_id">
-                                    <input type="hidden" name="telefone" id="telefone" :value="form.telefone">
-                                    <input type="hidden" name="titulacao_id" id="titulacao_id" :value="form.titulacao_id">
-                                    <input type="hidden" name="validade" id="validade" :value="form.validade">
                                     <input type="hidden" name="cvv" id="cvv" :value="form.cvv">
-                                    <input type="hidden" name="enderecoId" id="enderecoId" :value="form.enderecos.id">
-                                    <input type="hidden" name="cep" id="cep" :value="form.enderecos.cep">
-                                    <input type="hidden" name="estado" id="enderecos" :value="form.enderecos.estado">
-                                    <input type="hidden" name="logradouro" id="logradouro" :value="form.enderecos.logradouro">
-                                    <input type="hidden" name="municipio" id="municipio" :value="form.enderecos.municipio.id">
-                                    <input type="hidden" name="pais" id="pais" :value="form.enderecos.pais">
+                                    <input type="hidden" name="validade" id="validade" :value="form.validade">
+                                    <input type="hidden" name="id" id="id" :value="selected.id">
+                                    <input type="hidden" name="metodo" id="metodo" :value="selected.metodo">
+                                    <input type="hidden" name="name" id="name" :value="selected.name">
                                 </form>
                             </div>
                         </div>
@@ -177,56 +164,47 @@
     import debounce from 'debounce'
 
     export default {
-        props: ['selectedPagar', 'id'],
+        props: ['selectedPagar'],
         mixins: [ MixinsGlobal],
         data() {
             return {            
                 loading: false,
                 url: process.env.MIX_BASE_URL,
                 amount: "0.20",
+                selected: this.selectedPagar,
                 form: {
-                    metodo: null,
-                    numCartao: null,
-                    validade: null,
-                    cvv: null,
-                    bandeira: null,
-                    enderecos: {
-                        id: null,
-                        cep: null,
-                        estado: null,
-                        municipio: {
-                            id: null,
-                            nome: null
-                        },                        
-                        pais: null,
-                        logradouro: null,
-                    },                                
-                }
+                    metodo : "credito",
+                    _method : "post",
+                    id : this.selected ? this.selected.id : null,
+                    name : this.selected ? this.selected.name : null,
+                    email : this.selected ? this.selected.email : null,
+                    cpf : this.selected ? this.selected.cpf : null,
+                    estrangeiro : this.selected ? this.selected.estrangeiro : null,
+                    passaporte : this.selected ? this.selected.passaporte : null,
+                    data_nascimento : this.selected ? this.selected.data_nascimento : null,
+                    sexo_id : this.selected ? this.selected.sexo_id : null,
+                    celular : this.selected ? this.selected.celular : null,
+                    instituicao_id : this.selected ? this.selected.instituicao_id : null,
+                    titulacao_id : this.selected ? this.selected.titulacao_id : null,
+                    anuidade2022 : this.selected ? this.selected.anuidade2022 : null,
+                    ativo : this.selected ? this.selected.ativo: null,
+                },
             }
         },
         watch: {
-            selectedPagar(){
-                if(this.selectedPagar){
+            selected(){
+                if(this.selected){
                     this.form.metodo = "credito"
                     this.form._method = "post"
-                    this.form.id = this.selectedPagar.id
-                    this.form.name = this.selectedPagar.name
-                    this.form.email = this.selectedPagar.email
-                    this.form.password = this.selectedPagar.password
-                    this.form.cpf = this.selectedPagar.cpf
-                    this.form.rg = this.selectedPagar.rg
-                    this.form.orgao_expedidor = this.selectedPagar.orgao_expedidor
-                    this.form.estrangeiro = this.selectedPagar.estrangeiro
-                    this.form.passaporte = this.selectedPagar.passaporte
-                    this.form.data_nascimento = this.selectedPagar.data_nascimento
-                    this.form.sexo_id = this.selectedPagar.sexo_id
-                    this.form.celular = this.selectedPagar.celular
-                    this.form.telefone = this.selectedPagar.telefone
-                    this.form.enderecos = this.selectedPagar.enderecos
-                    this.form.instituicao_id = this.selectedPagar.instituicao_id
-                    this.form.titulacao_id = this.selectedPagar.titulacao_id
-                    this.form.associado = this.selectedPagar.associado
-                    this.form.ativo = this.selectedPagar.ativo
+                    this.form.id = this.selected.id
+                    this.form.name = this.selected.name
+                    this.form.email = this.selected.email
+                    this.form.password = this.selected.password
+                    this.form.cpf = this.selected.cpf
+                    this.form.estrangeiro = this.selected.estrangeiro
+                    this.form.passaporte = this.selected.passaporte
+                    this.form.anuidade2022 = this.selected.anuidade2022
+                    this.form.ativo = this.selected.ativo
                 }
                 this.listarMeiosPag()
 
@@ -375,7 +353,7 @@
 
                             $.ajax({
                                 method: "POST",
-                                url: "pagseguro/associado/credito",
+                                url: "pagseguro/associado/credito/anuidade",
                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                 data: $.param(dados),
                                 dataType: 'json',

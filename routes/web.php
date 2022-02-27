@@ -68,6 +68,16 @@ Route::group(['middleware' => 'auth'] , function() {
 
     });
 
+    //PAGSEGURO
+    Route::get('pagseguro/pagamento', [PagSeguroController::class, 'pagamento'])->name('pagseguro.pagmento');
+    Route::post('pagseguro/associado/credito', [PagSeguroController::class , 'associadocredito'])->name('pagseguro.associado.credito');
+    Route::post('pagseguro/associado/credito/anuidade', [PagSeguroController::class , 'associadocreditoanuidade'])->name('pagseguro.associado.credito.anuidade');
+    Route::post('pagseguro/retorno', [PagSeguroController::class, 'retorno'])->name('pagseguro.retorno');
+
+    //Associado
+    Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
+    Route::get('associado', [AssociadoController::class ,'area'])->name('associado');
+
 });
 
 //GET no banco livres
@@ -92,6 +102,11 @@ Route::get('/password/reset', function() {
     return redirect('/login');    
 });
 
+Route::get('/password/reset', function() {
+    return redirect('/login');    
+});
+
+
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [HomeController::class, 'index']);
 
@@ -103,6 +118,3 @@ Route::post('/cadastro/cpfcheck', [CadastroController::class , 'cpfCheck'])->nam
 Route::post('cadastro/passaportecheck', [CadastroController::class , 'passaporteCheck'])->name('cadastro.passaportecheck');
 
 
-//PAGSEGURO
-Route::get('/pagseguro/pagamento', [PagSeguroController::class, 'pagamento'])->name('pagseguro.pagmento');
-Route::post('pagseguro/associado/credito', [PagSeguroController::class , 'associadocredito'])->name('pagseguro.associado.credito');

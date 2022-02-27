@@ -49,37 +49,23 @@ class UserController extends Controller
         try { 
             $post = $request->all();
             $post['password'] = Hash::make($post['password']);
-            $post['acessos'] =[0 => 4];
-            $post[ 'todos_tipos_id'] = [0 => 4];            
-
+            
             $user = User::create($post);
-            $user->acessos()->sync($post['acessos']);
-            $user->todos_tipos()->sync($post['todos_tipos_id']);
+            $$todos_tipos = [0 => 4];  
+            $user->todos_tipos()->sync($todos_tipos);
+            
+            Log::info('User criado: ' . json_encode($post));
 
-            if (!empty($post['enderecos'])) {
-                Endereco::updateOrcreate(
-                    ['id' => $endereco['id'] ?? null],
-                    [
-                        'user_id' => $user->id,
-                        'municipio_id' => $post['enderecos']['municipio']['id'] ?? 1,
-                        'pais_id' => $post['enderecos']['pais']['id'] ?? 'Brasil',
-                        'cep' => $post['enderecos']['cep'] ?? 1,
-                        'logadouro' => $post['enderecos']['logradouro'],
-
-                    ]
-                );
-            }
-            $user->load('todos_tipos:id,descricao',
-                        'todos_tipos:id,descricao',
-                        'enderecos',
-                        'enderecos.municipio',
-                        'enderecos.municipio.estado');
-            Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 201);
+
         } catch (Exception $exception) {
+
             $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+
             Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
+
         }
     }
 
@@ -98,7 +84,7 @@ class UserController extends Controller
 
             if (!empty($endereco)) {
                 Endereco::updateOrcreate(
-                    ['id' => $endereco['id']],
+                    ['id' => $endereco['id'] ?? null],
                     [
                         'user_id' => $user->id,
                         'municipio_id' => $request->enderecos['municipio']['id'] ?? 1,
@@ -121,16 +107,9 @@ class UserController extends Controller
                 );
             }
 
-            $user->acessos()->sync($post['acessos']);
-            dd($user);
             $user->todos_tipos()->sync($post['todos_tipos_id']);
             
-            $user->load('todos_tipos:id,descricao',
-                    'empresa:id,name',
-                    'enderecos',
-                    'enderecos.municipio',
-                    'enderecos.municipio.estado');
-            Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($post));
+            Log::info('User UPDATE: ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 200);
         } catch (Exception $exception) {
             $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';

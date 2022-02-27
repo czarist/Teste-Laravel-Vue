@@ -174,7 +174,7 @@
                                     :disabled="loading"
                                     v-model="post.telefone"
                                     type="text"
-                                    v-mask="['(##) #####-####']"
+                                    v-mask="['(##) ####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -194,7 +194,7 @@
                                     :disabled="loading"
                                     v-model="post.celular"
                                     type="text"
-                                    v-mask="['(##) ####-####']"
+                                    v-mask="['(##) #####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
                                     v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
@@ -423,6 +423,8 @@
             return {
                 loading: false,
                 selectedPagar: null,
+                script_pagseguro: null,
+                sessions_pagseguro: null,
                 generos: [],
                 estados: [],
                 municipios: [],
@@ -440,6 +442,7 @@
                     password: null,
                     estrangeiro: 0,
                     associado: 1,
+                    associacao: null,
                     data_nascimento: null,
                     orgao_expedidor: null,    
                     instituicao_id: null,    
@@ -469,7 +472,6 @@
                 associado: [
                     { text: 'Filie-se', value: 1 },
                 ],
-
             }
         },
         watch: {
@@ -479,23 +481,31 @@
                     debounce(this.getEstados(), 1000)
                     this.post.metodo = "credito"
                     this.post._method = "post"
-                    this.post.id = this.user.id
-                    this.post.name = this.user.name
-                    this.post.email = this.user.email
-                    this.post.password = this.user.password
-                    this.post.cpf = this.user.cpf
-                    this.post.rg = this.user.rg
-                    this.post.orgao_expedidor = this.user.orgao_expedidor
-                    this.post.estrangeiro = this.user.estrangeiro
-                    this.post.passaporte = this.user.passaporte
-                    this.post.data_nascimento = this.user.data_nascimento
-                    this.post.sexo_id = this.user.sexo_id
-                    this.post.celular = this.user.celular
-                    this.post.telefones = this.user.telefones
-                    this.post.enderecos = this.user.enderecos
-                    this.post.instituicao_id = this.user.instituicao_id
-                    this.post.titulacao_id = this.user.titulacao_id
-                    this.post.ativo = this.user.ativo
+                    this.post.id = this.user.id ? this.user.id : null
+                    this.post.name = this.user.name ? this.user.name : null
+                    this.post.email = this.user.email ? this.user.email : null 
+                    this.post.password = this.user.password ? this.user.password : null
+                    this.post.cpf = this.user.cpf ? this.user.cpf : null
+                    this.post.rg = this.user.rg ? this.user.rg : null
+                    this.post.orgao_expedidor = this.user.orgao_expedidor ? this.user.orgao_expedidor : null
+                    this.post.estrangeiro = this.user.estrangeiro ? 1 : 0
+                    this.post.passaporte = this.user.passaporte ? this.user.passaporte : null
+                    this.post.data_nascimento = this.user.data_nascimento ? this.user.data_nascimento : null
+                    this.post.sexo_id = this.user.sexo_id ? this.user.sexo_id : null
+                    this.post.celular = this.user.celular ? this.user.celular : null
+                    this.post.telefone = this.user.telefone ? this.user.telefone : null
+                    this.post.instituicao_id = this.user && this.user.associado ? this.user.associado.instituicao_id : null
+                    this.post.titulacao_id = this.user && this.user.associado ? this.user.associado.titulacao_id : null
+                    this.post.ativo = this.user.ativo ? this.user.ativo : null,
+                    this.post.associacao = this.user.associado ? this.user.associado.associacao : null,
+                    this.post.enderecos = {
+                        id: this.user && this.user.enderecos.id ? this.user.enderecos.id : null,
+                        cep: this.user && this.user.enderecos[0].cep ? this.user.enderecos[0].cep : null,
+                        logradouro: this.user && this.user.enderecos[0].logradouro ? this.user.enderecos[0].logradouro : null,
+                        municipio: this.user && this.user.enderecos[0].municipio ? this.user.enderecos[0].municipio : null,
+                        estado: this.user && this.user.enderecos[0].municipio.estado ? this.user.enderecos[0].municipio.estado.id : null,
+                        pais: this.user && this.user.enderecos[0].pais_id ? this.user.enderecos[0].pais_id : null,
+                    }
                 }
             }
         },
@@ -563,9 +573,20 @@
                 $('#pagar').modal({keyboard: false, show: true})
                 this.$bvModal.show('pagar')
 
-            }
+            },
+            async pagamento(){
+                await axios.get(`${process.env.MIX_BASE_URL}/pagseguro/pagamento`).then(res => {
+                this.sessions_pagseguro = res.data
+
+                PagSeguroDirectPayment.setSessionId(this.sessions_pagseguro.id);
+
+                })
+            },
+
         },
         created() {
+            this.pagamento()
+
             axios.get(process.env.MIX_BASE_URL+'/get/tiposexo').then(res => {
                
                 this.generos = res.data

@@ -14,8 +14,18 @@ class ProdutoSeeder extends Seeder
             [
                 'id'  => 1,
                 'nome' => 'Associado',
-                'valor' => 0.20,
+                'valor' => 1.25,
             ]
         );
+
+        Produto::updateOrCreate(
+            ['id' => 2],
+            [
+                'id'  => 2,
+                'nome' => 'Anuidade 2022',
+                'valor' => 1.35,
+            ]
+        );
+
     }
 }

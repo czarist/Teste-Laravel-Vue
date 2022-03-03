@@ -2,3 +2,43 @@
     display: none !important;
 }
   
+.scroll {
+    max-height: 73vh;
+    overflow-y: auto;
+}
+  
+.scroll::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+  
+  .scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+  
+.scroll::-webkit-scrollbar-thumb {
+    background: #38acbc;
+    border-radius: 10px;
+}
+  
+.scroll::-webkit-scrollbar-thumb:hover {
+    background: #38acbc;
+    border-radius: 10px;
+}
+  
+.boleto{
+    display: none !important;
+}
+
+.hr {
+    -moz-border-bottom-colors: none !important;
+    -moz-border-image: none !important;
+    -moz-border-left-colors: none !important;
+    -moz-border-right-colors: none !important;
+    -moz-border-top-colors: none !important;
+    border-color: #131212 -moz-use-text-color #131212 !important;
+    border-style: solid none !important;
+    border-width: 10px 0 !important;
+    margin: 18px 0 !important;
+  }
+  

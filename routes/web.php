@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AssociadoController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagSeguroController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\SexoController;
@@ -24,11 +26,13 @@ Route::group(['middleware' => 'auth'] , function() {
 
     // Route::get('/', [PerfilController::class , 'perfil']);
     Route::get('perfil', [PerfilController::class , 'perfil'])->name('perfil');
+    Route::post('perfil/save', [PerfilController::class , 'store'])->name('perfil.save');
     Route::put('perfil/senhaupdate', [PerfilController::class , 'senhaUpdate'])->name('perfil.senhaupdate');
     Route::post('perfil/passcheck', [PerfilController::class , 'passCheck'])->name('perfil.passcheck');
     Route::post('perfil/emailcheck', [PerfilController::class , 'emailCheck'])->name('perfil.emailcheck');
 
     Route::get('filiese', [PerfilController::class , 'filiese'])->name('filiese');
+    Route::get('anuidade', [PerfilController::class , 'anuidade'])->name('anuidade');
 
 
 
@@ -69,16 +73,24 @@ Route::group(['middleware' => 'auth'] , function() {
     });
 
     //PAGSEGURO
-    Route::get('pagseguro/pagamento', [PagSeguroController::class, 'pagamento'])->name('pagseguro.pagmento');
+    Route::get('pagseguro/pagamento', [PagSeguroController::class, 'pagamento'])->name('pagseguro.pagamento');
     Route::post('pagseguro/associado/credito', [PagSeguroController::class , 'associadocredito'])->name('pagseguro.associado.credito');
     Route::post('pagseguro/associado/credito/anuidade', [PagSeguroController::class , 'associadocreditoanuidade'])->name('pagseguro.associado.credito.anuidade');
-    Route::post('pagseguro/retorno', [PagSeguroController::class, 'retorno'])->name('pagseguro.retorno');
+
+    Route::post('pagseguro/associado/boleto', [PagSeguroController::class , 'associadoboleto'])->name('pagseguro.associado.boleto');
+    Route::post('pagseguro/associado/boleto/anuidade', [PagSeguroController::class , 'associadoboletoanuidade'])->name('pagseguro.associado.boleto.anuidade');
+
 
     //Associado
     Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
     Route::get('associado', [AssociadoController::class ,'area'])->name('associado');
 
+    //AREA DE PAGAMENTO
+    Route::resource('pagamento', PagamentoController::class)->except(['show', 'create', 'edit']);
+    Route::get('pagamento/get', [PagamentoController::class ,'get'])->name('pagamento.get');
+
 });
+//END AUTH
 
 //GET no banco livres
 
@@ -92,6 +104,7 @@ Route::prefix('get')->group(function () {
     Route::get('tiposexo', [GetController::class, 'getTipoSexo'])->name('get.tiposexo');
     Route::get('titulacoes', [GetController::class, 'getTitulacoes'])->name('get.titulacao');
     Route::get('instituicoes', [GetController::class, 'getInstituicoes'])->name('get.instituicoes');
+    Route::get('produtos', [GetController::class, 'getProdutos'])->name('get.produtos');
 
 });
 
@@ -117,4 +130,10 @@ Route::post('/cadastro/emailcheck', [CadastroController::class , 'emailCheck'])-
 Route::post('/cadastro/cpfcheck', [CadastroController::class , 'cpfCheck'])->name('cadastro.cpfcheck');
 Route::post('cadastro/passaportecheck', [CadastroController::class , 'passaporteCheck'])->name('cadastro.passaportecheck');
 
+//RESET DE SENHA
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
+Route::post('pagseguro/retorno', [PagSeguroController::class, 'retorno'])->name('pagseguro.retorno');

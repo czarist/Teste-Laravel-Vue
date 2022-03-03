@@ -21,7 +21,7 @@
 			
 			</p>
 			<p style="padding-left: 20px; padding-right: 20px; text-align: left;">
-				CPF: {{ $user['password'] }} <br><br>
+				CPF: {{ $user['cpf'] }} <br><br>
                 Login: {{ $user['email'] }} <br><br>
                 Senha: {{ $senha }} <br><br>
                 Link para acessar sua área restrita <a href="{{ env('APP_URL')}}?status=1">{{ env('APP_URL')}}</a>.

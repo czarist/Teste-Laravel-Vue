@@ -22,4 +22,22 @@ class PagSeguroPgto extends Model
         'status_id',
         'user_id'
     ];
+
+    public function status()
+    {
+        return $this->belongsTo(PagSeguroTipoStatus::class);
+    }
+
+    public function tipo_pgto()
+    {
+        return $this->belongsTo(PagSeguroTipoPagto::class, 'tipo_pagto_id', 'id');
+    }
+
+    public function tipo_pgto_detalhe()
+    {
+        return $this->belongsTo(PagSeguroTipoPagtoDetalhe::class, 'tipo_pgto_detalhe', 'id');
+    }
+
+
+
 }

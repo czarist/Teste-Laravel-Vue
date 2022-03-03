@@ -28,13 +28,14 @@
                                                 v-if="!user.is_associado"
                                                 class="btn btn-outline-alert mr-1"
                                                 :href="baseUrl+'/filiese'"
-                                            >FILIAR-SE</a>
+                                            >FILIE-SE</a>
 
-                                            <span
+                                            <a
                                                 v-if="user.is_associado"
-                                               class="btn btn-outline-danger btn-sm"
-                                              @click="pagar()"
-                                            >PAGAR ANUIDADE 2022</span>
+                                                class="btn btn-outline-danger btn-sm mr-1"
+                                                :href="baseUrl+'/anuidade'"
+                                            >PAGAR ANUIDADE 2022</a>
+                                            
                                         </span>
                                     </td>
                                 </tr>
@@ -69,7 +70,7 @@
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
                 selcetedUser: this.user,
-                selectedPagar: this.user,
+                selectedPagar: null,
                 script_pagseguro: null,
                 sessions_pagseguro: null,
                 generos: [],
@@ -114,9 +115,7 @@
         },
         watch: {
             selcetedUser(){
-                console.log('watch user')
                 if(this.selcetedUser){
-                    debounce(this.getEstados(), 1000)
                     this.post.metodo = "credito"
                     this.post._method = "post"
                     this.post.id = this.selcetedUser.id ? this.selcetedUser.id : null
@@ -154,83 +153,27 @@
                 this.$bvModal.show('pagar')
             },
             async pagamento(){
-                await axios.get(`${process.env.MIX_BASE_URL}/pagseguro/pagamento`).then(res => {
-                this.sessions_pagseguro = res.data
-                PagSeguroDirectPayment.setSessionId(this.sessions_pagseguro.id);
-                })
-            },
-            async getEstados(){
-                await axios.get(`${process.env.MIX_BASE_URL}/get/estados`).then( res => {
-                    this.estados = res.data
-                })
-            },
-            async getMunicipios() {
-                if(this.post.enderecos && this.post.enderecos.estado) {
-                    await axios.get(`${process.env.MIX_BASE_URL}/get/municipios/${this.post.enderecos.estado.id}`).then(res => {
-                        this.municipios =  res.data
-                    }).then(() => {
-                        if(this.selected && this.selected.enderecos) {
-                            this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
-                            this.$validator.reset(`municipio${i}`)
-                        }
-                    })
-                }
-            },
-            async getCep() {
-                if(this.post.enderecos.cep.length > 8) {
-                    await fetch(`https://viacep.com.br/ws/${this.post.enderecos.cep}/json`).then(res => res.json())
-                        .then(res => {
-                            this.post.enderecos = {
-                                cep: this.post.enderecos.cep,
-                                logradouro: res.logradouro,
-                                bairro: res.bairro,
-                                estado: this.estados.find(uf => uf.sigla == res.uf),
-                                municipio: null,
-                                id: this.post.enderecos.id,
-                                numero: this.post.enderecos.numero,
-                                complemento: null,
-                                deleted: false
 
-                            }
-                            this.location = res.localidade
-
-                            if(res.erro == true) {
-                                this.$notify({
-                                    group: "submit",
-                                    title: "Erro",
-                                    text: 'Endereço não encontrado!, tente novamente.',
-                                    type: "error"
-                                })
-                                this.loading = false
-                            }
-                        })
-                      
-                    await this.getMunicipios()
-                        this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.location)
-                        this.$forceUpdate()                
-
-                }
+                await $.ajax({
+                    method: "GET",
+                    url: "pagseguro/pagamento",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        PagSeguroDirectPayment.setSessionId(res.id);
+                        this.sessions_pagseguro = res;
+                    },
+                    error: (res) => {
+                        console.log(res)
+                    }
+                });
             },
-
         },
         async created() {
-            this.pagamento()
-
-            axios.get(process.env.MIX_BASE_URL+'/get/tiposexo').then(res => {
-               
-                this.generos = res.data
-            })
-
-            axios.get(`${process.env.MIX_BASE_URL}/get/instituicoes`).then(res => {
-                this.instituicoes = res.data;
-            })
-
-            axios.get(`${process.env.MIX_BASE_URL}/get/titulacoes`).then(res => {
-                this.titulacoes = res.data;
-            })
-          
-            this.getEstados()
-        },
+            setTimeout(() => {
+                this.pagamento()
+            },3000)
+      },
         mounted() {
         },
         destroyed () {

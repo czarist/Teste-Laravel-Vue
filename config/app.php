@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+
+    'MIX_BASE_URL' => env('MIX_BASE_URL', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

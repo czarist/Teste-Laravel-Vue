@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
         User::updateOrCreate(
             ['id'=>1],
             ['id'=>1,

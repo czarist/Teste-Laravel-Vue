@@ -16,4 +16,9 @@ class VendaItem extends Model
         'venda_id',
         'produto_id',
     ];
+
+    public function produto()
+    {
+        return $this->belongsTo(Produto::class);
+    }
 }

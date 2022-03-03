@@ -140,4 +140,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Associado::class);
     }
+
+    public function vendas(){
+        return $this->hasMany(Venda::class);
+    }
+
+    
 }

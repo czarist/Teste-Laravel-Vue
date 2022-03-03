@@ -1,6 +1,5 @@
 <?php
     $status = $_GET['status'] ?? 0;
-
 ?>
 
 <!DOCTYPE html>
@@ -30,13 +29,12 @@
     <link href="{{ asset('assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/forms/switches.css') }}" rel="stylesheet"/>
 
-
 </head>
 
 <body class="form">
     <div class="form-container">
         <div class="form-form">
-            <div class="form-form-wrap">
+            <div class="form-form-wrap" style="max-width: 100% !important;">
                 <div class="form-container">                
                     <div class="form-content">
                         <?php
@@ -63,9 +61,13 @@
                         }
 
                     ?>
-                        <h2 class="">Login Intercom</h2>
+  
+                        <h2 class="text-center">Login Intercom</h2>
+                        <div class=" mt-3 text-center" >
+                            <p style="font-size:12px">Caso seja associado(a) da Intercom, informe o seu CPF e senha para acessar seu cadastro.</p> <br>
+                        </div>
 
-                        <form class="text-left" method="POST" action="{{ route('login') }}">
+                        <form class="text-center mt-1" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form">
 
@@ -103,20 +105,23 @@
                                 </div>
 
                                 <div class="field-wrapper">
-                                    @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="forgot-pass-link">Recuperar a senha?</a>
-                                    @endif
+                                    <a href="{{ route('forget.password.get') }}" class="forgot-pass-link">Recuperar a senha?</a>
                                 </div>
 
                             </div>
                         </form>
+                        <div class=" mt-3 text-center" >
+                            <p>Caso não se lembre da sua senha, <a href="{{ route('forget.password.get') }}" class="alert-link">clique aqui</a> para cadastrar uma nova.<br>
+                            Caso não seja associado, <a href="{{ route('cadastro') }}" class="alert-link">clique aqui</a> e preencha o seu cadastro abaixo.</p>
+                        </div>
+
                         <div class="d-sm-flex justify-content-center mt-5">
                             <div class="field-wrapper">
                                 <a type="button" class="btn btn-primary" href="{{ route('cadastro')}}">Cadastre-se</a>
                             </div>
                         </div>
 
-                        <p class="terms-conditions">© {{ date('Y') }} Intercom. </p>
+                        <p class="terms-conditions text-center">© {{ date('Y') }} Intercom. </p>
 
                     </div>
                 </div>

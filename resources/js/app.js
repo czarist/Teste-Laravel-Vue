@@ -14,9 +14,6 @@ import VueMask from 'v-mask'
 require('./bootstrap');
 
 import Vue from 'vue'
-Vue.filter('momentDate', function (date) {
-    return date ? moment(date).format('DD/MM/YYYY') : null
-});
 window.moment = require('moment/moment');
 Vue.component('v-select', vSelect)
 Vue.use(Notifications)
@@ -26,85 +23,98 @@ Vue.use(IconsPlugin)
 Vue.use(VeeValidate)
 Vue.use(VueMask)
 
-Validator.localize('pt_BR', pt_BR)
-
-Validator.extend("numeroSocioCheck", {
-    validate: (numero_socio, id) => {
-        return axios.post(`${process.env.MIX_BASE_URL}/admin/associado/check`, {numero_socio, id}).then(res => {
-            return {
-                valid: res.data
-            }
-        })
-    }
+Vue.filter('momentFullDate', function (date) {
+    return date ? moment(date).format('DD/MM/YYYY HH:mm') : null
 })
 
-Validator.localize({
-    pt_BR: {
-        messages: {
-            date_format: 'Formato invalido',
-        },
-        
-        custom: {
-            email: {
-                emailCheck: 'E-mail já cadastrado',
-                emailCadastro: 'E-mail já cadastrado'
-            },
-            numero_socio: {
-                numeroSocioCheck: 'Número sócio já em uso'
-            },      
-            password: {
-                passCheck: 'Senha incorreta'
-            },
-            cpf: {
-                cpfCheck: 'CPF já cadastrado'
-            },
-            passaporte: {
-                passaporteCheck: 'Passaporte já cadastrado'
-            }
-        }
-    }
+Vue.filter('momentDate', function (date) {
+    return date ? moment(date).format('DD/MM/YYYY') : null
 });
 
-Validator.extend("emailCheck", {
-    validate: (email, id) => {
-        return axios.post(`${process.env.MIX_BASE_URL}/perfil/emailcheck`, {email, id}).then(res => {
-            return {
-                valid: res.data
-            }
-        })
-    }
+Vue.filter('formatPrice', function (value) {
+    let val = (value/1).toFixed(2).replace('.', ',')
+    return 'R$'+' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 })
 
-Validator.extend("emailCadastro", {
-    validate: (email) => {
-        return axios.post(`${process.env.MIX_BASE_URL}/cadastro/emailcheck`, {email}).then(res => {
-            return {
-                valid: res.data
-            }
-        })
-    }
-})
+Validator.localize('pt_BR', pt_BR)
 
-Validator.extend("cpfCheck", {
-    validate: (cpf) => {
-        return axios.post(`${process.env.MIX_BASE_URL}/cadastro/cpfcheck`, {cpf}).then(res => {
-            return {
-                valid: res.data
-            }
-        })
-    }
-})
+// Validator.localize({
+//     pt_BR: {
+//         messages: {
+//             date_format: 'Formato invalido',
+//         },
+        
+//         custom: {
+//             email: {
+//                 emailCheck: 'E-mail já cadastrado',
+//                 emailCadastro: 'E-mail já cadastrado'
+//             },
+//             numero_socio: {
+//                 numeroSocioCheck: 'Número sócio já em uso'
+//             },      
+//             password: {
+//                 passCheck: 'Senha incorreta'
+//             },
+//             cpf: {
+//                 cpfCheck: 'CPF já cadastrado'
+//             },
+//             passaporte: {
+//                 passaporteCheck: 'Passaporte já cadastrado'
+//             }
+//         }
+//     }
+// });
 
-Validator.extend("passaporteCheck", {
-    validate: (passaporte) => {
-        console.log(passaporte)
-        return axios.post(`${process.env.MIX_BASE_URL}/cadastro/passaportecheck`, {passaporte}).then(res => {
-            return {
-                valid: res.data
-            }
-        })
-    }
-})
+// Validator.extend("numeroSocioCheck", {
+//     validate: (numero_socio, id) => {
+//         return axios.post(`${process.env.MIX_BASE_URL}/admin/associado/check`, {numero_socio, id}).then(res => {
+//             return {
+//                 valid: res.data
+//             }
+//         })
+//     }
+// })
+
+// Validator.extend("emailCheck", {
+//     validate: (email, id) => {
+//         return axios.post(`${process.env.MIX_BASE_URL}/perfil/emailcheck`, {email, id}).then(res => {
+//             return {
+//                 valid: res.data
+//             }
+//         })
+//     }
+// })
+
+// Validator.extend("emailCadastro", {
+//     validate: (email) => {
+//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/emailcheck`, {email}).then(res => {
+//             return {
+//                 valid: res.data
+//             }
+//         })
+//     }
+// })
+
+// Validator.extend("cpfCheck", {
+//     validate: (cpf) => {
+//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/cpfcheck`, {cpf}).then(res => {
+//             return {
+//                 valid: res.data
+//             }
+//         })
+//     }
+// })
+
+// Validator.extend("passaporteCheck", {
+//     validate: (passaporte) => {
+//         console.log(passaporte)
+//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/passaportecheck`, {passaporte}).then(res => {
+//             return {
+//                 valid: res.data
+//             }
+//         })
+//     }
+// })
 
 
 
@@ -118,6 +128,10 @@ import FormCadastro from './components/cadastro/FormCadastro.vue'
 // import PagarModal from './components/cadastro/PagarModal.vue'
 import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
 import AssociadoArea from './components/associado/AssociadoArea.vue'
+import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
+import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
+
+
 
 const app = new Vue({
     el: '#app',
@@ -133,8 +147,15 @@ const app = new Vue({
         'filiese-cadastro': FilieseCadastro,
         'associado-area': AssociadoArea,
         // 'pagar-modal-anuidade': PagarModalAnuidade,
+        'pagamento-grid': PagamentoGrid,
+        'anuidade-cadastro': AnuidadeCadastro
 
     }
 });
 
+window.axios.defaults.headers = {
+    "Access-Control-Allow-Origin": "*",
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 
+};

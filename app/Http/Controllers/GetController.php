@@ -6,6 +6,7 @@ use App\Models\Instituicao;
 use App\Models\Acesso;
 use App\Models\Estado;
 use App\Models\Municipio;
+use App\Models\Produto;
 use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
@@ -65,5 +66,9 @@ class GetController extends Controller
         return $sexo->select('tipo_sexo', 'id')->orderBy('tipo_sexo')->get();
     }
 
+    public function getProdutos(Produto $produtos)
+    {
+        return $produtos->select('id', 'nome', 'valor')->orderBy('nome')->get();
+    }
 
 }

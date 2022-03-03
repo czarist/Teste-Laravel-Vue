@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                        <h1>Cadastre-se</h1>
+                    <h2 class="title">Sistema Unificado Intercom</h2>
                 </div>
 
                 <ul class="list-group list-group-flush text-center">
@@ -58,10 +58,10 @@
                                     name="email"
                                     size="sm"
                                     v-model="post.email"
-                                    type="text"
+                                    type="email"
                                     :disabled="loading"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`email`)}]"
-                                    v-validate="{ required: true, email: true, emailCadastro: post.id }"
+                                    v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="E-mail"
                                 ></b-form-input>
@@ -142,7 +142,7 @@
                                     type="text"
                                     v-mask="'###.###.###-##'"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf`)}]"
-                                    v-validate="{ required: true, cpfCheck: post.id }"
+                                    v-validate="{ required: true}"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="CPF"
                                 ></b-form-input>
@@ -438,7 +438,8 @@
 
 <script>
   import MixinsGlobal from  '../mixins/global-mixins'
-  
+  import $ from 'jquery'
+
       export default {
         props: ['selected', 'id'],
         mixins: [ MixinsGlobal],
@@ -449,7 +450,6 @@
             return {
                 loading: false,
                 selectedPagar: null,
-                generos: [],
                 estados: [],
                 municipios: [],
                 generos: [],
@@ -465,6 +465,7 @@
                     email: null,
                     password: null,
                     estrangeiro: 0,
+                    associado: 0,
                     data_nascimento: null,
                     orgao_expedidor: null,                    
                     cpf: null,
@@ -490,7 +491,7 @@
                     { text: 'Sim', value: 1 },
                 ],
                 associado: [
-                    { text: 'Usuário', value: 0 },
+                    { text: 'Cadastre-se', value: 0 },
                 ],
 
             }
@@ -506,20 +507,38 @@
         },
         methods: {  
             async getEstados(){
-                await axios.get(`${process.env.MIX_BASE_URL}/get/estados`).then( res => {
-                    this.estados = res.data
-                })
+                await $.ajax({
+                    method: "GET",
+                    url: "get/estados",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.estados = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
             },
             async getMunicipios() {
                 if(this.post.enderecos && this.post.enderecos.estado) {
-                    await axios.get(`${process.env.MIX_BASE_URL}/get/municipios/${this.post.enderecos.estado.id}`).then(res => {
-                        this.municipios =  res.data
-                    }).then(() => {
-                        if(this.selected && this.selected.enderecos) {
-                            this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
-                            this.$validator.reset(`municipio${i}`)
+                    await $.ajax({
+                        method: "GET",
+                        url: `get/municipios/${this.post.enderecos.estado.id}`,
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        dataType: 'json',
+                        success: (res) => {
+                            this.municipios = res
+                            if(this.selected && this.selected.enderecos) {
+                                this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
+                                this.$validator.reset(`municipio${i}`)
+                            }
+                        },
+                        error: (res) => {
+                            console.log(res)
                         }
-                    })
+                    }); 
                 }
             },
             async getCep() {
@@ -564,40 +583,51 @@
                         this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
                         setTimeout(() => {
-                            axios.post(`${process.env.MIX_BASE_URL}/cadastro/save`, this.post).then( res => {
-                                console.log(res.status)
-                                this.clear()
+                                var dados = this.post
 
-                                //this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
-                                
-                                window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
-                               
-                            }).catch(error => {
-                                if(error.response.status == 422) {
-                                    if(error.response.data.message == "The given data was invalid.") {
-                                        this.loading = false
-                                        return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                                $.ajax({
+                                    method: "POST",
+                                    url: "cadastro/save",
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    data: $.param(dados),
+                                    dataType: 'json',
+                                    success: (retorna) => {
+                                        if (retorna.message == 'error') {} else {
+
+                                            window.location.href = `${process.env.MIX_BASE_URL}/login?error=1`
+
+                                        }
+                                            this.clear()
+                                            this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+
+                                            window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
+
+                                    },
+                                    error: (retorna) => {
+                                        if(error.response.status == 422) {
+                                            if(error.response.data.message == "The given data was invalid.") {
+                                                this.loading = false
+                                                return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                                            }
+                                        }
+                                        if(error.response.status == 500) {
+                                            this.loading = false
+                                            this.message('Erro', 'Por favor tente novamente.', 'error');
+                                        }
+                                        if(error.response.status == 403) {
+                                            if(error.response.data.message == "This action is unauthorized.") {
+                                                this.loading = false
+                                                this.message('Erro', 'Ação não autorizada.', 'error');
+                                            }
+                                        }
                                     }
-                                }
-                                if(error.response.status == 500) {
-                                    this.loading = false
-                                    this.message('Erro', 'Por favor tente novamente.', 'error');
-                                }
-                                if(error.response.status == 403) {
-                                    if(error.response.data.message == "This action is unauthorized.") {
-                                        this.loading = false
-                                        this.message('Erro', 'Ação não autorizada.', 'error');
-                                    }
-                                }
-                            })
+                                });
                         },1000)
-                    } else {
-                        this.loading = false
-                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
                     }
                 })
             },
-
             clear() {
                 this.post.id = null
                 this.post.email = null
@@ -618,31 +648,64 @@
                 this.$validator.reset('name')
                 this.$validator.reset('email')
             },
-
             pagar(post) {
                 this.selectedPagar = post
                 $('#pagar').modal({keyboard: false, show: true})
                 this.$bvModal.show('pagar')
 
-            }
+            },
+            getGeneros(){
+                $.ajax({
+                    method: "GET",
+                    url: "get/tiposexo",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.generos = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getTitulacoes(){
+                $.ajax({
+                    method: "GET",
+                    url: "get/titulacoes",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.titulacoes = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getInstituicoes(){
+                $.ajax({
+                    method: "GET",
+                    url: "get/instituicoes",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.instituicoes = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+
         },
-        created() {
-            axios.get(process.env.MIX_BASE_URL+'/get/tiposexo').then(res => {
-               
-                this.generos = res.data
-            })
-
-            axios.get(`${process.env.MIX_BASE_URL}/get/instituicoes`).then(res => {
-                this.instituicoes = res.data;
-            })
-
-            axios.get(`${process.env.MIX_BASE_URL}/get/titulacoes`).then(res => {
-                this.titulacoes = res.data;
-            })
-          
+        created: function() {
             this.getEstados()
-
+            this.getGeneros()
+            this.getTitulacoes()
+            this.getInstituicoes()
         },
-
     }
 </script>

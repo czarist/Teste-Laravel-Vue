@@ -196,6 +196,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -205,13 +231,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       loading: false,
       url: "http://127.0.0.1:8000",
-      amount: "0.20",
+      produtos: [],
+      amount: null,
       form: {
         metodo: null,
         numCartao: null,
         validade: null,
         cvv: null,
         bandeira: null,
+        produto: null,
+        quantidade: 1,
         enderecos: {
           id: null,
           cep: null,
@@ -251,6 +280,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.form.ativo = this.selectedPagar.ativo;
       }
 
+      if (this.form.associado == 1) {
+        this.amount = this.produtos.find(function (produto) {
+          return produto.id == 1;
+        }).valor;
+        this.form.produto = this.produtos.find(function (produto) {
+          return produto.id == 1;
+        });
+      }
+
       this.listarMeiosPag();
     },
     numCartao: function numCartao() {
@@ -274,8 +312,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("".concat("http://127.0.0.1:8000", "/get/estados")).then(function (res) {
-                  _this.estados = res.data;
+                return $.ajax({
+                  method: "GET",
+                  url: "get/estados",
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  dataType: 'json',
+                  success: function success(res) {
+                    _this.estados = res;
+                  },
+                  error: function error(res) {
+                    console.log(res);
+                  }
                 });
 
               case 2:
@@ -300,7 +349,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     //Recuperar as bandeiras do cartão de crédito
                     $.each(retorno.paymentMethods.CREDIT_CARD.options, function (i, obj) {
                       $('.meio-pag-credito').append("<span class='img-band'><img src='https://stc.pagseguro.uol.com.br" + obj.images.MEDIUM.path + "'></span>");
-                    });
+                    }); //Recuperar as bandeiras do boleto
+
+                    $('.meio-pag-boleto').append("<span  class='img-band'><img width='150' height='80' src='https://stc.pagseguro.uol.com.br" + retorno.paymentMethods.BOLETO.options.BOLETO.images.MEDIUM.path + "'><span>");
                   },
                   error: function error(retorno) {// Callback para chamadas que falharam.
                   },
@@ -323,8 +374,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       PagSeguroDirectPayment.getBrand({
         cardBin: numCartao,
         success: function success(retorno) {
-          console.log(retorno); //Enviar para o index a imagem da bandeira
-
+          //Enviar para o index a imagem da bandeira
           var imgBand = retorno.brand.name;
           $('.bandeira-cartao').html("<img src='https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/" + imgBand + ".png'>");
           $('.cartao-nome').html(imgBand);
@@ -334,14 +384,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         error: function error(retorno) {}
       });
       var nameBand = document.getElementById("cartao-nome").innerText;
-      console.log('validarBanderia **depois do call recupParcelas: ' + nameBand);
       this.form.bandeira = nameBand;
       this.recupParcelas(nameBand);
     },
     recupParcelas: function recupParcelas(bandeira) {
-      console.log('recupParcelas');
       var noIntInstalQuantity = $('#noIntInstalQuantity').val();
-      console.log('noIntInstalQuantity', noIntInstalQuantity);
       PagSeguroDirectPayment.getInstallments({
         amount: this.amount,
         maxInstallmentNoInterest: noIntInstalQuantity,
@@ -365,7 +412,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     },
-    save: function save() {
+    pagarCredito: function pagarCredito() {
       var cardnum = this.form.numCartao.replace(/\-/g, ''); // Número do cartão de crédito
 
       var cardname = document.getElementById("cartao-nome").innerText; // Bandeira do cartão
@@ -394,7 +441,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
 
       function recupHashCartao(tokenCartao) {
-        console.log('chamou recupHashCartao');
         PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
           if (retorno.status == 'error') {
             console.log(retorno.message);
@@ -425,7 +471,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               name: "cardname",
               value: cardname
             });
-            console.log('dados: ' + JSON.stringify(dados));
             $.ajax({
               method: "POST",
               url: "pagseguro/associado/credito",
@@ -446,9 +491,129 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         });
       }
+    },
+    pagarBoleto: function pagarBoleto() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _this3.loading = true;
+                _context3.next = 3;
+                return PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
+                  if (retorno.status == 'error') {
+                    console.log(retorno.message);
+                    _this3.loading = false;
+                    return false;
+                  } else {
+                    _this3.form.hashBoleto = retorno.senderHash;
+                    _this3.form.metodo = "boleto";
+
+                    _this3.$validator.validateAll().then(function (valid) {
+                      if (valid) {
+                        _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info', -1);
+
+                        setTimeout(function () {
+                          var dados = _this3.form;
+                          $.ajax({
+                            method: "POST",
+                            url: "pagseguro/associado/boleto",
+                            headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: $.param(dados),
+                            dataType: 'json',
+                            success: function success(res) {
+                              if (res.message == 'error') {} else {
+                                _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error', -1);
+
+                                _this3.loading = false;
+                              }
+
+                              _this3.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success', -1);
+
+                              _this3.loading = false;
+                              window.open(res.response['paymentLink'], '_blank');
+                            },
+                            error: function error(_error) {
+                              if (_error.response.status == 422) {
+                                if (_error.response.data.message == "The given data was invalid.") {
+                                  _this3.loading = false;
+                                  return _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                }
+                              }
+
+                              if (_error.response.status == 500) {
+                                _this3.loading = false;
+
+                                _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos.', 'error');
+                              }
+
+                              if (_error.response.status == 403) {
+                                if (_error.response.data.message == "This action is unauthorized.") {
+                                  _this3.loading = false;
+
+                                  _this3.message('Erro', 'Ação não autorizada.', 'error');
+                                }
+                              }
+                            }
+                          });
+                        }, 1000);
+                      } else {
+                        _this3.loading = false;
+
+                        _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                      }
+                    });
+                  }
+                });
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    getProdutos: function getProdutos() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return $.ajax({
+                  method: "GET",
+                  url: "get/produtos",
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  dataType: 'json',
+                  success: function success(res) {
+                    _this4.produtos = res;
+                  },
+                  error: function error(res) {
+                    console.log(res);
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
     }
   },
-  created: function created() {}
+  created: function created() {
+    this.getProdutos();
+  }
 });
 
 /***/ }),
@@ -469,7 +634,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n[data-v-422ca93e] .modal-backdrop {\n    opacity: 0.5 !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n[data-v-422ca93e] .modal-backdrop {\n    opacity: 0.5 !important;\n}\n[data-v-422ca93e] .vue-notification {\n    font-size: 15px !important;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -614,7 +779,16 @@ var render = function () {
             var close = ref.close
             return [
               _c("div", { staticClass: "text-center" }, [
-                _c("h1", [_vm._v("Escolha uma forma de Pagamento")]),
+                _c(
+                  "p",
+                  {
+                    staticStyle: {
+                      "font-size": "18px !important",
+                      "text-align": "center !important",
+                    },
+                  },
+                  [_vm._v("Escolha uma forma de Pagamento")]
+                ),
               ]),
               _vm._v(" "),
               _c(
@@ -651,33 +825,42 @@ var render = function () {
                     },
                   },
                 },
-                [_vm._v("\n                Cancelar\n            ")]
+                [_vm._v("\n            Cancelar\n        ")]
               ),
               _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  attrs: {
-                    disabled: _vm.loading,
-                    size: "md",
-                    variant: "outline-success",
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.save()
+              _vm.hasCredito
+                ? _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        disabled: _vm.loading,
+                        size: "md",
+                        variant: "outline-success",
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.pagarCredito()
+                        },
+                      },
                     },
-                  },
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(
-                        _vm.hasCredito == true ? "Pagar" : "Gerar Boleto"
-                      ) +
-                      "\n            "
+                    [_vm._v("Pagar\n        ")]
+                  )
+                : _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        disabled: _vm.loading,
+                        size: "md",
+                        variant: "outline-success",
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.pagarBoleto()
+                        },
+                      },
+                    },
+                    [_vm._v("Gerar Boleto\n        ")]
                   ),
-                ]
-              ),
             ]
           },
         },
@@ -1079,7 +1262,7 @@ var render = function () {
                                               },
                                             ],
                                             attrs: {
-                                              disabled: _vm.loading,
+                                              disabled: true,
                                               name: "qntParcelas",
                                               id: "qntParcelas",
                                               size: "sm",
@@ -1176,37 +1359,10 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "associado",
-                                        id: "associado",
+                                        name: "numCartao",
+                                        id: "numCartao",
                                       },
-                                      domProps: { value: _vm.form.associado },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "ativo",
-                                        id: "ativo",
-                                      },
-                                      domProps: { value: _vm.form.ativo },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "celular",
-                                        id: "celular",
-                                      },
-                                      domProps: { value: _vm.form.celular },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "cpf",
-                                        id: "cpf",
-                                      },
-                                      domProps: { value: _vm.form.cpf },
+                                      domProps: { value: _vm.form.numCartao },
                                     }),
                                     _vm._v(" "),
                                     _c("input", {
@@ -1221,21 +1377,19 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "id",
-                                        id: "id",
+                                        name: "validade",
+                                        id: "validade",
                                       },
-                                      domProps: { value: _vm.form.id },
+                                      domProps: { value: _vm.form.validade },
                                     }),
                                     _vm._v(" "),
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "instituicao_id",
-                                        id: "instituicao_id",
+                                        name: "associado",
+                                        id: "associado",
                                       },
-                                      domProps: {
-                                        value: _vm.form.instituicao_id,
-                                      },
+                                      domProps: { value: _vm.form.associado },
                                     }),
                                     _vm._v(" "),
                                     _c("input", {
@@ -1250,6 +1404,24 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
+                                        name: "id",
+                                        id: "id",
+                                      },
+                                      domProps: { value: _vm.form.id },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "ativo",
+                                        id: "ativo",
+                                      },
+                                      domProps: { value: _vm.form.ativo },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
                                         name: "name",
                                         id: "name",
                                       },
@@ -1259,10 +1431,10 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "numCartao",
-                                        id: "numCartao",
+                                        name: "rg",
+                                        id: "rg",
                                       },
-                                      domProps: { value: _vm.form.numCartao },
+                                      domProps: { value: _vm.form.rg },
                                     }),
                                     _vm._v(" "),
                                     _c("input", {
@@ -1273,6 +1445,17 @@ var render = function () {
                                       },
                                       domProps: {
                                         value: _vm.form.orgao_expedidor,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "data_nascimento",
+                                        id: "data_nascimento",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.data_nascimento,
                                       },
                                     }),
                                     _vm._v(" "),
@@ -1297,6 +1480,15 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
+                                        name: "celular",
+                                        id: "celular",
+                                      },
+                                      domProps: { value: _vm.form.celular },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
                                         name: "titulacao_id",
                                         id: "titulacao_id",
                                       },
@@ -1308,19 +1500,12 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "validade",
-                                        id: "validade",
+                                        name: "instituicao_id",
+                                        id: "instituicao_id",
                                       },
-                                      domProps: { value: _vm.form.validade },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "cvv",
-                                        id: "cvv",
+                                      domProps: {
+                                        value: _vm.form.instituicao_id,
                                       },
-                                      domProps: { value: _vm.form.cvv },
                                     }),
                                     _vm._v(" "),
                                     _c("input", {
@@ -1349,7 +1534,7 @@ var render = function () {
                                       attrs: {
                                         type: "hidden",
                                         name: "estado",
-                                        id: "enderecos",
+                                        id: "estado",
                                       },
                                       domProps: {
                                         value: _vm.form.enderecos.estado,
@@ -1370,6 +1555,39 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
+                                        name: "numero",
+                                        id: "numero",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos.numero,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "bairro",
+                                        id: "bairro",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos.bairro,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "complemento",
+                                        id: "complemento",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos.complemento,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
                                         name: "municipio",
                                         id: "municipio",
                                       },
@@ -1384,9 +1602,7 @@ var render = function () {
                                         name: "pais",
                                         id: "pais",
                                       },
-                                      domProps: {
-                                        value: _vm.form.enderecos.pais,
-                                      },
+                                      domProps: { value: _vm.form.pais },
                                     }),
                                   ]
                                 ),
@@ -1402,7 +1618,32 @@ var render = function () {
                     _c(
                       "b-tab",
                       { attrs: { title: "Boleto" } },
-                      [_c("b-card-text", [_vm._v("Tab contents 2")])],
+                      [
+                        _c("b-card-text", [
+                          _c(
+                            "form",
+                            {
+                              staticClass: "form-horizontal",
+                              attrs: {
+                                action: "",
+                                method: "post",
+                                "accept-charset": "utf-8",
+                                name: "formPagamentoBoleto",
+                                id: "formPagamentoBoleto",
+                              },
+                            },
+                            [
+                              _c("fieldset", [
+                                _c("div", {
+                                  staticClass: "meio-pag-boleto",
+                                  staticStyle: { "padding-bottom": "20px" },
+                                  attrs: { align: "center" },
+                                }),
+                              ]),
+                            ]
+                          ),
+                        ]),
+                      ],
                       1
                     ),
                   ],
@@ -1414,12 +1655,11 @@ var render = function () {
           ],
           1
         ),
+        _vm._v(" "),
+        _c("notifications", {
+          attrs: { group: "submit", position: "center", width: "500px" },
+        }),
       ],
-      _vm._v(" "),
-      _vm._v(" "),
-      _c("notifications", {
-        attrs: { group: "submit", position: "center bottom" },
-      }),
     ],
     2
   )

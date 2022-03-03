@@ -27,6 +27,11 @@
         }
 
     </style>
+
+        {{-- Pagseguro --}}
+        <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+        {{-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
+    
     
 </head>
 <body class="sidebar-noneoverflow">
@@ -60,11 +65,11 @@
 
                 <div class="footer-wrapper">
                     <div class="footer-section f-section-1">
-                        <p class="">Intercom 2022</p>
+                        <p class="">Intercom {{ date('Y') }}</p>
                     </div>
 
                     <div class="footer-section f-section-2">
-                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Materialize sua Ideia </p>
+                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Digitalize sua Ideia </p>
                     </div>
                 </div>
                     
@@ -84,9 +89,6 @@
     </script>
     <script  type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 
-    {{-- Pagseguro --}}
-    <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
-    {{-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
 
 </body>
 </html>

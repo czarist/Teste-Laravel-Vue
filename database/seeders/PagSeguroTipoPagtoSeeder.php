@@ -23,17 +23,17 @@ class PagSeguroTipoPagtoSeeder extends Seeder
         );
 
         PagSeguroTipoPagto::updateOrCreate(
-            ['id' => 1],
+            ['id' => 2],
             [
-                'id' => 1,
+                'id' => 2,
                 'nome' => 'Boleto',
             ]
         );
 
         PagSeguroTipoPagto::updateOrCreate(
-            ['id' => 1],
+            ['id' => 3],
             [
-                'id' => 1,
+                'id' => 3,
                 'nome' => 'Cartão de Débito',
             ]
         );

@@ -50,28 +50,49 @@ export default {
 
     methods: {
         async get(){
-            await axios.get(this.url).then(res => {
-                this.$refs['scroll'].scrollTop = 0
-                this.registros = res.data.data
-                this.currentPage = res.data.current_page
-                this.totalPages = res.data.last_page
-                this.total = res.data.total
-                this.documentos = res.data[1]
 
-                this.loading = false
-            })
+            $.ajax({
+                method: "GET",
+                url: `${this.url}`,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                dataType: 'json',
+                success: (res) => {
+                    this.$refs['scroll'].scrollTop = 0
+                    this.registros = res.data
+                    this.currentPage = res.current_page
+                    this.totalPages = res.last_page
+                    this.total = res.total
+    
+                    this.loading = false
+                },
+                error: (res) => {
+                    console.log(res) 
+                }
+            }); 
+
         },
 
         nextPage(url){
-            axios.get(url).then(res => {
-                const toFilter = [...this.registros, ...res.data.data]
-                const filtered = toFilter.reduce((items, current) => {
-                    const x = items.find(item => item.id === current.id);
-                    return !x ? items.concat([current]) : items
-                }, []);
-                this.registros = filtered
-                this.currentPage = res.data.current_page
-            })
+
+            $.ajax({
+                method: "GET",
+                url: `${url}`,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                dataType: 'json',
+                success: (res) => {
+                    const toFilter = [...this.registros, ...res.data]
+                    const filtered = toFilter.reduce((items, current) => {
+                        const x = items.find(item => item.id === current.id);
+                        return !x ? items.concat([current]) : items
+                    }, []);
+                    this.registros = filtered
+                    this.currentPage = res.current_page
+                    },
+                error: (res) => {
+                    console.log(res) 
+                }
+            }); 
+
         },
 
         handleScroll(event) {
@@ -97,10 +118,20 @@ export default {
 
         async getLoggedUser() {
             this.gettingUser = true
-            await axios.get(`${process.env.MIX_BASE_URL}/get/userlogado`).then(res => {
-                this.user = res.data
-                this.gettingUser = false
-            })
+
+            await $.ajax({
+                method: "GET",
+                url: "get/userlogado",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                dataType: 'json',
+                success: (res) => {
+                    this.user = res
+                    this.gettingUser = false
+                },
+                error: (res) => {
+                    console.log(res) 
+                }
+            }); 
         },
 
         removeReadonly(id) {

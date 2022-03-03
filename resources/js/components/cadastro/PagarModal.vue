@@ -2,151 +2,168 @@
     <b-modal id="pagar" size="xl">
         <template #modal-header="{ close }">
             <div class="text-center">
-                <h1>Escolha uma forma de Pagamento</h1>
+               <p style="font-size:18px !important; text-align:center !important;">Escolha uma forma de Pagamento</p>
             </div>
             <b-button size="sm" variant="outline-danger" @click="close()">x</b-button>
         </template>
         <template>
             <div>
                 <b-card no-body>
-                <b-tabs card>
-                    <b-tab title="Cartão de Crédito" active>
-                    <b-card-text>
-						<div class="container">
-							<div class="section-head style-3 text-center z mb-3">
-								<h2 class="title">Checkout <img :src="url+'/images/pagseguro.png'"></h2>
-								<p>Preencha os dados para finalizar o pagamento</p>
-							</div>
-						</div>
-
-                        <div class="container">
-                            <b-row>
-                                <b-col cols="12" sm="6" lg="6">
-                                    <b-form-group label="Número do Cartão" label-class="font-weight-bold">
-                                        <b-form-input
-                                            name="numCartao"
-                                            size="sm"
-                                            v-model="form.numCartao"
-                                            @change="validarBanderia()"
-                                            type="text"
-                                            :disabled="loading"
-                                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`numCartao`)}]"
-                                            v-validate="{ required: true }"
-                                            aria-describedby="input-1-live-feedback"
-                                            data-vv-as="Número do Cartão"
-                                            v-mask="'####-####-####-####'"
-                                        ></b-form-input>
-                                        <span v-show="errors.has(`numCartao`)" class="invalid-feedback">
-                                            {{ errors.first(`numCartao`) }}
-                                        </span>
-                                        <div class="container">
-                                            <div class="row">
-                                                <span class="col-6 input-group-text bandeira-cartao creditCard hidden" id="cartao-bandeira" style="background-color: #ffffff;"></span>
-                                                <span type="text" class="col-6 input-group-text cartao-nome creditCard form-login-help hidden" id="cartao-nome" style="background-color: #ffffff;"></span>
-                                            </div>
-                                        </div>
-                                    </b-form-group>
-                                </b-col>
-
-                                <b-col cols="12" sm="6" lg="6">
-                                    <b-form-group label="Validade" label-class="font-weight-bold">
-                                        <b-form-input
-                                            name="validade"
-                                            size="sm"
-                                            v-model="form.validade"
-                                            type="text"
-                                            :disabled="loading"
-                                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`validade`)}]"
-                                            v-validate="{ required: true }"
-                                            aria-describedby="input-1-live-feedback"
-                                            data-vv-as="Validade"
-                                            v-mask="'##/####'"
-                                        ></b-form-input>
-                                        <span v-show="errors.has(`validade`)" class="invalid-feedback">
-                                            {{ errors.first(`validade`) }}
-                                        </span>
-                                    </b-form-group>
-                                </b-col>
-
-                                <b-col cols="12" sm="6" lg="6">
-                                    <b-form-group label="Código de Segurança" label-class="font-weight-bold">
-                                        <b-form-input
-                                            name="cvv"
-                                            size="sm"
-                                            v-model="form.cvv"
-                                            type="text"
-                                            :disabled="loading"
-                                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`cvv`)}]"
-                                            v-validate="{ required: true }"
-                                            aria-describedby="input-1-live-feedback"
-                                            data-vv-as="Código de Segurança"
-                                            v-mask="'####'"
-                                        ></b-form-input>
-                                        <span v-show="errors.has(`cvv`)" class="invalid-feedback">
-                                            {{ errors.first(`cvv`) }}
-                                        </span>
-                                    </b-form-group>
-                                </b-col>
-
-                                <b-col cols="12" sm="6" lg="6">
-                                    <b-form-group label="Quantidade de Parcelas" label-class="font-weight-bold">
-                                        <b-form-select
-                                            :disabled="loading"
-                                            name="qntParcelas"
-                                            id="qntParcelas"
-                                            v-validate="{ required: true }"
-                                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`qntParcelas`)}]"
-                                            size="sm"
-                                            data-vv-as="Quantidade de Parcelas"
-                                            class="form-control form-control-sm"
-                                            v-model="form.qntParcelas"
-                                        >
-                                        </b-form-select>
-                                        <span v-show="errors.has(`qntParcelas`)" class="invalid-feedback">
-                                            {{ errors.first(`qntParcelas`) }}
-                                        </span>
-                                    </b-form-group>
-                                </b-col>
-
-
-                            </b-row>
-					        <div class="meio-pag-credito" id="meio-pag-credito" name="meio-pag-credito" align="center" style="padding-top:10px; padding-bottom: 20px" />
-                            <div class="hidden">
-                                <form method="post" accept-charset="utf-8" name="formPagamentoCartaoCredito" id="formPagamentoCartaoCredito" action="">
-                                    <input type="hidden" name="recupHashCartao" id="recupHashCartao" value="">
-                                    <input type="hidden" name="associado" id="associado" :value="form.associado">
-                                    <input type="hidden" name="ativo" id="ativo" :value="form.ativo">
-                                    <input type="hidden" name="celular" id="celular" :value="form.celular">
-                                    <input type="hidden" name="cpf" id="cpf" :value="form.cpf">
-                                    <input type="hidden" name="cvv" id="cvv" :value="form.cvv">
-                                    <input type="hidden" name="id" id="id" :value="form.id">
-                                    <input type="hidden" name="instituicao_id" id="instituicao_id" :value="form.instituicao_id">
-                                    <input type="hidden" name="metodo" id="metodo" :value="form.metodo">
-                                    <input type="hidden" name="name" id="name" :value="form.name">
-                                    <input type="hidden" name="numCartao" id="numCartao" :value="form.numCartao">
-                                    <input type="hidden" name="orgao_expedidor" id="orgao_expedidor" :value="form.orgao_expedidor">
-                                    <input type="hidden" name="sexo_id" id="sexo_id" :value="form.sexo_id">
-                                    <input type="hidden" name="telefone" id="telefone" :value="form.telefone">
-                                    <input type="hidden" name="titulacao_id" id="titulacao_id" :value="form.titulacao_id">
-                                    <input type="hidden" name="validade" id="validade" :value="form.validade">
-                                    <input type="hidden" name="cvv" id="cvv" :value="form.cvv">
-                                    <input type="hidden" name="enderecoId" id="enderecoId" :value="form.enderecos.id">
-                                    <input type="hidden" name="cep" id="cep" :value="form.enderecos.cep">
-                                    <input type="hidden" name="estado" id="enderecos" :value="form.enderecos.estado">
-                                    <input type="hidden" name="logradouro" id="logradouro" :value="form.enderecos.logradouro">
-                                    <input type="hidden" name="municipio" id="municipio" :value="form.enderecos.municipio.id">
-                                    <input type="hidden" name="pais" id="pais" :value="form.enderecos.pais">
-                                </form>
+                    <b-tabs card>
+                        <b-tab title="Cartão de Crédito" active>
+                        <b-card-text>
+                            <div class="container">
+                                <div class="section-head style-3 text-center z mb-3">
+                                    <h2 class="title">Checkout <img :src="url+'/images/pagseguro.png'"></h2>
+                                    <p>Preencha os dados para finalizar o pagamento</p>
+                                </div>
                             </div>
-                        </div>
-                    </b-card-text>
-                    </b-tab>
-                    <b-tab title="Boleto">
-                    <b-card-text>Tab contents 2</b-card-text>
-                    </b-tab>
-                </b-tabs>
+
+                            <div class="container">
+                                <b-row>
+                                    <b-col cols="12" sm="6" lg="6">
+                                        <b-form-group label="Número do Cartão" label-class="font-weight-bold">
+                                            <b-form-input
+                                                name="numCartao"
+                                                size="sm"
+                                                v-model="form.numCartao"
+                                                @change="validarBanderia()"
+                                                type="text"
+                                                :disabled="loading"
+                                                :class="['form-control form-control-sm', {'is-invalid': errors.has(`numCartao`)}]"
+                                                v-validate="{ required: true }"
+                                                aria-describedby="input-1-live-feedback"
+                                                data-vv-as="Número do Cartão"
+                                                v-mask="'####-####-####-####'"
+                                            ></b-form-input>
+                                            <span v-show="errors.has(`numCartao`)" class="invalid-feedback">
+                                                {{ errors.first(`numCartao`) }}
+                                            </span>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <span class="col-6 input-group-text bandeira-cartao creditCard hidden" id="cartao-bandeira" style="background-color: #ffffff;"></span>
+                                                    <span type="text" class="col-6 input-group-text cartao-nome creditCard form-login-help hidden" id="cartao-nome" style="background-color: #ffffff;"></span>
+                                                </div>
+                                            </div>
+                                        </b-form-group>
+                                    </b-col>
+
+                                    <b-col cols="12" sm="6" lg="6">
+                                        <b-form-group label="Validade" label-class="font-weight-bold">
+                                            <b-form-input
+                                                name="validade"
+                                                size="sm"
+                                                v-model="form.validade"
+                                                type="text"
+                                                :disabled="loading"
+                                                :class="['form-control form-control-sm', {'is-invalid': errors.has(`validade`)}]"
+                                                v-validate="{ required: true }"
+                                                aria-describedby="input-1-live-feedback"
+                                                data-vv-as="Validade"
+                                                v-mask="'##/####'"
+                                            ></b-form-input>
+                                            <span v-show="errors.has(`validade`)" class="invalid-feedback">
+                                                {{ errors.first(`validade`) }}
+                                            </span>
+                                        </b-form-group>
+                                    </b-col>
+
+                                    <b-col cols="12" sm="6" lg="6">
+                                        <b-form-group label="Código de Segurança" label-class="font-weight-bold">
+                                            <b-form-input
+                                                name="cvv"
+                                                size="sm"
+                                                v-model="form.cvv"
+                                                type="text"
+                                                :disabled="loading"
+                                                :class="['form-control form-control-sm', {'is-invalid': errors.has(`cvv`)}]"
+                                                v-validate="{ required: true }"
+                                                aria-describedby="input-1-live-feedback"
+                                                data-vv-as="Código de Segurança"
+                                                v-mask="'####'"
+                                            ></b-form-input>
+                                            <span v-show="errors.has(`cvv`)" class="invalid-feedback">
+                                                {{ errors.first(`cvv`) }}
+                                            </span>
+                                        </b-form-group>
+                                    </b-col>
+
+                                    <b-col cols="12" sm="6" lg="6">
+                                        <b-form-group label="Quantidade de Parcelas" label-class="font-weight-bold">
+                                            <b-form-select
+                                                :disabled="true"
+                                                name="qntParcelas"
+                                                id="qntParcelas"
+                                                v-validate="{ required: true }"
+                                                :class="['form-control form-control-sm', {'is-invalid': errors.has(`qntParcelas`)}]"
+                                                size="sm"
+                                                data-vv-as="Quantidade de Parcelas"
+                                                class="form-control form-control-sm"
+                                                v-model="form.qntParcelas"
+                                            >
+                                            </b-form-select>
+                                            <span v-show="errors.has(`qntParcelas`)" class="invalid-feedback">
+                                                {{ errors.first(`qntParcelas`) }}
+                                            </span>
+                                        </b-form-group>
+                                    </b-col>
+
+
+                                </b-row>
+                                <div class="meio-pag-credito" id="meio-pag-credito" name="meio-pag-credito" align="center" style="padding-top:10px; padding-bottom: 20px" />
+                                <div class="hidden">
+                                    <form method="post" accept-charset="utf-8" name="formPagamentoCartaoCredito" id="formPagamentoCartaoCredito" action="">
+                                        <input type="hidden" name="recupHashCartao" id="recupHashCartao" value="">
+                                        <input type="hidden" name="numCartao" id="numCartao" :value="form.numCartao">
+                                        <input type="hidden" name="cvv" id="cvv" :value="form.cvv">
+                                        <input type="hidden" name="validade" id="validade" :value="form.validade">
+
+                                        <input type="hidden" name="associado" id="associado" :value="form.associado">
+                                        <input type="hidden" name="metodo" id="metodo" :value="form.metodo">
+
+                                        <input type="hidden" name="id" id="id" :value="form.id">
+                                        <input type="hidden" name="ativo" id="ativo" :value="form.ativo">
+                                        <input type="hidden" name="name" id="name" :value="form.name">
+                                        <input type="hidden" name="rg" id="rg" :value="form.rg">
+                                        <input type="hidden" name="orgao_expedidor" id="orgao_expedidor" :value="form.orgao_expedidor">
+                                        <input type="hidden" name="data_nascimento" id="data_nascimento" :value="form.data_nascimento">
+
+                                        <input type="hidden" name="sexo_id" id="sexo_id" :value="form.sexo_id">
+                                        <input type="hidden" name="telefone" id="telefone" :value="form.telefone">
+                                        <input type="hidden" name="celular" id="celular" :value="form.celular">
+
+                                        <input type="hidden" name="titulacao_id" id="titulacao_id" :value="form.titulacao_id">
+                                        <input type="hidden" name="instituicao_id" id="instituicao_id" :value="form.instituicao_id">
+
+                                        <input type="hidden" name="enderecoId" id="enderecoId" :value="form.enderecos.id">
+                                        <input type="hidden" name="cep" id="cep" :value="form.enderecos.cep">
+                                        <input type="hidden" name="estado" id="estado" :value="form.enderecos.estado">
+                                        <input type="hidden" name="logradouro" id="logradouro" :value="form.enderecos.logradouro">
+                                        <input type="hidden" name="numero" id="numero" :value="form.enderecos.numero">
+                                        <input type="hidden" name="bairro" id="bairro" :value="form.enderecos.bairro">
+                                        <input type="hidden" name="complemento" id="complemento" :value="form.enderecos.complemento">
+                                        <input type="hidden" name="municipio" id="municipio" :value="form.enderecos.municipio.id">
+                                        <input type="hidden" name="pais" id="pais" :value="form.pais">
+                                    </form>
+                                </div>
+                            </div>
+                        </b-card-text>
+                        </b-tab>
+
+                        <b-tab title="Boleto">
+                            <b-card-text>
+                                <form class="form-horizontal" action="" method="post" accept-charset="utf-8" name="formPagamentoBoleto" id="formPagamentoBoleto">
+                                    <fieldset>
+                                    <div class="meio-pag-boleto" align="center" style="padding-bottom: 20px"></div>
+                                    </fieldset>			
+                                </form>
+                            </b-card-text>
+                        </b-tab>
+
+                    </b-tabs>
                 </b-card>
             </div>
+             <notifications group="submit" position="center" width="500px" />
         </template>
 
         <template #modal-footer="{ cancel }">
@@ -158,17 +175,26 @@
             >
                 Cancelar
             </b-button>
+
             <b-button
+                v-if="hasCredito"
                 :disabled="loading"
                 size="md"
                 variant="outline-success"
-                @click="save()"
-            >
-                {{ hasCredito == true ? "Pagar" : "Gerar Boleto" }}
+                @click="pagarCredito()"
+            >Pagar
             </b-button>
-        </template>
-                <notifications group="submit" position="center bottom" />
 
+            <b-button
+                v-else
+                :disabled="loading"
+                size="md"
+                variant="outline-success"
+                @click="pagarBoleto()"
+            >Gerar Boleto
+            </b-button>
+
+        </template>
     </b-modal>
 </template>
 
@@ -183,13 +209,16 @@
             return {            
                 loading: false,
                 url: process.env.MIX_BASE_URL,
-                amount: "0.20",
+                produtos: [],
+                amount: null,
                 form: {
                     metodo: null,
                     numCartao: null,
                     validade: null,
                     cvv: null,
                     bandeira: null,
+                    produto: null,
+                    quantidade: 1,
                     enderecos: {
                         id: null,
                         cep: null,
@@ -228,7 +257,12 @@
                     this.form.associado = this.selectedPagar.associado
                     this.form.ativo = this.selectedPagar.ativo
                 }
+                if(this.form.associado == 1){
+                    this.amount = this.produtos.find(produto => produto.id == 1).valor
+                    this.form.produto = this.produtos.find(produto => produto.id == 1)
+                }
                 this.listarMeiosPag()
+
 
             },
             numCartao(){
@@ -244,9 +278,19 @@
         },
         methods: {
             async getEstados(){
-                await axios.get(`${process.env.MIX_BASE_URL}/get/estados`).then( res => {
-                    this.estados = res.data
-                })
+                await $.ajax({
+                    method: "GET",
+                    url: "get/estados",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.estados = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
             },
 
             async listarMeiosPag(){
@@ -257,6 +301,10 @@
                         $.each(retorno.paymentMethods.CREDIT_CARD.options, function (i, obj) {
                             $('.meio-pag-credito').append("<span class='img-band'><img src='https://stc.pagseguro.uol.com.br" + obj.images.MEDIUM.path + "'></span>");
                         });
+
+                        //Recuperar as bandeiras do boleto
+			            $('.meio-pag-boleto').append("<span  class='img-band'><img width='150' height='80' src='https://stc.pagseguro.uol.com.br" + retorno.paymentMethods.BOLETO.options.BOLETO.images.MEDIUM.path + "'><span>");
+
                     },
                     error: function (retorno) {
                         // Callback para chamadas que falharam.
@@ -274,7 +322,6 @@
                 PagSeguroDirectPayment.getBrand({
                     cardBin: numCartao,
                     success: function (retorno) {
-                        console.log(retorno);
                         //Enviar para o index a imagem da bandeira
                         var imgBand = retorno.brand.name;
                         $('.bandeira-cartao').html("<img src='https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/" + imgBand + ".png'>");
@@ -290,15 +337,12 @@
                     }
                 });
                 let nameBand = document.getElementById("cartao-nome").innerText
-                console.log('validarBanderia **depois do call recupParcelas: '+ nameBand);
                 this.form.bandeira = nameBand;
                 this.recupParcelas(nameBand);
                 
             },
             recupParcelas(bandeira){
-                console.log('recupParcelas')
                 var noIntInstalQuantity = $('#noIntInstalQuantity').val();
-                console.log('noIntInstalQuantity', noIntInstalQuantity)                
                 PagSeguroDirectPayment.getInstallments({
                     
                     amount: this.amount,
@@ -329,7 +373,7 @@
                 });
 
             },
-            save(){
+            pagarCredito(){
                 var cardnum = this.form.numCartao.replace(/\-/g, '');  // Número do cartão de crédito
                 var cardname = document.getElementById("cartao-nome").innerText;  // Bandeira do cartão
                 var cardval = this.form.validade.split("/"); // Validade do cartão mes e ano.
@@ -355,7 +399,6 @@
                 });		
 
                 function recupHashCartao(tokenCartao) {
-                    console.log('chamou recupHashCartao')
                     PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
                         if (retorno.status == 'error') {
                             console.log(retorno.message);
@@ -371,7 +414,6 @@
                             dados.push({name: "valorParcela", value: valorParcela});	
                             dados.push({name: "parcelas", value: parcelas});					
                             dados.push({name: "cardname", value: cardname});	                            		
-                            console.log('dados: '+ JSON.stringify(dados));
 
                             $.ajax({
                                 method: "POST",
@@ -393,12 +435,97 @@
                         }
                     });
                 }
-            }
+            },
+            async pagarBoleto(){
+                this.loading = true;
+
+                await PagSeguroDirectPayment.onSenderHashReady((retorno) => {
+                    if (retorno.status == 'error') {
+                        console.log(retorno.message);
+                        this.loading = false;
+                        return false;
+                    } else {
+                        this.form.hashBoleto = retorno.senderHash
+                        this.form.metodo = "boleto"
+
+
+                         this.$validator.validateAll().then((valid) => {
+                            if(valid) {
+                                this.message('Aguarde...', 'Estamos processando seu pagamento', 'info', -1);
+
+                                setTimeout(() => {
+
+                                    var dados = this.form
+
+                                    $.ajax({
+                                        method: "POST",
+                                        url: "pagseguro/associado/boleto",
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        data: $.param(dados),
+                                        dataType: 'json',
+                                        success: (res) => {
+                                            if (res.message == 'error') {} else {
+
+                                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error', -1);
+                                                this.loading = false;
+
+                                            }
+                                                this.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success', -1);
+                                                this.loading = false;
+
+                                                window.open(res.response['paymentLink'],'_blank');
+
+                                        },
+                                        error: (error) => {
+                                            if(error.response.status == 422) {
+                                                if(error.response.data.message == "The given data was invalid.") {
+                                                    this.loading = false
+                                                    return this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                                }
+                                            }
+                                            if(error.response.status == 500) {
+                                                this.loading = false
+                                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos.', 'error');
+                                            }
+                                            if(error.response.status == 403) {
+                                                if(error.response.data.message == "This action is unauthorized.") {
+                                                    this.loading = false
+                                                    this.message('Erro', 'Ação não autorizada.', 'error');
+                                                }
+                                            }
+                                        }
+                                    });
+                                },1000)
+                            } else {
+                                this.loading = false
+                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                            }
+                        })
+                    }
+                });
+
+            },
+            async getProdutos(){
+                await $.ajax({
+                    method: "GET",
+                    url: "get/produtos",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.produtos = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                    }
+                }); 
+            },
+
         },
         created() {
-            
+            this.getProdutos()
         },
-
     }
 
 </script>
@@ -408,4 +535,8 @@
     ::v-deep .modal-backdrop {
         opacity: 0.5 !important;
     }
+    ::v-deep .vue-notification {
+        font-size: 15px !important;
+    }
+
 </style>

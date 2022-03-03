@@ -29,7 +29,7 @@
 
     <div id="app">      
         <!--  BEGIN MAIN CONTAINER  -->
-        <div class="main-container d-flex justify-content-center" id="container">
+        <div class="main-container d-flex justify-content-center" id="container" style="max-width: 100% !important;">
 
             <div class="overlay"></div>
             <div class="search-overlay"></div>
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="footer-section f-section-2">
-                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Materialize sua Ideia </p>
+                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Digitalize sua Ideia </p>
                     </div>
                 </div>
                     
@@ -69,6 +69,7 @@
         });
     </script>
     <script  type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+    <script  type="text/javascript" src="{{ asset('js/ajax.js') }}"></script>
 
     {{-- Pagseguro --}}
     <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>

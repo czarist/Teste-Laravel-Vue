@@ -37,11 +37,19 @@
                     <div class="card-header">Redefinir Senha</div>
                     <div class="card-body">
     
-                      @if (Session::has('message'))
-                           <div class="alert alert-success" role="alert">
-                              {{ Session::get('message') }}
-                          </div>
-                      @endif
+                    @if (Session::has('message'))
+                        <div class="alert alert-success" role="alert">
+                            {{ Session::get('message') }}
+                        </div>
+                    @endif
+                    @if($errors->any())
+                        <div class="alert alert-warning text-center" role="alert">
+                            <b>
+                                {{ implode('', $errors->all(':message')) }}
+                            </b>
+                        </div>
+                    @endif
+
     
                         <form action="{{ route('forget.password.post') }}" method="POST">
                             @csrf

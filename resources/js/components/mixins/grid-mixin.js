@@ -121,7 +121,7 @@ export default {
 
             await $.ajax({
                 method: "GET",
-                url: "get/userlogado",
+                url: `${process.env.MIX_BASE_URL}/get/userlogado`,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 dataType: 'json',
                 success: (res) => {

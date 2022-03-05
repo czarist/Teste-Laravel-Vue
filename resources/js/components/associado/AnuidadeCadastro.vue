@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                        <h1>  Cadastre-se </h1>
+                        <h1>  Atualize seus dados de Associado </h1>
                 </div>
 
                 <ul class="list-group list-group-flush text-center">
@@ -15,7 +15,7 @@
                             >
                                 <b-form-radio-group
                                     :disabled="loading"
-                                    v-model="post.associado"
+                                    v-model="post.anuidade2022"
                                     :options="associado"
                                     :button-variant="`outline-primary`" 
                                     size="lg"
@@ -154,8 +154,8 @@
                                     size="sm"
                                     :disabled="loading"
                                     v-model="post.rg"
+                                    v-validate="{ required: true}"
                                     type="text"
-                                    v-mask="'##.###.###-#'"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`rg`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="RG"
@@ -174,6 +174,7 @@
                                     :disabled="loading"
                                     v-model="post.orgao_expedidor"
                                     type="text"
+                                    v-validate="{ required: true}"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`orgao_expedidor`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Orgão expedidor"
@@ -296,7 +297,7 @@
                     </b-row> 
 
                      <hr />
-                    <b-row v-if="post.associado">
+                    <b-row>
                         <div class="col-12 d-flex justify-content-between">
                             <label class="font-weight-bold">Endereço</label>
                         </div>
@@ -512,15 +513,18 @@
                         </div>
                     </b-row> 
                 </div>
-                <div class="card-footer">
-                    <div v-if="post.associado">
-                        <b-button :disabled=" loading" size="md" variant="outline-success" @click="pagar(post)">
-                            Método de Pagamento
+                <div class="card-footer row">
+                    <div class="col d-flex justify-content-end">
+                    <b-button :disabled=" loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
+                        Voltar
+                    </b-button>
+
+                    <b-button :disabled=" loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
+                            Salvar
                         </b-button>
-                    </div>
-                    <div v-else>
-                        <b-button :disabled=" loading" size="md" variant="outline-success" @click="save()">
-                            Cadastrar
+
+                        <b-button :disabled=" loading" size="md" variant="outline-success" class="m-1" @click="pagar(post)">
+                            Método de Pagamento
                         </b-button>
                     </div>
                 </div>
@@ -566,7 +570,7 @@
                     email: null,
                     password: null,
                     estrangeiro: 0,
-                    associado: 1,
+                    anuidade2022: 1,
                     associacao: null,
                     data_nascimento: null,
                     orgao_expedidor: null,    
@@ -595,7 +599,7 @@
                     { text: 'Sim', value: 1 },
                 ],
                 associado: [
-                    { text: 'Filie-se', value: 1 },
+                    { text: 'Anuidade 2022', value: 1 },
                 ],
             }
         },
@@ -623,7 +627,8 @@
                     this.post.ativo = this.user.ativo ? this.user.ativo : null,
                     this.post.associacao = this.user.associado ? this.user.associado.associacao : null,
                     this.post.enderecos = {
-                        id: this.user && this.user.enderecos && this.user.enderecos[0]                        ? this.user.enderecos[0].id
+                        id: this.user && this.user.enderecos && this.user.enderecos[0] 
+                            ? this.user.enderecos[0].id
                             : null,
                         cep:
                             this.user && this.user.enderecos && this.user.enderecos[0]
@@ -739,7 +744,9 @@
                 this.loading = true
                 await this.$validator.validateAll().then((valid) => {
                     if(valid) {
-                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
+
+                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
+                        this.save()
 
                         this.selectedPagar = post
                         $('#pagar').modal({keyboard: false, show: true})
@@ -813,6 +820,80 @@
                     }
                 }); 
             },
+            async save() {
+                setTimeout(() => {
+                    var dados = this.post;
+
+                    $.ajax({
+                        method: "POST",
+                        url: "perfil/save",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                        data: $.param(dados),
+                        dataType: "json",
+                        success: (res) => {
+                            if (res.message == "error") {
+                            } else {
+                                this.message(
+                                    "Erro",
+                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                    "error"
+                                    
+                                );
+                                this.loading = false;
+                            }
+                            this.message(
+                                "Sucesso",
+                                "Seus dados foram alterados com sucesso",
+                                "success",
+                                
+                            );
+                            this.loading = false;
+                        },
+                        error: (error) => {
+                            console.log(error);
+                            if (error.status == 422) {
+                                if (error.response.message == "The given data was invalid.") {
+                                    this.loading = false;
+                                    return this.message(
+                                        "Campos Obrigatórios",
+                                        "Preencha todos os campos obrigatórios",
+                                        "error"
+                                    );
+                                }
+                            }
+                            if (error.status == 500) {
+                                this.loading = false;
+                                this.message(
+                                    "Erro",
+                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                    "error",
+                                    -1
+                                );
+                            }
+                            if (error.status == 403) {
+                                if (
+                                    error.response.message == "This action is unauthorized."
+                                ) {
+                                    this.loading = false;
+                                    this.message("Erro", "Ação não autorizada.", "error");
+                                }
+                            }
+                            this.loading = false;
+                            this.message(
+                                "Erro",
+                                "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                "error"
+                                
+                            );
+                        },
+                    });
+                }, 1000);
+            },
+            back(){
+                window.history.back();
+            }
         },
         created() {
             this.getGeneros(),

@@ -198,7 +198,6 @@
                     :disabled="loading"
                     v-model="post.rg"
                     type="text"
-                    v-mask="'##.###.###-#'"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`rg`) },

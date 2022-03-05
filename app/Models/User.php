@@ -121,6 +121,24 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getFirstNameAttribute()
+    {
+        $parting = explode(' ', $this->name);
+        $firstName = array_shift($parting);
+        return $firstName;
+    }
+
+    public function getLastNameAttribute()
+    {
+        $parting = explode(' ', $this->name);
+        if(count($parting) > 1) {
+            $lastName = array_pop($parting);
+            return $lastName;
+        }
+    }    
+
+
+
     public function acessos()
     {
         return $this->belongsToMany(Acesso::class);

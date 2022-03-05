@@ -5,7 +5,7 @@
             <figure class="user-cover-image"></figure>
             <div class="user-info">
                 <img src="{{ asset('images/90x90.jpg') }}" alt="avatar">
-                <h6 class="">{{ Auth::user()->name }}</h6>
+                <h6 class="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6>
             </div>
         </div>
         <div class="shadow-bottom"></div>

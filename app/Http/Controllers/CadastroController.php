@@ -73,7 +73,7 @@ class CadastroController extends Controller
             if($exception instanceof ModelNotFoundException){
                 return abort(404, 'Registro não encontrado');
             }
-            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
 
@@ -97,7 +97,7 @@ class CadastroController extends Controller
             if($exception instanceof ModelNotFoundException){
                 return abort(404, 'Registro não encontrado');
             }
-            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
 
@@ -120,7 +120,7 @@ class CadastroController extends Controller
             if($exception instanceof ModelNotFoundException){
                 return abort(404, 'Registro não encontrado');
             }
-            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
 
-<div class="">
+<div >
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -52,8 +52,8 @@
                             </b-form-group>
                         </b-col>
 
-                        <b-col>
-                            <b-form-group label="E-mail" label-class="font-weight-bold" cols="12" sm="6" lg="6">
+                        <b-col cols="12" sm="6" lg="6">
+                            <b-form-group label="E-mail" label-class="font-weight-bold">
                                 <b-form-input
                                     name="email"
                                     size="sm"
@@ -61,7 +61,7 @@
                                     type="email"
                                     :disabled="loading"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`email`)}]"
-                                    v-validate="{ required: true }"
+                                    v-validate="{ required: true, emailCadastro: post.id }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="E-mail"
                                 ></b-form-input>
@@ -78,7 +78,7 @@
                                     size="sm"
                                     v-model="post.password"
                                     :disabled="loading"
-                                    type="password"
+                                    :type="showPassaword"
                                     v-validate="{ required: passRequired, min:6}"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`password`)}]"
                                     aria-describedby="input-1-live-feedback"
@@ -88,9 +88,34 @@
                                     {{ errors.first(`password`) }}
                                 </span>
                             </b-form-group>
+                            <b-form-checkbox v-model="showHidePasswod" name="check-button" switch >
+                                <b v-if="showHidePasswod">Ocultar senha</b>
+                                <b v-if="!showHidePasswod">Exibir senha</b>
+                            </b-form-checkbox>
+
                         </b-col>
 
                         <b-col cols="12" sm="6" lg="6">
+                            <b-form-group label="CPF" label-class="font-weight-bold">
+                                <b-form-input
+                                    name="cpf"
+                                    size="sm"
+                                    :disabled="loading"
+                                    v-model="post.cpf"
+                                    type="text"
+                                    v-mask="'###.###.###-##'"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf`)}]"
+                                    v-validate="{ required: true, cpfCheck: post.cpf }"
+                                    aria-describedby="input-1-live-feedback"
+                                    data-vv-as="CPF"
+                                ></b-form-input>
+                                <span v-show="errors.has(`cpf`)" class="invalid-feedback">
+                                    {{ errors.first(`cpf`) }}
+                                </span>
+                            </b-form-group>
+                        </b-col>
+
+                        <b-col cols="12" sm="6" lg="6" class="mt-3">
                             <b-form-group
                                 label="Estrangeiro"
                                 label-class="font-weight-bold"
@@ -100,7 +125,6 @@
                                     v-model="post.estrangeiro"
                                     :options="options"
                                     :button-variant="`outline-primary`" 
-                                    size="sm"
                                     v-validate="{ required: post.estrangeiro == 0 ? true : false }"
                                     name="estrangeiro"
                                     buttons
@@ -119,9 +143,8 @@
                                     :disabled="loading"
                                     v-model="post.passaporte"
                                     type="text"
-                                    v-mask="'########'"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`passaporte`)}]"
-                                    v-validate="{ required: true, passaporteCheck: post.id }"
+                                    v-validate="{ required: true, passaporteCheck: post.passaporte }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Passaporte"
                                 ></b-form-input>
@@ -130,30 +153,9 @@
                                 </span>
                             </b-form-group>
                         </b-col>
-
-
-                        <b-col cols="12" sm="6" lg="6" v-if="!post.estrangeiro">
-                            <b-form-group label="CPF" label-class="font-weight-bold">
-                                <b-form-input
-                                    name="cpf"
-                                    size="sm"
-                                    :disabled="loading"
-                                    v-model="post.cpf"
-                                    type="text"
-                                    v-mask="'###.###.###-##'"
-                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf`)}]"
-                                    v-validate="{ required: true}"
-                                    aria-describedby="input-1-live-feedback"
-                                    data-vv-as="CPF"
-                                ></b-form-input>
-                                <span v-show="errors.has(`cpf`)" class="invalid-feedback">
-                                    {{ errors.first(`cpf`) }}
-                                </span>
-                            </b-form-group>
-                        </b-col>
                     </b-row>                
 
-                    <b-row v-if="post.associado">
+                    <!-- <b-row v-if="post.associado">
                         <b-col cols="12" sm="6" lg="6" v-if="!post.estrangeiro">
                             <b-form-group label="RG" label-class="font-weight-bold">
                                 <b-form-input
@@ -302,9 +304,9 @@
                             </b-form-group>
                         </b-col>
 
-                    </b-row> 
+                    </b-row>  -->
 
-                    <b-row v-if="post.associado">
+                    <!-- <b-row v-if="post.associado">
                         <div class="col-12 d-flex justify-content-between">
                             <label class="font-weight-bold" >Endereço</label>
                         </div>
@@ -414,15 +416,10 @@
                         </b-col>
                             </div>
                         </div>
-                    </b-row> 
+                    </b-row>  -->
                 </div>
                 <div class="card-footer">
-                    <div v-if="post.associado">
-                        <b-button :disabled=" loading" size="md" variant="outline-success" @click="pagar(post)">
-                            Método de Pagamento
-                        </b-button>
-                    </div>
-                    <div v-else>
+                    <div>
                         <b-button :disabled=" loading" size="md" variant="outline-success" @click="save()">
                             Cadastrar
                         </b-button>
@@ -430,8 +427,9 @@
                 </div>
             </div>
         </div>
-        <pagar-modal :selectedPagar="selectedPagar" v-if="post.associado"></pagar-modal>
     </div>
+    <notifications group="submit" position="bottom center" width="500px" />
+
 </div>
 
 </template>
@@ -443,9 +441,6 @@
       export default {
         props: ['selected', 'id'],
         mixins: [ MixinsGlobal],
-        components: {
-            'pagar-modal': () => import('./PagarModal'),
-        },
         data() {
             return {
                 loading: false,
@@ -459,6 +454,8 @@
 
                 loading: false,
                 verify: null,
+                showHidePasswod: false,
+                showPassaword: "password",
                 post: {
                     id: null,
                     name: null,
@@ -466,24 +463,11 @@
                     password: null,
                     estrangeiro: 0,
                     associado: 0,
-                    data_nascimento: null,
-                    orgao_expedidor: null,                    
                     cpf: null,
                     rg:null,
-                    telefone: null,
-                    celular: null,
-                    sexo_id: null,
                     todos_tipos_id: 3,
                     ativo: 1,
                     acessos: [],
-                    enderecos: {
-                        id: null,
-                        cep: null,
-                        logradouro: null,
-                        bairro: null, 
-                        municipio: null,
-                        estado: null,
-                    },
                     _method: 'post'
                 },
                 options: [
@@ -497,85 +481,88 @@
             }
         },
         watch: {
-            
+            showHidePasswod(){
+                this.showPassaword = this.showHidePasswod == true ? 'text' : 'password'; 
+            }
         },
         computed: {
             passRequired() {
                 return this.post && this.post.id ? false : true
             },
+
             
         },
         methods: {  
-            async getEstados(){
-                await $.ajax({
-                    method: "GET",
-                    url: "get/estados",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.estados = res
-                    },
-                    error: (res) => {
-                        console.log(res)
+            // async getEstados(){
+            //     await $.ajax({
+            //         method: "GET",
+            //         url: "get/estados",
+            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //         dataType: 'json',
+            //         success: (res) => {
+            //             this.estados = res
+            //         },
+            //         error: (res) => {
+            //             console.log(res)
                         
-                    }
-                }); 
-            },
-            async getMunicipios() {
-                if(this.post.enderecos && this.post.enderecos.estado) {
-                    await $.ajax({
-                        method: "GET",
-                        url: `get/municipios/${this.post.enderecos.estado.id}`,
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        dataType: 'json',
-                        success: (res) => {
-                            this.municipios = res
-                            if(this.selected && this.selected.enderecos) {
-                                this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
-                                this.$validator.reset(`municipio${i}`)
-                            }
-                        },
-                        error: (res) => {
-                            console.log(res)
-                        }
-                    }); 
-                }
-            },
-            async getCep() {
-                if(this.post.enderecos.cep.length > 8) {
-                    await fetch(`https://viacep.com.br/ws/${this.post.enderecos.cep}/json`).then(res => res.json())
-                        .then(res => {
-                            this.post.enderecos = {
-                                cep: this.post.enderecos.cep,
-                                logradouro: res.logradouro,
-                                bairro: res.bairro,
-                                estado: this.estados.find(uf => uf.sigla == res.uf),
-                                municipio: null,
-                                id: this.post.enderecos.id,
-                                numero: this.post.enderecos.numero,
-                                complemento: null,
-                                deleted: false
+            //         }
+            //     }); 
+            // },
+            // async getMunicipios() {
+            //     if(this.post.enderecos && this.post.enderecos.estado) {
+            //         await $.ajax({
+            //             method: "GET",
+            //             url: `get/municipios/${this.post.enderecos.estado.id}`,
+            //             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //             dataType: 'json',
+            //             success: (res) => {
+            //                 this.municipios = res
+            //                 if(this.selected && this.selected.enderecos) {
+            //                     this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
+            //                     this.$validator.reset(`municipio${i}`)
+            //                 }
+            //             },
+            //             error: (res) => {
+            //                 console.log(res)
+            //             }
+            //         }); 
+            //     }
+            // },
+            // async getCep() {
+            //     if(this.post.enderecos.cep.length > 8) {
+            //         await fetch(`https://viacep.com.br/ws/${this.post.enderecos.cep}/json`).then(res => res.json())
+            //             .then(res => {
+            //                 this.post.enderecos = {
+            //                     cep: this.post.enderecos.cep,
+            //                     logradouro: res.logradouro,
+            //                     bairro: res.bairro,
+            //                     estado: this.estados.find(uf => uf.sigla == res.uf),
+            //                     municipio: null,
+            //                     id: this.post.enderecos.id,
+            //                     numero: this.post.enderecos.numero,
+            //                     complemento: null,
+            //                     deleted: false
 
-                            }
-                            this.location = res.localidade
+            //                 }
+            //                 this.location = res.localidade
 
-                            if(res.erro == true) {
-                                this.$notify({
-                                    group: "submit",
-                                    title: "Erro",
-                                    text: 'Endereço não encontrado!, tente novamente.',
-                                    type: "error"
-                                })
-                                this.loading = false
-                            }
-                        })
+            //                 if(res.erro == true) {
+            //                     this.$notify({
+            //                         group: "submit",
+            //                         title: "Erro",
+            //                         text: 'Endereço não encontrado!, tente novamente.',
+            //                         type: "error"
+            //                     })
+            //                     this.loading = false
+            //                 }
+            //             })
                       
-                    await this.getMunicipios()
-                        this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.location)
-                        this.$forceUpdate()                
+            //         await this.getMunicipios()
+            //             this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.location)
+            //             this.$forceUpdate()                
 
-                }
-            },
+            //     }
+            // },
             async save() {
                 this.loading = true
                 await this.$validator.validateAll().then((valid) => {
@@ -625,7 +612,11 @@
                                     }
                                 });
                         },1000)
+                    } else {
+                        this.loading = false
+                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
                     }
+
                 })
             },
             clear() {
@@ -633,79 +624,63 @@
                 this.post.email = null
                 this.post.name = null
                 this.post.password = null
-                this.post.enderecos = [{
-                    logradouro: null, 
-                    cep: null, 
-                    numero: null,
-                    complemento: null,
-                    bairro: null,
-                    municipio: null,
-                    estado: null,
-                    deleted: false
-                }]
                 
                 this.post._method = 'post'
                 this.$validator.reset('name')
                 this.$validator.reset('email')
             },
-            pagar(post) {
-                this.selectedPagar = post
-                $('#pagar').modal({keyboard: false, show: true})
-                this.$bvModal.show('pagar')
-
-            },
-            getGeneros(){
-                $.ajax({
-                    method: "GET",
-                    url: "get/tiposexo",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.generos = res
-                    },
-                    error: (res) => {
-                        console.log(res)
+            // getGeneros(){
+            //     $.ajax({
+            //         method: "GET",
+            //         url: "get/tiposexo",
+            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //         dataType: 'json',
+            //         success: (res) => {
+            //             this.generos = res
+            //         },
+            //         error: (res) => {
+            //             console.log(res)
                         
-                    }
-                }); 
-            },
-            getTitulacoes(){
-                $.ajax({
-                    method: "GET",
-                    url: "get/titulacoes",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.titulacoes = res
-                    },
-                    error: (res) => {
-                        console.log(res)
+            //         }
+            //     }); 
+            // },
+            // getTitulacoes(){
+            //     $.ajax({
+            //         method: "GET",
+            //         url: "get/titulacoes",
+            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //         dataType: 'json',
+            //         success: (res) => {
+            //             this.titulacoes = res
+            //         },
+            //         error: (res) => {
+            //             console.log(res)
                         
-                    }
-                }); 
-            },
-            getInstituicoes(){
-                $.ajax({
-                    method: "GET",
-                    url: "get/instituicoes",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.instituicoes = res
-                    },
-                    error: (res) => {
-                        console.log(res)
+            //         }
+            //     }); 
+            // },
+            // getInstituicoes(){
+            //     $.ajax({
+            //         method: "GET",
+            //         url: "get/instituicoes",
+            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //         dataType: 'json',
+            //         success: (res) => {
+            //             this.instituicoes = res
+            //         },
+            //         error: (res) => {
+            //             console.log(res)
                         
-                    }
-                }); 
-            },
+            //         }
+            //     }); 
+            // },
 
         },
         created: function() {
-            this.getEstados()
-            this.getGeneros()
-            this.getTitulacoes()
-            this.getInstituicoes()
+            // this.getEstados()
+            // this.getGeneros()
+            // this.getTitulacoes()
+            // this.getInstituicoes()
         },
     }
 </script>

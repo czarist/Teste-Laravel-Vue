@@ -2,15 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Venda;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class Roles
 {
     public function handle($request, Closure $next, ...$roles)
     {
+
         if(!Auth::user()->ativo || Auth::user()->ativo === 0) {
             Auth::logout();
             Log::info('User Not Alowed: ' . Auth::user());

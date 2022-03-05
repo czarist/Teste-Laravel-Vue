@@ -1,7 +1,6 @@
 <!--  BEGIN NAVBAR  -->
     <div class="header-container fixed-top">
         <header class="header navbar navbar-expand-sm ">
-            
             <ul class="navbar-nav theme-brand flex-row  text-center">
                 <li class="nav-item theme-logo">
                     <a href="{{ env('APP_URL')}}">
@@ -34,7 +33,7 @@
                             <div class="media mx-auto">
                                 <img src="{{ asset('images/90x90.jpg')}}" class="img-fluid mr-2" alt="avatar">
                                 <div class="media-body">
-                                    <h5>Usuário</h5>
+                                    <h5>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h5>
                                     
                                 </div>
                             </div>

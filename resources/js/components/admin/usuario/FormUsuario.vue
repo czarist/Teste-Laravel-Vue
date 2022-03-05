@@ -33,9 +33,8 @@
                             size="sm"
                             v-model="post.email"
                             type="text"
-                            :disabled="loading"
+                            :disabled="true"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`email`)}]"
-                            v-validate="{ required: true, email: true, emailCheck: post.id }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="E-mail"
                         ></b-form-input>
@@ -51,9 +50,8 @@
                             name="password"
                             size="sm"
                             v-model="post.password"
-                            :disabled="loading"
+                            :disabled="true"
                             type="password"
-                            v-validate="{ required: passRequired, min:6}"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`password`)}]"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Senha"
@@ -130,12 +128,11 @@
                         <b-form-input
                             name="cpf"
                             size="sm"
-                            :disabled="loading"
+                            :disabled="true"
                             v-model="post.cpf"
                             type="text"
                             v-mask="'###.###.###-##'"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="CPF"
                         ></b-form-input>
@@ -153,7 +150,6 @@
                             :disabled="loading"
                             v-model="post.rg"
                             type="text"
-                            v-mask="'##.###.###-#'"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`rg`)}]"
                             v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
@@ -403,7 +399,6 @@
                                     v-model="post.todos_tipos_id"
                                     label="descricao"
                                     :name="`todos_tipos_id`"
-                                    v-validate="'required'"
                                     data-vv-as="Tipo de Acesso"
                                     multiple
                                 >
@@ -432,7 +427,6 @@
                             v-model="post.acessos"
                             label="pagina"
                             :name="`acessos[]`"
-                            v-validate="'required'"
                             data-vv-as="Acessos Permitidos"
                             multiple
                         >

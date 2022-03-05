@@ -1,6 +1,11 @@
 [hidden] {
     display: none !important;
 }
+
+.hidden {
+    display: none !important;
+}
+
   
 .scroll {
     max-height: 73vh;

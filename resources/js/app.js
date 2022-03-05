@@ -38,83 +38,150 @@ Vue.filter('formatPrice', function (value) {
 
 Validator.localize('pt_BR', pt_BR)
 
-// Validator.localize({
-//     pt_BR: {
-//         messages: {
-//             date_format: 'Formato invalido',
-//         },
+Validator.localize({
+    pt_BR: {
+        messages: {
+            date_format: 'Formato invalido',
+        },
         
-//         custom: {
-//             email: {
-//                 emailCheck: 'E-mail já cadastrado',
-//                 emailCadastro: 'E-mail já cadastrado'
-//             },
-//             numero_socio: {
-//                 numeroSocioCheck: 'Número sócio já em uso'
-//             },      
-//             password: {
-//                 passCheck: 'Senha incorreta'
-//             },
-//             cpf: {
-//                 cpfCheck: 'CPF já cadastrado'
-//             },
-//             passaporte: {
-//                 passaporteCheck: 'Passaporte já cadastrado'
-//             }
-//         }
-//     }
-// });
+        custom: {
+            email: {
+                emailCheck: 'E-mail já cadastrado',
+                emailCadastro: 'E-mail já cadastrado'
+            },
+            numero_socio: {
+                numeroSocioCheck: 'Número sócio já em uso'
+            },      
+            password: {
+                passCheck: 'Senha incorreta'
+            },
+            cpf: {
+                cpfCheck: 'CPF já cadastrado'
+            },
+            passaporte: {
+                passaporteCheck: 'Passaporte já cadastrado'
+            }
+        }
+    }
+});
 
-// Validator.extend("numeroSocioCheck", {
-//     validate: (numero_socio, id) => {
-//         return axios.post(`${process.env.MIX_BASE_URL}/admin/associado/check`, {numero_socio, id}).then(res => {
-//             return {
-//                 valid: res.data
-//             }
-//         })
-//     }
-// })
+Validator.extend("numeroSocioCheck", {
+    validate: (numero_socio, id) => {
+        var numero_socioo = {'numero_socio': numero_socio}
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/admin/associado/check`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: numero_socioo,
+            dataType: 'json',
+            success: (retorna) => {
+                return {
+                    valid: retorna
+                }
 
-// Validator.extend("emailCheck", {
-//     validate: (email, id) => {
-//         return axios.post(`${process.env.MIX_BASE_URL}/perfil/emailcheck`, {email, id}).then(res => {
-//             return {
-//                 valid: res.data
-//             }
-//         })
-//     }
-// })
+            },
+            error: (retorna) => {
+            }
+        });
 
-// Validator.extend("emailCadastro", {
-//     validate: (email) => {
-//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/emailcheck`, {email}).then(res => {
-//             return {
-//                 valid: res.data
-//             }
-//         })
-//     }
-// })
+    }
+})
 
-// Validator.extend("cpfCheck", {
-//     validate: (cpf) => {
-//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/cpfcheck`, {cpf}).then(res => {
-//             return {
-//                 valid: res.data
-//             }
-//         })
-//     }
-// })
+Validator.extend("emailCheck", {
+    validate: (email) => {
+        var emaill = {'email': email}
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/perfil/emailcheck`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: emaill,
+            dataType: 'json',
+            success: (retorna) => {
+                return {
+                    valid: retorna
+                }
 
-// Validator.extend("passaporteCheck", {
-//     validate: (passaporte) => {
-//         console.log(passaporte)
-//         return axios.post(`${process.env.MIX_BASE_URL}/cadastro/passaportecheck`, {passaporte}).then(res => {
-//             return {
-//                 valid: res.data
-//             }
-//         })
-//     }
-// })
+            },
+            error: (retorna) => {
+            }
+        });
+    }
+})
+
+Validator.extend("emailCadastro", {
+    validate: (email) => {
+        var emaill = {'email': email}
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/cadastro/emailcheck`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: emaill,
+            dataType: 'json',
+            success: (retorna) => {
+                return {
+                    valid: retorna
+                }
+
+            },
+            error: (retorna) => {
+            }
+        });
+    }
+})
+
+Validator.extend("cpfCheck", {
+    validate: (cpf) => {
+        var cpff = {'cpf': cpf}
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/cadastro/cpfcheck`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: cpff,
+            dataType: 'json',
+            success: (retorna) => {
+                console.log('retorno cpfcheck: ' +retorna)
+                return {
+                    valid: retorna
+                }
+
+            },
+            error: (retorna) => {
+            }
+        });
+    }
+})
+
+Validator.extend("passaporteCheck", {
+    validate: (passaporte) => {
+        var passaportee = {'passaporte': passaporte}
+
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/cadastro/passaportecheck`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: passaportee,
+            dataType: 'json',
+            success: (retorna) => {
+                return {
+                    valid: retorna
+                }
+
+            },
+            error: (retorna) => {
+            }
+        });
+    }
+})
 
 
 

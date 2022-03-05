@@ -19,6 +19,28 @@
                                 </div>
                             </div>
 
+                            <div class="container hidden" id="retorno_ok">
+                                <div class="section-head style-3 text-center z mb-3 alert alert-success" role="alert">
+                                    <h2 class="title" id="retorno_titulo_ok"></h2>
+                                    <p id="retorno_texto_ok"></p>
+                                </div>
+                            </div>
+                            <div class="container hidden" id="retorno_erro">
+                                <div class="section-head style-3 text-center z mb-3 alert alert-danger" role="alert">
+                                    <h2 class="title" id="retorno_titulo"></h2>
+                                    <p id="retorno_texto"></p>
+                                    <div>
+                                        <b-button
+                                            size="xl"
+                                            variant="outline-danger"
+                                            @click="recarregar()"
+                                        >
+                                            Voltar
+                                        </b-button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="container">
                                 <b-row>
                                     <b-col cols="12" sm="6" lg="6">
@@ -167,6 +189,17 @@
         </template>
 
         <template #modal-footer="{ cancel }">
+            <div id="redirecionar_botao" class="hidden">
+                <b-button
+                    size="xl"
+                    variant="outline-success"
+                    @click="redirecionar()"
+                    :disabled="loading"
+                >
+                    Área de Pagamentos
+                </b-button>
+            </div>
+
             <b-button
                 size="md"
                 variant="outline-danger"
@@ -177,6 +210,7 @@
             </b-button>
 
             <b-button
+                id="submit_button"
                 v-if="hasCredito"
                 :disabled="loading"
                 size="md"
@@ -190,6 +224,7 @@
                 :disabled="loading"
                 size="md"
                 variant="outline-success"
+                id="submit_button_boleto"
                 @click="pagarBoleto()"
             >Gerar Boleto
             </b-button>
@@ -218,7 +253,6 @@
                     cvv: null,
                     bandeira: null,
                     produto: null,
-                    quantidade: 1,
                     enderecos: {
                         id: null,
                         cep: null,
@@ -256,6 +290,10 @@
                     this.form.titulacao_id = this.selectedPagar.titulacao_id
                     this.form.associado = this.selectedPagar.associado
                     this.form.ativo = this.selectedPagar.ativo
+
+                    this.form.valorParcela = this.produtos.find(produto => produto.id == 2).valor
+                    this.form.parcelas = 1;
+
                 }
                 if(this.form.associado == 1){
                     this.amount = this.produtos.find(produto => produto.id == 1).valor
@@ -277,6 +315,12 @@
             }
         },
         methods: {
+            recarregar(){
+                window.location.reload();
+            },
+            redirecionar(){
+                window.location.href = '/pagamento';
+            },
             async getEstados(){
                 await $.ajax({
                     method: "GET",
@@ -334,6 +378,13 @@
                         
                     },
                     error: function (retorno) {
+
+                        $('#retorno_erro').removeClass('hidden');
+                        $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                        $('#submit_button').prop('disabled', true);
+                        $('#submit_button_boleto').prop('disabled', true);
+
+
                     }
                 });
                 let nameBand = document.getElementById("cartao-nome").innerText
@@ -365,7 +416,11 @@
                         });
                     },
                     error: function (retorno) {
-                        // callback para chamadas que falharam.
+                        $('#retorno_erro').removeClass('hidden');
+                        $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                        $('#submit_button').prop('disabled', true);
+                        $('#submit_button_boleto').prop('disabled', true);
+
                     },
                     complete: function (retorno) {
                         // Callback para todas chamadas.
@@ -374,6 +429,9 @@
 
             },
             pagarCredito(){
+
+                this.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
+
                 var cardnum = this.form.numCartao.replace(/\-/g, '');  // Número do cartão de crédito
                 var cardname = document.getElementById("cartao-nome").innerText;  // Bandeira do cartão
                 var cardval = this.form.validade.split("/"); // Validade do cartão mes e ano.
@@ -391,7 +449,11 @@
                         recupHashCartao(retorno.card.token);
                     },
                     error: function (retorno) {
-                        // Callback para chamadas que falharam.
+                        $('#retorno_erro').removeClass('hidden');
+                        $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                        $('#submit_button').prop('disabled', true);
+                        $('#submit_button_boleto').prop('disabled', true);
+
                     },
                     complete: function (retorno) {
                         // Callback para todas chamadas.                
@@ -401,9 +463,16 @@
                 function recupHashCartao(tokenCartao) {
                     PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
                         if (retorno.status == 'error') {
-                            console.log(retorno.message);
+
+                            $('#retorno_erro').removeClass('hidden');
+                            $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                            $('#submit_button').prop('disabled', true);
+                            $('#submit_button_boleto').prop('disabled', true);
+
+
                             return false;
                         } else {
+
                             var hashCartao = retorno.senderHash;
                             var valorParcela = $('#qntParcelas').find(':selected').attr('data-parcelas');
                             var parcelas = $('#qntParcelas').find(':selected').val();
@@ -423,10 +492,31 @@
                                 dataType: 'json',
                                 success: function (retorna) {
                                     if(retorna.message == 'error'){
-                                        window.location.href = "https://www.sistemas.intercom.org.br?status=error";
+                                        
+                                        $('#retorno_erro').removeClass('hidden');
+                                        $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                                        $("#submit_button").prop("disabled", true);
+                                        $('#submit_button_boleto').prop('disabled', true);
+
+                                        
+                                        //to mexendo aqui
+                                        setTimeout(() => {
+                                            window.location.href = '/pagamento?status=error';
+                                        },2000)
                                     }
                                     else{
-                                        window.location.href = "https://www.sistemas.intercom.org.br?status=sucess";
+
+                                        $('#redirecionar_botao').removeClass('hidden').attr('class', 'text-center');
+                                        $('#retorno_ok').removeClass('hidden');
+                                        $('#retorno_titulo_ok').html('Sucesso!');
+                                        $('#retorno_texto_ok').html('Seu pagamento foi processado com sucesso');
+                                        $('#submit_button').prop('disabled', true);
+                                        $('#submit_button_boleto').prop('disabled', true);
+                                        
+                                        //to mexendo aqui
+                                        setTimeout(() => {
+                                            window.location.href = '/pagamento?status=sucess';
+                                        },2000)
                                     }
                                 },
                                 error: function (retorna) {
@@ -451,7 +541,7 @@
 
                          this.$validator.validateAll().then((valid) => {
                             if(valid) {
-                                this.message('Aguarde...', 'Estamos processando seu pagamento', 'info', -1);
+                                this.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
 
                                 setTimeout(() => {
 
@@ -468,11 +558,11 @@
                                         success: (res) => {
                                             if (res.message == 'error') {} else {
 
-                                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error', -1);
+                                                this.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                                                 this.loading = false;
 
                                             }
-                                                this.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success', -1);
+                                                this.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success');
                                                 this.loading = false;
 
                                                 window.open(res.response['paymentLink'],'_blank');
@@ -482,12 +572,12 @@
                                             if(error.response.status == 422) {
                                                 if(error.response.data.message == "The given data was invalid.") {
                                                     this.loading = false
-                                                    return this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                                    return this.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                                                 }
                                             }
                                             if(error.response.status == 500) {
                                                 this.loading = false
-                                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos.', 'error');
+                                                this.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.', 'error');
                                             }
                                             if(error.response.status == 403) {
                                                 if(error.response.data.message == "This action is unauthorized.") {
@@ -500,7 +590,7 @@
                                 },1000)
                             } else {
                                 this.loading = false
-                                this.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                this.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                             }
                         })
                     }

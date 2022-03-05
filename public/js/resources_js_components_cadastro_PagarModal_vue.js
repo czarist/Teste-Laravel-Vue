@@ -222,6 +222,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -240,7 +275,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         cvv: null,
         bandeira: null,
         produto: null,
-        quantidade: 1,
         enderecos: {
           id: null,
           cep: null,
@@ -278,6 +312,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.form.titulacao_id = this.selectedPagar.titulacao_id;
         this.form.associado = this.selectedPagar.associado;
         this.form.ativo = this.selectedPagar.ativo;
+        this.form.valorParcela = this.produtos.find(function (produto) {
+          return produto.id == 2;
+        }).valor;
+        this.form.parcelas = 1;
       }
 
       if (this.form.associado == 1) {
@@ -303,6 +341,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    recarregar: function recarregar() {
+      window.location.reload();
+    },
+    redirecionar: function redirecionar() {
+      window.location.href = '/pagamento';
+    },
     getEstados: function getEstados() {
       var _this = this;
 
@@ -381,7 +425,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           $('#cartao-bandeira').removeClass('hidden');
           $('.cartao-nome').removeClass('hidden');
         },
-        error: function error(retorno) {}
+        error: function error(retorno) {
+          $('#retorno_erro').removeClass('hidden');
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $('#submit_button').prop('disabled', true);
+          $('#submit_button_boleto').prop('disabled', true);
+        }
       });
       var nameBand = document.getElementById("cartao-nome").innerText;
       this.form.bandeira = nameBand;
@@ -406,13 +455,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           });
         },
-        error: function error(retorno) {// callback para chamadas que falharam.
+        error: function error(retorno) {
+          $('#retorno_erro').removeClass('hidden');
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $('#submit_button').prop('disabled', true);
+          $('#submit_button_boleto').prop('disabled', true);
         },
         complete: function complete(retorno) {// Callback para todas chamadas.
         }
       });
     },
     pagarCredito: function pagarCredito() {
+      this.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
       var cardnum = this.form.numCartao.replace(/\-/g, ''); // Número do cartão de crédito
 
       var cardname = document.getElementById("cartao-nome").innerText; // Bandeira do cartão
@@ -434,7 +488,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         success: function success(retorno) {
           recupHashCartao(retorno.card.token);
         },
-        error: function error(retorno) {// Callback para chamadas que falharam.
+        error: function error(retorno) {
+          $('#retorno_erro').removeClass('hidden');
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $('#submit_button').prop('disabled', true);
+          $('#submit_button_boleto').prop('disabled', true);
         },
         complete: function complete(retorno) {// Callback para todas chamadas.                
         }
@@ -443,7 +501,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       function recupHashCartao(tokenCartao) {
         PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
           if (retorno.status == 'error') {
-            console.log(retorno.message);
+            $('#retorno_erro').removeClass('hidden');
+            $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+            $('#submit_button').prop('disabled', true);
+            $('#submit_button_boleto').prop('disabled', true);
             return false;
           } else {
             var hashCartao = retorno.senderHash;
@@ -481,9 +542,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               dataType: 'json',
               success: function success(retorna) {
                 if (retorna.message == 'error') {
-                  window.location.href = "https://www.sistemas.intercom.org.br?status=error";
+                  $('#retorno_erro').removeClass('hidden');
+                  $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                  $("#submit_button").prop("disabled", true);
+                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
+
+                  setTimeout(function () {
+                    window.location.href = '/pagamento?status=error';
+                  }, 2000);
                 } else {
-                  window.location.href = "https://www.sistemas.intercom.org.br?status=sucess";
+                  $('#redirecionar_botao').removeClass('hidden').attr('class', 'text-center');
+                  $('#retorno_ok').removeClass('hidden');
+                  $('#retorno_titulo_ok').html('Sucesso!');
+                  $('#retorno_texto_ok').html('Seu pagamento foi processado com sucesso');
+                  $('#submit_button').prop('disabled', true);
+                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
+
+                  setTimeout(function () {
+                    window.location.href = '/pagamento?status=sucess';
+                  }, 2000);
                 }
               },
               error: function error(retorna) {}
@@ -513,7 +590,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                     _this3.$validator.validateAll().then(function (valid) {
                       if (valid) {
-                        _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info', -1);
+                        _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
 
                         setTimeout(function () {
                           var dados = _this3.form;
@@ -527,12 +604,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             dataType: 'json',
                             success: function success(res) {
                               if (res.message == 'error') {} else {
-                                _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error', -1);
+                                _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
 
                                 _this3.loading = false;
                               }
 
-                              _this3.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success', -1);
+                              _this3.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success');
 
                               _this3.loading = false;
                               window.open(res.response['paymentLink'], '_blank');
@@ -541,14 +618,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               if (_error.response.status == 422) {
                                 if (_error.response.data.message == "The given data was invalid.") {
                                   _this3.loading = false;
-                                  return _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                  return _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                                 }
                               }
 
                               if (_error.response.status == 500) {
                                 _this3.loading = false;
 
-                                _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos.', 'error');
+                                _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.', 'error');
                               }
 
                               if (_error.response.status == 403) {
@@ -564,7 +641,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       } else {
                         _this3.loading = false;
 
-                        _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                        _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                       }
                     });
                   }
@@ -812,6 +889,34 @@ var render = function () {
             var cancel = ref.cancel
             return [
               _c(
+                "div",
+                { staticClass: "hidden", attrs: { id: "redirecionar_botao" } },
+                [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        size: "xl",
+                        variant: "outline-success",
+                        disabled: _vm.loading,
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.redirecionar()
+                        },
+                      },
+                    },
+                    [
+                      _vm._v(
+                        "\n                Área de Pagamentos\n            "
+                      ),
+                    ]
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
                 "b-button",
                 {
                   attrs: {
@@ -833,6 +938,7 @@ var render = function () {
                     "b-button",
                     {
                       attrs: {
+                        id: "submit_button",
                         disabled: _vm.loading,
                         size: "md",
                         variant: "outline-success",
@@ -852,6 +958,7 @@ var render = function () {
                         disabled: _vm.loading,
                         size: "md",
                         variant: "outline-success",
+                        id: "submit_button_boleto",
                       },
                       on: {
                         click: function ($event) {
@@ -910,6 +1017,86 @@ var render = function () {
                               ]
                             ),
                           ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_ok" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "section-head style-3 text-center z mb-3 alert alert-success",
+                                  attrs: { role: "alert" },
+                                },
+                                [
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo_ok" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", {
+                                    attrs: { id: "retorno_texto_ok" },
+                                  }),
+                                ]
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_erro" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "section-head style-3 text-center z mb-3 alert alert-danger",
+                                  attrs: { role: "alert" },
+                                },
+                                [
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", { attrs: { id: "retorno_texto" } }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            size: "xl",
+                                            variant: "outline-danger",
+                                          },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.recarregar()
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                        Voltar\n                                    "
+                                          ),
+                                        ]
+                                      ),
+                                    ],
+                                    1
+                                  ),
+                                ]
+                              ),
+                            ]
+                          ),
                           _vm._v(" "),
                           _c(
                             "div",

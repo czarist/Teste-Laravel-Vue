@@ -201,10 +201,292 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['selectedPagar', 'id'],
+  props: ["selectedPagar", "id"],
   mixins: [_mixins_global_mixins__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
@@ -229,7 +511,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         titulacao_id: this.selectedPagar ? this.selectedPagar.titulacao_id : null,
         anuidade2022: null,
         ativo: this.selectedPagar ? this.selectedPagar.ativo : null,
-        quantidade: 1,
         produto: null
       }
     };
@@ -243,18 +524,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.form.id = this.selectedPagar.id;
         this.form.name = this.selectedPagar.name;
         this.form.email = this.selectedPagar.email;
+        this.form.password = this.selectedPagar.password;
         this.form.cpf = this.selectedPagar.cpf;
+        this.form.rg = this.selectedPagar.rg;
+        this.form.orgao_expedidor = this.selectedPagar.orgao_expedidor;
         this.form.estrangeiro = this.selectedPagar.estrangeiro;
         this.form.passaporte = this.selectedPagar.passaporte;
+        this.form.data_nascimento = this.selectedPagar.data_nascimento;
+        this.form.sexo_id = this.selectedPagar.sexo_id;
+        this.form.celular = this.selectedPagar.celular;
+        this.form.telefone = this.selectedPagar.telefone;
+        this.form.enderecos = this.selectedPagar.enderecos;
+        this.form.instituicao_id = this.selectedPagar.instituicao_id;
+        this.form.titulacao_id = this.selectedPagar.titulacao_id;
+        this.form.associado = this.selectedPagar.associado;
         this.form.ativo = this.selectedPagar.ativo;
+        this.form.valorParcela = this.produtos.find(function (produto) {
+          return produto.id == 2;
+        }).valor;
+        this.form.parcelas = 1;
       }
 
       if (this.form.anuidade2022 == 1) {
         this.amount = this.produtos.find(function (produto) {
-          return produto.id == 1;
+          return produto.id == 2;
         }).valor;
         this.form.produto = this.produtos.find(function (produto) {
-          return produto.id == 1;
+          return produto.id == 2;
         });
       }
 
@@ -272,6 +568,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    recarregar: function recarregar() {
+      window.location.reload();
+    },
+    redirecionar: function redirecionar() {
+      window.location.href = "/pagamento";
+    },
     getProdutos: function getProdutos() {
       var _this = this;
 
@@ -285,9 +587,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   method: "GET",
                   url: "get/produtos",
                   headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
                   },
-                  dataType: 'json',
+                  dataType: "json",
                   success: function success(res) {
                     _this.produtos = res;
                   },
@@ -317,14 +619,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   success: function success(retorno) {
                     //Recuperar as bandeiras do cartão de crédito
                     $.each(retorno.paymentMethods.CREDIT_CARD.options, function (i, obj) {
-                      $('.meio-pag-credito').append("<span class='img-band'><img src='https://stc.pagseguro.uol.com.br" + obj.images.MEDIUM.path + "'></span>");
+                      $(".meio-pag-credito").append("<span class='img-band'><img src='https://stc.pagseguro.uol.com.br" + obj.images.MEDIUM.path + "'></span>");
                     }); //Recuperar as bandeiras do boleto
 
-                    $('.meio-pag-boleto').append("<span  class='img-band'><img width='150' height='80' src='https://stc.pagseguro.uol.com.br" + retorno.paymentMethods.BOLETO.options.BOLETO.images.MEDIUM.path + "'><span>");
+                    $(".meio-pag-boleto").append("<span  class='img-band'><img width='150' height='80' src='https://stc.pagseguro.uol.com.br" + retorno.paymentMethods.BOLETO.options.BOLETO.images.MEDIUM.path + "'><span>");
                   },
-                  error: function error(retorno) {
-                    this.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
-                  },
+                  error: function error(retorno) {},
                   complete: function complete(retorno) {// Callback para todas chamadas.
                     //recupTokemCartao();
                   }
@@ -340,19 +640,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     validarBanderia: function validarBanderia() {
       var numCartao = this.form.numCartao.substr(0, 7);
-      numCartao = numCartao.replace(/\-/g, '');
+      numCartao = numCartao.replace(/\-/g, "");
       PagSeguroDirectPayment.getBrand({
         cardBin: numCartao,
         success: function success(retorno) {
           //Enviar para o index a imagem da bandeira
           var imgBand = retorno.brand.name;
-          $('.bandeira-cartao').html("<img src='https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/" + imgBand + ".png'>");
-          $('.cartao-nome').html(imgBand);
-          $('#cartao-bandeira').removeClass('hidden');
-          $('.cartao-nome').removeClass('hidden');
+          $(".bandeira-cartao").html("<img src='https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/" + imgBand + ".png'>");
+          $(".cartao-nome").html(imgBand);
+          $("#cartao-bandeira").removeClass("hidden");
+          $(".cartao-nome").removeClass("hidden");
         },
         error: function error(retorno) {
-          this.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+          $("#retorno_erro").removeClass("hidden");
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $("#submit_button").prop("disabled", true);
+          $('#submit_button_boleto').prop('disabled', true);
         }
       });
       var nameBand = document.getElementById("cartao-nome").innerText;
@@ -360,7 +663,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.recupParcelas(nameBand);
     },
     recupParcelas: function recupParcelas(bandeira) {
-      var noIntInstalQuantity = $('#noIntInstalQuantity').val();
+      var noIntInstalQuantity = $("#noIntInstalQuantity").val();
       PagSeguroDirectPayment.getInstallments({
         amount: this.amount,
         maxInstallmentNoInterest: noIntInstalQuantity,
@@ -374,19 +677,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               var valorParcelaDouble = objb.installmentAmount.toFixed(2); //Apresentar quantidade de parcelas e o valor das parcelas para o usuário no campo SELECT
 
-              $('#qntParcelas').show().append("<option value='" + objb.quantity + "' data-parcelas='" + valorParcelaDouble + "'>" + objb.quantity + " parcelas de R$ " + valorParcela + "</option>");
+              $("#qntParcelas").show().append("<option value='" + objb.quantity + "' data-parcelas='" + valorParcelaDouble + "'>" + objb.quantity + " parcelas de R$ " + valorParcela + "</option>");
             });
           });
         },
         error: function error(retorno) {
-          this.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+          $("#retorno_erro").removeClass("hidden");
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $("#submit_button").prop("disabled", true);
+          $('#submit_button_boleto').prop('disabled', true);
         },
         complete: function complete(retorno) {// Callback para todas chamadas.
         }
       });
     },
     pagarCredito: function pagarCredito() {
-      var cardnum = this.form.numCartao.replace(/\-/g, ''); // Número do cartão de crédito
+      this.message("Aguarde...", "Estamos processando seu pagamento", "info");
+      var cardnum = this.form.numCartao.replace(/\-/g, ""); // Número do cartão de crédito
 
       var cardname = document.getElementById("cartao-nome").innerText; // Bandeira do cartão
 
@@ -408,22 +715,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           recupHashCartao(retorno.card.token);
         },
         error: function error(retorno) {
-          this.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+          $("#retorno_erro").removeClass("hidden");
+          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+          $("#submit_button").prop("disabled", true);
+          $('#submit_button_boleto').prop('disabled', true);
         },
-        complete: function complete(retorno) {// Callback para todas chamadas.                
+        complete: function complete(retorno) {// Callback para todas chamadas.
         }
       });
 
       function recupHashCartao(tokenCartao) {
         PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
-          if (retorno.status == 'error') {
-            console.log(retorno.message);
-            this.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+          if (retorno.status == "error") {
+            $("#retorno_erro").removeClass("hidden");
+            $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+            $("#submit_button").prop("disabled", true);
+            $('#submit_button_boleto').prop('disabled', true);
             return false;
           } else {
             var hashCartao = retorno.senderHash;
-            var valorParcela = $('#qntParcelas').find(':selected').attr('data-parcelas');
-            var parcelas = $('#qntParcelas').find(':selected').val();
+            var valorParcela = $("#qntParcelas").find(":selected").attr("data-parcelas");
+            var parcelas = $("#qntParcelas").find(":selected").val();
             var cardname = document.getElementById("cartao-nome").innerText;
             var dados = $("#formPagamentoCartaoCredito").serializeArray();
             dados.push({
@@ -450,18 +762,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               method: "POST",
               url: "pagseguro/associado/credito/anuidade",
               headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
               },
               data: $.param(dados),
-              dataType: 'json',
+              dataType: "json",
               success: function success(retorna) {
-                if (retorna.message == 'error') {
-                  window.location.href = "https://www.sistemas.intercom.org.br?status=error";
+                if (retorna.message == "error") {
+                  $("#retorno_erro").removeClass("hidden");
+                  $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                  $("#submit_button").prop("disabled", true);
+                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
+
+                  setTimeout(function () {
+                    window.location.href = "/pagamento?status=error";
+                  }, 2000);
                 } else {
-                  window.location.href = "https://www.sistemas.intercom.org.br?status=sucess";
+                  $("#redirecionar_botao").removeClass("hidden").attr("class", "text-center");
+                  $("#retorno_ok").removeClass("hidden");
+                  $("#retorno_titulo_ok").html("Sucesso!");
+                  $("#retorno_texto_ok").html("Seu pagamento foi processado com sucesso");
+                  $("#submit_button").prop("disabled", true);
+                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
+
+                  setTimeout(function () {
+                    window.location.href = "/pagamento?status=sucess";
+                  }, 2000);
                 }
               },
-              error: function error(retorna) {}
+              error: function error(retorna) {
+                $("#retorno_erro").removeClass("hidden");
+                $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                $("#submit_button").prop("disabled", true);
+                $('#submit_button_boleto').prop('disabled', true);
+              }
             });
           }
         });
@@ -478,19 +811,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this3.loading = true;
                 _context3.next = 3;
                 return PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
-                  if (retorno.status == 'error') {
+                  if (retorno.status == "error") {
                     _this3.loading = false;
 
-                    _this3.message('Erro', 'O Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                    _this3.message("Erro", "O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos", "error");
 
                     return false;
                   } else {
-                    _this3.form.hashBoleto = retorno.senderHash;
-                    _this3.form.metodo = "boleto";
-
                     _this3.$validator.validateAll().then(function (valid) {
                       if (valid) {
-                        _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info', -1);
+                        _this3.message("Aguarde...", "Estamos processando seu pagamento", "info");
 
                         setTimeout(function () {
                           var dados = _this3.form;
@@ -498,41 +828,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             method: "POST",
                             url: "pagseguro/associado/boleto/anuidade",
                             headers: {
-                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                              "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
                             },
                             data: $.param(dados),
-                            dataType: 'json',
+                            dataType: "json",
                             success: function success(res) {
-                              if (res.message == 'error') {
-                                _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos.', 'error', -1);
+                              if (res.message == "error") {
+                                _this3.message("Erro", "Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.", "error");
 
                                 _this3.loading = false;
                               } else {
-                                _this3.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success', -1);
+                                _this3.message("Sucesso", "Seu pagamento foi processado com sucesso", "success");
 
                                 _this3.loading = false;
-                                window.open(res.response['paymentLink'], '_blank');
+                                window.open(res.response["paymentLink"], "_blank");
                               }
                             },
                             error: function error(_error) {
                               if (_error.response.status == 422) {
                                 if (_error.response.data.message == "The given data was invalid.") {
                                   _this3.loading = false;
-                                  return _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                                  return _this3.message("Erro", "Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos", "error");
                                 }
                               }
 
                               if (_error.response.status == 500) {
                                 _this3.loading = false;
 
-                                _this3.message('Erro', 'Erro ao processar o pagamento, atualize sua página e tente novamente.', 'error');
+                                _this3.message("Erro", "Erro ao processar o pagamento, atualize sua página e tente novamente.", "error");
                               }
 
                               if (_error.response.status == 403) {
                                 if (_error.response.data.message == "This action is unauthorized.") {
                                   _this3.loading = false;
 
-                                  _this3.message('Erro', 'Ação não autorizada.', 'error');
+                                  _this3.message("Erro", "Ação não autorizada.", "error");
                                 }
                               }
                             }
@@ -541,7 +871,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       } else {
                         _this3.loading = false;
 
-                        _this3.message('Erro', 'Erro ao processar o pagamento, o Pagseguro pode estar com lentidão ou instabilidade, tente novamente em alguns minutos', 'error');
+                        _this3.message("Erro", "Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos", "error");
                       }
                     });
                   }
@@ -579,7 +909,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n[data-v-2152c348] .modal-backdrop {\n    opacity: 0.5 !important;\n}\n[data-v-2152c348] .vue-notification {\n    font-size: 15px !important;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n[data-v-2152c348] .modal-backdrop {\n  opacity: 0.5 !important;\n}\n[data-v-2152c348] .vue-notification {\n  font-size: 15px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -735,7 +1065,7 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        "Escolha uma forma de Pagamento testes Anuidade modal"
+                        "\n          Escolha uma forma de Pagamento testes Anuidade modal\n        "
                       ),
                     ]
                   ),
@@ -763,6 +1093,30 @@ var render = function () {
             var cancel = ref.cancel
             return [
               _c(
+                "div",
+                { staticClass: "hidden", attrs: { id: "redirecionar_botao" } },
+                [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: {
+                        size: "xl",
+                        variant: "outline-success",
+                        disabled: _vm.loading,
+                      },
+                      on: {
+                        click: function ($event) {
+                          return _vm.redirecionar()
+                        },
+                      },
+                    },
+                    [_vm._v("\n        Área de Pagamentos\n      ")]
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
                 "b-button",
                 {
                   attrs: {
@@ -776,7 +1130,7 @@ var render = function () {
                     },
                   },
                 },
-                [_vm._v("\n            Cancelar\n        ")]
+                [_vm._v("\n      Cancelar\n    ")]
               ),
               _vm._v(" "),
               _vm.hasCredito
@@ -784,6 +1138,7 @@ var render = function () {
                     "b-button",
                     {
                       attrs: {
+                        id: "submit_button",
                         disabled: _vm.loading,
                         size: "md",
                         variant: "outline-success",
@@ -794,7 +1149,7 @@ var render = function () {
                         },
                       },
                     },
-                    [_vm._v("Pagar\n        ")]
+                    [_vm._v("Pagar\n    ")]
                   )
                 : _c(
                     "b-button",
@@ -802,6 +1157,7 @@ var render = function () {
                       attrs: {
                         disabled: _vm.loading,
                         size: "md",
+                        id: "submit_button_boleto",
                         variant: "outline-success",
                       },
                       on: {
@@ -810,7 +1166,7 @@ var render = function () {
                         },
                       },
                     },
-                    [_vm._v("Gerar Boleto\n        ")]
+                    [_vm._v("Gerar Boleto\n    ")]
                   ),
             ]
           },
@@ -845,7 +1201,7 @@ var render = function () {
                               },
                               [
                                 _c("h2", { staticClass: "title" }, [
-                                  _vm._v("Checkout "),
+                                  _vm._v("\n                    Checkout "),
                                   _c("img", {
                                     attrs: {
                                       src: _vm.url + "/images/pagseguro.png",
@@ -861,6 +1217,86 @@ var render = function () {
                               ]
                             ),
                           ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_ok" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "\n                    section-head\n                    style-3\n                    text-center\n                    z\n                    mb-3\n                    alert alert-success\n                  ",
+                                  attrs: { role: "alert" },
+                                },
+                                [
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo_ok" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", {
+                                    attrs: { id: "retorno_texto_ok" },
+                                  }),
+                                ]
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_erro" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "\n                    section-head\n                    style-3\n                    text-center\n                    z\n                    mb-3\n                    alert alert-danger\n                  ",
+                                  attrs: { role: "alert" },
+                                },
+                                [
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", { attrs: { id: "retorno_texto" } }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            size: "xl",
+                                            variant: "outline-danger",
+                                          },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.recarregar()
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                          Voltar\n                        "
+                                          ),
+                                        ]
+                                      ),
+                                    ],
+                                    1
+                                  ),
+                                ]
+                              ),
+                            ]
+                          ),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -950,13 +1386,13 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                        " +
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "numCartao"
                                                     )
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                      "
                                               ),
                                             ]
                                           ),
@@ -971,7 +1407,7 @@ var render = function () {
                                                 [
                                                   _c("span", {
                                                     staticClass:
-                                                      "col-6 input-group-text bandeira-cartao creditCard hidden",
+                                                      "\n                              col-6\n                              input-group-text\n                              bandeira-cartao\n                              creditCard\n                              hidden\n                            ",
                                                     staticStyle: {
                                                       "background-color":
                                                         "#ffffff",
@@ -983,7 +1419,7 @@ var render = function () {
                                                   _vm._v(" "),
                                                   _c("span", {
                                                     staticClass:
-                                                      "col-6 input-group-text cartao-nome creditCard form-login-help hidden",
+                                                      "\n                              col-6\n                              input-group-text\n                              cartao-nome\n                              creditCard\n                              form-login-help\n                              hidden\n                            ",
                                                     staticStyle: {
                                                       "background-color":
                                                         "#ffffff",
@@ -1079,11 +1515,11 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                        " +
                                                   _vm._s(
                                                     _vm.errors.first("validade")
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                      "
                                               ),
                                             ]
                                           ),
@@ -1165,11 +1601,11 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                        " +
                                                   _vm._s(
                                                     _vm.errors.first("cvv")
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                      "
                                               ),
                                             ]
                                           ),
@@ -1252,13 +1688,13 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                        " +
                                                   _vm._s(
                                                     _vm.errors.first(
                                                       "qntParcelas"
                                                     )
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                      "
                                               ),
                                             ]
                                           ),
@@ -1310,33 +1746,6 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "anuidade2022",
-                                        id: "anuidade2022",
-                                      },
-                                      domProps: { value: 1 },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "ativo",
-                                        id: "ativo",
-                                      },
-                                      domProps: { value: _vm.form.ativo },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "cpf",
-                                        id: "cpf",
-                                      },
-                                      domProps: { value: _vm.form.cpf },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
                                         name: "numCartao",
                                         id: "numCartao",
                                       },
@@ -1364,15 +1773,6 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
-                                        name: "id",
-                                        id: "id",
-                                      },
-                                      domProps: { value: _vm.form.id },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
                                         name: "metodo",
                                         id: "metodo",
                                       },
@@ -1382,10 +1782,234 @@ var render = function () {
                                     _c("input", {
                                       attrs: {
                                         type: "hidden",
+                                        name: "anuidade2022",
+                                        id: "anuidade2022",
+                                      },
+                                      domProps: { value: 1 },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "id",
+                                        id: "id",
+                                      },
+                                      domProps: { value: _vm.form.id },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "ativo",
+                                        id: "ativo",
+                                      },
+                                      domProps: { value: _vm.form.ativo },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
                                         name: "name",
                                         id: "name",
                                       },
                                       domProps: { value: _vm.form.name },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "rg",
+                                        id: "rg",
+                                      },
+                                      domProps: { value: _vm.form.rg },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "orgao_expedidor",
+                                        id: "orgao_expedidor",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.orgao_expedidor,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "data_nascimento",
+                                        id: "data_nascimento",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.data_nascimento,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "sexo_id",
+                                        id: "sexo_id",
+                                      },
+                                      domProps: { value: _vm.form.sexo_id },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "telefone",
+                                        id: "telefone",
+                                      },
+                                      domProps: { value: _vm.form.telefone },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "celular",
+                                        id: "celular",
+                                      },
+                                      domProps: { value: _vm.form.celular },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "titulacao_id",
+                                        id: "titulacao_id",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.titulacao_id,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "instituicao_id",
+                                        id: "instituicao_id",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.instituicao_id,
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "enderecoId",
+                                        id: "enderecoId",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.id
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "cep",
+                                        id: "cep",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.cep
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "estado",
+                                        id: "estado",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.estado
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "logradouro",
+                                        id: "logradouro",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.logradouro
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "numero",
+                                        id: "numero",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.numero
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "bairro",
+                                        id: "bairro",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.bairro
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "complemento",
+                                        id: "complemento",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.complemento
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "municipio",
+                                        id: "municipio",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.enderecos.municipio.id
+                                          : "",
+                                      },
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "pais",
+                                        id: "pais",
+                                      },
+                                      domProps: {
+                                        value: _vm.form.enderecos
+                                          ? _vm.form.pais
+                                          : "",
+                                      },
                                     }),
                                   ]
                                 ),

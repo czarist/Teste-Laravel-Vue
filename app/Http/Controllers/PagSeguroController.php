@@ -64,6 +64,7 @@ class PagSeguroController extends Controller
                     'celular' => $post['celular'],
                     'data_nascimento' => $post['data_nascimento'],
                     'rg' => $post['rg'],
+                    'orgao_expedidor' => $post['orgao_expedidor'],
                     'sexo_id' => $post['sexo_id'],
                     'updated_at' => Carbon::now()
                 ]);
@@ -252,8 +253,6 @@ class PagSeguroController extends Controller
                 'user_id' => $user['id'],
             ]);
             
-            $todos_tipos = [0 => 3 , 1 => 4];
-            $user->todos_tipos()->sync($todos_tipos);
             
             Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
             
@@ -291,6 +290,7 @@ class PagSeguroController extends Controller
                     'celular' => $post['celular'],
                     'data_nascimento' => $post['data_nascimento'],
                     'rg' => $post['rg'],
+                    'orgao_expedidor' => $post['orgao_expedidor'],
                     'sexo_id' => $post['sexo_id'],
                     'updated_at' => Carbon::now()
                 ]);
@@ -468,10 +468,7 @@ class PagSeguroController extends Controller
                 'status_id' => $codigo_status,
                 'user_id' => $user['id'],
             ]);
-            
-            $todos_tipos = [0 => 3 , 1 => 4];
-            $user->todos_tipos()->sync($todos_tipos);
-            
+                        
             Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
             
             return response()->json(['message' => 'success', 'response' => $response], 201);
@@ -485,14 +482,76 @@ class PagSeguroController extends Controller
     public function associadocreditoanuidade(Request $request)
     { 
 
-        $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
-            ->with('acessos:id,pagina,link',
-                    'todos_tipos:id,descricao',
-                    'enderecos',
-                    'enderecos.municipio',
-                    'enderecos.municipio.estado')
-            ->whereId(Auth::user()->id)->first();
+        $post = $request->all();
+        $post['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $post['data_nascimento'])->format('Y-m-d');
+        unset($post['password']);
+        $user = User::findOrFail($post['id']);
+    
+        if(!empty($user))
+        {
+            if($user->rg == $post['rg']) {
+                $user->update([
+                    'name' => $post['name'],
+                    'telefone' => $post['telefone'],
+                    'celular' => $post['celular'],
+                    'data_nascimento' => $post['data_nascimento'],
+                    'sexo_id' => $post['sexo_id'],
+                    'updated_at' => Carbon::now()
+                ]);
+            }else{
+    
+                $user->update([
+                    'name' => $post['name'],
+                    'telefone' => $post['telefone'],
+                    'celular' => $post['celular'],
+                    'data_nascimento' => $post['data_nascimento'],
+                    'rg' => $post['rg'],
+                    'orgao_expedidor' => $post['orgao_expedidor'],
+                    'sexo_id' => $post['sexo_id'],
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+        }
 
+        if($user){
+            $endereco = Endereco::whereUserId($user->id)->first();   
+        }
+    
+        if(empty($endereco))
+        {
+            $endereco = Endereco::create(
+                [
+                    'user_id' => $user->id,
+                    'logradouro' => $request->logradouro ?? 'Rua Vitorino Carmilo',
+                    'numero' => $request->numero ?? '0',
+                    'complemento' => $request->complemento ?? '',
+                    'bairro' => $request->bairro ?? 'Centro',
+                    'municipio_id' => $request->municipio ?? 1,
+                    'cep' => $request->cep ?? '01153000',
+                    'pais_id' => $request->pais ?? 'Brasil',
+                    'updated_at' => Carbon::now()
+                ]
+            );
+    
+        }else {
+            $endereco->update(
+                [
+                    'user_id' => $user->id,
+                    'logradouro' => $request->logradouro ?? 'Rua Vitorino Carmilo',
+                    'numero' => $request->numero ?? '0',
+                    'complemento' => $request->complemento ?? '',
+                    'bairro' => $request->bairro ?? 'Centro',
+                    'municipio_id' => $request->municipio ?? 1,
+                    'cep' => $request->cep ?? '01153000',
+                    'pais_id' => $request->pais ?? 'Brasil',
+                    'updated_at' => Carbon::now()
+                ]
+            );
+        }
+    
+        Log::info('Pagamento anuidade credito | Dados do Usuario salvo: ' . json_encode($user));
+    
+    
         if(Auth::user()->is_associado){
             $associado = Associado::whereUserId($user->id)->first();   
         }
@@ -505,14 +564,14 @@ class PagSeguroController extends Controller
             $associado->update( ['anuidade' => $date ]);
         }
 
-        Log::info('Anuidade atualizada : ' . json_encode($associado));
+        Log::info('Pagamento anuidade credito | Associado atualizado : ' . json_encode($associado));
     
         if(!empty($request->anuidade2022) && $request->anuidade2022 == 1){
             $produto = Produto::findOrFail(2);
         }
 
         $venda = Venda::create(['user_id' => $user['id']]);
-        Log::info('Venda efetuada  com sucesso'. json_encode($venda));
+        Log::info('Pagamento anuidade credito | Venda efetuada  com sucesso'. json_encode($venda));
 
         $venda_item = VendaItem::create([
             'venda_id' => $venda->id, 
@@ -521,7 +580,7 @@ class PagSeguroController extends Controller
             'valor' => $produto->valor, 
             'valor_total' => $produto->valor
         ]);
-        Log::info('Venda de  item efetuado com sucesso'. json_encode($venda_item));
+        Log::info('Pagamento anuidade credito | Venda de  item efetuado com sucesso'. json_encode($venda_item));
 
         //Formatação de dados para o PagSeguro
         $cpf = str_replace(['.', '-'], '', $user->cpf);
@@ -577,7 +636,7 @@ class PagSeguroController extends Controller
             'senderEmail' => $user->email,
         ];
 
-        Log::info('Dados para pagamento enviados ao PagSeguro'. json_encode($dados_pagseguro));
+        Log::info('Pagamento anuidade credito | Dados para pagamento enviados ao PagSeguro'. json_encode($dados_pagseguro));
 
         $buildQuery = http_build_query($dados_pagseguro);
         $url = env('URL_PAGSEGURO') . "transactions";
@@ -592,7 +651,7 @@ class PagSeguroController extends Controller
         curl_close($curl);      
         $response = simplexml_load_string($retornoxml);
 
-        Log::info('Pagamento efetuado'. json_encode($response));
+        Log::info('Pagamento anuidade credito | Pagamento efetuado'. json_encode($response));
 
         $codigo_venda = intval($response->reference);
         $codigo_tipo_pagto = intval($response->paymentMethod->type);
@@ -621,29 +680,87 @@ class PagSeguroController extends Controller
                 'status_id' => $codigo_status,
                 'user_id' => $user['id'],
             ]);
-            
-            $todos_tipos = [0 => 3 , 1 => 4];
-            $user->todos_tipos()->sync($todos_tipos);
-            
-            Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
+                        
+            Log::info('Pagamento anuidade credito | Pagamento efetuado com sucesso'. json_encode($pagamento));
             
             return response()->json(['message' => 'success', 'response' => $user], 201);
         }
 
-        Log::info('Erro ao efetuar pagamento'. json_encode($response));
+        Log::info('Pagamento anuidade credito | Erro ao efetuar pagamento'. json_encode($response));
         return response()->json(['message' => 'error', 'response' => $response], 201);
 
     }
 
     public function associadoboletoanuidade(Request $request)
     {
-        $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
-            ->with('acessos:id,pagina,link',
-                    'todos_tipos:id,descricao',
-                    'enderecos',
-                    'enderecos.municipio',
-                    'enderecos.municipio.estado')
-            ->whereId(Auth::user()->id)->first();
+        $post = $request->all();
+        $post['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $post['data_nascimento'])->format('Y-m-d');
+        unset($post['password']);
+        $user = User::findOrFail($post['id']);
+    
+        if(!empty($user))
+        {
+            if($user->rg == $post['rg']) {
+                $user->update([
+                    'name' => $post['name'],
+                    'telefone' => $post['telefone'],
+                    'celular' => $post['celular'],
+                    'data_nascimento' => $post['data_nascimento'],
+                    'sexo_id' => $post['sexo_id'],
+                    'updated_at' => Carbon::now()
+                ]);
+            }else{
+    
+                $user->update([
+                    'name' => $post['name'],
+                    'telefone' => $post['telefone'],
+                    'celular' => $post['celular'],
+                    'data_nascimento' => $post['data_nascimento'],
+                    'rg' => $post['rg'],
+                    'orgao_expedidor' => $post['orgao_expedidor'],
+                    'sexo_id' => $post['sexo_id'],
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+        }
+
+        if($user){
+            $endereco = Endereco::whereUserId($user->id)->first();   
+        }
+    
+        if(empty($endereco))
+        {
+            $endereco = Endereco::create(
+                [
+                    'user_id' => $user->id,
+                    'logradouro' => $request->logradouro ?? 'Rua Vitorino Carmilo',
+                    'numero' => $request->numero ?? '0',
+                    'complemento' => $request->complemento ?? '',
+                    'bairro' => $request->bairro ?? 'Centro',
+                    'municipio_id' => $request->municipio ?? 1,
+                    'cep' => $request->cep ?? '01153000',
+                    'pais_id' => $request->pais ?? 'Brasil',
+                    'updated_at' => Carbon::now()
+                ]
+            );
+    
+        }else {
+            $endereco->update(
+                [
+                    'user_id' => $user->id,
+                    'logradouro' => $request->logradouro ?? 'Rua Vitorino Carmilo',
+                    'numero' => $request->numero ?? '0',
+                    'complemento' => $request->complemento ?? '',
+                    'bairro' => $request->bairro ?? 'Centro',
+                    'municipio_id' => $request->municipio ?? 1,
+                    'cep' => $request->cep ?? '01153000',
+                    'pais_id' => $request->pais ?? 'Brasil',
+                    'updated_at' => Carbon::now()
+                ]
+            );
+        }
+    
+        Log::info('Pagamento anuidade boleto | Dados do Usuario salvo: ' . json_encode($user));
 
         if(Auth::user()->is_associado){
             $associado = Associado::whereUserId($user->id)->first();   
@@ -657,7 +774,7 @@ class PagSeguroController extends Controller
             $associado->update( ['anuidade' => $date ]);
         }
 
-        Log::info('Anuidade atualizada : ' . json_encode($associado));
+        Log::info('Pagamento anuidade boleto | Anuidade atualizada : ' . json_encode($associado));
 
         if(!empty($request->associado) && $request->associado == 1){
             $produto = Produto::findOrFail(1);
@@ -668,16 +785,16 @@ class PagSeguroController extends Controller
         }
 
         $venda = Venda::create(['user_id' => $user['id']]);
-        Log::info('Venda efetuada  com sucesso'. json_encode($venda));
+        Log::info('Pagamento anuidade boleto | Venda efetuada  com sucesso'. json_encode($venda));
 
         $venda_item = VendaItem::create([
             'venda_id' => $venda->id, 
             'produto_id' => $produto->id, 
             'qtd' => $request->parcelas ?? 1, 
             'valor' => $produto->valor, 
-            'valor_total' => $produto->valor * $request->parcelas
+            'valor_total' => $produto->valor
         ]);
-        Log::info('Venda de  item efetuado com sucesso'. json_encode($venda_item));
+        Log::info('Pagamento anuidade boleto | Venda de  item efetuado com sucesso'. json_encode($venda_item));
 
         //Formatação de dados para o PagSeguro
         $cpf = str_replace(['.', '-'], '', $user->cpf);
@@ -736,7 +853,7 @@ class PagSeguroController extends Controller
         curl_close($curl);      
         $response = simplexml_load_string($retornoxml);
 
-        Log::info('Pagamento efetuado'. json_encode($response));
+        Log::info('Pagamento anuidade boleto | Pagamento efetuado'. json_encode($response));
 
         $codigo_venda = intval($response->reference);
         $codigo_tipo_pagto = intval($response->paymentMethod->type);
@@ -766,31 +883,35 @@ class PagSeguroController extends Controller
                 'user_id' => $user['id'],
             ]);
             
-            $todos_tipos = [0 => 3 , 1 => 4];
-            $user->todos_tipos()->sync($todos_tipos);
             
-            Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
+            Log::info('Pagamento anuidade boleto | Pagamento efetuado com sucesso'. json_encode($pagamento));
             
             return response()->json(['message' => 'success', 'response' => $response], 201);
         }
 
-        Log::info('Erro ao efetuar pagamento'. json_encode($response));
+        Log::info('Pagamento anuidade boleto | Erro ao efetuar pagamento'. json_encode($response));
         return response()->json(['message' => 'error', 'response' => $response], 201);
 
     }
 
-    public function retorno(){
-        header(env('RETORNO_HEADER'));
-	
-        if (!isset($_POST['notificationCode']) || $_POST['notificationType'] != 'transaction') {
+    public function retorno(Request $request){
+        header( "access-control-allow-origin: https://pagseguro.uol.com.br");
+        header( "Access-Control-Allow-Headers:*");
+        header( "Access-Control-Allow-Method:*");
 
-            Log::info('Erro ao receber retorno do pagseguro');
-            $msg = "Erro ao receber retorno do pagseguro";
+        if (!isset($request->notificationCode) || $request->notificationType != 'transaction') {
+
+            Log::info('RETORNO | Erro ao receber retorno do pagseguro'. json_encode($request->all()));
+            $msg = "notificationCode ou notificationType não possuem valor";
             exit;
         }
+
+        Log::info('RETORNO | request'. json_encode($request->all()));
     
-        $notificationCode = preg_replace('/[^[:alnum:]-]/','',$_POST["notificationCode"]);	
-        $url = env('RETORNO_PAGSEGURO').$notificationCode.'?email='.env('EMAIL_PAGSEGURO').'&token='.env('TOKEN_PAGSEGURO');	
+        $notificationCode = preg_replace('/[^[:alnum:]-]/','',$request->notificationCode);	
+        $url = env('RETORNO_PAGSEGURO').$notificationCode.'?email='.env('EMAIL_PAGSEGURO').'&token='.env('TOKEN_PAGSEGURO');
+
+        Log::info('RETORNO | URL de retorno do pagseguro'. json_encode($url));
         
         $curl = curl_init($url);	
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);	
@@ -800,9 +921,8 @@ class PagSeguroController extends Controller
     
         if($xml == 'Unauthorized'){
 
-            Log::info('Erro ao tentar consultar o pagseguro');
+            Log::info('RETORNO | Unauthorized');
 
-            $msg = 'Retorno do xml Unauthorized';
             exit;	
         }
     
@@ -823,15 +943,15 @@ class PagSeguroController extends Controller
                     'status_id' => $codigostatus,
                 ]);
         
-                Log::info('Pagamento atualizado com sucesso'. json_encode($pagamento));
+                Log::info('RETORNO | Pagamento atualizado com sucesso'. json_encode($pagamento));
 
             }else{
-                Log::info('Pagamento já atualizado'. json_encode($pagamento));
+                Log::info('RETORNO | Pagamento já atualizado'. json_encode($pagamento));
             }
         } else {
-            Log::info('Erro ao atualizar pagamento'. json_encode($xml));
+            Log::info('RETORNO | Erro ao atualizar pagamento'. json_encode($xml));
         }  
-        return response()->json(['message' => 'success', 'response' => $xml], 201);
+        return response()->json($xml, 200);
     }
 }
 

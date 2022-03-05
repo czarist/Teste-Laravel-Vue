@@ -95,10 +95,10 @@ class PerfilController extends Controller
             Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($request->all()));
             $usuario = User::select('id', 'email')->whereEmail($request->email)->withTrashed();
             if($usuario->first()) {
-                if($usuario->first()->id == $request->id[0]) {
-                    return response()->json(true);
-                } else {
+                if($usuario->first()->email == $request->email) {
                     return response()->json(false);
+                } else {
+                    return response()->json(true);
                 }
             } else {
                 return response()->json(true);
@@ -109,7 +109,7 @@ class PerfilController extends Controller
             if($exception instanceof ModelNotFoundException){
                 return abort(404, 'Registro não encontrado');
             }
-            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
+            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
 
@@ -138,6 +138,9 @@ class PerfilController extends Controller
                         'celular' => $post['celular'],
                         'data_nascimento' => $post['data_nascimento'],
                         'sexo_id' => $post['sexo_id'],
+                        'rg' => $post['rg'],
+                        'orgao_expedidor' => $post['orgao_expedidor'],
+
                         'updated_at' => Carbon::now()
                     ]);
                 }else{
@@ -148,6 +151,7 @@ class PerfilController extends Controller
                         'celular' => $post['celular'],
                         'data_nascimento' => $post['data_nascimento'],
                         'rg' => $post['rg'],
+                        'orgao_expedidor' => $post['orgao_expedidor'],
                         'sexo_id' => $post['sexo_id'],
                         'updated_at' => Carbon::now()
                     ]);

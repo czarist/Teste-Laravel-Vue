@@ -155,7 +155,7 @@
                                     :disabled="loading"
                                     v-model="post.rg"
                                     type="text"
-                                    v-mask="'##.###.###-#'"
+                                    v-validate="{ required: true}"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`rg`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="RG"
@@ -173,6 +173,7 @@
                                     size="sm"
                                     :disabled="loading"
                                     v-model="post.orgao_expedidor"
+                                    v-validate="{ required: true}"
                                     type="text"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`orgao_expedidor`)}]"
                                     aria-describedby="input-1-live-feedback"
@@ -512,15 +513,18 @@
                         </div>
                     </b-row> 
                 </div>
-                <div class="card-footer">
-                    <div v-if="post.associado">
-                        <b-button :disabled=" loading" size="md" variant="outline-success" @click="pagar(post)">
-                            Método de Pagamento
+                <div class="card-footer row">
+                    <div class="col d-flex justify-content-end">
+                    <b-button :disabled=" loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
+                        Voltar
+                    </b-button>
+
+                    <b-button :disabled=" loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
+                            Salvar
                         </b-button>
-                    </div>
-                    <div v-else>
-                        <b-button :disabled=" loading" size="md" variant="outline-success" @click="save()">
-                            Cadastrar
+
+                        <b-button :disabled=" loading" size="md" variant="outline-success" class="m-1" @click="pagar(post)">
+                            Método de Pagamento
                         </b-button>
                     </div>
                 </div>
@@ -737,7 +741,9 @@
                 this.loading = true
                 await this.$validator.validateAll().then((valid) => {
                     if(valid) {
-                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
+
+                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
+                        this.save()
 
                         this.selectedPagar = post
                         $('#pagar').modal({keyboard: false, show: true})
@@ -811,6 +817,82 @@
                     }
                 }); 
             },
+            async save() {
+                setTimeout(() => {
+                    var dados = this.post;
+
+                    $.ajax({
+                        method: "POST",
+                        url: "perfil/save",
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                        data: $.param(dados),
+                        dataType: "json",
+                        success: (res) => {
+                            if (res.message == "error") {
+                            } else {
+                                this.message(
+                                    "Erro",
+                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                    "error"
+                                    
+                                );
+                                this.loading = false;
+                            }
+                            this.message(
+                                "Sucesso",
+                                "Seus dados foram alterados com sucesso",
+                                "success",
+                                
+                            );
+                            this.loading = false;
+                        },
+                        error: (error) => {
+                            console.log(error);
+                            if (error.status == 422) {
+                                if (error.response.message == "The given data was invalid.") {
+                                    this.loading = false;
+                                    return this.message(
+                                        "Campos Obrigatórios",
+                                        "Preencha todos os campos obrigatórios",
+                                        "error"
+                                    );
+                                }
+                            }
+                            if (error.status == 500) {
+                                this.loading = false;
+                                this.message(
+                                    "Erro",
+                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                    "error"
+                                    
+                                );
+                            }
+                            if (error.status == 403) {
+                                if (
+                                    error.response.message == "This action is unauthorized."
+                                ) {
+                                    this.loading = false;
+                                    this.message("Erro", "Ação não autorizada.", "error");
+                                }
+                            }
+                            this.loading = false;
+                            this.message(
+                                "Erro",
+                                "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                "error"
+                                
+                            );
+                        },
+                    });
+                }, 1000);
+            },
+            back(){
+                window.history.back();
+            }
+
+
         },
         created() {
             this.getGeneros(),

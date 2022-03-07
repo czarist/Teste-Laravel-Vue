@@ -36,6 +36,7 @@
     
     ?>
     <div class="row">
+
         <!--  BEGIN CONTENT AREA  -->
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
             <div class="widget widget-account-invoice-two">
@@ -122,6 +123,31 @@
             </div>
         </div>
 
+        @if (Auth::user()->id == 1 || Auth::user()->id == 1156)
+
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+            <div class="widget widget-account-invoice-two">
+                <div class="widget-content">
+                    <div class="account-box">
+                        <div class="info">
+                            <div class="inv-title">
+                                <h4 class="" style="color:#FFF;">Cadastro Avaliadores</h4>
+                            </div>
+                            <div class="inv-balance-info">
+                            </div>
+                        </div>
+                        <div class="acc-action">
+                            <div class="">
+                            </div>
+                            <a href="javascript:void(0);"  type="button" data-bs-toggle="modal"data-bs-target="#formavaliador">Acesse</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @endif
+
         <!--  END CONTENT AREA  -->
 
         <!--MODAL Congressos Regionais-->
@@ -160,6 +186,29 @@
                 </div>
             </div>
         </div>
-    
+
+            
+        <!--MODAL FORM AVALIADOR-->
+        <div class="modal fade" id="formavaliador" tabindex="-1" aria-labelledby="formavaliador" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formavaliadorLabel">Escolha o formulário para cadastro</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-primary" href="{{ route('avaliadorjr') }}">Form Avaliador Júnior</a>
+                            <a class="btn btn-primary" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 @endsection

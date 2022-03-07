@@ -20,7 +20,7 @@ class UserController extends Controller
                                 'enderecos',
                                 'enderecos.municipio',
                                 'enderecos.municipio.estado');
-            }
+    }
 
     public function index()
     {

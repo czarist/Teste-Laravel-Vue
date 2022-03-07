@@ -197,6 +197,7 @@ import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
 import AssociadoArea from './components/associado/AssociadoArea.vue'
 import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
 import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
+import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
 
 
 
@@ -215,7 +216,8 @@ const app = new Vue({
         'associado-area': AssociadoArea,
         // 'pagar-modal-anuidade': PagarModalAnuidade,
         'pagamento-grid': PagamentoGrid,
-        'anuidade-cadastro': AnuidadeCadastro
+        'anuidade-cadastro': AnuidadeCadastro,
+        'form-avaliador': FormAvaliador,
 
     }
 });

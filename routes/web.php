@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\GetController;
@@ -89,11 +90,16 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::resource('pagamento', PagamentoController::class)->except(['show', 'create', 'edit']);
     Route::get('pagamento/get', [PagamentoController::class ,'get'])->name('pagamento.get');
 
+    //FORM AVALIADOR EXPOCOM
+    Route::get('/avaliadorjr', [AvaliadorExpocomController::class, 'formavaliadorjr'])->name('avaliadorjr');
+    Route::get('/avaliadorexpocom', [AvaliadorExpocomController::class, 'formavaliadorexpocom'])->name('avaliadorexpocom');
+    Route::post('avaliador/save', [AvaliadorExpocomController::class , 'store'])->name('avaliador.save');
+
+
 });
 //END AUTH
 
 //GET no banco livres
-
 Route::prefix('get')->group(function () {
     Route::get('userlogado', [GetController::class, 'userlogado'])->name('get.logado.user');
     Route::get('users', [GetController::class, 'getUsers'])->name('get.user');
@@ -105,8 +111,17 @@ Route::prefix('get')->group(function () {
     Route::get('titulacoes', [GetController::class, 'getTitulacoes'])->name('get.titulacao');
     Route::get('instituicoes', [GetController::class, 'getInstituicoes'])->name('get.instituicoes');
     Route::get('produtos', [GetController::class, 'getProdutos'])->name('get.produtos');
+    Route::get('divisoes-tematicas', [GetController::class, 'getDivisoesTematicas'])->name('get.divisoes-tematicas');
+    Route::get('divisoes-tematicas-jr', [GetController::class, 'getDivisoesTematicasJr'])->name('get.divisoes-tematicas-jr');
+    Route::get('cinema-audiovisual', [GetController::class, 'getCinemaAudiovisual'])->name('get.cinema-audiovisual');
+    Route::get('jornalismo', [GetController::class, 'getJornalismo'])->name('get.jornalismo');
+    Route::get('publicidade-propaganda', [GetController::class, 'getPublicidadePropaganda'])->name('get.publicidade-propaganda');
+    Route::get('relacoes-publicas', [GetController::class, 'getRelacoesPublicas'])->name('get.relacoes-publicas');
+    Route::get('producao-editorial', [GetController::class, 'getProdEdit'])->name('get.producao-editorial');
+    Route::get('radio-internet', [GetController::class, 'getRadioInternet'])->name('get.radio-internet');
 
 });
+
 
 Route::get('/register', function() {
     return redirect('/login');    

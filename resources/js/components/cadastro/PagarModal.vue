@@ -513,7 +513,6 @@
                                         $('#submit_button').prop('disabled', true);
                                         $('#submit_button_boleto').prop('disabled', true);
                                         
-                                        //to mexendo aqui
                                         setTimeout(() => {
                                             window.location.href = '/pagamento?status=sucess';
                                         },2000)

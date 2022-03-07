@@ -17,7 +17,8 @@ mix.js('resources/js/app.js', 'public/js').vue()
         "resources/js/popper.min.js",
         "resources/js/bootstrap.min.js",
         "resources/js/perfect-scrollbar.min.js",
-        "resources/js/custom.js"
+        "resources/js/custom.js",
+        "resources/js/pagseguro.js",
     ], "public/js/common.min.js")
 
 

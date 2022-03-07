@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet"/>
+
     <link href="{{ asset('assets/css/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css" />
 
@@ -29,7 +31,7 @@
     </style>
 
         {{-- Pagseguro --}}
-        <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+        {{-- <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
         {{-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
     
     
@@ -41,9 +43,6 @@
     @endauth
 
     <div id="app">
-         @auth
-            @include('layouts.nav')
-        @endauth
         
         <!--  BEGIN MAIN CONTAINER  -->
         <div class="main-container" id="container">
@@ -51,7 +50,10 @@
             <div class="overlay"></div>
             <div class="search-overlay"></div>
 
-            
+            @auth
+                @include('layouts.nav')
+            @endauth
+
             <!--  BEGIN CONTENT PART  -->
             <div id="content" class="main-content">
                 <div class="layout-px-spacing">

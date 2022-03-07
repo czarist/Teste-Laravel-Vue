@@ -163,5 +163,53 @@ class User extends Authenticatable
         return $this->hasMany(Venda::class);
     }
 
+    public function avaliador_expocom(){
+        return $this->hasOne(AvaliadorExpocom::class);
+    }
+
+    public function todos_divisoes_tematicas()
+    {
+        return $this->belongsToMany(DivisoesTematicas::class, 'todos_divisoes_tematicas' , 'user_id',  'dt_id');
+    }
+
+    public function todos_divisoes_tematicas_jr()
+    {
+        return $this->belongsToMany(DivisoesTematicasJr::class, 'todos_divisoes_tematicas_jrs' , 'user_id',  'dt_id');
+    }
+
+    public function todos_cinema_audiovisual()
+    {
+        return $this->belongsToMany(CategoriaCinemaAudiovisual::class, 'todos_categoria_cinema_audiovisuals' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_jornalismo()
+    {
+        return $this->belongsToMany(CategoriaJornalismo::class, 'todos_categoria_jornalismos' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_publicidade_propaganda()
+    {
+        return $this->belongsToMany(CategoriaPublicidadePropaganda::class, 'todos_categoria_publicidade_propagandas' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_relacoes_publicas()
+    {
+        return $this->belongsToMany(CategoriaRelacoesPublicas::class, 'todos_categoria_relacoes_publicas' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_producao_editorial()
+    {
+        return $this->belongsToMany(CatProdEditProdTransComunic::class, 'todos_cat_prod_edit_trans_comunic' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_radio_internet()
+    {
+        return $this->belongsToMany(CategoriaRadioInternet::class, 'todos_categoria_radio_internets' , 'user_id',  'categoria_id');
+    }
+
+
+
+
+
     
 }

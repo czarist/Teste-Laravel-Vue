@@ -455,10 +455,7 @@
                                     >
                                 </template>
                                 </v-select>
-                                <span
-                                v-show="errors.has(`estado`)"
-                                class="v-select-invalid-feedback"
-                                >
+                                <span v-show="errors.has(`estado`)" class="invalid-feedback d-block">
                                 {{ errors.first(`estado`) }}
                                 </span>
                             </div>
@@ -477,10 +474,7 @@
                                 data-vv-as="municipio"
                                 :class="{ 'v-select-invalid': errors.has(`municipio`) }"
                                 ></v-select>
-                                <span
-                                v-show="errors.has(`municipio`)"
-                                class="v-select-invalid-feedback"
-                                >
+                                <span v-show="errors.has(`municipio`)" class="invalid-feedback d-block">
                                 {{ errors.first(`municipio`) }}
                                 </span>
                             </div>
@@ -821,75 +815,85 @@
                 }); 
             },
             async save() {
-                setTimeout(() => {
-                    var dados = this.post;
+                await this.$validator.validateAll().then((valid) => {
+                    if(valid) {
 
-                    $.ajax({
-                        method: "POST",
-                        url: "perfil/save",
-                        headers: {
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                        },
-                        data: $.param(dados),
-                        dataType: "json",
-                        success: (res) => {
-                            if (res.message == "error") {
-                            } else {
+                    this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
+
+                    setTimeout(() => {
+                        var dados = this.post;
+
+                        $.ajax({
+                            method: "POST",
+                            url: "perfil/save",
+                            headers: {
+                                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                            },
+                            data: $.param(dados),
+                            dataType: "json",
+                            success: (res) => {
+                                if (res.message == "error") {
+                                } else {
+                                    this.message(
+                                        "Erro",
+                                        "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                        "error"
+                                        
+                                    );
+                                    this.loading = false;
+                                }
+                                this.message(
+                                    "Sucesso",
+                                    "Seus dados foram alterados com sucesso",
+                                    "success",
+                                    
+                                );
+                                this.loading = false;
+                            },
+                            error: (error) => {
+                                console.log(error);
+                                if (error.status == 422) {
+                                    if (error.response.message == "The given data was invalid.") {
+                                        this.loading = false;
+                                        return this.message(
+                                            "Campos Obrigatórios",
+                                            "Preencha todos os campos obrigatórios",
+                                            "error"
+                                        );
+                                    }
+                                }
+                                if (error.status == 500) {
+                                    this.loading = false;
+                                    this.message(
+                                        "Erro",
+                                        "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                        "error",
+                                        -1
+                                    );
+                                }
+                                if (error.status == 403) {
+                                    if (
+                                        error.response.message == "This action is unauthorized."
+                                    ) {
+                                        this.loading = false;
+                                        this.message("Erro", "Ação não autorizada.", "error");
+                                    }
+                                }
+                                this.loading = false;
                                 this.message(
                                     "Erro",
                                     "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
                                     "error"
                                     
                                 );
-                                this.loading = false;
-                            }
-                            this.message(
-                                "Sucesso",
-                                "Seus dados foram alterados com sucesso",
-                                "success",
-                                
-                            );
-                            this.loading = false;
-                        },
-                        error: (error) => {
-                            console.log(error);
-                            if (error.status == 422) {
-                                if (error.response.message == "The given data was invalid.") {
-                                    this.loading = false;
-                                    return this.message(
-                                        "Campos Obrigatórios",
-                                        "Preencha todos os campos obrigatórios",
-                                        "error"
-                                    );
-                                }
-                            }
-                            if (error.status == 500) {
-                                this.loading = false;
-                                this.message(
-                                    "Erro",
-                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
-                                    "error",
-                                    -1
-                                );
-                            }
-                            if (error.status == 403) {
-                                if (
-                                    error.response.message == "This action is unauthorized."
-                                ) {
-                                    this.loading = false;
-                                    this.message("Erro", "Ação não autorizada.", "error");
-                                }
-                            }
-                            this.loading = false;
-                            this.message(
-                                "Erro",
-                                "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
-                                "error"
-                                
-                            );
-                        },
-                    });
-                }, 1000);
+                            },
+                        });
+                    }, 1000);
+                } else {
+                        this.loading = false
+                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                    }
+                })
             },
             back(){
                 window.history.back();

@@ -556,8 +556,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   $('#retorno_titulo_ok').html('Sucesso!');
                   $('#retorno_texto_ok').html('Seu pagamento foi processado com sucesso');
                   $('#submit_button').prop('disabled', true);
-                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
-
+                  $('#submit_button_boleto').prop('disabled', true);
                   setTimeout(function () {
                     window.location.href = '/pagamento?status=sucess';
                   }, 2000);

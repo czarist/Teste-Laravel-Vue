@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Instituicao;
 use App\Models\Acesso;
+use App\Models\CategoriaCinemaAudiovisual;
+use App\Models\CategoriaJornalismo;
+use App\Models\CategoriaPublicidadePropaganda;
+use App\Models\CategoriaRadioInternet;
+use App\Models\CategoriaRelacoesPublicas;
+use App\Models\CatProdEditProdTransComunic;
+use App\Models\DivisoesTematicas;
+use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Produto;
@@ -70,5 +78,48 @@ class GetController extends Controller
     {
         return $produtos->select('id', 'nome', 'valor')->orderBy('nome')->get();
     }
+
+    public function getDivisoesTematicas(DivisoesTematicas $divisoesTematicas)
+    {
+        return $divisoesTematicas->select('id', 'dt', 'descricao')->get();
+    }
+
+    public function getDivisoesTematicasJr(DivisoesTematicasJr $divisoesTematicasJr)
+    {
+        return $divisoesTematicasJr->select('id', 'dt', 'descricao')->get();
+    }
+
+    public function getCinemaAudiovisual(CategoriaCinemaAudiovisual $categoriaCinemaAudiovisual)
+    {
+        return $categoriaCinemaAudiovisual->select('id', 'descricao')->get();
+    }
+
+    public function getJornalismo(CategoriaJornalismo $categoriaJornalismo)
+    {
+        return $categoriaJornalismo->select('id', 'descricao')->get();
+    }
+
+    public function getPublicidadePropaganda(CategoriaPublicidadePropaganda $categoriaPublicidadePropaganda)
+    {
+        return $categoriaPublicidadePropaganda->select('id', 'descricao')->get();
+    }
+
+    public function getRelacoesPublicas(CategoriaRelacoesPublicas $categoriaRelacoesPublicas)
+    {
+        return $categoriaRelacoesPublicas->select('id', 'descricao')->get();
+    }
+
+    public function getProdEdit(CatProdEditProdTransComunic $catProdEditProdTransComunic)
+    {
+        return $catProdEditProdTransComunic->select('id', 'descricao')->get();
+    }
+
+    public function getRadioInternet(CategoriaRadioInternet $categoriaRadioInternet)
+    {
+        return $categoriaRadioInternet->select('id', 'descricao')->get();
+    }
+
+
+
 
 }

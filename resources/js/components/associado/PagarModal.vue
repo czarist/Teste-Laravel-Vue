@@ -624,6 +624,9 @@ export default {
           $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
           $("#submit_button").prop("disabled", true);
           $('#submit_button_boleto').prop('disabled', true);
+          $('#__BVID__62').prop('disabled', true);
+          $('#__BVID__64').prop('disabled', true);
+          $('#__BVID__66').prop('disabled', true);
 
         },
       });

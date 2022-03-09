@@ -123,8 +123,6 @@
             </div>
         </div>
 
-        @if (Auth::user()->id == 1 || Auth::user()->id == 1156)
-
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
             <div class="widget widget-account-invoice-two">
                 <div class="widget-content">
@@ -145,8 +143,6 @@
                 </div>
             </div>
         </div>
-
-        @endif
 
         <!--  END CONTENT AREA  -->
 

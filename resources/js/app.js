@@ -38,33 +38,6 @@ Vue.filter('formatPrice', function (value) {
 
 Validator.localize('pt_BR', pt_BR)
 
-Validator.localize({
-    pt_BR: {
-        messages: {
-            date_format: 'Formato invalido',
-        },
-        
-        custom: {
-            email: {
-                emailCheck: 'E-mail já cadastrado',
-                emailCadastro: 'E-mail já cadastrado'
-            },
-            numero_socio: {
-                numeroSocioCheck: 'Número sócio já em uso'
-            },      
-            password: {
-                passCheck: 'Senha incorreta'
-            },
-            cpf: {
-                cpfCheck: 'CPF já cadastrado'
-            },
-            passaporte: {
-                passaporteCheck: 'Passaporte já cadastrado'
-            }
-        }
-    }
-});
-
 Validator.extend("numeroSocioCheck", {
     validate: (numero_socio, id) => {
         var numero_socioo = {'numero_socio': numero_socio}
@@ -147,11 +120,32 @@ Validator.extend("cpfCheck", {
             data: cpff,
             dataType: 'json',
             success: (retorna) => {
-                console.log('retorno cpfcheck: ' +retorna)
                 return {
                     valid: retorna
                 }
 
+            },
+            error: (retorna) => {
+            }
+        });
+    }
+})
+
+Validator.extend("cpfCheckIndicacao", {
+    validate: (cpf) => {
+        var cpff = {'cpf': cpf}
+        return  $.ajax({
+            method: "POST",
+            url: `${process.env.MIX_BASE_URL}/indicacao/cpfcheckindicacao`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: cpff,
+            dataType: 'json',
+            success: (retorna) => {
+                return {
+                    valid: retorna
+                }
             },
             error: (retorna) => {
             }
@@ -183,6 +177,32 @@ Validator.extend("passaporteCheck", {
     }
 })
 
+Validator.localize({
+    pt_BR: {
+        messages: {
+            date_format: 'Formato invalido',
+        },
+        custom: {
+            email: {
+                emailCheck: 'E-mail já cadastrado',
+                emailCadastro: 'E-mail já cadastrado'
+            },
+            numero_socio: {
+                numeroSocioCheck: 'Número sócio já em uso'
+            },      
+            password: {
+                passCheck: 'Senha incorreta'
+            },
+            cpf: {
+                cpfCheckIndicacao: 'CPF já indicado',
+                cpfCheck: 'CPF já cadastrado',
+            },
+            passaporte: {
+                passaporteCheck: 'Passaporte já cadastrado'
+            }
+        }
+    }
+});
 
 
 import SexoGrid from './components/admin/sexo/SexoGrid.vue'
@@ -198,7 +218,7 @@ import AssociadoArea from './components/associado/AssociadoArea.vue'
 import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
 import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
 import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
-
+import FormIndicacao from './components/indicacao/FormIndicacao.vue'
 
 
 const app = new Vue({
@@ -218,6 +238,7 @@ const app = new Vue({
         'pagamento-grid': PagamentoGrid,
         'anuidade-cadastro': AnuidadeCadastro,
         'form-avaliador': FormAvaliador,
+        'form-indicacao': FormIndicacao
 
     }
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagSeguroController;
@@ -122,6 +123,11 @@ Route::prefix('get')->group(function () {
 
 });
 
+Route::prefix('indicacao')->group(function(){
+    Route::get('/', [IndicacaoController::class, 'index'])->name('indicacao.index');
+    Route::post('cpfcheckindicacao', [IndicacaoController::class, 'cpfCheckIndicacao'])->name('indicacao.cpfcheckindicacao');
+    Route::post('save', [IndicacaoController::class , 'store'])->name('indicacao.save');
+});
 
 Route::get('/register', function() {
     return redirect('/login');    
@@ -137,7 +143,6 @@ Route::get('/password/reset', function() {
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [HomeController::class, 'index']);
-
 
 Route::get('/cadastro', [CadastroController::class, 'index'])->name('cadastro');
 Route::post('/cadastro/save', [CadastroController::class , 'store'])->name('cadastro.save');

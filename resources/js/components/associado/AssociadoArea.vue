@@ -18,23 +18,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr >
+                                <tr v-if="!user.is_associado">
                                     <td class="align-middle text-center">{{ user ? user.name : "NI" }}</td>
                                     <td class="align-middle text-center">{{ user ? user.cpf : "NI" }}</td>
                                     <td class="align-middle text-center">R$230,00</td>
                                     <td class="align-middle text-center">
                                         <span class="d-flex justify-content-center">
-                                            <a
-                                                v-if="!user.is_associado"
+                                            <a                                                
                                                 class="btn btn-outline-alert mr-1"
                                                 :href="baseUrl+'/filiese'"
-                                            >FILIE-SE</a>
-
-                                            <a
-                                                v-if="user.is_associado"
+                                            >FILIE-SE
+                                            </a>                                            
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr v-if="user.is_associado && !user.anuidade_2022">
+                                    <td class="align-middle text-center">{{ user ? user.name : "NI" }}</td>
+                                    <td class="align-middle text-center">{{ user ? user.cpf : "NI" }}</td>
+                                    <td class="align-middle text-center">R$230,00</td>
+                                    <td class="align-middle text-center">
+                                        <span class="d-flex justify-content-center">
+                                            <a                                                
                                                 class="btn btn-outline-danger btn-sm mr-1"
                                                 :href="baseUrl+'/anuidade'"
-                                            >PAGAR ANUIDADE 2022</a>
+                                            >PAGAR ANUIDADE 2022
+                                            </a>
                                             
                                         </span>
                                     </td>

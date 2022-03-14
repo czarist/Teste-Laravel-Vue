@@ -156,7 +156,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                     </div>
                     <div class="modal-body">
-                        Em desenvolvimento...
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
+                            <a class="btn btn-primary m-1" href="#">Regional Norte</a>
+                            <a class="btn btn-primary m-1" href="#">Regional Leste</a>
+                            <a class="btn btn-primary m-1" href="#">Regional Oeste</a>
+
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -195,8 +202,8 @@
                     <div class="modal-body">
 
                         <div class="d-grid gap-2">
-                            <a class="btn btn-primary" href="{{ route('avaliadorjr') }}">Form Avaliador Júnior</a>
-                            <a class="btn btn-primary" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
+                            <a class="btn btn-primary m-1" href="{{ route('avaliadorjr') }}">Form Avaliador DTs e IJs</a>
+                            <a class="btn btn-primary m-1" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
                         </div>
                     </div>
                     <div class="modal-footer">

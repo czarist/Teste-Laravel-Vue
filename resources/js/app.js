@@ -219,6 +219,7 @@ import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
 import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
 import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
 import FormIndicacao from './components/indicacao/FormIndicacao.vue'
+import RegionalSulForm from './components/regionais/sul/RegionalSulForm.vue'
 
 
 const app = new Vue({
@@ -238,7 +239,8 @@ const app = new Vue({
         'pagamento-grid': PagamentoGrid,
         'anuidade-cadastro': AnuidadeCadastro,
         'form-avaliador': FormAvaliador,
-        'form-indicacao': FormIndicacao
+        'form-indicacao': FormIndicacao,
+        'regional-sulform': RegionalSulForm,
 
     }
 });

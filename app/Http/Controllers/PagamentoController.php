@@ -31,7 +31,7 @@ class PagamentoController extends Controller
                         ->when($request->sort == 'id', function ($query) {
                             $query->orderBy('id', 'DESC');
                         })
-                        ->when(Auth::user()->is_user, function ($q) {
+                        ->when(Auth::user()->is_user && !Auth::user()->is_admin, function ($q) {
                             $q->whereUserId(Auth::user()->id);
                         })            
                         ->paginate(20);

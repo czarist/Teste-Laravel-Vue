@@ -46,5 +46,53 @@ class TipoSeeder extends Seeder
             ]
         );
 
+        Tipo::updateOrCreate(
+            ['id'=>5],
+            ['id'=>5,
+                'nome' => 'Anuidade_2022',
+                'descricao' => 'Anuidade 2022',
+            ]
+        );
+
+        Tipo::updateOrCreate(
+            ['id'=>6],
+            ['id'=>6,
+                'nome' => 'Regional_Sul_2022',
+                'descricao' => 'Regional Sul 2022',
+            ]
+        );
+
+        Tipo::updateOrCreate(
+            ['id'=>7],
+            ['id'=>7,
+                'nome' => 'Regional_Nordeste_2022',
+                'descricao' => 'Regional Nordeste 2022',
+            ]
+        );
+
+        Tipo::updateOrCreate(
+            ['id'=>8],
+            ['id'=>8,
+                'nome' => 'Regional_Suldeste_2022',
+                'descricao' => 'Regional Suldeste 2022',
+            ]
+        );
+
+        Tipo::updateOrCreate(
+            ['id'=>9],
+            ['id'=>9,
+                'nome' => 'Regional_Centro_Oeste_2022',
+                'descricao' => 'Regional Centro-Oeste 2022',
+            ]
+        );
+
+        Tipo::updateOrCreate(
+            ['id'=>10],
+            ['id'=>10,
+                'nome' => 'Regional_Norte_2022',
+                'descricao' => 'Regional Norte 2022',
+            ]
+        );
+
     }
 }

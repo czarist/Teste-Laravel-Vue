@@ -15,6 +15,7 @@ use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Produto;
+use App\Models\ProdutosRegionais;
 use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
@@ -119,7 +120,8 @@ class GetController extends Controller
         return $categoriaRadioInternet->select('id', 'descricao')->get();
     }
 
-
-
-
+    public function getProdutosRegionais(ProdutosRegionais $produtosRegionais)
+    {
+        return $produtosRegionais->select('id', 'nome', 'valor')->get();
+    }
 }

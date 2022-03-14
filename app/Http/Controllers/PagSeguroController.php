@@ -38,8 +38,6 @@ class PagSeguroController extends Controller
 
     public function associadocredito(Request $request)
     { 
-        //inserir no banco de dados os endereços
-
         $post = $request->all();
         $post['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $post['data_nascimento'])->format('Y-m-d');
         unset($post['password']);
@@ -96,7 +94,6 @@ class PagSeguroController extends Controller
             );    
         }
 
-        
         if($user){
             $endereco = Endereco::whereUserId($user->id)->first();   
         }
@@ -143,7 +140,6 @@ class PagSeguroController extends Controller
             $produto = Produto::findOrFail(2);
         }
 
-
         $venda = Venda::create(['user_id' => $user['id']]);
         Log::info('Venda efetuada  com sucesso'. json_encode($venda));
 
@@ -169,7 +165,6 @@ class PagSeguroController extends Controller
         $url_notificacao = env('URL_NOTIFICACAO');
 
         $dados_pagseguro = [
-
             'email' => $email_pagseguro,
             'token' => $token_pagseguro,
             'receiverEmail' => $email_pagseguro,
@@ -252,7 +247,6 @@ class PagSeguroController extends Controller
                 'status_id' => $codigo_status,
                 'user_id' => $user['id'],
             ]);
-            
             
             Log::info('Pagamento efetuado com sucesso'. json_encode($pagamento));
             
@@ -894,7 +888,8 @@ class PagSeguroController extends Controller
 
     }
 
-    public function retorno(Request $request){
+    public function retorno(Request $request)
+    {
         header( "access-control-allow-origin: https://pagseguro.uol.com.br");
         header( "Access-Control-Allow-Headers:*");
         header( "Access-Control-Allow-Method:*");

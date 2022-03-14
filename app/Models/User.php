@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
-    protected $appends = ['is_root', 'is_admin', 'is_user', 'is_associado'];
+    protected $appends = ['is_root', 'is_admin', 'is_user', 'is_associado', 'anuidade_2022', 'pago_regional_sul_2022'];
     protected $fillable = [
         'name',
         'email',
@@ -108,6 +108,19 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getAnuidade2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 5) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public function getIsUserAttribute()
     {
         if(Auth::user()){
@@ -120,6 +133,20 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function getPagoRegionalSul2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 6) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public function getFirstNameAttribute()
     {
@@ -165,6 +192,10 @@ class User extends Authenticatable
 
     public function avaliador_expocom(){
         return $this->hasOne(AvaliadorExpocom::class);
+    }
+
+    public function regional_sul(){
+        return $this->hasOne(RegionalSul::class);
     }
 
     public function todos_divisoes_tematicas()

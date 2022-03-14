@@ -31,6 +31,6 @@ class CreateTodosCatProdEditProdTransComunicTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('todos_categoria_prod_editorial_prod_transdisciplinar_comunicacaos');
+        Schema::dropIfExists('todos_cat_prod_edit_trans_comunic');
     }
 }

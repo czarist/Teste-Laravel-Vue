@@ -581,16 +581,18 @@
                                     data: $.param(dados),
                                     dataType: 'json',
                                     success: (retorna) => {
-                                        if (retorna.message == 'error') {} else {
+                                        if (retorna.message == 'error') {
 
                                             window.location.href = `${process.env.MIX_BASE_URL}/login?error=1`
 
-                                        }
+                                        } else {
+
                                             this.clear()
-                                            this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                            this.message('Sucesso', 'Usuário cadastrado.', 'success');
 
                                             window.location.href = `${process.env.MIX_BASE_URL}/login?status=1`
 
+                                        }
                                     },
                                     error: (retorna) => {
                                         if(error.response.status == 422) {

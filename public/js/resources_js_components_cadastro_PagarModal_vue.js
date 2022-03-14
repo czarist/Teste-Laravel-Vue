@@ -257,6 +257,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -424,11 +438,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           $('.cartao-nome').html(imgBand);
           $('#cartao-bandeira').removeClass('hidden');
           $('.cartao-nome').removeClass('hidden');
+          $("#retorno_erro").addClass("hidden");
+          $("#submit_button").prop("disabled", false);
+          $('#submit_button_boleto').prop('disabled', false);
         },
         error: function error(retorno) {
-          $('#retorno_erro').removeClass('hidden');
-          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
-          $('#submit_button').prop('disabled', true);
+          $("#retorno_erro").removeClass("hidden");
+          $('#retorno_texto').html('Número do cartão invalido, por favor verifique e tente novamente.');
+          $("#submit_button").prop("disabled", true);
           $('#submit_button_boleto').prop('disabled', true);
         }
       });
@@ -466,109 +483,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     pagarCredito: function pagarCredito() {
-      this.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
-      var cardnum = this.form.numCartao.replace(/\-/g, ''); // Número do cartão de crédito
-
-      var cardname = document.getElementById("cartao-nome").innerText; // Bandeira do cartão
-
-      var cardval = this.form.validade.split("/"); // Validade do cartão mes e ano.
-
-      var cardmes = cardval[0]; // Mês da expiração do cartão
-
-      var cardano = cardval[1]; // Ano da expiração do cartão, é necessário os 4 dígitos.
-
-      var cardcvv = this.form.cvv; // CVV do cartão
-
-      PagSeguroDirectPayment.createCardToken({
-        cardNumber: cardnum,
-        brand: cardname,
-        cvv: cardcvv,
-        expirationMonth: cardmes,
-        expirationYear: cardano,
-        success: function success(retorno) {
-          recupHashCartao(retorno.card.token);
-        },
-        error: function error(retorno) {
-          $('#retorno_erro').removeClass('hidden');
-          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
-          $('#submit_button').prop('disabled', true);
-          $('#submit_button_boleto').prop('disabled', true);
-        },
-        complete: function complete(retorno) {// Callback para todas chamadas.                
-        }
-      });
-
-      function recupHashCartao(tokenCartao) {
-        PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
-          if (retorno.status == 'error') {
-            $('#retorno_erro').removeClass('hidden');
-            $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
-            $('#submit_button').prop('disabled', true);
-            $('#submit_button_boleto').prop('disabled', true);
-            return false;
-          } else {
-            var hashCartao = retorno.senderHash;
-            var valorParcela = $('#qntParcelas').find(':selected').attr('data-parcelas');
-            var parcelas = $('#qntParcelas').find(':selected').val();
-            var cardname = document.getElementById("cartao-nome").innerText;
-            var dados = $("#formPagamentoCartaoCredito").serializeArray();
-            dados.push({
-              name: "hashCartao",
-              value: hashCartao
-            });
-            dados.push({
-              name: "tokenCartao",
-              value: tokenCartao
-            });
-            dados.push({
-              name: "valorParcela",
-              value: valorParcela
-            });
-            dados.push({
-              name: "parcelas",
-              value: parcelas
-            });
-            dados.push({
-              name: "cardname",
-              value: cardname
-            });
-            $.ajax({
-              method: "POST",
-              url: "pagseguro/associado/credito",
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-              data: $.param(dados),
-              dataType: 'json',
-              success: function success(retorna) {
-                if (retorna.message == 'error') {
-                  $('#retorno_erro').removeClass('hidden');
-                  $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
-                  $("#submit_button").prop("disabled", true);
-                  $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
-
-                  setTimeout(function () {
-                    window.location.href = '/pagamento?status=error';
-                  }, 2000);
-                } else {
-                  $('#redirecionar_botao').removeClass('hidden').attr('class', 'text-center');
-                  $('#retorno_ok').removeClass('hidden');
-                  $('#retorno_titulo_ok').html('Sucesso!');
-                  $('#retorno_texto_ok').html('Seu pagamento foi processado com sucesso');
-                  $('#submit_button').prop('disabled', true);
-                  $('#submit_button_boleto').prop('disabled', true);
-                  setTimeout(function () {
-                    window.location.href = '/pagamento?status=sucess';
-                  }, 2000);
-                }
-              },
-              error: function error(retorna) {}
-            });
-          }
-        });
-      }
-    },
-    pagarBoleto: function pagarBoleto() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -576,23 +490,160 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this3.loading = true;
-                _context3.next = 3;
+                _context3.next = 2;
+                return _this3.$validator.validateAll().then(function (valid) {
+                  if (valid) {
+                    var recupHashCartao = function recupHashCartao(tokenCartao) {
+                      PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
+                        if (retorno.status == 'error') {
+                          $('#retorno_erro').removeClass('hidden');
+                          $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                          $('#submit_button').prop('disabled', true);
+                          $('#submit_button_boleto').prop('disabled', true);
+                          return false;
+                        } else {
+                          var hashCartao = retorno.senderHash;
+                          var valorParcela = $('#qntParcelas').find(':selected').attr('data-parcelas');
+                          var parcelas = $('#qntParcelas').find(':selected').val();
+                          var cardname = document.getElementById("cartao-nome").innerText;
+                          var dados = $("#formPagamentoCartaoCredito").serializeArray();
+                          dados.push({
+                            name: "hashCartao",
+                            value: hashCartao
+                          });
+                          dados.push({
+                            name: "tokenCartao",
+                            value: tokenCartao
+                          });
+                          dados.push({
+                            name: "valorParcela",
+                            value: valorParcela
+                          });
+                          dados.push({
+                            name: "parcelas",
+                            value: parcelas
+                          });
+                          dados.push({
+                            name: "cardname",
+                            value: cardname
+                          });
+                          $.ajax({
+                            method: "POST",
+                            url: "pagseguro/associado/credito",
+                            headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: $.param(dados),
+                            dataType: 'json',
+                            success: function success(retorna) {
+                              if (retorna.message == 'error') {
+                                $('#retorno_erro').removeClass('hidden');
+                                $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                                $("#submit_button").prop("disabled", true);
+                                $('#submit_button_boleto').prop('disabled', true); //to mexendo aqui
+
+                                //to mexendo aqui
+                                setTimeout(function () {
+                                  window.location.href = '/pagamento?status=error';
+                                }, 2000);
+                              } else {
+                                $('#redirecionar_botao').removeClass('hidden').attr('class', 'text-center');
+                                $('#retorno_ok').removeClass('hidden');
+                                $('#retorno_titulo_ok').html('Sucesso!');
+                                $('#retorno_texto_ok').html('Seu pagamento foi processado com sucesso');
+                                $('#submit_button').prop('disabled', true);
+                                $('#submit_button_boleto').prop('disabled', true);
+                                setTimeout(function () {
+                                  window.location.href = '/pagamento?status=sucess';
+                                }, 2000);
+                              }
+                            },
+                            error: function error(retorna) {}
+                          });
+                        }
+                      });
+                    };
+
+                    _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
+
+                    var cardnum = _this3.form.numCartao.replace(/\-/g, ''); // Número do cartão de crédito
+
+
+                    // Número do cartão de crédito
+                    var cardname = document.getElementById("cartao-nome").innerText; // Bandeira do cartão
+
+                    // Bandeira do cartão
+                    var cardval = _this3.form.validade.split("/"); // Validade do cartão mes e ano.
+
+
+                    // Validade do cartão mes e ano.
+                    var cardmes = cardval[0]; // Mês da expiração do cartão
+
+                    // Mês da expiração do cartão
+                    var cardano = 20 + cardval[1]; // Ano da expiração do cartão, é necessário os 4 dígitos.
+
+                    // Ano da expiração do cartão, é necessário os 4 dígitos.
+                    var cardcvv = _this3.form.cvv; // CVV do cartão
+
+                    // CVV do cartão
+                    PagSeguroDirectPayment.createCardToken({
+                      cardNumber: cardnum,
+                      brand: cardname,
+                      cvv: cardcvv,
+                      expirationMonth: cardmes,
+                      expirationYear: cardano,
+                      success: function success(retorno) {
+                        recupHashCartao(retorno.card.token);
+                      },
+                      error: function error(retorno) {
+                        $('#retorno_erro').removeClass('hidden');
+                        $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
+                        $('#submit_button').prop('disabled', true);
+                        $('#submit_button_boleto').prop('disabled', true);
+                      },
+                      complete: function complete(retorno) {// Callback para todas chamadas.                
+                      }
+                    });
+                  } else {
+                    _this3.loading = false;
+
+                    _this3.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    pagarBoleto: function pagarBoleto() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this4.loading = true;
+                _context4.next = 3;
                 return PagSeguroDirectPayment.onSenderHashReady(function (retorno) {
                   if (retorno.status == 'error') {
                     console.log(retorno.message);
-                    _this3.loading = false;
+                    _this4.loading = false;
                     return false;
                   } else {
-                    _this3.form.hashBoleto = retorno.senderHash;
-                    _this3.form.metodo = "boleto";
+                    _this4.form.hashBoleto = retorno.senderHash;
+                    _this4.form.metodo = "boleto";
 
-                    _this3.$validator.validateAll().then(function (valid) {
+                    _this4.$validator.validateAll().then(function (valid) {
                       if (valid) {
-                        _this3.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
+                        _this4.message('Aguarde...', 'Estamos processando seu pagamento', 'info');
 
                         setTimeout(function () {
-                          var dados = _this3.form;
+                          var dados = _this4.form;
                           $.ajax({
                             method: "POST",
                             url: "pagseguro/associado/boleto",
@@ -603,44 +654,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             dataType: 'json',
                             success: function success(res) {
                               if (res.message == 'error') {} else {
-                                _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
+                                _this4.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
 
-                                _this3.loading = false;
+                                _this4.loading = false;
                               }
 
-                              _this3.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success');
+                              _this4.message('Sucesso', 'Seu pagamento foi processado com sucesso', 'success');
 
-                              _this3.loading = false;
+                              _this4.loading = false;
                               window.open(res.response['paymentLink'], '_blank');
                             },
                             error: function error(_error) {
                               if (_error.response.status == 422) {
                                 if (_error.response.data.message == "The given data was invalid.") {
-                                  _this3.loading = false;
-                                  return _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
+                                  _this4.loading = false;
+                                  return _this4.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                                 }
                               }
 
                               if (_error.response.status == 500) {
-                                _this3.loading = false;
+                                _this4.loading = false;
 
-                                _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.', 'error');
+                                _this4.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.', 'error');
                               }
 
                               if (_error.response.status == 403) {
                                 if (_error.response.data.message == "This action is unauthorized.") {
-                                  _this3.loading = false;
+                                  _this4.loading = false;
 
-                                  _this3.message('Erro', 'Ação não autorizada.', 'error');
+                                  _this4.message('Erro', 'Ação não autorizada.', 'error');
                                 }
                               }
                             }
                           });
                         }, 1000);
                       } else {
-                        _this3.loading = false;
+                        _this4.loading = false;
 
-                        _this3.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
+                        _this4.message('Erro', 'Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos', 'error');
                       }
                     });
                   }
@@ -648,21 +699,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3);
+        }, _callee4);
       }))();
     },
     getProdutos: function getProdutos() {
-      var _this4 = this;
+      var _this5 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context4.next = 2;
+                _context5.next = 2;
                 return $.ajax({
                   method: "GET",
                   url: "get/produtos",
@@ -671,7 +722,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   },
                   dataType: 'json',
                   success: function success(res) {
-                    _this4.produtos = res;
+                    _this5.produtos = res;
                   },
                   error: function error(res) {
                     console.log(res);
@@ -680,10 +731,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4);
+        }, _callee5);
       }))();
     }
   },
@@ -1264,8 +1315,8 @@ var render = function () {
                                               {
                                                 name: "mask",
                                                 rawName: "v-mask",
-                                                value: "##/####",
-                                                expression: "'##/####'",
+                                                value: "##/##",
+                                                expression: "'##/##'",
                                               },
                                             ],
                                             class: [
@@ -1296,6 +1347,21 @@ var render = function () {
                                               expression: "form.validade",
                                             },
                                           }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "invalid-feedback",
+                                              staticStyle: {
+                                                "font-size": "12px !important",
+                                              },
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                            Ex: Formato da validade é 20/22\n                                        "
+                                              ),
+                                            ]
+                                          ),
                                           _vm._v(" "),
                                           _c(
                                             "span",
@@ -1829,6 +1895,35 @@ var render = function () {
                             ]
                           ),
                         ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "text-center" },
+                          [
+                            _c(
+                              "b-button",
+                              {
+                                attrs: {
+                                  disabled: _vm.loading,
+                                  size: "md",
+                                  id: "submit_button_boleto",
+                                  variant: "btn btn-success",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.pagarBoleto()
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "Gerar Boleto\n                            "
+                                ),
+                              ]
+                            ),
+                          ],
+                          1
+                        ),
                       ],
                       1
                     ),

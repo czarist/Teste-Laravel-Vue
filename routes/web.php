@@ -12,9 +12,11 @@ use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagSeguroController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\SexoController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
+use App\Models\RegionalSul;
 use Illuminate\Support\Facades\Route;
 
 
@@ -78,10 +80,8 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('pagseguro/pagamento', [PagSeguroController::class, 'pagamento'])->name('pagseguro.pagamento');
     Route::post('pagseguro/associado/credito', [PagSeguroController::class , 'associadocredito'])->name('pagseguro.associado.credito');
     Route::post('pagseguro/associado/credito/anuidade', [PagSeguroController::class , 'associadocreditoanuidade'])->name('pagseguro.associado.credito.anuidade');
-
     Route::post('pagseguro/associado/boleto', [PagSeguroController::class , 'associadoboleto'])->name('pagseguro.associado.boleto');
     Route::post('pagseguro/associado/boleto/anuidade', [PagSeguroController::class , 'associadoboletoanuidade'])->name('pagseguro.associado.boleto.anuidade');
-
 
     //Associado
     Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
@@ -95,6 +95,11 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('/avaliadorjr', [AvaliadorExpocomController::class, 'formavaliadorjr'])->name('avaliadorjr');
     Route::get('/avaliadorexpocom', [AvaliadorExpocomController::class, 'formavaliadorexpocom'])->name('avaliadorexpocom');
     Route::post('avaliador/save', [AvaliadorExpocomController::class , 'store'])->name('avaliador.save');
+
+
+    //REGIONAL SUL
+    Route::get('regional/sul', [RegionalSulController::class ,'formregionalsul'])->name('reginal.sul');
+    Route::post('regional/sul/save', [RegionalSulController::class , 'store'])->name('regional.sul.save');
 
 
 });
@@ -120,6 +125,7 @@ Route::prefix('get')->group(function () {
     Route::get('relacoes-publicas', [GetController::class, 'getRelacoesPublicas'])->name('get.relacoes-publicas');
     Route::get('producao-editorial', [GetController::class, 'getProdEdit'])->name('get.producao-editorial');
     Route::get('radio-internet', [GetController::class, 'getRadioInternet'])->name('get.radio-internet');
+    Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos-regionais');
 
 });
 

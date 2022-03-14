@@ -14,10 +14,10 @@ export default {
             })
             this.$notify({
                 group: 'submit',
-                title: title,
-                text: message,
+                title: '<span style="font-size:27px;">'+title+'</span>',
+                text: '<span style="font-size:20px;">'+message+'</span>',
                 type: type,
-                duration: duration ? duration : 3000
+                duration: duration ? duration : 6000
             });
         },
     }

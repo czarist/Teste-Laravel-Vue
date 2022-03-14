@@ -29,14 +29,15 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(ProdutoSeeder::class);
 
-        $this->call(DivisoesTematicasSeeder::class);
-        $this->call(DivisoesTematicasJrSeeder::class);
-        $this->call(CategoriaCinemaAudiovisualSeeder::class);
-        $this->call(CategoriaJornalismoSeeder::class);
-        $this->call(CatProdEditProdTransComunicSeeder::class);
-        $this->call(CategoriaPublicidadePropagandaSeeder::class);
-        $this->call(CategoriaRadioInternetSeeder::class);
-        $this->call(CategoriaRelacoesPublicasSeeder::class);
+        // $this->call(DivisoesTematicasSeeder::class);
+        // $this->call(DivisoesTematicasJrSeeder::class);
+        // $this->call(CategoriaCinemaAudiovisualSeeder::class);
+        // $this->call(CategoriaJornalismoSeeder::class);
+        // $this->call(CatProdEditProdTransComunicSeeder::class);
+        // $this->call(CategoriaPublicidadePropagandaSeeder::class);
+        // $this->call(CategoriaRadioInternetSeeder::class);
+        // $this->call(CategoriaRelacoesPublicasSeeder::class);
+        $this->call(ProdutosRegionaisSeeder::class);
         
     }
 }

@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h1>FICHA DE AVALIADOR {{ this.form_jr ? "JÚNIOR" : "EXPOCOM"}}</h1>
+                    <h1>FICHA DE AVALIADOR {{ this.form_jr ? "DTs e IJs" : "EXPOCOM"}}</h1>
                 </div>
 
                 <div class="card-body">

@@ -160,9 +160,7 @@ class PerfilController extends Controller
 
             unset($post['password']);
 
-            if($user){
-                $endereco = Endereco::whereUserId($user->id)->first();   
-            }
+            $endereco = Endereco::whereUserId($user->id)->first();   
     
             if(empty($endereco))
             {
@@ -196,10 +194,7 @@ class PerfilController extends Controller
                 );
             }
 
-
-            if(Auth::user()->is_associado){
-                $associado = Associado::whereUserId($user->id)->first();   
-            }
+            $associado = Associado::whereUserId($user->id)->first();   
             
             if(empty($associado))
             {

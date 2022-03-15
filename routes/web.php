@@ -12,11 +12,19 @@ use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagSeguroController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RegionalCentrooesteController;
+use App\Http\Controllers\RegionalNordesteController;
+use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
+use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
+use App\Models\RegionalCentrooeste;
+use App\Models\RegionalNordeste;
+use App\Models\RegionalNorte;
 use App\Models\RegionalSul;
+use App\Models\RegionalSuldeste;
 use Illuminate\Support\Facades\Route;
 
 
@@ -83,6 +91,10 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('pagseguro/associado/boleto', [PagSeguroController::class , 'associadoboleto'])->name('pagseguro.associado.boleto');
     Route::post('pagseguro/associado/boleto/anuidade', [PagSeguroController::class , 'associadoboletoanuidade'])->name('pagseguro.associado.boleto.anuidade');
 
+    //PAGSEGURO REGIONAIS
+    Route::post('pagseguro/regionais/credito', [PagSeguroController::class , 'regionaiscredito'])->name('pagseguro.regionais.credito');
+    Route::post('pagseguro/regionais/boleto', [PagSeguroController::class , 'regionaisboleto'])->name('pagseguro.regionais.boleto');
+
     //Associado
     Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
     Route::get('associado', [AssociadoController::class ,'area'])->name('associado');
@@ -101,6 +113,21 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('regional/sul', [RegionalSulController::class ,'formregionalsul'])->name('reginal.sul');
     Route::post('regional/sul/save', [RegionalSulController::class , 'store'])->name('regional.sul.save');
 
+    //REGIONAL NORDESTE
+    Route::get('regional/nordeste', [RegionalNordesteController::class ,'formregionalnordeste'])->name('reginal.nordeste');
+    Route::post('regional/nordeste/save', [RegionalNordesteController::class , 'store'])->name('regional.nordeste.save');
+
+    //REGIONAL NORTE
+    Route::get('regional/norte', [RegionalNorteController::class ,'formregionalnorte'])->name('reginal.norte');
+    Route::post('regional/norte/save', [RegionalNorteController::class , 'store'])->name('regional.norte.save');
+
+    //REGIONAL CENTRO-OESTE
+    Route::get('regional/centrooeste', [RegionalCentrooesteController::class ,'formregionalcentrooeste'])->name('reginal.centrooeste');
+    Route::post('regional/centrooeste/save', [RegionalCentrooesteController::class , 'store'])->name('regional.centrooeste.save');
+
+    //REGIONAL SULDESTE
+    Route::get('regional/suldeste', [RegionalSuldesteController::class ,'formregionalsuldeste'])->name('reginal.suldeste');
+    Route::post('regional/suldeste/save', [RegionalSuldesteController::class , 'store'])->name('regional.suldeste.save');
 
 });
 //END AUTH
@@ -125,7 +152,12 @@ Route::prefix('get')->group(function () {
     Route::get('relacoes-publicas', [GetController::class, 'getRelacoesPublicas'])->name('get.relacoes-publicas');
     Route::get('producao-editorial', [GetController::class, 'getProdEdit'])->name('get.producao-editorial');
     Route::get('radio-internet', [GetController::class, 'getRadioInternet'])->name('get.radio-internet');
-    Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos-regionais');
+    Route::get('produtos-regionais-sul', [GetController::class, 'getProdutosRegionaisSul'])->name('get.produtos.regionais.sul');
+    Route::get('produtos-regionais-suldeste', [GetController::class, 'getProdutosRegionaisSuldeste'])->name('get.produtos.regionais.suldeste');
+    Route::get('produtos-regionais-norte', [GetController::class, 'getProdutosRegionaisNorte'])->name('get.produtos.regionais.norte');
+    Route::get('produtos-regionais-nordeste', [GetController::class, 'getProdutosRegionaisNordeste'])->name('get.produtos.regionais.nordeste');
+    Route::get('produtos-regionais-centrooeste', [GetController::class, 'getProdutosRegionaisCentrooeste'])->name('get.produtos.regionais.centrooeste');
+    Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
 
 });
 

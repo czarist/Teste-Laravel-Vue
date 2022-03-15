@@ -72,9 +72,7 @@ class AvaliadorExpocomController extends Controller
 
         }
 
-        if($user){
-            $avaliador_expocom = AvaliadorExpocom::whereUserId($user->id)->first();   
-        }
+        $avaliador_expocom = AvaliadorExpocom::whereUserId($user->id)->first();   
 
         if(empty($avaliador_expocom)){
             $avaliador_expocom = AvaliadorExpocom::create([
@@ -98,9 +96,7 @@ class AvaliadorExpocomController extends Controller
             ]);
         }
 
-        if(Auth::user()->is_associado){
-            $associado = Associado::whereUserId($user->id)->first();   
-        }
+        $associado = Associado::whereUserId($user->id)->first();   
         
         if(empty($associado))
         {
@@ -112,8 +108,7 @@ class AvaliadorExpocomController extends Controller
                 ]
             );
 
-        }else
-        {
+        }else{
             $associado->update(
                 [
                     'user_id' => $user->id,
@@ -123,10 +118,7 @@ class AvaliadorExpocomController extends Controller
             );    
         }
 
-        
-        if($user){
-            $endereco = Endereco::whereUserId($user->id)->first();   
-        }
+        $endereco = Endereco::whereUserId($user->id)->first();   
 
         if(empty($endereco))
         {

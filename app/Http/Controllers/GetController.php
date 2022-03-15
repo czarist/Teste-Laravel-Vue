@@ -120,8 +120,35 @@ class GetController extends Controller
         return $categoriaRadioInternet->select('id', 'descricao')->get();
     }
 
-    public function getProdutosRegionais(ProdutosRegionais $produtosRegionais)
+    public function getProdutosRegionaisSul(Produto $produtos)
     {
-        return $produtosRegionais->select('id', 'nome', 'valor')->get();
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Sul')->get();
     }
+
+    public function getProdutosRegionaisSuldeste(Produto $produtos)
+    {
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Suldeste')->get();
+    }
+
+    public function getProdutosRegionaisNorte(Produto $produtos)
+    {
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Norte')->get();
+    }
+
+    public function getProdutosRegionaisNordeste(Produto $produtos)
+    {
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Nordeste')->get();
+    }
+
+    public function getProdutosRegionaisCentrooeste(Produto $produtos)
+    {
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Centro-Oeste')->get();
+    }
+
+    public function getProdutosRegionais(Produto $produtos)
+    {
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->get();
+    }
+
+
 }

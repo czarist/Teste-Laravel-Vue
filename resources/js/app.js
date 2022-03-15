@@ -220,6 +220,10 @@ import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
 import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
 import FormIndicacao from './components/indicacao/FormIndicacao.vue'
 import RegionalSulForm from './components/regionais/sul/RegionalSulForm.vue'
+import RegionalNorteForm from './components/regionais/norte/RegionalNorteForm.vue'
+import RegionalNordesteForm from './components/regionais/nordeste/RegionalNordesteForm.vue'
+import RegionalSuldesteForm from './components/regionais/suldeste/RegionalSuldesteForm.vue'
+import RegionalCentrooesteForm from './components/regionais/centrooeste/RegionalCentrooesteForm.vue'
 
 
 const app = new Vue({
@@ -241,6 +245,10 @@ const app = new Vue({
         'form-avaliador': FormAvaliador,
         'form-indicacao': FormIndicacao,
         'regional-sulform': RegionalSulForm,
+        'regional-norteform': RegionalNorteForm,
+        'regional-nordesteform': RegionalNordesteForm,
+        'regional-suldesteform': RegionalSuldesteForm,
+        'regional-centrooeste': RegionalCentrooesteForm
 
     }
 });

@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h1>Encontro Inter-regiões - Sudeste</h1>
+                    <h1>Encontro Inter-regiões - Sul</h1>
                     <h2>FICHA DE INSCRIÇÃO</h2>
                 </div>
             </div>
@@ -339,7 +339,7 @@
                             >
                                 <b-form-radio-group
                                     :disabled="loading"
-                                    v-model="post.port_nece"
+                                    v-model="port_nece_if"
                                     :options="port_nece"
                                     :button-variant="`outline-primary`" 
                                     size="sm"
@@ -352,7 +352,7 @@
                             </b-form-group>
                         </b-col>
 
-                        <b-col cols="12" sm="3" lg="3" size="lg" v-if="post.port_nece == 1">
+                        <b-col cols="12" sm="3" lg="3" size="lg" v-if="port_nece_if">
                             <b-form-group label="Se sim qual?" label-class="font-weight-bold">
                                 <b-form-select
                                     :disabled="loading"
@@ -362,7 +362,7 @@
                                     size="sm"
                                     data-vv-as="Qual necessidade especial?"
                                     class="form-control form-control-sm"
-                                    v-model="post.qual"
+                                    v-model="qual"
                                 >
                                 <option value="null">Selecione</option>
                                 <option value="Auditiva">Auditiva</option>
@@ -377,7 +377,7 @@
                             </b-form-group>
                         </b-col>
 
-                        <b-col cols="12" sm="3" lg="3" v-if="post.qual == 'Outra'">
+                        <b-col cols="12" sm="3" lg="3" v-if="qual == 'Outra'">
                             <b-form-group label="Se outra, descrever" label-class="font-weight-bold">
                                 <b-form-input
                                     name="outra"
@@ -419,7 +419,6 @@
                     </b-row>
                 </div>
             </div>
-
 
             <div class="card mt-3">
                 <div class="card-header text-center">
@@ -513,7 +512,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`complemento`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`complemento`) },
@@ -643,7 +641,7 @@
 
                 <div class="card-body">
                     <b-row>
-                        <b-col cols="12" sm="12" lg="12" size="lg" v-if="!this.user.pago_regional_sul_2022">
+                        <b-col cols="12" sm="12" lg="12" size="lg" v-if="!user.pago_regional_sul_2022">
 
                             <div class="table-responsive scroll" ref="scroll" v-show="!loading && produtosRegionais.length > 0">
                                 <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
@@ -663,7 +661,7 @@
                                                 <b-form-checkbox
                                                     :id="produtoRegional.id+'_'+index"
                                                     v-model="post.taxa_inscricao"
-                                                    :name="produtoRegional.id+'_'+index"
+                                                    name="taxa"
                                                     :value="produtoRegional"
                                                     :disabled="loading"
                                                     v-validate="{ required: true }"
@@ -675,9 +673,12 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <span v-show="errors.has(`taxa`)" class="invalid-feedback text-center">
+                                {{ errors.first(`taxa`) }}
+                            </span>
                         </b-col>
 
-                        <b-col cols="12" sm="12" lg="12" size="lg" v-if="this.user.pago_regional_sul_2022 == true">
+                        <b-col cols="12" sm="12" lg="12" size="lg" v-if="user.pago_regional_sul_2022 == true">
                             <div>
                                 <b-alert show variant="success">
                                     <h4 class="alert-heading">Você já esta inscrito no Reginal Sul!</h4>
@@ -749,17 +750,38 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col d-flex justify-content-end">
-                        <b-button :disabled=" loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
-                            Voltar
-                        </b-button>
+                            <b-button :disabled=" loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
+                                Voltar
+                            </b-button>
 
-                        <b-button :disabled=" loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
+                            <b-button :disabled=" loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
                                 Salvar
                             </b-button>
 
-                            <b-button :disabled=" loading" size="md" variant="outline-success" class="m-1" @click="pagar(post)">
-                                Método de Pagamento
-                            </b-button>
+                            <div v-if="user.anuidade_2022 == false">
+                                <b-button
+                                    v-if="user.pago_regional_norte_2022 == false"
+                                    :disabled="loading" 
+                                    size="md" 
+                                    variant="outline-success" 
+                                    class="m-1" 
+                                    @click="pagar(post)"
+                                >
+                                    Método de Pagamento
+                                </b-button>
+                            </div>
+
+                            <div v-else>
+                                <b-button
+                                    :disabled="loading" 
+                                    size="md" 
+                                    variant="outline-success" 
+                                    class="m-1" 
+                                    @click="isento(post)"
+                                >
+                                    Se inscrever como isento
+                                </b-button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -830,6 +852,9 @@
                     },
                     _method: 'post'
                 },
+                port_nece_if: false,
+                qual: false,
+                outra_necessidade: false,
                 options: [
                     { text: 'Não', value: 0 },
                     { text: 'Sim', value: 1 },
@@ -868,16 +893,13 @@
                     this.post.titulacao_id = this.user && this.user.regional_sul ? this.user.regional_sul.categoria_inscricao : null
                     this.post.numero_matricula = this.user && this.user.regional_sul ? this.user.regional_sul.numero_matricula : null
 
-                    //?
                     this.post.guard_sab = this.user && this.user.regional_sul ? this.user.regional_sul.guardador_sabado : null
                     this.post.port_nece = this.user && this.user.regional_sul ? this.user.regional_sul.port_nece_espe : null
                     this.post.qual = this.user && this.user.regional_sul ? this.user.regional_sul.port_nece_espe_qual : null
                     this.post.outra_necessidade = this.user && this.user.regional_sul ? this.user.regional_sul.port_nece_espe_outra : null
 
-
-
+                    this.post.regiao = this.regiao ? this.regiao : null
                     this.post.ativo = this.user.ativo ? this.user.ativo : null,
-                    this.post.associacao = this.user.associado ? this.user.associado.associacao : null,
                     this.post.endereco = {
                         id: this.user && this.user.enderecos && this.user.enderecos[0] 
                             ? this.user.enderecos[0].id
@@ -913,13 +935,22 @@
                     },
                     this.post.pais = this.user && this.user.enderecos && this.user.enderecos[0] ? this.user.enderecos[0].pais_id : null
                 }
-            }
+            },
+            'port_nece_if': function(val){
+                if(val == 1){
+                    this.post.port_nece = 1
+                }
+            },
+            'qual': function(val){
+                if(val){
+                    this.post.qual = val
+                }
+            },
         },
         computed: {
             passRequired() {
                 return this.post && this.post.id ? false : true
-            },
-            
+            },            
         },
         methods: {  
             async getEstados(){
@@ -1060,7 +1091,7 @@
                 }); 
             },
             async getProdutosRegionais() {
-                let urlgetProdutosRegionais = this.baseUrl+"/get/produtos-regionais";
+                let urlgetProdutosRegionais = this.baseUrl+"/get/produtos-regionais-sul";
 
                 await $.ajax({
                     method: "GET",
@@ -1077,91 +1108,93 @@
                     },
                 });
             },
-
             async save() {
-
                 await this.$validator.validateAll().then((valid) => {
+                    
                     if(valid) {
+                        
+                        if(this.post && this.post.taxa_inscricao && this.post.taxa_inscricao.id == 4 && this.user.anuidade_2022 == false){
+                            this.loading = false
+                            this.message('Sócio da Intercom', 'Precisar ser filiado e estar com a anuidade de 2022 em dia, troque a categoria para prosseguir', 'error');
+                        } else{
 
-                    if(this.post && this.post.taxa_inscricao && this.post.taxa_inscricao.id == 2 && this.user.anuidade_2022 == false){
-                        this.loading = false
-                        this.message('Sócio da Intercom', 'Precisar ser filiado e estar com a anuidade de 2022 em dia, troque a categoria para prosseguir', 'error');
-                        return
-                    }
+                            this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
 
-                    this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
+                            setTimeout(() => {
+                                var dados = this.post;
 
-                    setTimeout(() => {
-                        var dados = this.post;
+                                let urlSave = this.baseUrl+"/regional/sul/save";
 
-                        let urlSave = this.baseUrl+"/regional/sul/save";
-
-                        $.ajax({
-                            method: "POST",
-                            url: urlSave,
-                            headers: {
-                                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                            },
-                            data: $.param(dados),
-                            dataType: "json",
-                            success: (res) => {
-                                if (res.message == "error") {
-                                } else {
-                                    this.message(
-                                        "Erro",
-                                        "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
-                                        "error"
-                                        
-                                    );
-                                    this.loading = false;
-                                }
-                                this.message(
-                                    "Sucesso",
-                                    "Seus dados foram alterados com sucesso",
-                                    "success",
-                                    
-                                );
-                                this.loading = false;
-                            },
-                            error: (error) => {
-                                console.log(error);
-                                if (error.status == 422) {
-                                    if (error.response.message == "The given data was invalid.") {
-                                        this.loading = false;
-                                        return this.message(
-                                            "Campos Obrigatórios",
-                                            "Preencha todos os campos obrigatórios",
-                                            "error"
+                                $.ajax({
+                                    method: "POST",
+                                    url: urlSave,
+                                    headers: {
+                                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                                    },
+                                    data: $.param(dados),
+                                    dataType: "json",
+                                    success: (res) => {
+                                        if (res.message == "error") {
+                                        } else {
+                                            this.message(
+                                                "Erro",
+                                                "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                                "error"
+                                                
+                                            );
+                                            this.loading = false;
+                                        }
+                                        this.message(
+                                            "Sucesso",
+                                            "Seus dados foram alterados com sucesso",
+                                            "success",
+                                            
                                         );
-                                    }
-                                }
-                                if (error.status == 500) {
-                                    this.loading = false;
-                                    this.message(
-                                        "Erro",
-                                        "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
-                                        "error",
-                                        -1
-                                    );
-                                }
-                                if (error.status == 403) {
-                                    if (
-                                        error.response.message == "This action is unauthorized."
-                                    ) {
                                         this.loading = false;
-                                        this.message("Erro", "Ação não autorizada.", "error");
-                                    }
-                                }
-                                this.loading = false;
-                                this.message(
-                                    "Erro",
-                                    "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
-                                    "error"
-                                    
-                                );
-                            },
-                        });
-                    }, 1000);
+                                    },
+                                    error: (error) => {
+                                        console.log(error);
+                                        if (error.status == 422) {
+                                            if (error.response.message == "The given data was invalid.") {
+                                                this.loading = false;
+                                                return this.message(
+                                                    "Campos Obrigatórios",
+                                                    "Preencha todos os campos obrigatórios",
+                                                    "error"
+                                                );
+                                            }
+                                        }
+                                        if (error.status == 500) {
+                                            this.loading = false;
+                                            this.message(
+                                                "Erro",
+                                                "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                                "error",
+                                                -1
+                                            );
+                                        }
+                                        if (error.status == 403) {
+                                            if (
+                                                error.response.message == "This action is unauthorized."
+                                            ) {
+                                                this.loading = false;
+                                                this.message("Erro", "Ação não autorizada.", "error");
+                                            }
+                                        }
+                                        this.loading = false;
+                                        this.message(
+                                            "Erro",
+                                            "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                            "error"
+                                            
+                                        );
+                                    },
+                                });
+                            }, 1000);
+
+                        }
+
+
                 } else {
                         this.loading = false
                         this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
@@ -1170,7 +1203,27 @@
             },
             back(){
                 window.history.back();
+            },
+            async isento(post){
+                this.loading = true
+                await this.$validator.validateAll().then((valid) => {
+                    if(valid) {
+
+                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info');
+                        this.save()
+
+                        setTimeout(() => {
+                            window.location.href = this.baseUrl;
+                        },4000)
+
+
+                    } else {
+                            this.loading = false
+                            this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                    }
+                })
             }
+
         },
         created() {
             this.getGeneros(),
@@ -1180,7 +1233,6 @@
             setTimeout(() => {
                 this.pagamento()
             },3000)
-
         },
     }
 </script>

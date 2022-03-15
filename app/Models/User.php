@@ -11,7 +11,20 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
-    protected $appends = ['is_root', 'is_admin', 'is_user', 'is_associado', 'anuidade_2022', 'pago_regional_sul_2022'];
+    protected $appends = [
+        'is_root', 
+        'is_admin', 
+        'is_user', 
+        'is_associado', 
+        'anuidade_2022', 
+        'pago_regional_sul_2022',
+        'pago_regional_nordeste_2022',
+        'pago_regional_suldeste_2022',
+        'pago_regional_centrooeste_2022',
+        'pago_regional_norte_2022'
+
+    ];
+
     protected $fillable = [
         'name',
         'email',
@@ -147,6 +160,57 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getPagoRegionalNordeste2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 7) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getPagoRegionalSuldeste2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 8) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getPagoRegionalCentrooeste2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 9) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getPagoRegionalNorte2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 10) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public function getFirstNameAttribute()
     {
@@ -196,6 +260,22 @@ class User extends Authenticatable
 
     public function regional_sul(){
         return $this->hasOne(RegionalSul::class);
+    }
+
+    public function regional_nordeste(){
+        return $this->hasOne(RegionalNordeste::class);
+    }
+
+    public function regional_suldeste(){
+        return $this->hasOne(RegionalSuldeste::class);
+    }
+
+    public function regional_centrooeste(){
+        return $this->hasOne(RegionalCentrooeste::class);
+    }
+
+    public function regional_norte(){
+        return $this->hasOne(RegionalNorte::class);
     }
 
     public function todos_divisoes_tematicas()

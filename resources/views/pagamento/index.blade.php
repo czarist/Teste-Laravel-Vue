@@ -17,8 +17,7 @@
     
     $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
         <h4 class='alert-heading'>Parabéns!</h4>
-        <p><b>O seu pagamento da sua anuidade foi processado com sucesso</b></p>
-        <p><b>Assim que seu pagamento for aprovado será liberar a área de associado</b></p>
+        <p><b>O seu pagamento foi processado com sucesso</b></p>
         Você foi direcionado para a página principal.<br/>
         Caso não tenha recebido o email contendo o status do seu pagamento, verifique sua caixa de spam.
     </div>";

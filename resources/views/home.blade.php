@@ -153,17 +153,26 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="congressoregionaisLabel">Congressos Regionais</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar">X</button>
                     </div>
                     <div class="modal-body">
 
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
-                            <a class="btn btn-primary m-1" href="#">Regional Norte</a>
-                            <a class="btn btn-primary m-1" href="#">Regional Leste</a>
-                            <a class="btn btn-primary m-1" href="#">Regional Oeste</a>
+                        @if (Auth::user()->id != 1 || Auth::user()->id != 1868 || Auth::user()->id != 1156 || Auth::user()->id != 1859 || Auth::user()->id != 309)
+                        Em desenvolvimento...
+                        @endif
 
-                        </div>
+                        @if (Auth::user()->id == 1 || Auth::user()->id == 1868 || Auth::user()->id == 1156 || Auth::user()->id == 1859 || Auth::user()->id == 309 || Auth::user()->id == 1849)
+                            
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
+                                <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
+                                <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
+                                <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
+                                <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
+                            </div>
+
+                        @endif
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

@@ -44,49 +44,74 @@ class IndicacaoController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request->all());
         $post = $request->all();
 
-        $endereco = EnderecoIndicacao::create(
-            [
-                'logradouro' => $post['enderecos']['logradouro'],
-                'numero' => $post['enderecos']['numero'],
-                'complemento' => $post['enderecos']['complemento'],
-                'bairro' => $post['enderecos']['bairro'],
-                'municipio_id' => $post['enderecos']['municipio']['id'],
-                'cep' => $post['enderecos']['cep'],
-                'pais_id' => $post['pais'],
-                'updated_at' => Carbon::now()
-            ]
-        );
+        if( 
+            $post['enderecos']['logradouro'] == null 
+            && $post['enderecos']['numero'] == null 
+            && $post['enderecos']['complemento'] == null 
+            && $post['enderecos']['bairro'] == null 
+            && $post['enderecos']['municipio'] == null 
+            && $post['enderecos']['cep'] == null 
+            && $post['enderecos']['pais'] == null
+        ){
 
-        $indicacao = Indicacao::create([
+            $indicacao = Indicacao::create([
+                "nome_respo" => $post['nome_respo'],
+                "cpf_respo" => $post['cpf_respo'],
+                "respo_indicacao" => $post['respo_indicacao'],
+                "email_respo" => $post['email_respo'],
+                "email_curso" => $post['email_curso'],
+                "celular" => $post['celular'],
+                "nome_autor" => $post['nome_autor'],
+                "cpf_autor" => $post['cpf_autor'],
+                "trabalho_produzido" => $post['trabalho_produzido'],
+                "orientador" => $post['orientador'],
+                "titulo_trabalho" => $post['titulo_trabalho'],
+                "categoria" => $post['categoria'],
+                "estado_id" => $post['estado_id'],
+                "instituicao_id" => $post['instituicao_id'],
+                "modalidade" => $post['modalidade'],
+            ]);
 
-            "nome_respo" => $post['nome_respo'],
-            "cpf_respo" => $post['cpf_respo'],
-            "respo_indicacao" => $post['respo_indicacao'],
-            "email_respo" => $post['email_respo'],
-            "email_curso" => $post['email_curso'],
-            "celular" => $post['celular'],
-            "nome_autor" => $post['nome_autor'],
-            "cpf_autor" => $post['cpf_autor'],
-            "trabalho_produzido" => $post['trabalho_produzido'],
-            "orientador" => $post['orientador'],
-            "titulo_trabalho" => $post['titulo_trabalho'],
-            "categoria" => $post['categoria'],
-            "estado_id" => $post['estado_id'],
-            "instituicao_id" => $post['instituicao_id'],
-            "modalidade" => $post['modalidade'],
-            "endereco_id" => $endereco['id'],
-          
-        ]);
+        }else{
+
+            $endereco = EnderecoIndicacao::create(
+                [
+                    'logradouro' => $post['enderecos']['logradouro'],
+                    'numero' => $post['enderecos']['numero'],
+                    'complemento' => $post['enderecos']['complemento'],
+                    'bairro' => $post['enderecos']['bairro'],
+                    'municipio_id' => $post['enderecos']['municipio']['id'] ?? null,
+                    'cep' => $post['enderecos']['cep'],
+                    'pais_id' => $post['enderecos']['pais'],
+                    'updated_at' => Carbon::now()
+                ]
+            );
+                
+            $indicacao = Indicacao::create([
+                "nome_respo" => $post['nome_respo'],
+                "cpf_respo" => $post['cpf_respo'],
+                "respo_indicacao" => $post['respo_indicacao'],
+                "email_respo" => $post['email_respo'],
+                "email_curso" => $post['email_curso'],
+                "celular" => $post['celular'],
+                "nome_autor" => $post['nome_autor'],
+                "cpf_autor" => $post['cpf_autor'],
+                "trabalho_produzido" => $post['trabalho_produzido'],
+                "orientador" => $post['orientador'],
+                "titulo_trabalho" => $post['titulo_trabalho'],
+                "categoria" => $post['categoria'],
+                "estado_id" => $post['estado_id'],
+                "instituicao_id" => $post['instituicao_id'],
+                "modalidade" => $post['modalidade'],
+                "endereco_id" => $endereco['id'],
+            ]);
+    
+        }
 
         Log::info('Indicacao Expocom Criada: ' . json_encode($request->all()));
 
         return response()->json(['message' => 'success', 'response' => $indicacao], 201);
-
-    }
-
-    
+    }    
 }

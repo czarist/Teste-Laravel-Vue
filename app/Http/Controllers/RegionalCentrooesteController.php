@@ -141,7 +141,6 @@ class RegionalCentrooesteController extends Controller
                     'user_id' => $user->id,
                     'regiao' => 'centrooeste',
                     'categoria_inscricao' => $post['titulacao_id'],
-                    'numero_matricula' => $post['numero_matricula'],
                     'ano' => date('Y'),
                     'guardador_sabado' => $post['guard_sab'],
                     'port_nece_espe' => $post['port_nece'],
@@ -152,7 +151,6 @@ class RegionalCentrooesteController extends Controller
                 $regional->update([
                     'regiao' => 'centrooeste',
                     'categoria_inscricao' => $post['titulacao_id'],
-                    'numero_matricula' => $post['numero_matricula'],
                     'ano' => date('Y'),
                     'guardador_sabado' => $post['guard_sab'],
                     'port_nece_espe' => $post['port_nece'],

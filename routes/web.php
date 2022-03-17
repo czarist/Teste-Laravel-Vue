@@ -18,6 +18,7 @@ use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
+use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
 use App\Models\RegionalCentrooeste;
@@ -25,6 +26,7 @@ use App\Models\RegionalNordeste;
 use App\Models\RegionalNorte;
 use App\Models\RegionalSul;
 use App\Models\RegionalSuldeste;
+use App\Models\SubmissaoRegionalSul;
 use Illuminate\Support\Facades\Route;
 
 
@@ -128,6 +130,15 @@ Route::group(['middleware' => 'auth'] , function() {
     //REGIONAL SULDESTE
     Route::get('regional/suldeste', [RegionalSuldesteController::class ,'formregionalsuldeste'])->name('reginal.suldeste');
     Route::post('regional/suldeste/save', [RegionalSuldesteController::class , 'store'])->name('regional.suldeste.save');
+
+
+    //SUBMISSAO REGIONAL
+    Route::get('submissao/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.sul');
+
+    Route::get('submissao/regional/norte', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.norte');
+    Route::get('submissao/regional/nordeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.nordeste');
+    Route::get('submissao/regional/suldeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.suldeste');
+    Route::get('submissao/regional/centrooeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.centrooeste');
 
 });
 //END AUTH

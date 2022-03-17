@@ -3,6 +3,18 @@ export default {
     data(){
         return{
             loading: false,
+            baseURL:process.env.MIX_BASE_URL,
+            data_init: {
+                branding: false,
+                height: 500,
+                mode: 'textareas',
+                plugins: 'print preview fullpage autosave save fullscreen image link media codesample table  hr pagebreak  insertdatetime advlist lists textpattern code paste',
+                autosave_prefix: "tinymce-autosave-{path}{query}-{id}-",
+                paste_data_images: false, 
+                menubar: 'table tc',
+                toolbar: 'fontselect fontsizeselect formatselect | undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor  permanentpen formatpainter | fullscreen preview | image | code',
+                document_base_url: this.baseURL
+            }
         }
     },
 

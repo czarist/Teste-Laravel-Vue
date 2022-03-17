@@ -21,4 +21,8 @@ class RegionalSul extends Model
         'port_nece_espe_qual',
         'port_nece_espe_outra'
     ];
+
+    public function submissao(){
+        return $this->hasOne(SubmissaoRegionalSul::class, 'inscricao_id', 'id');
+    }
 }

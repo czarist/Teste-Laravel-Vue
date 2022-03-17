@@ -94,7 +94,6 @@
                                     type="text"
                                     v-mask="['(##) ####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
-                                    v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="CNPJ/CPF"
                                 ></b-form-input>
@@ -114,7 +113,6 @@
                                     type="text"
                                     v-mask="['(##) #####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
-                                    v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Celular"
                                 ></b-form-input>
@@ -152,7 +150,6 @@
                                 <b-form-select
                                     :disabled="loading"
                                     name="titulacao"
-                                    v-validate="{ required: true }"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`titulacao`)}]"
                                     size="sm"
                                     data-vv-as="Titulação Acadêmica:"
@@ -266,7 +263,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`complemento`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`complemento`) },
@@ -553,11 +549,11 @@
 
                 <div class="card-footer row">
                     <div class="col d-flex justify-content-end">
-                    <b-button :disabled=" loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
+                    <b-button :disabled="loading" size="md" variant="outline-danger" class="align-self-end m-1" @click="back()">
                         Voltar
                     </b-button>
 
-                    <b-button :disabled=" loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
+                    <b-button :disabled="loading" size="md" variant="outline-success" class="align-self-end m-1" @click="save()">
                         CADASTRAR
                     </b-button>
                     </div>

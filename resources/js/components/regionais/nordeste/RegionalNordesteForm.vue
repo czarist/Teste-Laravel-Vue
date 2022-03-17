@@ -301,25 +301,6 @@
                             </b-form-group>
                         </b-col>
 
-                        <b-col cols="12" sm="6" lg="6">
-                            <b-form-group label="Número de Matrícula" label-class="font-weight-bold">
-                                <b-form-input
-                                    name="numero_matricula"
-                                    size="sm"
-                                    :disabled="loading"
-                                    v-model="post.numero_matricula"
-                                    type="text"
-                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`numero_matricula`)}]"
-                                    v-validate="{ required: true }"
-                                    aria-describedby="input-1-live-feedback"
-                                    data-vv-as="Número de Matrícula"
-                                ></b-form-input>
-                                <span v-show="errors.has(`numero_matricula`)" class="invalid-feedback">
-                                    {{ errors.first(`numero_matricula`) }}
-                                </span>
-                            </b-form-group>
-                        </b-col>
-
                     </b-row>
                 </div>
             </div>
@@ -891,7 +872,6 @@
 
                     this.post.instituicao_id = this.user && this.user.associado ? this.user.associado.instituicao_id : null
                     this.post.titulacao_id = this.user && this.user.regional_nordeste ? this.user.regional_nordeste.categoria_inscricao : null
-                    this.post.numero_matricula = this.user && this.user.regional_nordeste ? this.user.regional_nordeste.numero_matricula : null
 
                     this.post.guard_sab = this.user && this.user.regional_nordeste ? this.user.regional_nordeste.guardador_sabado : null
                     this.post.port_nece = this.user && this.user.regional_nordeste ? this.user.regional_nordeste.port_nece_espe : null

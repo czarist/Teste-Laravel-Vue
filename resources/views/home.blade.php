@@ -156,23 +156,42 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar">X</button>
                     </div>
                     <div class="modal-body">
+                        <div class="d-grid gap-2">
 
-                        @if (Auth::user()->id != 1 || Auth::user()->id != 1868 || Auth::user()->id != 1156 || Auth::user()->id != 1859 || Auth::user()->id != 309)
-                        Em desenvolvimento...
-                        @endif
+                            {{-- @if (Auth::user()->pago_regional_sul_2022 || Auth::user()->pago_regional_nordeste_2022 || Auth::user()->pago_regional_suldeste_2022 || Auth::user()->pago_regional_centrooeste_2022 || Auth::user()->pago_regional_norte_2022)
 
-                        @if (Auth::user()->id == 1 || Auth::user()->id == 1868 || Auth::user()->id == 1156 || Auth::user()->id == 1859 || Auth::user()->id == 309 || Auth::user()->id == 1849)
-                            
-                            <div class="d-grid gap-2">
+                                
+                                @if (Auth::user()->pago_regional_sul_2022)
+                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.sul') }}">Submissão regional sul</a>
+                                @endif
+
+                                @if (Auth::user()->pago_regional_nordeste_2022)
+                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão regional nordeste</a>
+                                @endif
+
+                                @if (Auth::user()->pago_regional_suldeste_2022)
+                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão regional Sudeste</a>
+                                @endif
+
+                                @if (Auth::user()->pago_regional_centrooeste_2022)
+                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão regional centrooeste</a> 
+                                @endif
+
+                                @if (Auth::user()->pago_regional_norte_2022)
+                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão regional norte</a>   
+                                @endif
+
+                            @else
+ --}}
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
-                            </div>
 
-                        @endif
+                            {{-- @endif --}}
 
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -199,7 +218,6 @@
             </div>
         </div>
 
-            
         <!--MODAL FORM AVALIADOR-->
         <div class="modal fade" id="formavaliador" tabindex="-1" aria-labelledby="formavaliador" aria-hidden="true">
             <div class="modal-dialog">

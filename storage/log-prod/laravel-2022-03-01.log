@@ -2858,3 +2858,8 @@
 #1 /home/sistemas/www/index.php(58): header('Access-Control-...')
 #2 {main}
 "} 
+[2022-03-01 03:05:46] production.ERROR: Undefined index: password in file /home/sistemas/www/sistema/app/Http/Controllers/CadastroController.php on line 28  
+[2022-03-01 03:08:25] production.ERROR: Undefined index: password in file /home/sistemas/www/sistema/app/Http/Controllers/CadastroController.php on line 28  
+[2022-03-01 23:39:53] production.ERROR: Undefined index: password in file /home/sistemas/www/sistema/app/Http/Controllers/CadastroController.php on line 28  
+[2022-03-01 23:54:11] production.ERROR: Undefined index: password in file /home/sistemas/www/sistema/app/Http/Controllers/CadastroController.php on line 28  
+[2022-03-01 23:59:50] production.ERROR: Undefined index: password in file /home/sistemas/www/sistema/app/Http/Controllers/CadastroController.php on line 28  

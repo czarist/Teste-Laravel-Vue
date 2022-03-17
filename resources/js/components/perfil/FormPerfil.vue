@@ -481,7 +481,6 @@
                       <b-form-input
                         size="sm"
                         :name="`complemento`"
-                        v-validate="{ required: true }"
                         :class="[
                           'form-control form-control-sm',
                           { 'is-invalid': errors.has(`complemento`) },

@@ -64,8 +64,21 @@
   
                         <h2 class="text-center">Login Intercom</h2>
                         <div class=" mt-3 text-center" >
-                            <p style="font-size:12px">Caso seja associado(a) da Intercom, informe o seu CPF e senha para acessar seu cadastro.</p> <br>
+                            <p style="font-size:14px">Caso seja associado(a) da Intercom, informe o seu CPF e senha para acessar seu cadastro.</p> <br>
                         </div>
+                        @if (Session::has('message'))
+                            <div class="alert alert-success" role="alert">
+                                {{ Session::get('message') }}
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="alert alert-warning text-center" role="alert">
+                                <b>
+                                    {{ implode('', $errors->all(':message')) }}
+                                </b>
+                            </div>
+                        @endif
 
                         <form class="text-center mt-1" method="POST" action="{{ route('login') }}">
                             @csrf

@@ -19,7 +19,6 @@
                                 data-vv-as="estado"
                                 :selectOnTab="true"
                                 v-model="post.estado_id"
-                                v-validate="{ required: true }"
                                 :disabled="loading"
                                 :class="[{ 'v-select-invalid': errors.has(`estado_id`) }]"
                                 label="sigla"
@@ -168,7 +167,7 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf_respo`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="CPF do Responsável"
-                                    v-validate="{ required: true}"
+                                    v-validate="{ required: true }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`cpf_respo`)" class="invalid-feedback">
                                     {{ errors.first(`cpf_respo`) }}
@@ -222,9 +221,8 @@
                                     :disabled="loading"
                                     v-model="post.celular"
                                     type="text"
-                                    v-mask="['(##) ####-####']"
+                                    v-mask="['(##) #####-####']"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
-                                    v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Telefone do Curso"
                                 ></b-form-input>
@@ -309,7 +307,6 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`orientador`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Orientador(es) do trabalho"
-                                    v-validate="{ required: true }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`orientador`)" class="invalid-feedback">
                                     {{ errors.first(`orientador`) }}
@@ -368,7 +365,7 @@
                                 <label class="font-weight-bold">CEP</label>
                                 <b-form-input
                                     size="sm"
-                                    v-validate="{ min: 9, required: true }"
+                                    v-validate="{ min: 9}"
                                     :name="`cep`"
                                     @change="getCep()"
                                     v-mask="'#####-###'"
@@ -396,7 +393,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`logradouro`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`logradouro`) },
@@ -421,7 +417,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`numero`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`numero`) },
@@ -446,7 +441,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`complemento`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`complemento`) },
@@ -471,7 +465,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`bairro`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`bairro`) },
@@ -498,7 +491,6 @@
                                 data-vv-as="estado"
                                 :selectOnTab="true"
                                 v-model="post.enderecos.estado"
-                                v-validate="{ required: true }"
                                 :disabled="loading"
                                 :class="[{ 'v-select-invalid': errors.has(`estado`) }]"
                                 label="sigla"
@@ -531,7 +523,6 @@
                                 :disabled="loading"
                                 :options="municipios"
                                 :selectOnTab="false"
-                                v-validate="{ required: true }"
                                 v-model="post.enderecos.municipio"
                                 label="nome"
                                 data-vv-as="municipio"
@@ -550,11 +541,10 @@
                                 <b-form-input
                                     name="pais"
                                     size="sm"
-                                    v-model="post.pais"
+                                    v-model="post.enderecos.pais"
                                     type="text"
                                     :disabled="loading"
                                     :class="[ 'form-control form-control-sm',{ 'is-invalid': errors.has(`pais`) }]"
-                                    v-validate="{ required: true }"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="País"
                                 ></b-form-input>

@@ -33,7 +33,7 @@
                 @click="redirecionar()"
                 :disabled="loading"
             >
-                Home
+                Nova Indicação
             </b-button>
 
             <b-button
@@ -68,7 +68,7 @@
         },
         methods: {
             redirecionar(){
-                window.location.href = '/';
+                window.location.reload()
             },
         },
         created() {

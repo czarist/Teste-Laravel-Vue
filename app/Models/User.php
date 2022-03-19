@@ -212,6 +212,17 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getIsIndicadoExpocom2022Attribute()
+    {
+        if(Auth::user()){
+            $indicado = Indicacao::where('cpf_autor', Auth::user()->cpf)->first();
+           if(!empty($indicado)){
+                return true;
+           }
+        }
+        return false;
+    }
+
     public function getFirstNameAttribute()
     {
         $parting = explode(' ', $this->name);
@@ -317,10 +328,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CategoriaRadioInternet::class, 'todos_categoria_radio_internets' , 'user_id',  'categoria_id');
     }
-
-
-
-
-
     
 }

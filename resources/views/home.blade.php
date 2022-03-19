@@ -26,6 +26,13 @@
             <h4 class='alert-heading'>Alerta!</h4>
             <p><b>Seu pagamento teve um erro, acompanhe pela área de pagamentos</b></p>
         </div>";
+
+    $div_status1 = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
+    <h4 class='alert-heading'>Parabéns!</h4>
+    <p><b>Seu trabalho foi submetido com sucesso</b></p>
+    Você foi direcionado para a página principal.<br/>
+    </div>";
+
     
     if ($status == 'sucess') {
         echo $div_status;
@@ -33,6 +40,10 @@
     if ($status == 'error') {
         echo $div_status2;
     }
+    if ($status == 'sucess1') {
+        echo $div_status1;
+    }
+
     
     ?>
     <div class="row">
@@ -158,38 +169,228 @@
                     <div class="modal-body">
                         <div class="d-grid gap-2">
 
-                            {{-- @if (Auth::user()->pago_regional_sul_2022 || Auth::user()->pago_regional_nordeste_2022 || Auth::user()->pago_regional_suldeste_2022 || Auth::user()->pago_regional_centrooeste_2022 || Auth::user()->pago_regional_norte_2022)
+                            @if (Auth::user()->id == 1895 
+                            || Auth::user()->id == 1896 
+                            || Auth::user()->id == 1849 
+                            || Auth::user()->id == 1
+                            || Auth::user()->id == 1859
 
-                                
-                                @if (Auth::user()->pago_regional_sul_2022)
-                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.sul') }}">Submissão regional sul</a>
-                                @endif
+                            )
 
-                                @if (Auth::user()->pago_regional_nordeste_2022)
-                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão regional nordeste</a>
-                                @endif
 
-                                @if (Auth::user()->pago_regional_suldeste_2022)
-                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão regional Sudeste</a>
-                                @endif
+                                @if (
+                                    Auth::user()->pago_regional_sul_2022 
+                                    || Auth::user()->pago_regional_nordeste_2022 
+                                    || Auth::user()->pago_regional_suldeste_2022 
+                                    || Auth::user()->pago_regional_centrooeste_2022 
+                                    || Auth::user()->pago_regional_norte_2022
+                                    )
+                                        
+                                        @if (Auth::user()->pago_regional_sul_2022)
+                                            @if (Auth::user()->regional_sul->categoria_inscricao != 8 || Auth::user()->regional_sul->categoria_inscricao != 9 )
+                                                
+                                                
+                                                @if (
+                                                    Auth::user()->regional_sul->categoria_inscricao == 1 
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 2 
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 10 )
 
-                                @if (Auth::user()->pago_regional_centrooeste_2022)
-                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão regional centrooeste</a> 
-                                @endif
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                @if (Auth::user()->is_indicado_expocom_2022)
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.sul') }}">Submissão Expocom Regional Sul</a>                                        
+                                                                @endif
+                                                            </div>      
 
-                                @if (Auth::user()->pago_regional_norte_2022)
-                                    <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão regional norte</a>   
-                                @endif
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissaojunior.regional.sul') }}">Submissão Intercom Júnior Regional Sul</a>    
+                                                            </div>
+                                                        </div>
 
+                                                @endif
+
+                                                @if (
+                                                    Auth::user()->regional_sul->categoria_inscricao == 3 
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 4
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 5
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 6
+                                                    || Auth::user()->regional_sul->categoria_inscricao == 7
+                                                )
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissao.regional.sul') }}">Submissão Divisões Temáticas Regional Sul</a>
+                                                        </div>                                                    
+                                                        <div class="col-6">
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissaomesa.regional.sul') }}">Submissão Mesa Regional Sul</a>                                                                             
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                                
+                                            @endif
+                                        @endif
+
+                                        {{-- @if (Auth::user()->pago_regional_nordeste_2022)
+                                            @if (Auth::user()->regional_nordeste->categoria_inscricao != 8 || Auth::user()->regional_nordeste->categoria_inscricao != 9 )
+                                                    
+                                                @if (Auth::user()->is_indicado_expocom_2022)
+                                                    <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.nordeste') }}">Submissão Expocom Regional Nordeste</a>                                        
+                                                @else
+                                                    @if (Auth::user()->regional_nordeste->categoria_inscricao == 1 || Auth::user()->regional_nordeste->categoria_inscricao == 2 || Auth::user()->regional_nordeste->categoria_inscricao == 10 )
+                                                        <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão Intercom Júnior Regional Nordeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_nordeste->categoria_inscricao == 1 
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 2 
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 10 )
+
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão Intercom Júnior Regional Nordeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_nordeste->categoria_inscricao == 3 
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 4
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 5
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 6
+                                                        || Auth::user()->regional_nordeste->categoria_inscricao == 7
+                                                    )
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão Divisões Temáticas Regional Nordeste</a>
+                                                            </div>                                                    
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.nordeste') }}">Submissão Mesa Regional Nordeste</a>                                                                             
+                                                            </div>
+                                                        </div>
+
+                                                    @endif
+                                                @endif
+                                            @endif                                                                
+                                        @endif
+
+                                        @if (Auth::user()->pago_regional_suldeste_2022)
+                                            @if (Auth::user()->regional_suldeste->categoria_inscricao != 8 || Auth::user()->regional_suldeste->categoria_inscricao != 9 )
+                                                        
+                                                @if (Auth::user()->is_indicado_expocom_2022)
+                                                    <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.suldeste') }}">Submissão Expocom Regional Sudeste</a>                                        
+                                                @else
+                                                    @if (Auth::user()->regional_suldeste->categoria_inscricao == 1 || Auth::user()->regional_suldeste->categoria_inscricao == 2 || Auth::user()->regional_suldeste->categoria_inscricao == 10 )
+                                                    <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.suldeste') }}">Submissão Expocom Regional Sudeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_suldeste->categoria_inscricao == 1 
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 2 
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 10 )
+
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão Intercom Júnior Regional Sudeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_suldeste->categoria_inscricao == 3 
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 4
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 5
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 6
+                                                        || Auth::user()->regional_suldeste->categoria_inscricao == 7
+                                                    )
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão Divisões Temáticas Regional Sudeste</a>
+                                                            </div>                                                    
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão Mesa Regional Sudeste</a>                                                                             
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endif
+
+                                        @if (Auth::user()->pago_regional_centrooeste_2022)
+                                            @if (Auth::user()->regional_centrooeste->categoria_inscricao != 8 || Auth::user()->regional_centrooeste->categoria_inscricao != 9 )            
+                                                @if (Auth::user()->is_indicado_expocom_2022)
+                                                    <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.centrooeste') }}">Submissão Expocom Regional Centro-Oeste</a>                                        
+                                                @else
+                                                    @if (Auth::user()->regional_centrooeste->categoria_inscricao == 1 || Auth::user()->regional_centrooeste->categoria_inscricao == 2 || Auth::user()->regional_centrooeste->categoria_inscricao == 10 )
+                                                        <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão Intercom Júnior Regional Centro-Oeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_centrooeste->categoria_inscricao == 1 
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 2 
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 10 )
+
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão Intercom Júnior Regional Centro-Oeste</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_centrooeste->categoria_inscricao == 3 
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 4
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 5
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 6
+                                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 7
+                                                    )
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão Divisões Temáticas Regional Centro-Oeste</a>
+                                                            </div>                                                    
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão Mesa Regional Centro-Oeste</a>                                                                             
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endif
+
+                                        @if (Auth::user()->pago_regional_norte_2022)
+                                            @if (Auth::user()->regional_norte->categoria_inscricao != 8 || Auth::user()->regional_norte->categoria_inscricao != 9 )            
+                                                @if (Auth::user()->indicado_expocom_2022)
+                                                    <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.norte') }}">Submissão Expocom Regional Norte</a>                                        
+                                                @else
+                                                    @if (Auth::user()->regional_norte->categoria_inscricao == 1 || Auth::user()->regional_norte->categoria_inscricao == 2 || Auth::user()->regional_norte->categoria_inscricao == 10 )
+                                                        <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão Intercom Júnior Regional Norte</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_norte->categoria_inscricao == 1 
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 2 
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 10 )
+
+                                                            <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão Intercom Júnior Regional Norte</a>                                        
+                                                    @endif
+
+                                                    @if (
+                                                        Auth::user()->regional_norte->categoria_inscricao == 3 
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 4
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 5
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 6
+                                                        || Auth::user()->regional_norte->categoria_inscricao == 7
+                                                    )
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão Divisões Temáticas Regional Norte</a>
+                                                            </div>                                                    
+                                                            <div class="col-6">
+                                                                <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão Mesa Regional Norte</a>                                                                             
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endif --}}
+
+                                    @endif
                             @else
- --}}
+
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
                                 <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
 
-                            {{-- @endif --}}
+                            @endif
 
                         </div>
                     </div>

@@ -18,6 +18,7 @@ use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
+use App\Http\Controllers\SubmissaoExpocomRegionalSulController;
 use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
@@ -26,6 +27,7 @@ use App\Models\RegionalNordeste;
 use App\Models\RegionalNorte;
 use App\Models\RegionalSul;
 use App\Models\RegionalSuldeste;
+use App\Models\SubmissaoExpocomRegionalSul;
 use App\Models\SubmissaoRegionalSul;
 use Illuminate\Support\Facades\Route;
 
@@ -132,13 +134,28 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('regional/suldeste/save', [RegionalSuldesteController::class , 'store'])->name('regional.suldeste.save');
 
 
-    //SUBMISSAO REGIONAL
+    //SUBMISSAO REGIONAL SUL
     Route::get('submissao/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.sul');
+    Route::get('submissaojunior/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoJuniorRegionalSul'])->name('submissaojunior.regional.sul');
+    Route::get('submissaomesa/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoMesaRegionalSul'])->name('submissaomesa.regional.sul');
+    Route::get('submissaoexpocom/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.sul');
+    Route::post('submissao/sul/save', [SubmissaoRegionalSulController::class , 'store'])->name('submissao.sul.save');
+    Route::post('submissaoexpocom/sul/save', [SubmissaoExpocomRegionalSulController::class , 'store'])->name('submissaoexpocom.sul.save');
+
+
 
     Route::get('submissao/regional/norte', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.norte');
+    Route::get('submissaoexpocom/regional/norte', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.norte');
+
     Route::get('submissao/regional/nordeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.nordeste');
+    Route::get('submissaoexpocom/regional/nordeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.nordeste');
+
     Route::get('submissao/regional/suldeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.suldeste');
+    Route::get('submissaoexpocom/regional/suldeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.suldeste');
+
     Route::get('submissao/regional/centrooeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.centrooeste');
+    Route::get('submissaoexpocom/regional/centrooeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.centrooeste');
+
 
 });
 //END AUTH
@@ -169,6 +186,7 @@ Route::prefix('get')->group(function () {
     Route::get('produtos-regionais-nordeste', [GetController::class, 'getProdutosRegionaisNordeste'])->name('get.produtos.regionais.nordeste');
     Route::get('produtos-regionais-centrooeste', [GetController::class, 'getProdutosRegionaisCentrooeste'])->name('get.produtos.regionais.centrooeste');
     Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
+    Route::get('indicacao-expocom-2022', [GetController::class, 'getIndicacaoExpocom2022'])->name('get.indicacao.expocom.2022');
 
 });
 

@@ -47,10 +47,29 @@ class HomeController extends Controller
                             if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
-                                $todos_tipos = [0 => 3];
+                                $todos_tipos = [0 => 3, 1 => 5];
                                 $user->todos_tipos()->attach($todos_tipos);
 
-                                Log::info("Verificação de pagamento associado | Usuário: " . Auth::user()->name . " foi alterado para associado.");
+                                $associado = Associado::whereUserId($user->id)->first();   
+
+                                if(!empty($associado)){
+                                    $associado->update(
+                                        [
+                                            'anuidade' => date('Y'),
+                                        ]
+                                    );
+                                }
+
+                                if(empty($associado)){
+                                    $associado = Associado::create(
+                                        [
+                                            'user_id' => $user->id,
+                                            'anuidade' => date('Y'),
+                                        ]
+                                    );
+                                }
+                            
+                                Log::info("Verificação de pagamento associado | Usuário: " . Auth::user()->name . " foi alterado para associado e anuidade 2022 quitada.");
                             }
                         }
                     }

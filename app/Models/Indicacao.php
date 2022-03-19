@@ -28,4 +28,8 @@ class Indicacao extends Model
         'modalidade',
     ];
 
+    public function enderecos()
+    {
+        return $this->hasOne(EnderecoIndicacao::class, 'id', 'endereco_id');
+    }
 }

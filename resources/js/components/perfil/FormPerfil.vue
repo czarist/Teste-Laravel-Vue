@@ -248,7 +248,7 @@
                     :disabled="loading"
                     v-model="post.telefone"
                     type="text"
-                    v-mask="['(##) #####-####']"
+                    v-mask="['(##) ####-####']"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`telefone`) },
@@ -274,7 +274,7 @@
                     :disabled="loading"
                     v-model="post.celular"
                     type="text"
-                    v-mask="['(##) ####-####']"
+                    v-mask="['(##) #####-####']"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`celular`) },

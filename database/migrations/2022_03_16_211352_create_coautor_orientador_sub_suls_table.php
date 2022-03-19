@@ -12,9 +12,12 @@ class CreateCoautorOrientadorSubSulsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('submissao_id');
             $table->foreign('submissao_id')->references('id')->on('submissao_regional_suls');
-            $table->string('nome_completo');
-            $table->string('cpf');
-            $table->string('categoria');
+            $table->string('nome_completo')->nullable();
+            $table->string('curso_coautor')->nullable();
+            $table->string('cpf')->nullable();
+            $table->string('categoria')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -11,6 +11,7 @@ class SubmissaoRegionalSul extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'tipo',
         'titulo',
         'palavra_chave_1',
         'palavra_chave_2',
@@ -24,6 +25,6 @@ class SubmissaoRegionalSul extends Model
 
     public function coautorOrientadorSubSuls()
     {
-        return $this->hasOne(CoautorOrientadorSubSul::class);
+        return $this->hasMany(CoautorOrientadorSubSul::class,  'submissao_id', 'id');
     }
 }

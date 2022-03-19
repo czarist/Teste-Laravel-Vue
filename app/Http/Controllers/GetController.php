@@ -13,6 +13,7 @@ use App\Models\CatProdEditProdTransComunic;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
+use App\Models\Indicacao;
 use App\Models\Municipio;
 use App\Models\Produto;
 use App\Models\ProdutosRegionais;
@@ -150,5 +151,10 @@ class GetController extends Controller
         return $produtos->select('id', 'categoria', 'nome', 'valor')->get();
     }
 
+    public function getIndicacaoExpocom2022(Indicacao $indicacao){
+
+        return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
+
+    }
 
 }

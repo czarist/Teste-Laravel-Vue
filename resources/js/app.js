@@ -179,6 +179,56 @@ Validator.extend("passaporteCheck", {
     }
 })
 
+Validator.extend("verificaCPF", {
+    validate: (valor) => {
+        console.log(valor)
+
+        var valor = valor.replace(/[^\d]+/g,'');    
+
+        var primeiro=valor.substr(1,1);
+        var falso=true;
+        var size=valor.length;
+        if (size!=11){
+            return false;
+        }
+        size--;
+        for (var i=2; i<size-1; ++i){
+            var proximo=(valor.substr(i,1));
+            if (primeiro!=proximo) {
+                falso=false
+            }
+        }
+        if (falso){
+            return false;
+        }
+        if(modulo(valor.substring(0,valor.length - 2)) + "" + modulo(valor.substring(0,valor.length - 1)) != valor.substring(valor.length - 2,valor.length)) {
+            return false;
+        }
+        return true
+    }
+})
+
+function modulo(str) {
+
+    var soma=0;
+    var ind=2;
+    for(var pos=str.length-1;pos>-1;pos=pos-1) {
+        soma = soma + (parseInt(str.charAt(pos)) * ind);
+        ind++;
+        if(str.length>11) {
+            if(ind>9) ind=2;
+        }
+ }
+    var resto = soma - (Math.floor(soma / 11) * 11);
+    if(resto < 2) {
+     return 0
+    }
+    else {
+        return 11 - resto
+    }
+}
+
+
 Validator.localize({
     pt_BR: {
         messages: {
@@ -231,6 +281,7 @@ import RegionalCentrooesteForm from './components/regionais/centrooeste/Regional
 
 //SUBMICOES 
 import SubmissaoSul from './components/regionais/sul/SubmissaoSul.vue'
+import SubmissaoExpocomSul from './components/regionais/sul/SubmissaoExpocomSul.vue'
 
 
 const app = new Vue({
@@ -261,7 +312,7 @@ const app = new Vue({
 
         //SUBMICOES
         'submissao-sul':SubmissaoSul,
-
+        'submissao-expocom-sul':SubmissaoExpocomSul
     }
 });
 

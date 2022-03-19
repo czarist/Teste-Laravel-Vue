@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="footer-section f-section-2">
-                        <p class=""> Um sistema de <a href="https://www.mercuriotecnologia.com.br">Mercúrio Tecnologia</a> - Digitalize sua Ideia </p>
+                        <p class=""> Um sistema de <a href="http://kirc.com.br">KIRC</a> - Digitalize sua Ideia </p>
                     </div>
                 </div>
                     

@@ -12,6 +12,7 @@ class CreateSubmissaoRegionalSulsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('inscricao_id')->nullable();
             $table->foreign('inscricao_id')->references('id')->on('regional_suls');
+            $table->string('tipo');
             $table->string('titulo');
             $table->string('palavra_chave_1')->nullable();
             $table->string('palavra_chave_2')->nullable();

@@ -53,7 +53,8 @@ class UserController extends Controller
             $user = User::create($post);
             $$todos_tipos = [0 => 4];  
             $user->todos_tipos()->sync($todos_tipos);
-            
+            $user->acessos()->sync($post['acessos']);
+
             Log::info('User criado: ' . json_encode($post));
 
             return response()->json(['message' => 'success', 'response' => $user], 201);
@@ -108,7 +109,8 @@ class UserController extends Controller
             }
 
             $user->todos_tipos()->sync($post['todos_tipos_id']);
-            
+            $user->acessos()->sync($post['acessos']);
+
             Log::info('User UPDATE: ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 200);
         } catch (Exception $exception) {

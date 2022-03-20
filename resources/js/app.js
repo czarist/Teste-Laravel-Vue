@@ -181,7 +181,6 @@ Validator.extend("passaporteCheck", {
 
 Validator.extend("verificaCPF", {
     validate: (valor) => {
-        console.log(valor)
 
         var valor = valor.replace(/[^\d]+/g,'');    
 
@@ -279,9 +278,25 @@ import RegionalNordesteForm from './components/regionais/nordeste/RegionalNordes
 import RegionalSuldesteForm from './components/regionais/suldeste/RegionalSuldesteForm.vue'
 import RegionalCentrooesteForm from './components/regionais/centrooeste/RegionalCentrooesteForm.vue'
 
-//SUBMICOES 
+//SUBMICOES SUL
 import SubmissaoSul from './components/regionais/sul/SubmissaoSul.vue'
 import SubmissaoExpocomSul from './components/regionais/sul/SubmissaoExpocomSul.vue'
+
+//SUBMICOES SUDESTE
+import SubmissaoSudeste from './components/regionais/suldeste/SubmissaoSudeste.vue'
+import SubmissaoExpocomSudeste from './components/regionais/suldeste/SubmissaoExpocomSudeste.vue'
+
+//SUBMICOES NORTE
+import SubmissaoNorte from './components/regionais/norte/SubmissaoNorte.vue'
+import SubmissaoExpocomNorte from './components/regionais/norte/SubmissaoExpocomNorte.vue'
+
+//SUBMICOES NORDESTE
+import SubmissaoNordeste from './components/regionais/nordeste/SubmissaoNordeste.vue'
+import SubmissaoExpocomNordeste from './components/regionais/nordeste/SubmissaoExpocomNordeste.vue'
+
+//SUBMICOES CENTRO-OESTE
+import SubmissaoCentrooeste from './components/regionais/centrooeste/SubmissaoCentrooeste.vue'
+import SubmissaoExpocomCentrooeste from './components/regionais/centrooeste/SubmissaoExpocomCentrooeste.vue'
 
 
 const app = new Vue({
@@ -310,9 +325,27 @@ const app = new Vue({
         'regional-suldesteform': RegionalSuldesteForm,
         'regional-centrooeste': RegionalCentrooesteForm,
 
-        //SUBMICOES
+        //SUBMISSOES SUL 2022
         'submissao-sul':SubmissaoSul,
-        'submissao-expocom-sul':SubmissaoExpocomSul
+        'submissao-expocom-sul':SubmissaoExpocomSul,
+
+        //SUBMISSOES SUDESTE 2022
+        'submissao-sudeste':SubmissaoSudeste,
+        'submissao-expocom-sudeste':SubmissaoExpocomSudeste,
+        
+        //SUBMISSOES NORTE 2022
+        'submissao-norte':SubmissaoNorte,
+        'submissao-expocom-norte':SubmissaoExpocomNorte,
+
+        //SUBMISSOES NORDESTE 2022 
+        'submissao-nordeste':SubmissaoNordeste,
+        'submissao-expocom-nordeste':SubmissaoExpocomNordeste,
+
+        //SUBMISSOES CENTRO-OESTE 2022 
+        'submissao-centrooeste':SubmissaoCentrooeste,
+        'submissao-expocom-centrooeste':SubmissaoExpocomCentrooeste,
+        
+
     }
 });
 

@@ -1,7 +1,7 @@
 <template>
 
 <div>
-    <div class="row justify-content-center" v-on="this.tipos()">
+    <div class="row justify-content-center" v-on="this.tipos()" v-show="this.edit">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
@@ -268,14 +268,21 @@
                             </b-col>
                         </b-col>
 
+                        <hr>
+                        <hr>
+
                         <b-col cols="12" sm="12" lg="12" class="text-center">
                             <b-row>
                                 <b-col cols="6" sm="6" lg="6">
+                                    <b-form-invalid-feedback v-if="acordoTermoAutoria == 0" class="text-center">Declare que esta de acordo com termo de autoria</b-form-invalid-feedback>
+
                                     <b-form-checkbox
                                         id="termo_autoria"
                                         v-model="post.termo_autoria"
                                         name="termo_autoria"
-                                        :value="post.termo_autoria"
+                                        :value="1"
+                                        :unchecked-value="2"
+                                        :acordoTermoAutoria="acordoTermoAutoria"
                                         v-validate="{ required: true }"
                                         data-vv-as="TERMO DE AUTORIA"
                                         class="m-3"
@@ -291,11 +298,16 @@
                                 </b-col>
 
                                 <b-col cols="6" sm="6" lg="6">
+
+                                    <b-form-invalid-feedback v-if="acordoAutorizacao == 0" class="text-center">Declare que esta de acordo com a autorização</b-form-invalid-feedback>
+
                                     <b-form-checkbox
                                         id="autorizacao"
                                         v-model="post.autorizacao"
                                         name="autorizacao"
-                                        :value="post.autorizacao"
+                                        :value="1"
+                                        :unchecked-value="2"
+                                        :acordoAutorizacao="acordoAutorizacao"
                                         v-validate="{ required: true }"
                                         data-vv-as="AUTORIZAÇÃO"
                                         class="m-3"
@@ -304,9 +316,9 @@
                                     </b-form-checkbox>
 
                                     <b-button v-b-modal.modal-autorizacao>Ver Autorização</b-button>
-                                <span v-show="errors.has(`autorizacao`)" class="invalid-feedback d-block m-0">
-                                    {{ errors.first(`autorizacao`) }}
-                                </span>
+                                    <span v-show="errors.has(`autorizacao`)" class="invalid-feedback d-block m-0">
+                                        {{ errors.first(`autorizacao`) }}
+                                    </span>
 
                                 </b-col>
 
@@ -398,6 +410,58 @@
 
         </div>
     </div>
+
+    <div class="row justify-content-center" v-on="this.tipos()" v-if="!this.edit">
+        <div class="card mt-3">
+            <div class="card-header text-center">
+                <div class="text-center">
+                    <b-button size="lg" variant="primary" @click="clickEdit()">EDITAR</b-button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <b-row>
+                    <b-col cols="12" sm="6" lg="6">
+                        <b-form-group label="Título:" label-class="font-weight-bold">
+                            <p>{{ this.post ? this.post.titulo : "NI"  }}</p>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12" sm="6" lg="6">
+                        <b-form-group label="Palavras-Chaves:" label-class="font-weight-bold">
+                            <p>{{ this.post ? this.post.palavra_chave_1 : "NI" }}</p>
+                            <p>{{ this.post ? this.post.palavra_chave_2 : "NI" }}</p>
+                            <p>{{ this.post ? this.post.palavra_chave_3 : "NI" }}</p>
+                            <p>{{ this.post ? this.post.palavra_chave_4 : "NI" }}</p>
+                            <p>{{ this.post ? this.post.palavra_chave_5 : "NI" }}</p>
+
+                        </b-form-group>
+                    </b-col>
+                    <b-col cols="12" sm="12" lg="12">
+                        <b-form-group label="ANEXO:" label-class="font-weight-bold">
+                            <button
+                                v-tooltip.bottom="{
+                                content: 'Visualizar Anexo',
+                                delay: 0,
+                                class: 'tooltip-custom tooltip-arrow'
+                                }"
+                                title="Visualizar Anexo"
+                                class="btn btn-lg btn-primary  mb-2"
+                                @click="visualizarAnexo()"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>
+                            </svg>   
+                            VISUALIZAR TRABALHO                         
+                            </button>
+                        </b-form-group>
+                    </b-col>
+
+                </b-row>
+            </div>
+        </div>
+    </div>
+
      <b-modal id="modal-termo-autoria">
         Declaro que responsabilizo-me pela originalidade e autoria do trabalho submetido à apreciação para esse congresso, atestando que todos os trechos que tenham sido transcritos de outros documentos (publicados ou não) e que não sejam de minha exclusiva autoria estão citados entre aspas e está identificada a fonte e a página de que foram extraídas (se transcrito literalmente) ou somente indicadas fonte e ano (se utilizada a ideia do autor citado), conforme normas e padrões ABNT vigentes.
 
@@ -448,6 +512,8 @@
             return {
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
+                edit: false,
+                ciente: false,
                 divisoes_tematicas: [],
                 titulacoes: [],
                 loading: false,
@@ -459,22 +525,29 @@
                 size_arquivos: 0,
                 generateErr: false,
                 deleteSelectCoautoresOrientadores: { indice: null},
+                submissao:null,
                 post: {
-                    id: null,
-                    titulo: null,
-                    palavra_chave_1: null,
-                    palavra_chave_2: null,
-                    palavra_chave_3: null,
-                    palavra_chave_4: null,
-                    palavra_chave_5: null,
-                    divisoes_tematicas: null,
-                    file: null,
-                    coautoresOrientadores: [{
+                    file: this.submissao ? this.submissao.link_trabalho : null,
+                    id: this.submissao ? this.submissao.id : null,
+                    titulo: this.submissao ? this.submissao.titulo : null,
+                    palavra_chave_1: this.submissao ? this.submissao.palavra_chave_1 : null,
+                    palavra_chave_2: this.submissao ? this.submissao.palavra_chave_2 : null,
+                    palavra_chave_3: this.submissao ? this.submissao.palavra_chave_3 : null,
+                    palavra_chave_4: this.submissao ? this.submissao.palavra_chave_4 : null,
+                    palavra_chave_5: this.submissao ? this.submissao.palavra_chave_5 : null,
+                    divisoes_tematicas: this.find_divisoes_tematicas,
+                    termo_autoria: this.submissao ? this.submissao.termo_autoria : 0,
+                    autorizacao: this.submissao ? this.submissao.autorizacao : 0,
+                    coautoresOrientadores: 
+                        this.submissao 
+                        && this.submissao.coautor_orientador_sub_suls
+                        && this.submissao.coautor_orientador_sub_suls.length == 0 ?
+                    [{
                         id: null,
                         nome_completo: null,
                         categoria: null,
-                        cpf: null,
-                    }],
+                        cpf: null
+                    }] : [],
                     tipo: {
                         numero: this.tipo,
                         name: null,
@@ -505,16 +578,18 @@
                 if(this.user){
                     this.$forceUpdate()
                     this.post._method = "post",
-                    this.post.id = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.id : null,
-                    this.post.titulo = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.titulo : null
-                    this.post.palavra_chave_1 = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.palavra_chave_1 : null
-                    this.post.palavra_chave_2 = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.palavra_chave_2 : null
-                    this.post.palavra_chave_3 = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.palavra_chave_3 : null
-                    this.post.palavra_chave_4 = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.palavra_chave_4 : null
-                    this.post.palavra_chave_5 = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.palavra_chave_5 : null
-                    this.post.divisoes_tematicas = this.find_divisoes_tematicas
-                    this.post.file = this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user.regional_sul.submissao.file : null
-                    this.post.coautoresOrientadores = this.find_couautores_orientadores
+                    this.post.divisoes_tematicas = this.find_divisoes_tematicas,
+                    this.post.id = this.submissao ? this.submissao.id : null,
+                    this.post.titulo = this.submissao ? this.submissao.titulo : null
+                    this.post.palavra_chave_1 = this.submissao ? this.submissao.palavra_chave_1 : null
+                    this.post.palavra_chave_2 = this.submissao ? this.submissao.palavra_chave_2 : null
+                    this.post.palavra_chave_3 = this.submissao ? this.submissao.palavra_chave_3 : null
+                    this.post.palavra_chave_4 = this.submissao ? this.submissao.palavra_chave_4 : null
+                    this.post.palavra_chave_5 = this.submissao ? this.submissao.palavra_chave_5 : null
+                    this.post.file = this.submissao ? this.submissao.link_trabalho : null
+                    this.post.autorizacao = this.submissao ? this.submissao.autorizacao : 0
+                    this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
+
                 }
             }
         },
@@ -522,11 +597,14 @@
             find_divisoes_tematicas() {
                 return this.user && this.user.todos_divisoes_tematicas ? this.user.todos_divisoes_tematicas.map(res => res.id)  : []
             },
-            find_couautores_orientadores() {
-                return this.user && this.user.regional_sul && this.user.regional_sul.submissao ? this.user && this.user.regional_sul && this.user.regional_sul.submissao.coautor_orientador_sub_suls.map(res => res)  : []
-            },
             estaCiente() {
                 return this.ciente == true
+            },
+            acordoTermoAutoria() {
+                return this.post.termo_autoria == 1
+            },
+            acordoAutorizacao() {
+                return this.post.autorizacao == 1
             }
         },
         methods: {  
@@ -534,12 +612,7 @@
                 this.loading = true
 
                 if(this.post.divisoes_tematicas.length > 1){
-                        this.$notify({
-                            group: "submit",
-                            title: "Erro",
-                            text: 'Selecione uma divisão temática apenas!',
-                            type: "error"
-                        })
+                        this.message('Erro', 'Selecione uma divisão temática apenas!', 'error');
                         this.loading = false
                         return
 
@@ -665,12 +738,16 @@
                     }
                 }); 
             },
+
             liveCountDown: function() {
                 this.totalRemainCount = this.limitmaxCount - this.post.titulo.length;
                 this.generateErr = this.totalRemainCount < 0;
             },
             addCoaOri(){
                 this.post.coautoresOrientadores.push({id: null, nome_completo:null, cpf:null, categoria: null});
+            },
+            visualizarAnexo(){
+                window.open(this.baseUrl+'/pdf/submissao_regional_sul_2022/'+this.post.file);
             },
             removeCoaOri(index){
                 if(this.post.coautoresOrientadores.length >= 1){
@@ -712,7 +789,7 @@
                         this.post.tipo.regiao = "Nordeste"
                     }
                     if(this.regiao == 3){
-                        this.post.tipo.regiao = "Suldeste"
+                        this.post.tipo.regiao = "Sudeste"
                     }
                     if(this.regiao == 4){
                         this.post.tipo.regiao = "Centro-Oeste"
@@ -721,6 +798,9 @@
                         this.post.tipo.regiao = "Norte"
                     }
                 }
+            },
+            clickEdit(){
+                return this.edit = true
             }
         },
         created() {
@@ -728,15 +808,27 @@
         },
         mounted(){
             if(this.user){
-                if(
-                    this.user 
-                    && this.user.regional_sul 
-                    && this.user.regional_sul.submissao 
-                    && this.user && this.user.regional_sul 
-                    && this.user && this.user.regional_sul.submissao
-                    && this.user.regional_sul.submissao.coautor_orientador_sub_suls.length > 0){
 
-                    this.user.regional_sul.submissao.coautor_orientador_sub_suls.forEach((element, index) => {
+                if(this.user && this.user.regional_sul && this.user.regional_sul.submissao_dt && this.tipo == 2){
+                    this.submissao = this.user.regional_sul.submissao_dt
+                }
+
+                if(this.user && this.user.regional_sul && this.user.regional_sul.submissao_junior && this.tipo == 1){
+                    this.submissao = this.user.regional_sul.submissao_junior
+                }
+
+                if(this.user && this.user.regional_sul && this.user.regional_sul.submissao_mesa && this.tipo == 3){
+                    this.submissao = this.user.regional_sul.submissao_mesa
+                }
+
+                this.edit = this.submissao == null  ? true : false
+
+                if(
+                    this.submissao 
+                    && this.submissao.coautor_orientador_sub_suls
+                    && this.submissao.coautor_orientador_sub_suls.length > 0){
+
+                    this.submissao.coautor_orientador_sub_suls.forEach((element, index) => {
                         this.post.coautoresOrientadores.push({
                             id: element.id,
                             nome_completo: element.nome_completo,

@@ -22,8 +22,16 @@ class RegionalSul extends Model
         'port_nece_espe_outra'
     ];
 
-    public function submissao(){
-        return $this->hasOne(SubmissaoRegionalSul::class, 'inscricao_id', 'id');
+    public function submissaoMesa(){
+        return $this->hasOne(SubmissaoRegionalSul::class, 'inscricao_id', 'id')->whereTipo("Mesa");
+    }
+
+    public function submissaoDt(){
+        return $this->hasOne(SubmissaoRegionalSul::class, 'inscricao_id', 'id')->whereTipo("Divisões Temáticas");
+    }
+
+    public function submissaoJunior(){
+        return $this->hasOne(SubmissaoRegionalSul::class, 'inscricao_id', 'id')->whereTipo("Intercom Júnior");
     }
 
     public function submissaoExpocom(){

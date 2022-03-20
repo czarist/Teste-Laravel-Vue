@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@tinymce/tinymce-vue": "^3.2.4",
+        "bootstrap-icons": "^1.8.1",
         "bootstrap-vue": "^2.21.2",
         "cors": "^2.8.5",
         "debounce": "^1.2.1",

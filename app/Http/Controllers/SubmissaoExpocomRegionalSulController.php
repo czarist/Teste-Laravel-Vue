@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoauOriExpoSubSul;
-use App\Models\CoautorOrientadorSubSul;
 use App\Models\SubmissaoExpocomRegionalSul;
 use App\Models\User;
 use Exception;
@@ -51,8 +50,8 @@ class SubmissaoExpocomRegionalSulController extends Controller
 
                 if($request->hasFile('file')){
                     $file = $request->file('file');
-                    $name = $file->getClientOriginalName().rand(10,100);
-                    $file->move(public_path('storage/submissao_expocom_regional_sul_2022/'), $name);
+                    $name = date('mdYHis') . uniqid();
+                    $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022/" , $name);
                     $submissao_save->link_trabalho = $name;
                     $submissao_save->save();
                 }
@@ -66,7 +65,8 @@ class SubmissaoExpocomRegionalSulController extends Controller
                             'submissao_id' => $submissao_save->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
+                            'categoria' => $coautor->categoria,
+                            'curso_coautor' => $coautor->curso_coautor
                         ]);
                     }
 
@@ -75,7 +75,8 @@ class SubmissaoExpocomRegionalSulController extends Controller
                             'submissao_id' => $submissao_save->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
+                            'categoria' => $coautor->categoria,
+                            'curso_coautor' => $coautor->curso_coautor
                         ]);
                     }
                 }
@@ -95,8 +96,8 @@ class SubmissaoExpocomRegionalSulController extends Controller
 
                 if($request->hasFile('file')){
                     $file = $request->file('file');
-                    $name = $file->getClientOriginalName();
-                    $file->move(public_path('storage/submissao_expocom_regional_sul_2022/'), $name);
+                    $name = date('mdYHis') . uniqid();
+                    $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022/" , $name);
                     $submissao->link_trabalho = $name;
                     $submissao->save();
                 }

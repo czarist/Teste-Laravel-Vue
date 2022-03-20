@@ -29,12 +29,14 @@ class SubmissaoRegionalSulController extends Controller
                 'associado',
                 'enderecos',
                 'regional_sul',
-                'regional_sul.submissao',
-                'regional_sul.submissao.coautorOrientadorSubSuls',
+                'regional_sul.submissaoMesa',
+                'regional_sul.submissaoDt',
+                'regional_sul.submissaoJunior',
                 'regional_sul.submissaoExpocom',
+                'regional_sul.submissaoDt.coautorOrientadorSubSuls',
+                'regional_sul.submissaoJunior.coautorOrientadorSubSuls',
+                'regional_sul.submissaoMesa.coautorOrientadorSubSuls',
                 'regional_sul.submissaoExpocom.coautorOrientadorSubSuls'
-
-
                 )
                 ->find(Auth::user()->id);
     }
@@ -76,14 +78,14 @@ class SubmissaoRegionalSulController extends Controller
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
             $user->todos_divisoes_tematicas()->sync($post->divisoes_tematicas);
-            $submissao = $user->regional_sul->submissao;
+            $submissao = SubmissaoRegionalSul::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
             $coautor_ids = array_map(function ($res) {
                 return $res->id ?? null;
             }, $post->coautoresOrientadores);
     
-            if(!empty($submissao))
+            if(!empty($submissao) && $submissao->tipo == $post->tipo->name)
             {
 
                 $coautores = CoautorOrientadorSubSul::where('submissao_id', $submissao->id)->get();
@@ -94,7 +96,7 @@ class SubmissaoRegionalSulController extends Controller
                 }
             }
 
-            if(empty($submissao)){
+            if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalSul::create([
                     'inscricao_id' => $user->regional_sul->id,
                     'tipo' => $post->tipo->name,
@@ -110,8 +112,8 @@ class SubmissaoRegionalSulController extends Controller
 
                 if($request->hasFile('file')){
                     $file = $request->file('file');
-                    $name = $file->getClientOriginalName().rand(10,100);
-                    $file->move(public_path('storage/submissao_regional_sul_2022/'), $name);
+                    $name = date('mdYHis') . uniqid();
+                    $file->move(public_path()."/pdf/submissao_regional_sul_2022/" , $name);
                     $submissao_save->link_trabalho = $name;
                     $submissao_save->save();
                 }
@@ -140,7 +142,7 @@ class SubmissaoRegionalSulController extends Controller
                 }
             }
 
-            if(!empty($submissao)){
+            if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
@@ -155,8 +157,8 @@ class SubmissaoRegionalSulController extends Controller
 
                 if($request->hasFile('file')){
                     $file = $request->file('file');
-                    $name = $file->getClientOriginalName();
-                    $file->move(public_path('storage/submissao_regional_sul_2022/'), $name);
+                    $name = date('mdYHis') . uniqid();
+                    $file->move(public_path()."/pdf/submissao_regional_sul_2022/" , $name);
                     $submissao->link_trabalho = $name;
                     $submissao->save();
                 }

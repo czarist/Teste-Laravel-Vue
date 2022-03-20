@@ -18,17 +18,19 @@ use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
+use App\Http\Controllers\SubmissaoExpocomRegionalCentrooesteController;
+use App\Http\Controllers\SubmissaoExpocomRegionalNordesteController;
+use App\Http\Controllers\SubmissaoExpocomRegionalNorteController;
+use App\Http\Controllers\SubmissaoExpocomRegionalSudesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalSulController;
+use App\Http\Controllers\SubmissaoRegionalCentrooesteController;
+use App\Http\Controllers\SubmissaoRegionalNordestesController;
+use App\Http\Controllers\SubmissaoRegionalNorteController;
+use App\Http\Controllers\SubmissaoRegionalSudesteController;
 use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
-use App\Models\RegionalCentrooeste;
-use App\Models\RegionalNordeste;
-use App\Models\RegionalNorte;
-use App\Models\RegionalSul;
-use App\Models\RegionalSuldeste;
-use App\Models\SubmissaoExpocomRegionalSul;
-use App\Models\SubmissaoRegionalSul;
+use App\Models\SubmissaoExpocomRegionalCentrooeste;
 use Illuminate\Support\Facades\Route;
 
 
@@ -136,26 +138,43 @@ Route::group(['middleware' => 'auth'] , function() {
 
     //SUBMISSAO REGIONAL SUL
     Route::get('submissao/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.sul');
+    Route::get('submissaoexpocom/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.sul');
     Route::get('submissaojunior/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoJuniorRegionalSul'])->name('submissaojunior.regional.sul');
     Route::get('submissaomesa/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoMesaRegionalSul'])->name('submissaomesa.regional.sul');
-    Route::get('submissaoexpocom/regional/sul', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.sul');
     Route::post('submissao/sul/save', [SubmissaoRegionalSulController::class , 'store'])->name('submissao.sul.save');
     Route::post('submissaoexpocom/sul/save', [SubmissaoExpocomRegionalSulController::class , 'store'])->name('submissaoexpocom.sul.save');
 
+    //SUBMISSAO REGIONAL NORTE
+    Route::get('submissao/regional/norte', [SubmissaoRegionalNorteController::class ,'submissaoRegionalNorte'])->name('submissao.regional.norte');
+    Route::get('submissaoexpocom/regional/norte', [SubmissaoRegionalNorteController::class ,'submissaoExpocomRegionalNorte'])->name('submissaoexpocom.regional.norte');
+    Route::get('submissaojunior/regional/norte', [SubmissaoRegionalNorteController::class ,'submissaoJuniorRegionalNorte'])->name('submissaojunior.regional.norte');
+    Route::get('submissaomesa/regional/norte', [SubmissaoRegionalNorteController::class ,'submissaoMesaRegionalNorte'])->name('submissaomesa.regional.norte');
+    Route::post('submissao/norte/save', [SubmissaoRegionalNorteController::class , 'store'])->name('submissao.norte.save');
+    Route::post('submissaoexpocom/norte/save', [SubmissaoExpocomRegionalNorteController::class , 'store'])->name('submissaoexpocom.norte.save');
 
+    //SUBMISSAO REGIONAL NORDESTE
+    Route::get('submissao/regional/nordeste', [SubmissaoRegionalNordestesController::class ,'submissaoRegionalNordeste'])->name('submissao.regional.nordeste');
+    Route::get('submissaoexpocom/regional/nordeste', [SubmissaoRegionalNordestesController::class ,'submissaoExpocomRegionalNordeste'])->name('submissaoexpocom.regional.nordeste');
+    Route::get('submissaojunior/regional/nordeste', [SubmissaoRegionalNordestesController::class ,'submissaoJuniorRegionalNordeste'])->name('submissaojunior.regional.nordeste');
+    Route::get('submissaomesa/regional/nordeste', [SubmissaoRegionalNordestesController::class ,'submissaoMesaRegionalNordeste'])->name('submissaomesa.regional.nordeste');
+    Route::post('submissao/nordeste/save', [SubmissaoRegionalNordestesController::class , 'store'])->name('submissao.nordeste.save');
+    Route::post('submissaoexpocom/nordeste/save', [SubmissaoExpocomRegionalNordesteController::class , 'store'])->name('submissaoexpocom.nordeste.save');
 
-    Route::get('submissao/regional/norte', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.norte');
-    Route::get('submissaoexpocom/regional/norte', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.norte');
+    //SUBMISSAO REGIONAL SUDESTE
+    Route::get('submissao/regional/suldeste', [SubmissaoRegionalSudesteController::class ,'submissaoRegionalSudeste'])->name('submissao.regional.suldeste');
+    Route::get('submissaoexpocom/regional/suldeste', [SubmissaoRegionalSudesteController::class ,'submissaoExpocomRegionalSudeste'])->name('submissaoexpocom.regional.suldeste');
+    Route::get('submissaojunior/regional/suldeste', [SubmissaoRegionalSudesteController::class ,'submissaoJuniorRegionalSudeste'])->name('submissaojunior.regional.suldeste');
+    Route::get('submissaomesa/regional/suldeste', [SubmissaoRegionalSudesteController::class ,'submissaoMesaRegionalSudeste'])->name('submissaomesa.regional.suldeste');
+    Route::post('submissao/suldeste/save', [SubmissaoRegionalSudesteController::class , 'store'])->name('submissao.suldeste.save');
+    Route::post('submissaoexpocom/suldeste/save', [SubmissaoExpocomRegionalSudesteController::class , 'store'])->name('submissaoexpocom.suldeste.save');
 
-    Route::get('submissao/regional/nordeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.nordeste');
-    Route::get('submissaoexpocom/regional/nordeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.nordeste');
-
-    Route::get('submissao/regional/suldeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.suldeste');
-    Route::get('submissaoexpocom/regional/suldeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.suldeste');
-
-    Route::get('submissao/regional/centrooeste', [SubmissaoRegionalSulController::class ,'submissaoRegionalSul'])->name('submissao.regional.centrooeste');
-    Route::get('submissaoexpocom/regional/centrooeste', [SubmissaoRegionalSulController::class ,'submissaoExpocomRegionalSul'])->name('submissaoexpocom.regional.centrooeste');
-
+    //SUBMISSAO REGIONAL CENTRO-OESTE
+    Route::get('submissao/regional/centrooeste', [SubmissaoRegionalCentrooesteController::class ,'submissaoRegionalCentrooeste'])->name('submissao.regional.centrooeste');
+    Route::get('submissaoexpocom/regional/centrooeste', [SubmissaoRegionalCentrooesteController::class ,'submissaoExpocomRegionalCentrooeste'])->name('submissaoexpocom.regional.centrooeste');
+    Route::get('submissaojunior/regional/centrooeste', [SubmissaoRegionalCentrooesteController::class ,'submissaoJuniorRegionalCentrooeste'])->name('submissaojunior.regional.centrooeste');
+    Route::get('submissaomesa/regional/centrooeste', [SubmissaoRegionalCentrooesteController::class ,'submissaoMesaRegionalCentrooeste'])->name('submissaomesa.regional.centrooeste');
+    Route::post('submissao/centrooeste/save', [SubmissaoRegionalCentrooesteController::class , 'store'])->name('submissao.centrooeste.save');
+    Route::post('submissaoexpocom/centrooeste/save', [SubmissaoExpocomRegionalCentrooesteController::class , 'store'])->name('submissaoexpocom.centrooeste.save');
 
 });
 //END AUTH

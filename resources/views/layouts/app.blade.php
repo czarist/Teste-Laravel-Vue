@@ -13,6 +13,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet"/>

@@ -10,6 +10,7 @@ use App\Models\CategoriaPublicidadePropaganda;
 use App\Models\CategoriaRadioInternet;
 use App\Models\CategoriaRelacoesPublicas;
 use App\Models\CatProdEditProdTransComunic;
+use App\Models\CoautorOrientadorSubSul;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
@@ -156,5 +157,4 @@ class GetController extends Controller
         return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
 
     }
-
 }

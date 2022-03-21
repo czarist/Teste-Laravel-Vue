@@ -11,6 +11,7 @@ class SubmissaoExpocomRegionalSul extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'ciente',
         'ano',
         'campus',
         'desc_obj_estudo',

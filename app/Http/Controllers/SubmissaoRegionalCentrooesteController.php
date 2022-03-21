@@ -75,7 +75,6 @@ class SubmissaoRegionalCentrooesteController extends Controller
         try{
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
-            $user->todos_divisoes_tematicas()->sync($post->divisoes_tematicas);
             $submissao = SubmissaoRegionalCentrooeste::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
@@ -93,10 +92,11 @@ class SubmissaoRegionalCentrooesteController extends Controller
                     }
                 }
             }
-
             if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalCentrooeste::create([
                     'inscricao_id' => $user->regional_centrooeste->id,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
@@ -143,6 +143,8 @@ class SubmissaoRegionalCentrooesteController extends Controller
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
                     'tipo' => $post->tipo->name,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
                     'palavra_chave_2' => $post->palavra_chave_2,

@@ -11,6 +11,8 @@ class SubmissaoRegionalSul extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'ciente',
+        'dt',
         'tipo',
         'titulo',
         'palavra_chave_1',

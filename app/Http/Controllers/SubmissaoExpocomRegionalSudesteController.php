@@ -41,6 +41,7 @@ class SubmissaoExpocomRegionalSudesteController extends Controller
                 $submissao_save = SubmissaoExpocomRegionalSudeste::create([
                     'inscricao_id' => $user->regional_suldeste->id,
                     'tipo' => $post->tipo->name,
+                    'ciente' => $post->ciente,
                     'ano' => $post->ano,
                     'campus' => $post->campus,
                     'desc_obj_estudo' => $post->desc_obj_estudo,
@@ -87,6 +88,7 @@ class SubmissaoExpocomRegionalSudesteController extends Controller
             if(!empty($submissao)){
                 $submissao->update([
                     'tipo' => $post->tipo->name,
+                    'ciente' => $post->ciente,
                     'ano' => $post->ano,
                     'campus' => $post->campus,
                     'desc_obj_estudo' => $post->desc_obj_estudo,

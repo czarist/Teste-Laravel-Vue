@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoautorOrientadorSubSul;
-use App\Models\Indicacao;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
 use Exception;
@@ -77,17 +76,15 @@ class SubmissaoRegionalSulController extends Controller
         try{
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
-            $user->todos_divisoes_tematicas()->sync($post->divisoes_tematicas);
             $submissao = SubmissaoRegionalSul::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
             $coautor_ids = array_map(function ($res) {
                 return $res->id ?? null;
             }, $post->coautoresOrientadores);
-    
+
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name)
             {
-
                 $coautores = CoautorOrientadorSubSul::where('submissao_id', $submissao->id)->get();
                 foreach($coautores as $coautor){
                     if(!in_array($coautor->id, $coautor_ids)){
@@ -99,6 +96,8 @@ class SubmissaoRegionalSulController extends Controller
             if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalSul::create([
                     'inscricao_id' => $user->regional_sul->id,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
@@ -144,6 +143,8 @@ class SubmissaoRegionalSulController extends Controller
 
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,

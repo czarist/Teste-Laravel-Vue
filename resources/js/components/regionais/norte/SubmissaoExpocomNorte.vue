@@ -413,63 +413,6 @@
                                 </b-row>
                             </b-col>
                         </b-col>
-
-                        <hr>
-                        <hr>
-
-                        <b-col cols="12" sm="12" lg="12" class="text-center">
-                            <b-row>
-                                <b-col cols="6" sm="6" lg="6">
-                                    <b-form-invalid-feedback v-if="acordoTermoAutoria == 0" class="text-center">Declare que esta de acordo com termo de autoria</b-form-invalid-feedback>
-
-                                    <b-form-checkbox
-                                        id="termo_autoria"
-                                        v-model="post.termo_autoria"
-                                        name="termo_autoria"
-                                        :value="1"
-                                        :unchecked-value="2"
-                                        :acordoTermoAutoria="acordoTermoAutoria"
-                                        v-validate="{ required: true }"
-                                        data-vv-as="TERMO DE AUTORIA"
-                                        class="m-3"
-                                        >
-                                        TERMO DE AUTORIA
-                                    </b-form-checkbox>
-
-                                    <b-button v-b-modal.modal-termo-autoria>Ver Termo de autoria</b-button>
-                                    <span v-show="errors.has(`termo_autoria`)" class="invalid-feedback d-block m-0">
-                                        {{ errors.first(`termo_autoria`) }}
-                                    </span>
-
-                                </b-col>
-
-                                <b-col cols="6" sm="6" lg="6">
-
-                                    <b-form-invalid-feedback v-if="acordoAutorizacao == 0" class="text-center">Declare que esta de acordo com a autorização</b-form-invalid-feedback>
-
-                                    <b-form-checkbox
-                                        id="autorizacao"
-                                        v-model="post.autorizacao"
-                                        name="autorizacao"
-                                        :value="1"
-                                        :unchecked-value="2"
-                                        :acordoAutorizacao="acordoAutorizacao"
-                                        v-validate="{ required: true }"
-                                        data-vv-as="AUTORIZAÇÃO"
-                                        class="m-3"
-                                        >
-                                        AUTORIZAÇÃO
-                                    </b-form-checkbox>
-
-                                    <b-button v-b-modal.modal-autorizacao>Ver Autorização</b-button>
-                                    <span v-show="errors.has(`autorizacao`)" class="invalid-feedback d-block m-0">
-                                        {{ errors.first(`autorizacao`) }}
-                                    </span>
-
-                                </b-col>
-
-                            </b-row>
-                        </b-col>
                     </b-row>
                 </div>
             </div>
@@ -486,27 +429,6 @@
                     </div>
 
                     <b-col cols="12" sm="12" lg="12" class="m-3">
-                        <b-form-invalid-feedback v-if="estaCiente == false" class="text-center">Declare que esta ciente</b-form-invalid-feedback>
-                        <span v-show="errors.has(`ciente`)" class="invalid-feedback d-block m-0">
-                            {{ errors.first(`ciente`) }}
-                        </span>
-
-                        <b-form-checkbox
-                            id="ciente"
-                            v-model="ciente"
-                            name="ciente"
-                            :value="true"
-                            :unchecked-value="false"
-                            :estaCiente="estaCiente"                            
-                            data-vv-as="Declaro estar ciente"
-                            class="m-3"
-                            >
-                            Declaro estar ciente de que o link deverá estar acessível durante o período do Expocom, até a etapa nacional.
-                        </b-form-checkbox>
-
-                    </b-col>
-
-                    <b-col cols="12" sm="12" lg="12" class="m-3">
                         <label class="font-weight-bold">Envio de arquivo:</label>
                         <input 
                             @change="addFile($event)"
@@ -521,6 +443,78 @@
                             {{ errors.first(`file`) }}
                         </span>
                     </b-col>
+
+                    <b-col cols="12" sm="12" lg="12" class="text-center m-3">
+                        <b-row>
+                            <b-col cols="4" sm="4" lg="4">
+                                <b-form-invalid-feedback v-if="acordoTermoAutoria == 0" class="text-center">Declare que esta de acordo com termo de autoria</b-form-invalid-feedback>
+
+                                <b-form-checkbox
+                                    id="termo_autoria"
+                                    v-model="post.termo_autoria"
+                                    name="termo_autoria"
+                                    :value="1"
+                                    :unchecked-value="0"
+                                    :acordoTermoAutoria="acordoTermoAutoria"
+                                    v-validate="{ required: true }"
+                                    data-vv-as="TERMO DE AUTORIA"
+                                    class="m-3"
+                                    >
+                                    TERMO DE AUTORIA
+                                </b-form-checkbox>
+
+                                <b-button v-b-modal.modal-termo-autoria>Ver Termo de autoria</b-button>
+                                <span v-show="errors.has(`termo_autoria`)" class="invalid-feedback d-block m-0">
+                                    {{ errors.first(`termo_autoria`) }}
+                                </span>
+
+                            </b-col>
+
+                            <b-col cols="4" sm="4" lg="4">
+
+                                <b-form-invalid-feedback v-if="acordoAutorizacao == 0" class="text-center">Declare que esta de acordo com a autorização</b-form-invalid-feedback>
+
+                                <b-form-checkbox
+                                    id="autorizacao"
+                                    v-model="post.autorizacao"
+                                    name="autorizacao"
+                                    :value="1"
+                                    :unchecked-value="0"
+                                    :acordoAutorizacao="acordoAutorizacao"
+                                    v-validate="{ required: true }"
+                                    data-vv-as="AUTORIZAÇÃO"
+                                    class="m-3"
+                                    >
+                                    AUTORIZAÇÃO
+                                </b-form-checkbox>
+
+                                <b-button v-b-modal.modal-autorizacao>Ver Autorização</b-button>
+                                <span v-show="errors.has(`autorizacao`)" class="invalid-feedback d-block m-0">
+                                    {{ errors.first(`autorizacao`) }}
+                                </span>
+                            </b-col>
+
+                            <b-col cols="4" sm="4" lg="4">
+                                <b-form-invalid-feedback v-if="estaCiente == 0" class="text-center">Declare que esta ciente</b-form-invalid-feedback>
+
+                                <b-form-checkbox
+                                    id="ciente"
+                                    v-model="post.ciente"
+                                    name="ciente"
+                                    :value="1"
+                                    :unchecked-value="0"
+                                    :estaCiente="estaCiente"                            
+                                    data-vv-as="Declaro estar ciente"
+                                    v-validate="{ required: true }"
+
+                                    class="m-3"
+                                    >
+                                    Declaro estar ciente de que o link deverá estar acessível durante o período do Expocom, até a etapa nacional.
+                                </b-form-checkbox>
+                            </b-col>
+                        </b-row>
+                    </b-col>
+
                 </div>
 
                 <div class="card-footer">
@@ -672,7 +666,6 @@
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
                 edit: this.user && this.user.regional_norte && this.user.regional_norte && this.user.regional_norte.submissao_expocom ? false : true,
-                ciente: false,
                 indicacao: [],
                 titulacoes: [],
                 instituicoes: [],
@@ -725,6 +718,7 @@
                     modalidade: this.indicacao ? this.indicacao.modalidade : null,
                     termo_autoria: this.user && this.user.regional_norte && this.user.regional_norte.submissao_expocom ? this.user.regional_norte.submissao_expocom.termo_autoria : 0,
                     autorizacao: this.user && this.user.regional_norte && this.user.regional_norte.submissao_expocom ? this.user.regional_norte.submissao_expocom.autorizacao : 0,
+                    ciente: this.user && this.user.regional_norte && this.user.regional_norte.submissao_expocom ? this.user.regional_norte.submissao_expocom.ciente : 0,
                     enderecos: {
                         estado: null,
                         municipio: null
@@ -796,7 +790,7 @@
         },
         computed: {
             estaCiente() {
-                return this.ciente == true
+                return this.post.ciente == 1
             },
             acordoTermoAutoria() {
                 return this.post.termo_autoria == 1

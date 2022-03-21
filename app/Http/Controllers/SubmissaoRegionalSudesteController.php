@@ -100,6 +100,8 @@ class SubmissaoRegionalSudesteController extends Controller
             if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalSudeste::create([
                     'inscricao_id' => $user->regional_suldeste->id,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
@@ -145,6 +147,8 @@ class SubmissaoRegionalSudesteController extends Controller
 
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,

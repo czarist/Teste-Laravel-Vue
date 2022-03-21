@@ -76,7 +76,6 @@ class SubmissaoRegionalNorteController extends Controller
         try{
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
-            $user->todos_divisoes_tematicas()->sync($post->divisoes_tematicas);
             $submissao = SubmissaoRegionalNorte::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
@@ -98,6 +97,8 @@ class SubmissaoRegionalNorteController extends Controller
             if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalNorte::create([
                     'inscricao_id' => $user->regional_norte->id,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
@@ -143,6 +144,8 @@ class SubmissaoRegionalNorteController extends Controller
 
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,

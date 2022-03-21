@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoautorOrientadorSubNordeste;
-use App\Models\CoautorOrientadorSubNorte;
-use App\Models\Indicacao;
 use App\Models\SubmissaoRegionalNordestes;
-use App\Models\SubmissaoRegionalNorte;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -79,7 +76,6 @@ class SubmissaoRegionalNordestesController extends Controller
         try{
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
-            $user->todos_divisoes_tematicas()->sync($post->divisoes_tematicas);
             $submissao = SubmissaoRegionalNordestes::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
@@ -89,8 +85,7 @@ class SubmissaoRegionalNordestesController extends Controller
     
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name)
             {
-
-                $coautores = CoautorOrientadorSubNorte::where('submissao_id', $submissao->id)->get();
+                $coautores = CoautorOrientadorSubNordeste::where('submissao_id', $submissao->id)->get();
                 foreach($coautores as $coautor){
                     if(!in_array($coautor->id, $coautor_ids)){
                         $coautor->delete();
@@ -101,6 +96,8 @@ class SubmissaoRegionalNordestesController extends Controller
             if(empty($submissao) || $submissao->tipo != $post->tipo->name){
                 $submissao_save = SubmissaoRegionalNordestes::create([
                     'inscricao_id' => $user->regional_nordeste->id,
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,
@@ -146,6 +143,8 @@ class SubmissaoRegionalNordestesController extends Controller
 
             if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
                 $submissao->update([
+                    'dt' => $post->divisoes_tematicas[0],
+                    'ciente' => $post->ciente,
                     'tipo' => $post->tipo->name,
                     'titulo' => $post->titulo,
                     'palavra_chave_1' => $post->palavra_chave_1,

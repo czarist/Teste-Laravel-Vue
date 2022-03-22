@@ -3,7 +3,7 @@
         <h5 class="col-12 d-flex justify-content-between">
             Titulação
             <span class="btn btn-success btn-sm" @click="showForm(null)">
-                <i class="fas fa-plus-circle float-left d-none d-sm-block mt-1 mr-1"></i> Cadastrar
+                <i class="bi bi-plus-square"></i> Cadastrar
             </span>
         </h5>
         <div class="col-12">
@@ -59,12 +59,12 @@
                                             <span
                                                 class="btn btn-outline-primary btn-sm mr-1"
                                                 @click="showForm(registro)"
-                                            ><i class="fas fa-edit"> Editar</i></span>
+                                            ><i class="bi bi-pencil-square">Editar</i></span>
 
                                             <span
                                                class="btn btn-outline-danger btn-sm"
                                               @click="showDelete(registro)"
-                                            ><i class="fas fa-trash"></i> Deletar</span>
+                                            ><i class="bi bi-trash"></i> Deletar</span>
                                         </span>
                                     </td>
                                 </tr>

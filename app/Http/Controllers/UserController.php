@@ -19,7 +19,9 @@ class UserController extends Controller
                                 'todos_tipos:id,descricao',
                                 'enderecos',
                                 'enderecos.municipio',
-                                'enderecos.municipio.estado');
+                                'enderecos.municipio.estado',
+                                'associado',                
+                                );
     }
 
     public function index()
@@ -31,8 +33,16 @@ class UserController extends Controller
     {
         return $this->usuarios()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function($q) use ($request) {
-                            $q->where('name', 'like', '%'. $request->search . '%');
+                        $query->where(function ($query) use ($request) {    
+                            $query->when($request->type == 'name', function ($query) use ($request) {
+                                $query->where('name', 'like', '%' . $request->search . '%');
+                            });
+                            $query->when($request->type == 'cpf', function ($query) use ($request) {
+                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                            });
+                            $query->when($request->type == 'email', function ($query) use ($request) {
+                                $query->where('email', 'like', '%' . $request->search . '%');
+                            });
                         });
                     })
                     ->when($request->sort == 'id', function ($query) {
@@ -41,6 +51,7 @@ class UserController extends Controller
                     ->when($request->sort == 'name', function ($query) use ($request) {
                         $query->orderBy('name', $request->asc == 'true' ? 'ASC' : 'DESC');
                     })
+
                     ->paginate(20);
     }
 

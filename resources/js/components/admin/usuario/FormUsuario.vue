@@ -33,7 +33,7 @@
                             size="sm"
                             v-model="post.email"
                             type="text"
-                            :disabled="true"
+                            :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`email`)}]"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="E-mail"
@@ -265,6 +265,67 @@
                 </b-col>
             </b-row>
             <hr/>
+            <b-row>
+                <b-col cols="12" sm="6" lg="4">
+                    <b-form-group label="Anuidade" label-class="font-weight-bold">
+                        <b-form-input
+                            name="anuidade"
+                            size="sm"
+                            v-model="post.anuidade"
+                            type="text"
+                            :disabled="loading"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`anuidade`)}]"
+                            v-validate="{ required: true }"
+                            aria-describedby="input-1-live-feedback"
+                            data-vv-as="anuidade"
+                        ></b-form-input>
+                        <span v-show="errors.has(`anuidade`)" class="invalid-feedback">
+                            {{ errors.first(`anuidade`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+                <b-col cols="12" sm="6" lg="4">
+                    <b-form-group label="Número do Sócio" label-class="font-weight-bold">
+                        <b-form-input
+                            name="numero_socio"
+                            size="sm"
+                            v-model="post.numero_socio"
+                            type="text"
+                            :disabled="loading"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`numero_socio`)}]"
+                            v-validate="{ required: true }"
+                            aria-describedby="input-1-live-feedback"
+                            data-vv-as="numero_socio"
+                        ></b-form-input>
+                        <span v-show="errors.has(`numero_socio`)" class="invalid-feedback">
+                            {{ errors.first(`numero_socio`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+                <b-col cols="12" sm="6" lg="4">
+                    <b-form-group label="Obs Insentamos" label-class="font-weight-bold">
+                        <b-form-input
+                            name="obs_isentamos"
+                            size="sm"
+                            v-model="post.obs_isentamos"
+                            type="text"
+                            :disabled="loading"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`obs_isentamos`)}]"
+                            v-validate="{ required: true }"
+                            aria-describedby="input-1-live-feedback"
+                            data-vv-as="obs_isentamos"
+                        ></b-form-input>
+                        <span v-show="errors.has(`obs_isentamos`)" class="invalid-feedback">
+                            {{ errors.first(`obs_isentamos`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+            </b-row>
+
+            <hr/>
            <div class="row">
                 <div class="col-12 d-flex justify-content-between">
                     <label>Endereços</label>
@@ -381,7 +442,7 @@
                     </div>
                 </div>
             </div>
-            
+            <hr/>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
@@ -411,7 +472,7 @@
                     </div>
                 </div>
             </div>
-
+            <hr/>
             <div class="row" v-if="post.todos_tipos_id != 1">
                 <div class="col-12">
                     <label for="ativo">Telas Liberadas:</label><br />
@@ -489,6 +550,9 @@
                     telefone: null,
                     celular: null,
                     sexo_id: null,
+                    anuidade: null,
+                    numero_socio: null,
+                    obs_isentamos: null,
                     todos_tipos_id: 3,
                     ativo: 0,
                     acessos: [],
@@ -527,13 +591,17 @@
                     this.post.telefone = this.selected.telefone
                     this.post.celular = this.selected.celular
                     this.post.sexo_id = this.selected.sexo_id
+                    this.post.anuidade = this.selected.associado.anuidade
+                    this.post.numero_socio = this.selected.associado.numero_socio
+                    this.post.obs_isentamos = this.selected.associado.obs_isentamos
+
 
                     this.post.enderecos = {
-                        id: this.selected && this.selected.enderecos ? this.selected.enderecos[0].id : null,
-                        cep: this.selected && this.selected.enderecos ? this.selected.enderecos[0].cep : null,
-                        logradouro: this.selected && this.selected.enderecos ? this.selected.enderecos[0].logradouro : null,
-                        municipio: this.selected && this.selected.enderecos ? this.selected.enderecos[0].municipio : null,
-                        estado: this.selected && this.selected.enderecos ? this.selected.enderecos[0].municipio.estado: null,
+                        id: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].id : null,
+                        cep: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].cep : null,
+                        logradouro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].logradouro : null,
+                        municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio : null,
+                        estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio.estado: null,
                     }
                 } else {
                     this.clear()

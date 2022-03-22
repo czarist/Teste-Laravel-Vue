@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <div class="card mt-3">
+            <div class="card mt-3" v-if="post.tipo.numero != 1">
                 <div class="card-header text-center">
                     <h2>DIVISÃO TEMÁTICA (DT)</h2>
                 </div>
@@ -24,6 +24,43 @@
 
                             <div class="switch-field-one">
                                 <span v-for="(divisoes_tematica, index) in divisoes_tematicas" :key="index" class="text-center">
+                                    <input
+                                        :disabled="loading"
+                                        :id="`dv_${index}`"
+                                        name="divisoes_tematicas"
+                                        type="checkbox"
+                                        :class="[ 'form-control radio-inline radio_lista radio',{ 'is-invalid': errors.has(`divisoes_tematicas`) }]"                                        
+                                        aria-describedby="input-1-live-feedback"
+                                        data-vv-as="DIVISÃO TEMÁTICA"
+                                        :value="divisoes_tematica.id"
+                                        v-model="post.divisoes_tematicas"
+                                        v-validate="{ required: true }"
+                                    ><label :key="`label_${index}`" :for="`dv_${index}`" class="mr-2">{{ divisoes_tematica.dt }} - {{ divisoes_tematica.descricao }}</label>
+                                </span>
+                            </div>
+                        </div>
+
+                    </b-row>    
+                    <span v-show="errors.has(`divisoes_tematicas`)" class="invalid-feedback d-block m-0">
+                        {{ errors.first(`divisoes_tematicas`) }}
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="card mt-3" v-if="post.tipo.numero === 1">
+                <div class="card-header text-center">
+                    <h2>INTERCOM JÚNIOR (IJ)</h2>
+                </div>
+
+                <div class="card-body">
+                    <b-row>
+                        <div class="col-12  text-center">
+                            <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">CLIQUE NOS BOTÕES E ESCOLHA DIVISÕES TEMÁTICAS:</label><br />
+                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Selecione apenas uma divisão temática</label><br />
+
+                            <div class="switch-field-one">
+                                <span v-for="(divisoes_tematica, index) in divisoes_tematicas_jr" :key="index" class="text-center">
                                     <input
                                         :disabled="loading"
                                         :id="`dv_${index}`"
@@ -512,6 +549,7 @@
                 baseUrl: process.env.MIX_BASE_URL,
                 edit: false,
                 divisoes_tematicas: [],
+                divisoes_tematicas_jr: [],
                 titulacoes: [],
                 loading: false,
                 verify: null,
@@ -733,6 +771,23 @@
                     }
                 }); 
             },
+            getDivisoesTematicasJr(){
+                let urlgetDivisoesTematicasJr = this.baseUrl+"/get/divisoes-tematicas-jr";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetDivisoesTematicasJr,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.divisoes_tematicas_jr = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },           
 
             liveCountDown: function() {
                 this.totalRemainCount = this.limitmaxCount - this.post.titulo.length;
@@ -799,7 +854,8 @@
             }
         },
         created() {
-            this.getDivisoesTematicas()
+            this.getDivisoesTematicas(),
+            this.getDivisoesTematicasJr()
         },
         mounted(){
             if(this.user){

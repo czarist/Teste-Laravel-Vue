@@ -3,7 +3,7 @@
         <h5 class="col-12 d-flex justify-content-between">
             Usuário
             <span class="btn btn-success btn-sm" @click="showForm(null)">
-                <i class="fas fa-plus-circle float-left d-none d-sm-block mt-1 mr-1"></i> Cadastrar
+                <i class="bi bi-plus-square"></i> Cadastrar
             </span>
         </h5>
         <div class="col-12">
@@ -13,26 +13,40 @@
                         <h5 class="d-flex justify-content-center">Carregando...</h5>
                         <b-progress :value="value" :max="max" ></b-progress>
                     </div>
-                 
-                    <div class="input-group input-group-sm mb-3"  v-show="!loading">
-                        <div class="input-group-prepend">
+
+                   
+                    <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 mb-2 mb-lg-0">
+                         <span class="invalid-feedback">* Para pesquisar por CPF digite no formato: ###.###.###-##</span>
+                        <div class="input-group-prepend mb-2">
                             <span class="btn btn-primary">
-                                <i class="fas fa-search"></i>
+                                <i class="fa fa-search"></i>
                             </span>
                         </div>
-                        <input
-                            style="cursor: text; background-color: #fff;"
-                            id="search"
-                            type="text"
-                            readonly
-                            @focus="removeReadonly('search')"
+
+                        <input type="search"
+                            placeholder="Procurar..." 
                             class="form-control form-control-filter"
-                            placeholder="Pesquisar..."
-                            v-model="search"
-                            @input="get()"
+                            v-model="search" 
+                            @change="get()"
                         >
-                    </div>
-                        
+
+                        <div class="input-group-append">
+                            <button
+                                class="btn btn-primary dropdown-toggle mb-2"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >{{ searchType.text }} 
+                            <i class="bi bi-caret-down-fill"></i>                            
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" @click="searchType = { link: 'nome', text: 'Nome' }">Nome</a>
+                                <a class="dropdown-item" @click="searchType = { link: 'cpf', text: 'CPF' }">CPF</a>
+                                <a class="dropdown-item" @click="searchType = { link: 'email', text: 'E-mail' }">E-mail</a>
+                            </div>
+                        </div>
+                    </div>                        
                    
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
                         <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
@@ -59,12 +73,12 @@
                                             <span
                                                 class="btn btn-outline-primary btn-sm mr-1"
                                                 @click="showForm(registro)"
-                                            ><i class="fas fa-edit"> Editar</i></span>
+                                            ><i class="bi bi-pencil-square"></i>Editar</span>
 
                                             <span
                                                class="btn btn-outline-danger btn-sm"
                                               @click="showDelete(registro)"
-                                            ><i class="fas fa-trash"></i> Deletar</span>
+                                            ><i class="bi bi-trash"></i> Deletar</span>
                                         </span>
                                     </td>
                                 </tr>
@@ -101,6 +115,7 @@
         },
         data() {
             return {
+                searchType: { link: 'cpf', text: 'CPF' },
                 value: 100,
                 max: 100,
                 page: 'admin/usuarios',

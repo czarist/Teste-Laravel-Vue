@@ -5,7 +5,7 @@
             <figure class="user-cover-image"></figure>
             <div class="user-info">
                 <img src="{{ asset('images/90x90.jpg') }}" alt="avatar">
-                <h6 class="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6>
+                <h6 class="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6><br>
             </div>
         </div>
         <div class="shadow-bottom"></div>
@@ -95,7 +95,8 @@
                     </li>
                 </ul>
             </li>
-            
+            <h6 style="color:black; z-index:999;" class="text-center mt-1">Dúvidas sobre o sistema? <br> suporte@kirc.com.br</h6><br>
+
         </ul>
     </nav>
 </div>

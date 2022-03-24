@@ -20,7 +20,7 @@ class PerfilController extends Controller
 {
     public function perfil()
     {
-        $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
+        $user = User::select('id', 'name', 'password', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
                     ->with('acessos:id,pagina,link',
                             'todos_tipos:id,descricao',
                             'enderecos',
@@ -59,8 +59,6 @@ class PerfilController extends Controller
                                 
         return view('associado.anuidadeForm', compact('user'));
     }
-
-
 
     public function senhaUpdate(Request $request)
     {
@@ -127,13 +125,24 @@ class PerfilController extends Controller
         try { 
             $post = $request->all();
             $post['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $post['data_nascimento'])->format('Y-m-d');
+
             $user = User::findOrFail($post['id']);
+
+            if(isset($post['password']) && !empty($post['password'])) {
+                $post['password'] = Hash::make($post['password']);
+            }
+            
+            if(!isset($post['password']) || empty($post['password'])) {
+                $post['password'] = $user->password;
+            }
 
             if(!empty($user))
             {
                 if($user->rg == $post['rg']) {
                     $user->update([
                         'name' => $post['name'],
+                        'email' => $post['email'],
+                        'password' => $post['password'],
                         'telefone' => $post['telefone'],
                         'celular' => $post['celular'],
                         'data_nascimento' => $post['data_nascimento'],
@@ -147,6 +156,8 @@ class PerfilController extends Controller
 
                     $user->update([
                         'name' => $post['name'],
+                        'email' => $post['email'],
+                        'password' => $post['password'],
                         'telefone' => $post['telefone'],
                         'celular' => $post['celular'],
                         'data_nascimento' => $post['data_nascimento'],

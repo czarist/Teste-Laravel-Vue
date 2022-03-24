@@ -23,20 +23,25 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-
     @yield('styles')
 
+    <link 
+        rel="stylesheet" 
+        href="{{ asset('assets/css/whatsapp-button.css') }}"> 
+        <a 
+            id="robbu-whatsapp-button" 
+            target="_blank" 
+            href="https://api.whatsapp.com/send?phone=5511963651888&text=Ol%C3%A1%20preciso%20de%20ajuda." 
+            >
+            <img src="{{ asset('images/whatsapp-icon.svg') }}"> 
+        </a> 
+    
     <style>
         .layout-px-spacing {
             min-height: calc(100vh - 140px)!important;
         }
 
-    </style>
-
-        {{-- Pagseguro --}}
-        {{-- <script  type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
-        {{-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script> --}}
-    
+    </style>    
     
 </head>
 <body class="sidebar-noneoverflow">
@@ -74,7 +79,8 @@
                     </div>
 
                     <div class="footer-section f-section-2">
-                        <p class=""> Um sistema de <a href="http://kirc.com.br">KIRC</a> - Digitalize sua Ideia </p>
+                        <p class=""> Um sistema de <a href="http://kirc.com.br">KIRC</a> - Digitalize sua Ideia </p><br>
+                        <p></p>
                     </div>
                 </div>
                     

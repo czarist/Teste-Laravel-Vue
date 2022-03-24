@@ -807,7 +807,6 @@
                     id: null,
                     name: null,
                     email: null,
-                    password: null,
                     estrangeiro: 0,
                     anuidade2022: 1,
                     associacao: null,
@@ -859,7 +858,6 @@
                     this.post.id = this.user.id ? this.user.id : null
                     this.post.name = this.user.name ? this.user.name : null
                     this.post.email = this.user.email ? this.user.email : null 
-                    this.post.password = this.user.password ? this.user.password : null
                     this.post.cpf = this.user.cpf ? this.user.cpf : null
                     this.post.rg = this.user.rg ? this.user.rg : null
                     this.post.orgao_expedidor = this.user.orgao_expedidor ? this.user.orgao_expedidor : null
@@ -877,6 +875,8 @@
                     this.post.port_nece = this.user && this.user.regional_norte ? this.user.regional_norte.port_nece_espe : null
                     this.post.qual = this.user && this.user.regional_norte ? this.user.regional_norte.port_nece_espe_qual : null
                     this.post.outra_necessidade = this.user && this.user.regional_norte ? this.user.regional_norte.port_nece_espe_outra : null
+                    this.port_nece_if = this.post.port_nece == 1 ? 1 : 0
+                    this.qual = this.post.qual ? this.post.qual : null
 
                     this.post.regiao = this.regiao ? this.regiao : null
                     this.post.ativo = this.user.ativo ? this.user.ativo : null,
@@ -1090,6 +1090,7 @@
                 });
             },
             async save() {
+                this.loading = true
                 await this.$validator.validateAll().then((valid) => {                   
                     if(valid) {                        
                         if(this.post && this.post.taxa_inscricao && this.post.taxa_inscricao.id == 4 && this.user.anuidade_2022 == false){

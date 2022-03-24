@@ -16,7 +16,7 @@
                             type="text"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`name`)}]"
-                            v-validate="{ required: true }"
+                            v-validate="{ required: true, fullName: post.name }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="name"
                         ></b-form-input>

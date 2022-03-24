@@ -32,8 +32,6 @@ $(function() {
 
             },
             update: function( event, ui ) {
-                console.log(ui);
-                console.log(ui.item);
             }
         });
     }

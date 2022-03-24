@@ -33,12 +33,26 @@ Vue.filter('momentDate', function (date) {
     return date ? moment(date).format('DD/MM/YYYY') : null
 });
 
+
 Vue.filter('formatPrice', function (value) {
     let val = (value/1).toFixed(2).replace('.', ',')
     return 'R$'+' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 })
 
-Validator.localize('pt_BR', pt_BR)
+
+Validator.extend("fullName", {
+    validate: (fullName) => {
+        // var regName = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{4,}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+){0,2}$/;
+        var regName = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+( [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+)+$/;
+        var name = fullName;
+        if(!regName.test(name)){
+            return false;
+        }else{
+            return true;
+        }
+    
+    }
+})
 
 Validator.extend("numeroSocioCheck", {
     validate: (numero_socio, id) => {
@@ -250,11 +264,15 @@ Validator.localize({
             },
             passaporte: {
                 passaporteCheck: 'Passaporte já cadastrado'
+            },
+            name: {
+                fullName : "Nome completo digitado não é válido "
             }
         }
     }
 });
 
+Validator.localize('pt_BR', pt_BR)
 
 import SexoGrid from './components/admin/sexo/SexoGrid.vue'
 import InstituicaoGrid from './components/admin/instituicao/InstituicaoGrid.vue'

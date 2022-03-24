@@ -16,12 +16,12 @@
                     size="sm"
                     v-model="post.name"
                     type="text"
-                    :disabled="true"
+                    :disabled="loading"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`name`) },
                     ]"
-                    v-validate="{ required: true }"
+                    v-validate="{ required: true, fullName: post.name }"
                     aria-describedby="input-1-live-feedback"
                     data-vv-as="name"
                   ></b-form-input>
@@ -44,12 +44,12 @@
                     size="sm"
                     v-model="post.email"
                     type="text"
-                    :disabled="true"
+                    :disabled="loading"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`email`) },
                     ]"
-                    v-validate="{ required: true, email: true }"
+                    v-validate="{ required: true,email: true }"
                     aria-describedby="input-1-live-feedback"
                     data-vv-as="E-mail"
                   ></b-form-input>
@@ -67,7 +67,7 @@
                     v-model="post.password"
                     :disabled="loading"
                     type="password"
-                    v-validate="{ min: 6 }"
+                    v-validate="{ min: 6 , required: true }"
                     :class="[
                       'form-control form-control-sm',
                       { 'is-invalid': errors.has(`password`) },
@@ -90,7 +90,7 @@
                   label-class="font-weight-bold"
                 >
                   <b-form-radio-group
-                    :disabled="true"
+                    :disabled="loading"
                     v-model="post.estrangeiro"
                     :options="options"
                     :button-variant="`outline-primary`"
@@ -115,7 +115,7 @@
                   <b-form-input
                     name="passaporte"
                     size="sm"
-                    :disabled="true"
+                    :disabled="loading"
                     v-model="post.passaporte"
                     type="text"
                     v-mask="'########'"
@@ -220,7 +220,7 @@
                   <b-form-input
                     name="orgao_expedidor"
                     size="sm"
-                    :disabled="true"
+                    :disabled="loading"
                     v-model="post.orgao_expedidor"
                     type="text"
                     :class="[
@@ -650,8 +650,8 @@ export default {
       post: {
         id: this.user ? this.user.id : null,
         name: this.user ? this.user.name : null,
-        email: this.user ? this.user.email : null,
         password: this.user ? this.user.password : null,
+        email: this.user ? this.user.email : null,
         estrangeiro: this.user ? this.user.estrangeiro : null,
         passaporte: this.user ? this.user.passaporte : null,
         data_nascimento: this.user
@@ -897,7 +897,6 @@ export default {
                 this.loading = false;
               },
               error: (error) => {
-                console.log(error);
                 if (error.status == 422) {
                   if (error.response.message == "The given data was invalid.") {
                     this.loading = false;

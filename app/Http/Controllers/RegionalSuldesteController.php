@@ -143,7 +143,8 @@ class RegionalSuldesteController extends Controller
                     'ano' => date('Y'),
                     'guardador_sabado' => $post['guard_sab'],
                     'port_nece_espe' => $post['port_nece'],
-                    'port_nece_espe_qual' => $post['outra_necessidade'] ?? null ,
+                    'port_nece_espe_qual' => $post['qual'] ?? null ,
+                    'port_nece_espe_outra' => $post['outra_necessidade'] ?? null ,
                     'updated_at' => Carbon::now()
                 ]);
             }else{

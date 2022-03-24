@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <b-row>
                         <b-col cols="12" sm="6" lg="6">
-                            <b-form-group label="Nome" label-class="font-weight-bold">
+                            <b-form-group label="Nome Completo" label-class="font-weight-bold">
                                 <b-form-input
                                     name="name"
                                     size="sm"
@@ -560,7 +560,6 @@
                     id: null,
                     name: null,
                     email: null,
-                    password: null,
                     estrangeiro: 0,
                     associado: 1,
                     associacao: null,
@@ -604,7 +603,6 @@
                     this.post.id = this.user.id ? this.user.id : null
                     this.post.name = this.user.name ? this.user.name : null
                     this.post.email = this.user.email ? this.user.email : null 
-                    this.post.password = this.user.password ? this.user.password : null
                     this.post.cpf = this.user.cpf ? this.user.cpf : null
                     this.post.rg = this.user.rg ? this.user.rg : null
                     this.post.orgao_expedidor = this.user.orgao_expedidor ? this.user.orgao_expedidor : null
@@ -812,6 +810,7 @@
                 }); 
             },
             async save() {
+                this.loading = true
                 await this.$validator.validateAll().then((valid) => {
                     if(valid) {
 

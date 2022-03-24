@@ -232,8 +232,8 @@
 
                                         <p 
                                             v-if="post.desc_obj_estudo && post.desc_obj_estudo.length <= 400"
-                                            >Minimo de letras restante: <span v-bind:class="{'text-danger': erro_cont_min_desc_obj_estudo }">{{totalMinCount_desc_obj_estudo}}</span></p>
-                                        <p>Total restante letras restante: <span v-bind:class="{'text-danger': generateErr_desc_obj_estudo }">{{totalRemainCount_desc_obj_estudo}}</span></p>
+                                            >Minimo de caracteres restante: <span v-bind:class="{'text-danger': erro_cont_min_desc_obj_estudo }">{{totalMinCount_desc_obj_estudo}}</span></p>
+                                        <p>Total caracteres restante: <span v-bind:class="{'text-danger': generateErr_desc_obj_estudo }">{{totalRemainCount_desc_obj_estudo}}</span></p>
 
                                 <span v-show="errors.has(`desc_obj_estudo`)" class="invalid-feedback">
                                     {{ errors.first(`desc_obj_estudo`) }}
@@ -255,14 +255,14 @@
 
                                         <p 
                                             v-if="post.desc_pesquisa && post.desc_pesquisa.length <= 400"
-                                            >Minimo de letras restante: 
+                                            >Minimo de caracteres restante: 
                                             <span 
                                                 v-bind:class="{'text-danger': erro_cont_min_desc_pesquisa }">
                                                 {{totalMinCount_desc_pesquisa}}
                                             </span>
                                         </p>
 
-                                        <p>Total restante letras restante: <span v-bind:class="{'text-danger': generateErr_desc_pesquisa }">{{totalRemainCount_desc_pesquisa}}</span></p>
+                                        <p>Total caracteres restante: <span v-bind:class="{'text-danger': generateErr_desc_pesquisa }">{{totalRemainCount_desc_pesquisa}}</span></p>
 
                                 <span v-show="errors.has(`desc_pesquisa`)" class="invalid-feedback">
                                     {{ errors.first(`desc_pesquisa`) }}
@@ -284,14 +284,14 @@
 
                                         <p 
                                             v-if="post.desc_producao && post.desc_producao.length <= 400"
-                                            >Minimo de letras restante: 
+                                            >Minimo de caracteres restante: 
                                             <span 
                                                 v-bind:class="{'text-danger': erro_cont_min_desc_producao }">
                                                 {{totalMinCount_desc_producao}}
                                             </span>
                                         </p>
 
-                                        <p>Total restante letras restante: <span v-bind:class="{'text-danger': generateErr_desc_producao }">{{totalRemainCount_desc_producao}}</span></p>
+                                        <p>Total caracteres restante: <span v-bind:class="{'text-danger': generateErr_desc_producao }">{{totalRemainCount_desc_producao}}</span></p>
 
                                 <span v-show="errors.has(`desc_producao`)" class="invalid-feedback">
                                     {{ errors.first(`desc_producao`) }}

@@ -371,6 +371,28 @@
             </b-tab>
 
             <b-tab title="Boleto">
+              <div class="container hidden" id="retorno_ok1">
+                <div class="section-head style-3 text-center z mb-3 alert alert-success" role="alert">
+                    <h2 class="title" id="retorno_titulo_ok"></h2>
+                    <p id="retorno_texto_ok1"></p>
+                </div>
+              </div>
+              <div class="container hidden" id="retorno_erro1">
+                <div class="section-head style-3 text-center z mb-3 alert alert-danger " role="alert" >
+                    <h2 class="title" id="retorno_titulo1"></h2>
+                    <p id="retorno_texto1"></p>
+                    <div>
+                    <b-button
+                        size="xl"
+                        variant="outline-danger"
+                        @click="recarregar()"
+                    >
+                        Voltar
+                    </b-button>
+                    </div>
+                </div>
+              </div>
+
               <b-card-text>
                 <form
                   class="form-horizontal"
@@ -491,7 +513,6 @@ export default {
         this.form.id = this.selectedPagar.id;
         this.form.name = this.selectedPagar.name;
         this.form.email = this.selectedPagar.email;
-        this.form.password = this.selectedPagar.password;
         this.form.cpf = this.selectedPagar.cpf;
         this.form.rg = this.selectedPagar.rg;
         this.form.orgao_expedidor = this.selectedPagar.orgao_expedidor;
@@ -650,7 +671,7 @@ export default {
       });
     },
     async pagarCredito() {
-
+      this.loading = true;
       await this.$validator.validateAll().then((valid) => {
         if(valid) {
 
@@ -717,32 +738,230 @@ export default {
                   dataType: "json",
                   success: function (retorna) {
                     if (retorna.message == "error") {
-                      $("#retorno_erro").removeClass("hidden");
-                      $('#retorno_texto').html('O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente <br> Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos');
-                      $("#submit_button").prop("disabled", true);
-                      $('#submit_button_boleto').prop('disabled', true);
+                        var errorPag = '';
 
-                      //to mexendo aqui
-                      setTimeout(() => {
+                        if(retorna.response.error){   
+                            retorna.response.error.forEach(function(error){
+
+                            if(error.code == 53012){
+                                errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            if(error.code == 53015){
+                                errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                            }
+                            if(error.code == 5003){
+                                errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10000){
+                                errorPag += "Marca de cartão de crédito inválida <br>";
+                            }
+                            if(error.code == 10001){
+                                errorPag += "Número do cartão de crédito com comprimento inválido <br>";
+                            }
+                            if(error.code == 10002){
+                                errorPag += "Formato da data inválida, entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 10003){
+                                errorPag += "Campo de segurança CVV inválido, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10004){
+                                errorPag += "Código de verificação CVV é obrigatório, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10006){
+                                errorPag += "Campo de segurança com comprimento inválido, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53010){
+                                errorPag += "O e-mail do remetente é obrigatório, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            if(error.code == 53011){
+                                errorPag += "Email do remetente com comprimento inválido, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            // if(error.code == 53012){
+                            //   errorPag += "Email do remetente está com valor inválido, entre no seu perfil e atualize seu e-mail <br>";
+                            // }
+                            if(error.code == 53013){
+                                errorPag += "O nome do remetente é obrigatório, entre no seu perfil e atualize seu nome <br>";
+                            }
+                            if(error.code == 53014){
+                                errorPag += "Nome do remetente está com comprimento inválido, entre no seu perfil e atualize seu nome <br>";
+                            }
+                            // if(error.code == 53015){
+                            //   errorPag += "Nome do remetente está com valor inválido, entre no seu perfil e atualize seu nome <br>";
+                            // }
+                            if(error.code == 53017){
+                                errorPag += "Foi detectado algum erro nos dados do seu CPF, entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53018){
+                                errorPag += "O código de área do remetente é obrigatório, entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53019){
+                                errorPag += "Há um conflito com o código de área informado, em relação a outros dados seus. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53020){
+                                errorPag += "É necessário um telefone do remetente. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53021){
+                                errorPag += "Valor inválido do telefone do remetente. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53022){
+                                errorPag += "É necessário o código postal do endereço de entrega. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53023){
+                                errorPag += "Código postal está com valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53037){
+                                errorPag += "O token do cartão de crédito é necessário. atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53042){
+                                errorPag += "O nome do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+                            if(error.code == 53043){
+                                errorPag += "Nome do titular do cartão de crédito está com o comprimento inválido. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+                            // if(error.code == 53044){
+                            //   errorPag += "O nome informado no formulário do cartão de Crédito precisa ser escrito exatamente da mesma forma que consta no seu cartão obedecendo inclusive, abreviaturas e grafia errada. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            // }
+                            if(error.code == 53044){
+                                errorPag += "O nome completo não é valido e não foi aceito pelo pagseguro. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+
+                            if(error.code == 53045){
+                                errorPag += "O CPF do titular do cartão de crédito é obrigatório. Entre em contato com o suporte <br>";
+                            }
+                            if(error.code == 53046){
+                                errorPag += "O CPF do titular do cartão de crédito está com valor inválido. Entre em contato com o suporte <br>";
+                            }
+                            if(error.code == 53047){
+                                errorPag += "A data de nascimento do titular do cartão de crédito é necessária. Entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 53048){
+                                errorPag += "A data de nascimento do Titular do cartão de crédito está com valor inválido. Entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 53049){
+                                errorPag += "O código de área do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53051){
+                                errorPag += "O telefone do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53052){
+                                errorPag += "O número de Telefone do titular do cartão de crédito está com valor inválido. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53053){
+                                errorPag += "É necessário o código postal do endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53054){
+                                errorPag += "O código postal do endereço de cobrança está com valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53055){
+                                errorPag += "O endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53056){
+                                errorPag += "A rua, no endereço de cobrança está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53057){
+                                errorPag += "É necessário o número no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53058){
+                                errorPag += "Número de endereço de cobrança está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53059){
+                                errorPag += "Endereço de cobrança complementar está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53060){
+                                errorPag += "O endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53061){
+                                errorPag += "O endereço de cobrança está com tamanho inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53062){
+                                errorPag += "É necessário informar a cidade no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53063){
+                                errorPag += "O item Cidade, está com o comprimento inválido no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53064){
+                                errorPag += "O estado, no endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53065){
+                                errorPag += "No endereço de cobrança, o estado está com algum valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53066){
+                                errorPag += "O endereço de cobrança do país é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53067){
+                                errorPag += "No endereço de cobrança, o país está com um comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53068){
+                                errorPag += "O email do destinatário está com tamanho inválido. Entre no seu perfil e atualize seu email <br>";
+                            }
+                            if(error.code == 53069){
+                                errorPag += "Valor inválido do e-mail do destinatário. Entre no seu perfil e atualize seu email <br>";
+                            }
+                            if(error.code == 53085){
+                                errorPag += "Método de pagamento indisponível. Entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53087){
+                                errorPag += "Método de pagamento indisponível. Entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53091){
+                                errorPag += "O Hash do remetente está inválido. Atualize sua pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53092){
+                                errorPag += "A Bandeira do cartão de crédito não é aceita. Atualize sua pagina e tente com outro cartão <br>";
+                            }
+                            if(error.code == 53105){
+                                errorPag += "As informações do remetente foram fornecidas, portanto o e-mail também deve ser informado. Entre no seu perfil e atualize o seu email <br>";
+                            }
+                            if(error.code == 53106){
+                                errorPag += "O titular do cartão de crédito está incompleto. Entre no seu perfil e atualize o seu nome completo <br>";
+                            }
+                            if(error.code == 53110){
+                                errorPag += "Banco EFT é obrigatório, tente com outro cartão <br>";
+                            }
+                            if(error.code == 53111){
+                                errorPag += "Banco EFT não é aceito, tente com outro cartão <br>";
+                            }
+                            if(error.code == 53115){
+                                errorPag += "Valor inválido da data de nascimento do remetente, entre no seu perfil e atualize sua data de nascimento<br>";
+                            }
+                            if(error.code == 53122){
+                                errorPag += "Erro entre em contato com o suporte, erro 53122 <br>";
+                            }
+                            if(error.code == 53141){
+                                errorPag += "Erro entre em contato com o suporte, erro 53141 <br>";
+                            }
+                            if(error.code == 53142){
+                                errorPag += "O cartão de crédito está com o token inválido, atualize a pagina e tente novamente <br>";
+                            }
+                            });
+                        }
+                        $("#retorno_erro").removeClass("hidden");
+                            
+                        if(errorPag == ''){
+                            errorPag += "Erro ao processar o pagamento, caso não tenha recebido nenhum informativo de erro acima entre em contato com o suporte, email: suporte@kirc.com.br ou whatsapp (11) 96365-1888 <br>";
+                        }
+
+                        $("#retorno_texto").html(errorPag);
+                        $("#submit_button").prop("disabled", true);
+                        $("#submit_button_boleto").prop("disabled", true);
+
+                        setTimeout(() => {
                         window.location.href = "/pagamento?status=error";
-                      }, 2000);
+                        }, 10000);
+
                     } else {
-                      $("#redirecionar_botao")
-                        .removeClass("hidden")
-                        .attr("class", "text-center");
-                      $("#retorno_ok").removeClass("hidden");
-                      $("#retorno_titulo_ok").html("Sucesso!");
-                      $("#retorno_texto_ok").html(
-                        "Seu pagamento foi processado com sucesso"
-                      );
-                      $("#submit_button").prop("disabled", true);
-                      $('#submit_button_boleto').prop('disabled', true);
+                        $("#redirecionar_botao").removeClass("hidden").attr("class", "text-center");
+                        $("#retorno_ok").removeClass("hidden");
+                        $("#retorno_titulo_ok").html("Sucesso!");
+                        $("#retorno_texto_ok").html(
+                            "Seu pagamento foi processado com sucesso"
+                        );
+                        $("#submit_button").prop("disabled", true);
+                        $("#submit_button_boleto").prop("disabled", true);
 
-
-                      //to mexendo aqui
-                      setTimeout(() => {
-                        window.location.href = "/pagamento?status=sucess";
-                      }, 2000);
+                        setTimeout(() => {
+                            window.location.href = "/pagamento?status=sucess";
+                        }, 10000);
                     }
                   },
                   error: function (retorna) {
@@ -801,23 +1020,224 @@ export default {
                   dataType: "json",
                   success: (res) => {
                     if (res.message == "error") {
-                      this.message(
-                        "Erro",
-                        "Erro ao processar o pagamento, O Pagseguro pode estar com lentidão ou instabilidade, clique no botão VOLTAR e tente novamente. Caso ja tenha feito esse processo mais de duas vezes, tente novamente em alguns minutos.",
-                        "error"
-                        
-                      );
-                      this.loading = false;
-                    } else {
-                      this.message(
-                        "Sucesso",
-                        "Seu pagamento foi processado com sucesso",
-                        "success"
-                        
-                      );
-                      this.loading = false;
 
-                      window.open(res.response["paymentLink"], "_blank");
+                    var errorPag = '';
+
+                    if(res.response.error){   
+                        res.response.error.forEach(function(error){
+
+                            if(error.code == 53012){
+                            errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            if(error.code == 53015){
+                            errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                            }
+                            if(error.code == 5003){
+                            errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10000){
+                            errorPag += "Marca de cartão de crédito inválida <br>";
+                            }
+                            if(error.code == 10001){
+                            errorPag += "Número do cartão de crédito com comprimento inválido <br>";
+                            }
+                            if(error.code == 10002){
+                            errorPag += "Formato da data inválida, entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 10003){
+                            errorPag += "Campo de segurança CVV inválido, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10004){
+                            errorPag += "Código de verificação CVV é obrigatório, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 10006){
+                            errorPag += "Campo de segurança com comprimento inválido, atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53010){
+                            errorPag += "O e-mail do remetente é obrigatório, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            if(error.code == 53011){
+                            errorPag += "Email do remetente com comprimento inválido, entre no seu perfil e atualize seu e-mail <br>";
+                            }
+                            // if(error.code == 53012){
+                            //   errorPag += "Email do remetente está com valor inválido, entre no seu perfil e atualize seu e-mail <br>";
+                            // }
+                            if(error.code == 53013){
+                            errorPag += "O nome do remetente é obrigatório, entre no seu perfil e atualize seu nome <br>";
+                            }
+                            if(error.code == 53014){
+                            errorPag += "Nome do remetente está com comprimento inválido, entre no seu perfil e atualize seu nome <br>";
+                            }
+                            // if(error.code == 53015){
+                            //   errorPag += "Nome do remetente está com valor inválido, entre no seu perfil e atualize seu nome <br>";
+                            // }
+                            if(error.code == 53017){
+                            errorPag += "Foi detectado algum erro nos dados do seu CPF, entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53018){
+                            errorPag += "O código de área do remetente é obrigatório, entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53019){
+                            errorPag += "Há um conflito com o código de área informado, em relação a outros dados seus. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53020){
+                            errorPag += "É necessário um telefone do remetente. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53021){
+                            errorPag += "Valor inválido do telefone do remetente. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53022){
+                            errorPag += "É necessário o código postal do endereço de entrega. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53023){
+                            errorPag += "Código postal está com valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53037){
+                            errorPag += "O token do cartão de crédito é necessário. atualize a pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53042){
+                            errorPag += "O nome do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+                            if(error.code == 53043){
+                            errorPag += "Nome do titular do cartão de crédito está com o comprimento inválido. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+                            // if(error.code == 53044){
+                            //   errorPag += "O nome informado no formulário do cartão de Crédito precisa ser escrito exatamente da mesma forma que consta no seu cartão obedecendo inclusive, abreviaturas e grafia errada. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            // }
+                            if(error.code == 53044){
+                            errorPag += "O nome completo não é valido e não foi aceito pelo pagseguro. Entre no seu perfil e atualize seu Nome Completo <br>";
+                            }
+
+                            if(error.code == 53045){
+                            errorPag += "O CPF do titular do cartão de crédito é obrigatório. Entre em contato com o suporte <br>";
+                            }
+                            if(error.code == 53046){
+                            errorPag += "O CPF do titular do cartão de crédito está com valor inválido. Entre em contato com o suporte <br>";
+                            }
+                            if(error.code == 53047){
+                            errorPag += "A data de nascimento do titular do cartão de crédito é necessária. Entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 53048){
+                            errorPag += "A data de nascimento do Titular do cartão de crédito está com valor inválido. Entre no seu perfil e atualize sua data de nascimento <br>";
+                            }
+                            if(error.code == 53049){
+                            errorPag += "O código de área do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53051){
+                            errorPag += "O telefone do titular do cartão de crédito é obrigatório. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53052){
+                            errorPag += "O número de Telefone do titular do cartão de crédito está com valor inválido. Entre no seu perfil e atualize seu telefone e celular <br>";
+                            }
+                            if(error.code == 53053){
+                            errorPag += "É necessário o código postal do endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53054){
+                            errorPag += "O código postal do endereço de cobrança está com valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53055){
+                            errorPag += "O endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53056){
+                            errorPag += "A rua, no endereço de cobrança está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53057){
+                            errorPag += "É necessário o número no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53058){
+                            errorPag += "Número de endereço de cobrança está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53059){
+                            errorPag += "Endereço de cobrança complementar está com comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53060){
+                            errorPag += "O endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53061){
+                            errorPag += "O endereço de cobrança está com tamanho inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53062){
+                            errorPag += "É necessário informar a cidade no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53063){
+                            errorPag += "O item Cidade, está com o comprimento inválido no endereço de cobrança. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53064){
+                            errorPag += "O estado, no endereço de cobrança é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53065){
+                            errorPag += "No endereço de cobrança, o estado está com algum valor inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53066){
+                            errorPag += "O endereço de cobrança do país é obrigatório. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53067){
+                            errorPag += "No endereço de cobrança, o país está com um comprimento inválido. Entre no seu perfil e atualize seu endereço <br>";
+                            }
+                            if(error.code == 53068){
+                            errorPag += "O email do destinatário está com tamanho inválido. Entre no seu perfil e atualize seu email <br>";
+                            }
+                            if(error.code == 53069){
+                            errorPag += "Valor inválido do e-mail do destinatário. Entre no seu perfil e atualize seu email <br>";
+                            }
+                            if(error.code == 53085){
+                            errorPag += "Método de pagamento indisponível. Entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53087){
+                            errorPag += "Método de pagamento indisponível. Entre em contato com suporte <br>";
+                            }
+                            if(error.code == 53091){
+                            errorPag += "O Hash do remetente está inválido. Atualize sua pagina e tente novamente <br>";
+                            }
+                            if(error.code == 53092){
+                            errorPag += "A Bandeira do cartão de crédito não é aceita. Atualize sua pagina e tente com outro cartão <br>";
+                            }
+                            if(error.code == 53105){
+                            errorPag += "As informações do remetente foram fornecidas, portanto o e-mail também deve ser informado. Entre no seu perfil e atualize o seu email <br>";
+                            }
+                            if(error.code == 53106){
+                            errorPag += "O titular do cartão de crédito está incompleto. Entre no seu perfil e atualize o seu nome completo <br>";
+                            }
+                            if(error.code == 53110){
+                            errorPag += "Banco EFT é obrigatório, tente com outro cartão <br>";
+                            }
+                            if(error.code == 53111){
+                            errorPag += "Banco EFT não é aceito, tente com outro cartão <br>";
+                            }
+                            if(error.code == 53115){
+                            errorPag += "Valor inválido da data de nascimento do remetente, entre no seu perfil e atualize sua data de nascimento<br>";
+                            }
+                            if(error.code == 53122){
+                            errorPag += "Erro entre em contato com o suporte, erro 53122 <br>";
+                            }
+                            if(error.code == 53141){
+                            errorPag += "Erro entre em contato com o suporte, erro 53141 <br>";
+                            }
+                            if(error.code == 53142){
+                            errorPag += "O cartão de crédito está com o token inválido, atualize a pagina e tente novamente <br>";
+                            }
+                        });
+                    }
+
+                    if(errorPag == ''){
+                        errorPag += "Erro ao processar o pagamento, caso não tenha recebido nenhum informativo de erro acima entre em contato com o suporte, email: suporte@kirc.com.br ou whatsapp (11) 96365-1888 <br>";
+                    }
+
+                    $("#retorno_erro1").removeClass("hidden");
+                    $("#retorno_texto1").html(errorPag);
+                    $("#submit_button").prop("disabled", true);
+                    $("#submit_button_boleto").prop("disabled", true);
+
+                    setTimeout(() => {
+                        window.location.href = "/pagamento?status=error";
+                    }, 10000);
+
+                    } else {
+
+                    this.message(  "Sucesso","Seu pagamento foi processado com sucesso","success");
+                    this.loading = false;
+
+                    window.open(res.response["paymentLink"], "_blank");
                     }
                   },
                   error: (error) => {

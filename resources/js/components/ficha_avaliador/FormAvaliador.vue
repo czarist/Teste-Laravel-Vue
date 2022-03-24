@@ -934,7 +934,6 @@
 
                                 },
                                 error: (error) => {
-                                    console.log(error);
                                     if (error.status == 422) {
                                         if (error.response.message == "The given data was invalid.") {
                                             this.loading = false;

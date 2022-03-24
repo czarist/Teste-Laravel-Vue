@@ -176,11 +176,9 @@
                                     || Auth::user()->pago_regional_centrooeste_2022 
                                     || Auth::user()->pago_regional_norte_2022
 
-                            )
-                                        
+                            )                                        
                                 @if (Auth::user()->pago_regional_sul_2022)
                                     @if (Auth::user()->regional_sul->categoria_inscricao != 8 || Auth::user()->regional_sul->categoria_inscricao != 9 )
-                                        
                                         
                                         @if (
                                             Auth::user()->regional_sul->categoria_inscricao == 1 

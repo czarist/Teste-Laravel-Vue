@@ -102,7 +102,7 @@
                                         v-validate="{ required: true }"
                                         ></textarea>
 
-                                        <p>Total restante letras restante: <span v-bind:class="{'text-danger': generateErr }">{{totalRemainCount}}</span></p>
+                                        <p>Total caracteres restante: <span v-bind:class="{'text-danger': generateErr }">{{totalRemainCount}}</span></p>
 
                                 <span v-show="errors.has(`titulo`)" class="invalid-feedback">
                                     {{ errors.first(`titulo`) }}

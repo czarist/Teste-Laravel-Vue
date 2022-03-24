@@ -147,7 +147,7 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`nome_respo`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Nome do Responsável"
-                                    v-validate="{ required: true }"
+                                    v-validate="{ required: true, fullName: post.nome_respo }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`nome_respo`)" class="invalid-feedback">
                                     {{ errors.first(`nome_respo`) }}
@@ -167,7 +167,7 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf_respo`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="CPF do Responsável"
-                                    v-validate="{ required: true }"
+                                    v-validate="{ required: true, verificaCPF: post.cpf_respo }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`cpf_respo`)" class="invalid-feedback">
                                     {{ errors.first(`cpf_respo`) }}
@@ -243,7 +243,7 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`nome_autor`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="Nome do autor líder"
-                                    v-validate="{ required: true }"
+                                    v-validate="{ required: true, fullName: post.nome_autor }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`nome_autor`)" class="invalid-feedback">
                                     {{ errors.first(`nome_autor`) }}
@@ -263,7 +263,7 @@
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`cpf_autor`)}]"
                                     aria-describedby="input-1-live-feedback"
                                     data-vv-as="CPF do autor líder"
-                                    v-validate="{ required: true, cpfCheckIndicacao: post.cpf }"
+                                    v-validate="{ required: true, cpfCheckIndicacao: post.cpf, verificaCPF: post.cpf_autor }"
                                 ></b-form-input>
                                 <span v-show="errors.has(`cpf_autor`)" class="invalid-feedback">
                                     {{ errors.first(`cpf_autor`) }}
@@ -761,7 +761,6 @@
 
                                 },
                                 error: (error) => {
-                                    console.log(error);
                                     if (error.status == 422) {
                                         if (error.response.message == "The given data was invalid.") {
                                             this.loading = false;

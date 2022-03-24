@@ -73,7 +73,7 @@ class PagSeguroController extends Controller
         }
 
         $associado = Associado::whereUserId($user->id)->first();   
-        
+
         if(empty($associado))
         {
             $associado = Associado::create(

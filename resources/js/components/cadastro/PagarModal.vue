@@ -539,7 +539,7 @@
                                                         errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
                                                     }
                                                     if(error.code == 53015){
-                                                        errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                                                        errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome completo <br>";
                                                     }
                                                     if(error.code == 5003){
                                                         errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";
@@ -816,7 +816,7 @@
                                                     errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
                                                     }
                                                     if(error.code == 53015){
-                                                    errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                                                    errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome completo <br>";
                                                     }
                                                     if(error.code == 5003){
                                                     errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";

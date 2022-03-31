@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoautorOrientadorSubCentrooeste;
+use App\Models\DistribuicaoTipo123;
 use App\Models\SubmissaoRegionalCentrooeste;
 use App\Models\User;
 use Exception;
@@ -27,9 +28,9 @@ class SubmissaoRegionalCentrooesteController extends Controller
                 'associado',
                 'enderecos',
                 'regional_centrooeste',
-                'regional_centrooeste.submissaoMesa',
-                'regional_centrooeste.submissaoDt',
-                'regional_centrooeste.submissaoJunior',
+                'regional_centrooeste.submissaoMesa.avaliacao',
+                'regional_centrooeste.submissaoDt.avaliacao',
+                'regional_centrooeste.submissaoJunior.avaliacao',
                 'regional_centrooeste.submissaoExpocom',
                 'regional_centrooeste.submissaoDt.coautorOrientadorSubCentrooeste',
                 'regional_centrooeste.submissaoJunior.coautorOrientadorSubCentrooeste',
@@ -185,7 +186,19 @@ class SubmissaoRegionalCentrooesteController extends Controller
                         ]);
                     }
                 }
-                
+
+                if($submissao && $submissao->id){
+                    $sub = SubmissaoRegionalCentrooeste::select('id', 'avaliacao')
+                    ->with('avaliacao')
+                    ->whereId($submissao->id)->first();
+    
+                    $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
+                    if(!empty($avaliacao)){
+                        $avaliacao->update([
+                            'edit' => 0,
+                        ]);
+                    }                    
+                }
             }
 
             Log::info('User: '. Auth::user()->id . ' | Regional Centrooestes 2022 | Submeteu seu trabalho: ' . json_encode($post));

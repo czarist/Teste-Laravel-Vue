@@ -34,6 +34,7 @@ class CadastroController extends Controller
             Log::info('Cadastro de usuario: ' . json_encode($post));
 
             $data = ['user' => $user, 'senha' => $senha];
+            
             Mail::send('cadastro.email', $data, function ($email) use ($user) {
                 $email->subject('Cadastro de Usuário - INTERCOM');
                 if (App::environment('production')) {

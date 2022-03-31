@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CoauOriExpoSubSudeste;
 use App\Models\CoautorOrientadorSubSudeste;
+use App\Models\DistribuicaoTipo123;
 use App\Models\SubmissaoExpocomRegionalSudeste;
 use App\Models\SubmissaoRegionalSudeste;
+use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,9 +32,9 @@ class SubmissaoRegionalSudesteController extends Controller
                 'associado',
                 'enderecos',
                 'regional_suldeste',
-                'regional_suldeste.submissaoMesa',
-                'regional_suldeste.submissaoDt',
-                'regional_suldeste.submissaoJunior',
+                'regional_suldeste.submissaoMesa.avaliacao',
+                'regional_suldeste.submissaoDt.avaliacao',
+                'regional_suldeste.submissaoJunior.avaliacao',
                 'regional_suldeste.submissaoExpocom',
                 'regional_suldeste.submissaoDt.coautorOrientadorSubSudeste',
                 'regional_suldeste.submissaoJunior.coautorOrientadorSubSudeste',
@@ -190,14 +192,25 @@ class SubmissaoRegionalSudesteController extends Controller
                         ]);
                     }
                 }
-                
+
+                if($submissao && $submissao->id){
+                    $sub = SubmissaoRegionalSudeste::select('id', 'avaliacao')
+                    ->with('avaliacao')
+                    ->whereId($submissao->id)->first();
+    
+                    $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
+                    if(!empty($avaliacao)){
+                        $avaliacao->update([
+                            'edit' => 0,
+                        ]);
+                    }                    
+                }                                               
             }
 
-            Log::info('User: '. Auth::user()->id . ' | Regional Sul 2022 | Submeteu seu trabalho: ' . json_encode($post));
+            Log::info('User: '. Auth::user()->id . ' | Regional Sudeste 2022 | Submeteu seu trabalho: ' . json_encode($post));
     
             return response()->json(['message' => 'success', 'response' => $user], 201);
-
-
+            
         } catch (Exception $exception) {
             $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 

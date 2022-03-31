@@ -11,6 +11,8 @@ class SubmissaoExpocomRegionalNorte extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'avaliacao',
+        'regiao',
         'ciente',
         'ano',
         'campus',
@@ -25,6 +27,10 @@ class SubmissaoExpocomRegionalNorte extends Model
     public function coautorOrientadorSubNortes()
     {
         return $this->hasMany(CoauOriExpoSubNorte::class,  'submissao_id', 'id');
+    }
+
+    public function avaliacao(){
+        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
 }

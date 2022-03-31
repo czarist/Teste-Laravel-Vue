@@ -6,6 +6,8 @@ export default {
             startDate: null,
             endDate: null,
             status: 0,
+            statusAva: 0,
+            statusCoo: 0,
             statuses: [],
             search: null,
             sort: null,
@@ -39,7 +41,8 @@ export default {
         url() {
             let url = `${process.env.MIX_BASE_URL}/${this.page}/get?trashed=${this.trashed}&status=${this.status}&asc=${this.asc}`
                 url = this.search ? url.concat(`&search=${this.search}`) : url
-                url = this.status ? url.concat(`&status=${this.status}`) : url
+                url = this.statusCoo ? url.concat(`&statusCoo=${this.statusCoo}`) : url
+                url = this.statusAva ? url.concat(`&statusAva=${this.statusAva}`) : url
                 url = this.searchType ? url.concat(`&type=${this.searchType.link}`) : url
                 url = this.startDate ? url.concat(`&start=${this.startDate}`) : url
                 url = this.endDate ? url.concat(`&end=${this.endDate}`) : url

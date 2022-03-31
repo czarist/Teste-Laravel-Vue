@@ -14,4 +14,10 @@ class AvaliadorExpocom extends Model
         'avaliador',
         'avaliador_junior'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');   
+    }
+
+    
 }

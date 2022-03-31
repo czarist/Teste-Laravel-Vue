@@ -11,6 +11,8 @@ class SubmissaoRegionalNordestes extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'avaliacao',
+        'regiao',
         'ciente',
         'dt',
         'tipo',
@@ -29,4 +31,9 @@ class SubmissaoRegionalNordestes extends Model
     {
         return $this->hasMany(CoautorOrientadorSubNordeste::class,  'submissao_id', 'id');
     }
+
+    public function avaliacao(){
+        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
+    }
+
 }

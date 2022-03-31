@@ -80,7 +80,7 @@
                                     <option value="Jornalismo">Jornalismo</option>
                                     <option value="Produção Transdisciplinar">Produção Transdisciplinar</option>
                                     <option value="Publicidade e Propaganda">Publicidade e Propaganda</option>
-                                    <option value=">Rádio, TV e Internet">Rádio, TV e Internet</option>
+                                    <option value="Rádio, TV e Internet">Rádio, TV e Internet</option>
                                     <option value="Relações Públicas">Relações Públicas</option>
 
                                 </b-form-select>
@@ -600,6 +600,12 @@
                 modalidades: [],
                 selected: null,
                 loading: false,
+                radio_internet: null,
+                cinema_audiovisual: null,
+                jornalismo: null,
+                publicidade_propaganda: null,
+                relacoes_publicas: null,
+                producao_editorial: null,
                 post: {
                     id: null,
                     nome_respo: null,

@@ -31,7 +31,7 @@ class AvaliadorExpocomController extends Controller
                 'associado',
                 'avaliador_expocom'
                 )
-                    ->find(Auth::user()->id);
+                ->find(Auth::user()->id);
     
     }
 

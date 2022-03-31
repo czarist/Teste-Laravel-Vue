@@ -59,5 +59,14 @@ class AcessoSeeder extends Seeder
             ]
         );
 
+        Acesso::updateOrCreate(
+            ['id' => 6],
+            [
+                'id'  => 6,
+                'pagina' => 'Coordenador',
+                'link' => 'admin/coordenador'
+            ]
+        );
+
     }
 }

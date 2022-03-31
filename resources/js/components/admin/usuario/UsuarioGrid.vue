@@ -41,7 +41,7 @@
                             <i class="bi bi-caret-down-fill"></i>                            
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" @click="searchType = { link: 'nome', text: 'Nome' }">Nome</a>
+                                <a class="dropdown-item" @click="searchType = { link: 'name', text: 'Nome' }">Nome</a>
                                 <a class="dropdown-item" @click="searchType = { link: 'cpf', text: 'CPF' }">CPF</a>
                                 <a class="dropdown-item" @click="searchType = { link: 'email', text: 'E-mail' }">E-mail</a>
                             </div>

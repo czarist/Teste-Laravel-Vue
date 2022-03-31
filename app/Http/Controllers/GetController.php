@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instituicao;
 use App\Models\Acesso;
+use App\Models\AvaliadorExpocom;
 use App\Models\CategoriaCinemaAudiovisual;
 use App\Models\CategoriaJornalismo;
 use App\Models\CategoriaPublicidadePropaganda;
@@ -11,6 +12,7 @@ use App\Models\CategoriaRadioInternet;
 use App\Models\CategoriaRelacoesPublicas;
 use App\Models\CatProdEditProdTransComunic;
 use App\Models\CoautorOrientadorSubSul;
+use App\Models\Coordenador;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
@@ -156,5 +158,33 @@ class GetController extends Controller
 
         return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
 
+    }
+
+    public function getAvaliadores(User $user)
+    {
+        return $user->select('id','name')
+                    ->with(
+                        'avaliador_expocom',
+                        'todos_divisoes_tematicas:id,descricao',
+                        'todos_divisoes_tematicas_jr:id,descricao',
+                        'todos_cinema_audiovisual:id,descricao',
+                        'todos_jornalismo:id,descricao',
+                        'todos_publicidade_propaganda:id,descricao',
+                        'todos_relacoes_publicas:id,descricao',
+                        'todos_producao_editorial:id,descricao',
+                        'todos_radio_internet:id,descricao',
+                    )
+                    ->whereHas('avaliador_expocom', function ($query) {
+                        return $query->where('avaliador_junior', '=', 1);
+                    })
+                    ->orderBy('name')->get();
+    }
+
+    public function getCoordenador(Coordenador $coordenador, $id)
+    {
+        return $coordenador->select('id', 'user_id')
+            ->with('user:id,name')
+            ->whereUserId($id)
+            ->first();
     }
 }

@@ -47,7 +47,6 @@
     
     ?>
     <div class="row">
-
         <!--  BEGIN CONTENT AREA  -->
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
             <div class="widget widget-account-invoice-two">
@@ -140,7 +139,15 @@
                     <div class="account-box">
                         <div class="info">
                             <div class="inv-title">
-                                <h4 class="" style="color:#FFF;">Cadastro Avaliadores</h4>
+                                <h4 class="" style="color:#FFF;">
+                                    @if (Auth::user()->is_avaliador_2022)
+                                        Área do Avaliador
+                                    @else
+                                        Cadastro Avaliadores
+                                    @endif
+
+
+                                </h4>
                             </div>
                             <div class="inv-balance-info">
                             </div>
@@ -154,6 +161,30 @@
                 </div>
             </div>
         </div>
+
+        @if (Auth::user()->is_admin || Auth::user()->is_coordenador2022)
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+                <div class="widget widget-account-invoice-two">
+                    <div class="widget-content">
+                        <div class="account-box">
+                            <div class="info">
+                                <div class="inv-title">
+                                    <h4 class="" style="color:#FFF;">Área do Coordenador </h4>
+                                </div>
+                                <div class="inv-balance-info">
+                                </div>
+                            </div>
+                            <div class="acc-action">
+                                <div class="">
+                                </div>
+                                <a href="javascript:void(0);"  type="button" data-bs-toggle="modal"data-bs-target="#cadascooravali">Acesse</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
 
         <!--  END CONTENT AREA  -->
 
@@ -429,10 +460,22 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-primary m-1" href="{{ route('avaliadorjr') }}">Form Avaliador DTs e IJs</a>
-                            <a class="btn btn-primary m-1" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
-                        </div>
+                        @if (Auth::user()->is_avaliador_2022)
+                            <div class="d-grid gap-2">
+                                @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador == 1)
+                                <a class="btn btn-primary m-1" href="{{ route('avaliador.index') }}">Distribuição de trabalhos para os avaliadores Expocom</a>
+                            @endif
+
+                            @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador_junior == 1)
+                                <a class="btn btn-primary m-1" href="{{ route('avaliador.index') }}">Distribuição de trabalhos para os avaliadores DT, IJ e MESA</a>
+                            @endif
+                            </div>
+                        @else
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary m-1" href="{{ route('avaliadorjr') }}">Form Avaliador DTs e IJs</a>
+                                <a class="btn btn-primary m-1" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
+                            </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -440,6 +483,34 @@
                 </div>
             </div>
         </div>
+
+        <!--MODAL CADASTRO DE AVALIADORES E COORDENADOR-->
+        <div class="modal fade" id="cadascooravali" tabindex="-1" aria-labelledby="cadascooravali" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cadascooravaliLabel">Escolha o tipo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="d-grid gap-2">
+
+                            @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->expocom == 1)
+                                <a class="btn btn-primary m-1" href="{{ route('avaliacao.index') }}">Distribuição de trabalhos para os avaliadores Expocom</a>
+                            @endif
+
+                            @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->expocom == 0)
+                                <a class="btn btn-primary m-1" href="{{ route('avaliacao.index') }}">Distribuição de trabalhos para os avaliadores DT, IJ e MESA</a>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>    
         
     </div>
 @endsection

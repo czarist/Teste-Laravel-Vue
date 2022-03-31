@@ -708,7 +708,7 @@ export default {
               ? this.user.enderecos[0].municipio
               : null,
           estado:
-            this.user && this.user.enderecos && this.user.enderecos[0]
+            this.user && this.user.enderecos && this.user.enderecos[0] && this.user.enderecos[0].municipio && this.user.enderecos[0].municipio.estado
               ? this.user.enderecos[0].municipio.estado
               : null,
         },

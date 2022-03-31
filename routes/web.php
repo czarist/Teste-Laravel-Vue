@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AvaliacaoAvaliadorController;
 use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
-use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ChatAvaliacaoController;
+use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\DistribuicaoTipo123Controller;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndicacaoController;
@@ -18,6 +21,7 @@ use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
+use App\Http\Controllers\SubmissaoController;
 use App\Http\Controllers\SubmissaoExpocomRegionalCentrooesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalNordesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalNorteController;
@@ -30,7 +34,6 @@ use App\Http\Controllers\SubmissaoRegionalSudesteController;
 use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
-use App\Models\SubmissaoExpocomRegionalCentrooeste;
 use Illuminate\Support\Facades\Route;
 
 
@@ -52,13 +55,16 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('filiese', [PerfilController::class , 'filiese'])->name('filiese');
     Route::get('anuidade', [PerfilController::class , 'anuidade'])->name('anuidade');
 
-
-
     Route::prefix('admin')->group(function () {
 
         Route::middleware(['roles:admin/usuarios'])->group(function () {
             Route::resource('usuarios', UserController::class)->except(['show', 'create', 'edit']);
             Route::get('usuarios/get', [UserController::class ,'get'])->name('usuarios.get');
+        });  
+        
+        Route::middleware(['roles:admin/coordenador'])->group(function () {
+            Route::resource('coordenador', CoordenadorController::class)->except(['show', 'create', 'edit']);
+            Route::get('coordenador/get', [CoordenadorController::class ,'get'])->name('coordenador.get');
         });    
 
         Route::middleware(['roles:admin/titulacao'])->group(function () {
@@ -86,8 +92,6 @@ Route::group(['middleware' => 'auth'] , function() {
             Route::resource('titulacao', TitulacaoController::class)->except(['show', 'create', 'edit']);
             Route::get('titulacao/get', [TitulacaoController::class ,'get'])->name('titulacao.get');
         });    
-
-
     });
 
     //PAGSEGURO
@@ -176,6 +180,21 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('submissao/centrooeste/save', [SubmissaoRegionalCentrooesteController::class , 'store'])->name('submissao.centrooeste.save');
     Route::post('submissaoexpocom/centrooeste/save', [SubmissaoExpocomRegionalCentrooesteController::class , 'store'])->name('submissaoexpocom.centrooeste.save');
 
+    Route::resource('avaliacao', DistribuicaoTipo123Controller::class)->except(['show', 'create', 'edit']);
+    Route::get('avaliacao/get', [DistribuicaoTipo123Controller::class ,'get'])->name('avaliacao.get');
+    Route::post('avaliacao/avaliador/save', [DistribuicaoTipo123Controller::class , 'avaliadorSave'])->name('avaliacao.avaliador.save');
+    Route::post('avaliacao/coordenador/save', [DistribuicaoTipo123Controller::class , 'coordenadorSave'])->name('avaliacao.coordenador.save');
+
+    Route::resource('avaliador', AvaliacaoAvaliadorController::class)->except(['show', 'create', 'edit']);
+    Route::get('avaliador/get', [AvaliacaoAvaliadorController::class ,'get'])->name('avaliador.get');
+
+    Route::get('coordenador/get/chat/{id}', [ChatAvaliacaoController::class ,'getChat'])->name('chatcoordenador.get.chat');
+    Route::post('coordenador/send/message',[ChatAvaliacaoController::class,'sendMensagem'])->name('chatcoordenador.send.message');
+
+    Route::resource('submissao', SubmissaoController::class)->except(['show', 'create', 'edit']);
+    Route::get('submissao/get', [SubmissaoController::class ,'get'])->name('submissao.get');
+    Route::post('submissao/edit', [SubmissaoController::class , 'edit'])->name('submissao.edit');
+
 });
 //END AUTH
 
@@ -206,6 +225,8 @@ Route::prefix('get')->group(function () {
     Route::get('produtos-regionais-centrooeste', [GetController::class, 'getProdutosRegionaisCentrooeste'])->name('get.produtos.regionais.centrooeste');
     Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
     Route::get('indicacao-expocom-2022', [GetController::class, 'getIndicacaoExpocom2022'])->name('get.indicacao.expocom.2022');
+    Route::get('avaliadores', [GetController::class, 'getAvaliadores'])->name('get.avaliadores');
+    Route::get('coordenador/{id}', [GetController::class, 'getCoordenador'])->name('get.coordenador');
 
 });
 

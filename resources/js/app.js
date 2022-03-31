@@ -42,7 +42,6 @@ Vue.filter('formatPrice', function (value) {
 
 Validator.extend("fullName", {
     validate: (fullName) => {
-        // var regName = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{4,}(?: [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+){0,2}$/;
         var regName = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+( [a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+)+$/;
         var name = fullName;
         if(!regName.test(name)){
@@ -316,6 +315,18 @@ import SubmissaoExpocomNordeste from './components/regionais/nordeste/SubmissaoE
 import SubmissaoCentrooeste from './components/regionais/centrooeste/SubmissaoCentrooeste.vue'
 import SubmissaoExpocomCentrooeste from './components/regionais/centrooeste/SubmissaoExpocomCentrooeste.vue'
 
+//CADASTRO COORDENADOR 
+import CoordenadorGrid from './components/admin/coordenador/CoordenadorGrid.vue'
+
+//AVALIACAO DE TRABALHOS
+import AvaliacaoGrid from './components/regionais/avaliacao/AvaliacaoGrid.vue'
+
+//AREA DO AVALIADOR
+import AvaliadorGrid from './components/regionais/avaliador/AvaliadorGrid.vue'
+
+//GRID AVALIADO (AUTOR DA SUBMISSAO)
+import AvaliadoGrid from './components/regionais/avaliado/AvaliadoGrid.vue'
+
 
 const app = new Vue({
     el: '#app',
@@ -327,9 +338,11 @@ const app = new Vue({
         'associado-grid': AssociadoGrid,
         'usuario-grid': UsuarioGrid,
         'form-cadastro': FormCadastro,
+
         // 'pagar-modal': PagarModal,
         'filiese-cadastro': FilieseCadastro,
         'associado-area': AssociadoArea,
+
         // 'pagar-modal-anuidade': PagarModalAnuidade,
         'pagamento-grid': PagamentoGrid,
         'anuidade-cadastro': AnuidadeCadastro,
@@ -362,8 +375,16 @@ const app = new Vue({
         //SUBMISSOES CENTRO-OESTE 2022 
         'submissao-centrooeste':SubmissaoCentrooeste,
         'submissao-expocom-centrooeste':SubmissaoExpocomCentrooeste,
-        
 
+        //CADASTRO COORDENADOR 
+        'coordenador-grid': CoordenadorGrid,
+
+        //AVALIACAO DE TRABALHOS
+        'avaliacao-grid':AvaliacaoGrid,
+        'avaliador-grid':AvaliadorGrid,
+
+        //GRID AVALIADO (AUTOR DA SUBMISSAO)
+        'submissao-grid':AvaliadoGrid
     }
 });
 

@@ -11,9 +11,12 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+
     protected $appends = [
         'is_root', 
         'is_admin', 
+        'is_coordenador_2022',
+        'is_avaliador_2022',
         'is_user', 
         'is_associado', 
         'anuidade_2022', 
@@ -237,8 +240,29 @@ class User extends Authenticatable
             $lastName = array_pop($parting);
             return $lastName;
         }
-    }    
+    }   
+    
+    public function getIsCoordenador2022Attribute()
+    {
+        if(Auth::user()){
+            $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
+            if(!empty($coordenador)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public function getIsAvaliador2022Attribute()
+    {
+        if(Auth::user()){
+            $avaliador = AvaliadorExpocom::where('user_id', Auth::user()->id)->first();
+            if(!empty($avaliador)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public function acessos()
@@ -267,6 +291,10 @@ class User extends Authenticatable
 
     public function avaliador_expocom(){
         return $this->hasOne(AvaliadorExpocom::class);
+    }
+
+    public function coordenador_regional(){
+        return $this->hasOne(Coordenador::class);
     }
 
     public function regional_sul(){
@@ -328,5 +356,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CategoriaRadioInternet::class, 'todos_categoria_radio_internets' , 'user_id',  'categoria_id');
     }
-    
+
 }

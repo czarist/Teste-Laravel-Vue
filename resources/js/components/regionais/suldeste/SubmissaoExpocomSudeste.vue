@@ -189,7 +189,7 @@
                         </b-col>
 
                         <b-col cols="12" sm="6" lg="6">
-                            <b-form-group label="Ano da realização do trabalho:" label-class="font-weight-bold">
+                            <b-form-group label="Ano letivo e/ou ano calendário da realização do trabalho:" label-class="font-weight-bold">
                                 <b-form-input
                                     name="ano"
                                     size="sm"
@@ -584,7 +584,7 @@
                     </b-col>
 
                     <b-col cols="12" sm="6" lg="6">
-                        <b-form-group label="Ano da realização do trabalho:" label-class="font-weight-bold">
+                        <b-form-group label="Ano letivo e/ou ano calendário da realização do trabalho:" label-class="font-weight-bold">
                             <p>{{ this.post ? this.post.ano : "NI" }}</p>
                         </b-form-group>
                     </b-col>

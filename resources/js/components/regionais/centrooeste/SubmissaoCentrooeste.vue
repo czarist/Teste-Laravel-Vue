@@ -858,7 +858,6 @@
         },
         mounted(){
             if(this.user){
-
                 if(this.user && this.user.regional_centrooeste && this.user.regional_centrooeste.submissao_dt && this.tipo == 2){
                     this.submissao = this.user.regional_centrooeste.submissao_dt
                 }
@@ -889,6 +888,16 @@
                 }
 
             }
+
+            if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
+                
+            }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
+                window.location.href = this.baseUrl+'/submissao'         
+            }
+            else if(this.submissao && this.submissao != null){
+                window.location.href = this.baseUrl+'/submissao'               
+            }
+
         }
     }
 </script>

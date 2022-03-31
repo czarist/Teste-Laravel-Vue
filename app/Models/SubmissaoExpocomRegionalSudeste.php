@@ -11,6 +11,8 @@ class SubmissaoExpocomRegionalSudeste extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'avaliacao',
+        'regiao',
         'ciente',
         'ano',
         'campus',
@@ -25,6 +27,10 @@ class SubmissaoExpocomRegionalSudeste extends Model
     public function coautorOrientadorSubSudeste()
     {
         return $this->hasMany(CoauOriExpoSubSudeste::class,  'submissao_id', 'id');
+    }
+
+    public function avaliacao(){
+        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
 }

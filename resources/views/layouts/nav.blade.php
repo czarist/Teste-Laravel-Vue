@@ -26,7 +26,7 @@
                 </a>
             </li>
 
-            @if (Auth::user()->is_root || array_intersect(['admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
+            @if (Auth::user()->is_root || array_intersect(['admin/coordenador' ,'admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
                 <li class="menu">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -49,6 +49,14 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
 
+                        @if (Auth::user()->is_root || in_array('admin/usuarios', Auth::user()->roles()))
+                            <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
+                        @endif
+
+                        @if (Auth::user()->is_root || in_array('admin/coordenador', Auth::user()->roles()))
+                            <li> <a href="{{ route('coordenador.index') }}"> Cadastro Coordenador </a> </li>
+                        @endif
+
                         @if (Auth::user()->is_root || in_array('admin/sexo', Auth::user()->roles()))
                             <li> <a href="{{ route('sexo.index') }}"> Gêneros </a> </li>
                         @endif
@@ -61,13 +69,9 @@
                             <li> <a href="{{ route('titulacao.index') }}"> Titulação </a> </li>
                         @endif
 
-                        @if (Auth::user()->is_root || in_array('admin/usuarios', Auth::user()->roles()))
-                            <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
-                        @endif
                     </ul>
                 </li>
             @endif
-
 
             <li class="menu">
                 <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">

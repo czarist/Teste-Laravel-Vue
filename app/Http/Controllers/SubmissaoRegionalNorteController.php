@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoautorOrientadorSubNorte;
+use App\Models\DistribuicaoTipo123;
 use App\Models\SubmissaoRegionalNorte;
 use App\Models\User;
 use Exception;
@@ -28,9 +29,9 @@ class SubmissaoRegionalNorteController extends Controller
                 'associado',
                 'enderecos',
                 'regional_norte',
-                'regional_norte.submissaoMesa',
-                'regional_norte.submissaoDt',
-                'regional_norte.submissaoJunior',
+                'regional_norte.submissaoMesa.avaliacao',
+                'regional_norte.submissaoDt.avaliacao',
+                'regional_norte.submissaoJunior.avaliacao',
                 'regional_norte.submissaoExpocom',
                 'regional_norte.submissaoDt.coautorOrientadorSubNortes',
                 'regional_norte.submissaoJunior.coautorOrientadorSubNortes',
@@ -187,13 +188,24 @@ class SubmissaoRegionalNorteController extends Controller
                         ]);
                     }
                 }
-                
+
+                if($submissao && $submissao->id){
+                    $sub = SubmissaoRegionalNorte::select('id', 'avaliacao')
+                    ->with('avaliacao')
+                    ->whereId($submissao->id)->first();
+    
+                    $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
+                    if(!empty($avaliacao)){
+                        $avaliacao->update([
+                            'edit' => 0,
+                        ]);
+                    }                    
+                }                                                            
             }
 
             Log::info('User: '. Auth::user()->id . ' | Regional Norte 2022 | Submeteu seu trabalho: ' . json_encode($post));
     
             return response()->json(['message' => 'success', 'response' => $user], 201);
-
 
         } catch (Exception $exception) {
             $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';

@@ -11,6 +11,8 @@ class SubmissaoExpocomRegionalNordeste extends Model
 
     protected $fillable = [
         'inscricao_id',
+        'avaliacao',
+        'regiao',
         'ciente',
         'ano',
         'campus',
@@ -25,6 +27,10 @@ class SubmissaoExpocomRegionalNordeste extends Model
     public function coautorOrientadorSubNordeste()
     {
         return $this->hasMany(CoauOriExpoSubNordeste::class,  'submissao_id', 'id');
+    }
+
+    public function avaliacao(){
+        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
 }

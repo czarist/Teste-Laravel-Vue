@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoautorOrientadorSubSul;
+use App\Models\DistribuicaoTipo123;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
 use Exception;
@@ -13,6 +14,7 @@ use Nette\Utils\Random;
 
 class SubmissaoRegionalSulController extends Controller
 {
+
     public function usuario(){
         return User::select('id', 'name')
             ->with(
@@ -28,9 +30,9 @@ class SubmissaoRegionalSulController extends Controller
                 'associado',
                 'enderecos',
                 'regional_sul',
-                'regional_sul.submissaoMesa',
-                'regional_sul.submissaoDt',
-                'regional_sul.submissaoJunior',
+                'regional_sul.submissaoMesa.avaliacao',
+                'regional_sul.submissaoDt.avaliacao',
+                'regional_sul.submissaoJunior.avaliacao',
                 'regional_sul.submissaoExpocom',
                 'regional_sul.submissaoDt.coautorOrientadorSubSuls',
                 'regional_sul.submissaoJunior.coautorOrientadorSubSuls',
@@ -186,7 +188,19 @@ class SubmissaoRegionalSulController extends Controller
                         ]);
                     }
                 }
-                
+
+                if($submissao && $submissao->id){
+                    $sub = SubmissaoRegionalSul::select('id', 'avaliacao')
+                    ->with('avaliacao')
+                    ->whereId($submissao->id)->first();
+    
+                    $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
+                    if(!empty($avaliacao)){
+                        $avaliacao->update([
+                            'edit' => 0,
+                        ]);
+                    }                    
+                }                               
             }
 
             Log::info('User: '. Auth::user()->id . ' | Regional Sul 2022 | Submeteu seu trabalho: ' . json_encode($post));

@@ -1,0 +1,486 @@
+<template>
+    <div class="mt-4">
+        <h5 class="col-12 d-flex justify-content-between">
+            Área do Coordenador - Distribuição de Trabalho
+        </h5>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body pb-2">
+                    <div v-if="loading">
+                        <h5 class="d-flex justify-content-center">Carregando...</h5>
+                        <b-progress :value="value" :max="max" ></b-progress>
+                    </div>
+                   
+                    <div class="row mb-3 d-flex justify-content-between" v-if="!loading">
+
+                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
+                            <span class="invalid-feedback">* Clique no status para filtrar pelo status do avaliador </span>
+
+                            <div class="input-group-prepend" style="display:block !important;">
+                                <span class="btn btn-primary">
+                                    <i class="bi bi-activity"></i>
+                                </span>
+                            </div>
+                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusAva" @change="get()">
+                                <option selected value="0">Status Avaliador...</option>
+                                <option v-for="statusAva in statusAvaliador" :key="statusAva.id" :value="statusAva.id">{{ statusAva.descricao }}</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
+                            <span class="invalid-feedback">* Clique no status para filtra pelo status do coordenador </span>
+
+                            <div class="input-group-prepend" style="display:block !important;">
+                                <span class="btn btn-primary">
+                                    <i class="bi bi-activity"></i>
+                                </span>
+                            </div>
+                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusCoo" @change="get()">
+                                <option selected value="0">Status Coordenador...</option>
+                                <option v-for="statusCoo in statusCoordenador" :key="statusCoo.id" :value="statusCoo.id">{{ statusCoo.descricao }}</option>
+                            </select>
+                        </div>
+                    </div>
+                       
+                   
+                    <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
+                        <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="align-middle text-center"
+                                        width="5%"
+                                        @click="handleSort('id')">
+                                        <i class="bi" :class="{
+                                            'bi-funnel' : sort!= 'id',
+                                            'bi-sort-up-alt' : sort== 'id' && asc == true,
+                                            'bi-sort-down-alt' : sort== 'id' && asc == false
+                                        }"></i> Insc-Trab 
+                                    </th>
+                                    <th
+                                        class="align-middle text-center"
+                                        width="20%"
+                                        @click="handleSort('titulo')">
+                                        <i class="bi" :class="{
+                                            'bi-funnel' : sort!= 'titulo',
+                                            'bi-sort-up-alt' : sort== 'titulo' && asc == true,
+                                            'bi-sort-down-alt' : sort== 'titulo' && asc == false
+                                        }"></i> Titulo 
+                                    </th>
+                                    <th
+                                        class="align-middle text-center"
+                                        width="10%"
+                                        @click="handleSort('dt')">
+                                        <i class="bi" :class="{
+                                            'bi-funnel' : sort!= 'dt',
+                                            'bi-sort-up-alt' : sort== 'dt' && asc == true,
+                                            'bi-sort-down-alt' : sort== 'dt' && asc == false
+                                        }"></i> Área 
+                                    </th>
+
+                                    <th class="align-middle text-center" width="10%" >Avaliador  </th>
+                                    <th
+                                        class="align-middle text-center"
+                                        width="10%"
+                                        @click="handleSort('status_avaliador')">
+                                        <i class="bi" :class="{
+                                            'bi-funnel' : sort!= 'status_avaliador',
+                                            'bi-sort-up-alt' : sort== 'status_avaliador' && asc == true,
+                                            'bi-sort-down-alt' : sort== 'status_avaliador' && asc == false
+                                        }"></i> Status Avaliador 
+                                    </th>
+                                    <th
+                                        class="align-middle text-center"
+                                        width="10%"
+                                        @click="handleSort('status_coordenador')">
+                                        <i class="bi" :class="{
+                                            'bi-funnel' : sort!= 'status_coordenador',
+                                            'bi-sort-up-alt' : sort== 'status_coordenador' && asc == true,
+                                            'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
+                                        }"></i> Status Coordenador 
+                                    </th>
+                                    <th class="align-middle text-center" width="5%">PDF</th>
+                                    <th class="align-middle text-center" width="5%">CHAT</th>
+                                    <th class="align-middle text-center" width="5%">AÇÂO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(registro, index) in registros" :key="index">
+                                    <td class="align-middle text-center" >{{ registro ? registro.id : "NI" }}</td>
+                                    <td class="align-middle text-center" >{{ registro ? registro.titulo : "NI" }}</td>
+                                    <td class="align-middle text-center" >{{ find_dt(registro) }}</td>
+                                    <td class="align-middle text-center" >
+                                        <div v-if="registro && registro.avaliacao">
+                                            {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1_obj ? registro.avaliacao.avaliador_1_obj.name : "NI" }}<br>
+                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_2_obj ? registro.avaliacao.avaliador_2_obj.name : "NI" }}<br>
+                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_3_obj ? registro.avaliacao.avaliador_3_obj.name : "NI" }}
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center" >
+                                        <div>                                    
+                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_1 : "NI" }}<br>
+                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_2 : "NI" }}<br>
+                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_3 : "NI" }}<br>
+                                        </div>    
+
+
+                                    </td>
+                                    <td class="align-middle text-center" >{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
+                                    <td class="align-middle text-center" >
+                                        <div v-if="registro && registro.link_trabalho">
+                                            <button
+                                                v-tooltip.bottom="{
+                                                content: 'Visualizar Anexo',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Visualizar Anexo"
+                                                class="btn btn-primary"
+                                                @click="visualizarAnexo(registro)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>
+                                                </svg>   
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <button
+                                            v-if="
+                                                registro && registro.avaliacao &&
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Aceito' &&
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Recusado' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em Análise' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em avaliação' ||
+                                                registro && registro.avaliacao && !registro.avaliacao.status_coordenador
+                                            "
+                                            v-tooltip.bottom="{
+                                                content: 'Chat',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                            }"
+                                            @click="resetModalChat(),getChat(registro.avaliacao.id)"
+                                            type="button"
+                                            class="btn btn-sm btn-primary"
+                                            data-toggle="modal"
+                                            data-target="#reiteracao"
+                                        >CHAT
+                                        </button>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="d-flex justify-content-center"
+                                            v-if="
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Aceito' &&
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Recusado' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em Análise' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em avaliação' ||
+                                                registro && registro.avaliacao && !registro.avaliacao.status_coordenador
+                                            "
+                                        >
+                                            <span
+                                                v-tooltip.bottom="{
+                                                content: 'Indicar Avaliadores',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Indicar Avaliadores"
+                                                class="btn btn-outline-primary btn-sm mr-1"
+                                                @click="Indicar(registro)"
+                                            >Indicar Avaliadores</span>
+                                            <span
+                                                v-tooltip.bottom="{
+                                                content: 'Status Coordenador',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Status Coordenador"
+                                                class="btn btn-outline-primary btn-sm mr-1"
+                                                @click="StatusCoordenador(registro)"
+                                            >Status Coordenador</span>
+                                            <span
+                                                v-if="registro && registro.avaliacao"
+                                                v-tooltip.bottom="{
+                                                content: 'Habilitar Edição do Trabalho',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                :title="registro && registro.avaliacao && !registro.avaliacao.edit ? `Habilitar Edição do Trabalho` : `Desabilitar Edição do Trabalho`"
+                                                :class="registro && registro.avaliacao && !registro.avaliacao.edit ? `btn btn-danger btn-sm mr-1` : `btn btn-success btn-sm mr-1`"
+                                                @click="EditTrabalho(registro, index)"
+                                            >
+                                                {{ registro && registro.avaliacao && !registro.avaliacao.edit ? "Edição de trabalho desabilitada" : "Edição de trabalho habilitada"}}                                            
+                                            </span>
+
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="alert alert-danger" role="alert" v-if="!loading && registros.length == 0">
+                        <h4 class="alert-heading">Ops!</h4>
+                        Nenhum encontrado.
+                    </div>
+                    <div class="d-flex justify-content-between pages mt-2" v-show="!loading">
+                        <span v-show="!loading">registros: {{ total }}</span>
+                        <span v-show="!loading">Página: {{ currentPage }} de {{ totalPages }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <indicar-modal :selectedIndicar="selectedIndicar"></indicar-modal>
+        <status-coordenador-modal :selectedCoordenador="selectedCoordenador"></status-coordenador-modal>
+        <chat-modal :selectedChat="selectedChat" :user="user" :mensagens="mensagens" :scroll.sync="scroll"></chat-modal>
+        <notifications group="submit" position="center bottom" />
+    </div>
+</template>
+
+<script>
+    import debounce from 'debounce'
+    import GridMixin from '../../mixins/grid-mixin'
+    import IndicarModal from './IndicarModal.vue'
+    import StatusCoordenadorModal from './StatusCoordenadorModal.vue'
+    import ChatModal from './ChatModal.vue'
+
+    export default {
+        mixins: [GridMixin],
+        components: {
+            IndicarModal:() => import('./IndicarModal.vue'),
+            StatusCoordenadorModal:() => import('./StatusCoordenadorModal.vue'),
+            ChatModal:() => import('./ChatModal.vue')
+
+        },
+        data() {
+            return {
+                value: 100,
+                max: 100,
+                page: 'avaliacao',
+                baseUrl: process.env.MIX_BASE_URL,
+                loading: true,
+                selectedIndicar: null,
+                selectedCoordenador: null,
+                scroll: false,
+                mensagens: [],
+                coordenador: null,
+                selectedChat: {
+                    id: null,
+                    avaliacao_id: null,
+                    avaliador_id: null,
+                    avaliador_id: null,
+                    coordenador_id: null,
+                    mensagem: null
+                },
+                toDelete: null,
+                divisoes_tematicas: [],
+                statusAvaliador: [
+                    { id: "Em avaliação" , descricao: "Em avaliação"},
+                    { id: "Em Análise" , descricao: "Em Análise"},
+                    { id: "Aceito" , descricao: "Aceito"},
+                    { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
+                    { id: "Recusado" , descricao: "Recusado"},
+                ],
+                statusCoordenador: [
+                    { id: "Em Espera" , descricao: "Em Espera"},
+                    { id: "Em avaliação" , descricao: "Em avaliação"},
+                    { id: "Em Análise" , descricao: "Em Análise"},
+                    { id: "Aceito" , descricao: "Aceito"},
+                    { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
+                    { id: "Recusado" , descricao: "Recusado"},
+                ],
+            }
+        },
+        methods: {
+            EditTrabalho(registro, index){
+                axios.post(this.baseUrl + '/submissao/edit', {
+                    id: registro.avaliacao.id,
+                    edit: registro.avaliacao.edit == 1 ? 0 : 1
+                }).then(response => {
+                    console.log(response)
+                    if(response && response.data && response.data.success == true){
+                        this.registros[index].avaliacao.edit = response.data[0].edit
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            resetModalChat() {
+                this.selectedChat.id = null,
+                this.selectedChat.avaliacao_id = null,
+                this.selectedChat.avaliado_id = null,
+                this.selectedChat.avaliador_id = null,
+                this.selectedChat.coordenador_id = null,
+                this.selectedChat.mensagem = null
+            },
+            async getChat(id) {
+                if(id){
+                    await axios.get(`${this.baseUrl}/coordenador/get/chat/${id}`)
+                    .then(res =>{
+                        if(res.data.length > 0){
+                            this.mensagens = res.data ;
+                            this.selectedChat.avaliacao_id = res.data && res.data[0] ? res.data[0].avaliacao_id : null;
+                            this.selectedChat.coordenador_id = this.coordenador ? this.coordenador.id : null;
+                            this.selectedChat.coordenador = this.coordenador ? this.coordenador : null;
+                            this.selectedChat.mensagem = null;
+                            this.$validator.reset('mensagens');
+
+
+                        } else{
+                            this.mensagens = [];
+                            this.selectedChat.id = id;
+                        }
+                        $('#modalChat').modal({backdrop: 'static', keyboard: false, show: true})
+                        this.$bvModal.show('modalChat')
+
+                    })
+                }
+            },
+            Indicar(registro){
+                this.selectedIndicar = registro
+                $('#modalIndicar').modal({backdrop: 'static', keyboard: false, show: true})
+                this.$bvModal.show('modalIndicar')
+            },
+            StatusCoordenador(registro){
+                this.selectedCoordenador = registro
+                $('#modalCoordenador').modal({backdrop: 'static', keyboard: false, show: true})
+                this.$bvModal.show('modalCoordenador')
+            },
+            visualizarAnexo(registro){
+                if(registro.regiao == 1){
+                    window.open(this.baseUrl+'/pdf/submissao_regional_sul_2022/'+ registro.link_trabalho, '_blank');
+                }
+                if(registro.regiao == 2){
+                    window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
+                }
+                if(registro.regiao == 3){
+                    window.open(this.baseUrl+'/pdf/submissao_regional_sudeste_2022/'+ registro.link_trabalho, '_blank');
+                }
+                if(registro.regiao == 4){
+                    window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
+                }
+                if(registro.regiao == 5){
+                    window.open(this.baseUrl+'/pdf/submissao_regional_norte_2022/'+ registro.link_trabalho, '_blank');
+                }
+
+            },
+            find_dt(registro){
+                if(registro && registro.dt){
+                    let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
+                    return selectedDt ? selectedDt.descricao : "NI"
+                }
+            },
+            showForm(registro) {
+                this.selected = registro
+                $('#form').modal({backdrop: 'static', keyboard: false, show: true})
+                this.$bvModal.show('coordenadorModal')
+            },
+            showDelete(registro) {
+                this.toDelete = registro
+                this.$bvModal.show('deleteModal')
+            },
+            store($event) {
+                this.registros.splice(0, 0, $event)
+                this.$bvModal.hide('coordenadorModal')
+                this.total++
+            },
+            update($event) {
+                let index = this.registros.findIndex(registro => registro.id == this.selected.id)
+                this.registros.splice(index, 1, $event)
+                this.$bvModal.hide('coordenadorModal')
+            },
+            async destroy() {
+                await axios.delete(`${process.env.MIX_BASE_URL}/${this.page}/${this.toDelete.id}`).then(res => {
+                    if(res.status == 200) {
+                        let index = this.registros.findIndex(registro => registro.id == this.toDelete.id)
+                        this.registros.splice(index, 1)
+                        this.total--
+                        axios.get(this.url.concat(`&page=${this.currentPage}`)).then(res => {
+                            const toFilter = [...this.registros, ...res.data.data]
+                            const filtered = toFilter.reduce((items, current) => {
+                                const x = items.find(item => item.id === current.id);
+                                return !x ? items.concat([current]) : items
+                            }, []);
+                            this.registros = filtered
+                            this.currentPage = res.data.current_page
+                        })
+                        this.$notify({
+                            group: "submit",
+                            title: "Sucesso!",
+                            text: "registro removido.",
+                            type: "success"
+                        })
+                    }
+                }).catch(error => {
+                    if(error.response.status == 422) {
+                        if(error.response.data.message == "The given registro was invalid.") {
+                            this.$notify({
+                                group: "submit",
+                                title: "Erro no cadastro",
+                                text: "Campos obrigatórios não preenchidos.",
+                                type: "error"
+                            })
+                        }
+                    }
+                    if(error.response.status == 403) {
+                        if(error.response.data.message == "This action is unauthorized.") {
+                            this.$notify({
+                                group: "submit",
+                                title: "Erro!",
+                                text: "Ação não autorizada.",
+                                type: "error"
+                            })
+                        }
+                    }
+                })
+            },
+            getDivisoesTematicas(){
+                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetDivisoesTematicas,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.divisoes_tematicas = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getCoordenador(){
+                let urlgetCoordenador = this.baseUrl+"/get/coordenador/"+this.user.id;
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetCoordenador,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.coordenador = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            }
+        },
+        async created() {
+            await this.getLoggedUser().then(() => this.get())
+            this.get = debounce(this.get, 500)
+
+            this.getDivisoesTematicas(),
+            this.getCoordenador()
+
+        },
+        mounted() {
+            this.$refs['scroll'].addEventListener('scroll', debounce(this.handleScroll, 500))
+        },
+        destroyed () {
+            this.$refs['scroll'].removeEventListener('scroll', this.handleScroll)
+        },
+    }
+</script>

@@ -269,7 +269,7 @@
               </b-card-text>
             </b-tab>
 
-            <b-tab title="Boleto">
+            <b-tab title="Boleto" v-if="selectedPagar && selectedPagar.regiao != 2">
               <b-card-text>
                 <div class="container hidden" id="retorno_ok1">
                   <div class="section-head style-3 text-center z mb-3 alert alert-success" role="alert">
@@ -660,7 +660,7 @@ export default {
                             errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
                           }
                           if(error.code == 53015){
-                            errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                            errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome completo <br>";
                           }
                           if(error.code == 5003){
                             errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";
@@ -945,7 +945,7 @@ export default {
                               errorPag += "E-mail enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu e-mail <br>";
                               }
                               if(error.code == 53015){
-                              errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome copleto <br>";
+                              errorPag += "Nome enviado para o pagseguro não foi aceito, entre no seu perfil e atualize seu nome completo <br>";
                               }
                               if(error.code == 5003){
                               errorPag += "Falha de comunicação com a instituição financeira, atualize a pagina e tente novamente <br>";

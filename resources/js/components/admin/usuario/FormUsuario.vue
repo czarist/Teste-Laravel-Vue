@@ -16,7 +16,7 @@
                             type="text"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`name`)}]"
-                            v-validate="{ required: true, fullName: post.name }"
+                            v-validate="{ fullName: post.name }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="name"
                         ></b-form-input>
@@ -37,6 +37,7 @@
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`email`)}]"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="E-mail"
+                            v-validate="{ email: true }"
                         ></b-form-input>
                         <span v-show="errors.has(`email`)" class="invalid-feedback">
                             {{ errors.first(`email`) }}
@@ -50,16 +51,22 @@
                             name="password"
                             size="sm"
                             v-model="post.password"
-                            :disabled="true"
-                            type="password"
+                            :disabled="loading"
+                            :type="showPassaword"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`password`)}]"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Senha"
+                            v-validate="{ required: passRequired, min:6}"
                         ></b-form-input>
                         <span v-show="errors.has(`password`)" class="invalid-feedback">
                             {{ errors.first(`password`) }}
                         </span>
                     </b-form-group>
+                            <b-form-checkbox v-model="showHidePasswod" name="check-button" switch >
+                                <b v-if="showHidePasswod">Ocultar senha</b>
+                                <b v-if="!showHidePasswod">Exibir senha</b>
+                            </b-form-checkbox>
+
                 </b-col>
 
                 <b-col cols="12" sm="6" lg="4">
@@ -71,7 +78,6 @@
                             type="date"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`data_nascimento`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Data de nascimento"
                         ></b-form-input>
@@ -112,7 +118,6 @@
                             type="text"
                             v-mask="'########'"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`passaporte`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Passaporte"
                         ></b-form-input>
@@ -151,7 +156,6 @@
                             v-model="post.rg"
                             type="text"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`rg`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="RG"
                         ></b-form-input>
@@ -170,7 +174,6 @@
                             v-model="post.orgao_expedidor"
                             type="text"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`orgao_expedidor`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Orgão expedidor"
                         ></b-form-input>
@@ -190,7 +193,6 @@
                             type="text"
                             v-mask="['(##) ####-####']"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`telefone`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="CNPJ/CPF"
                         ></b-form-input>
@@ -210,7 +212,6 @@
                             type="text"
                             v-mask="['(##) #####-####']"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`celular`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="Celular"
                         ></b-form-input>
@@ -225,7 +226,6 @@
                         <b-form-select
                             :disabled="loading"
                             name="generos"
-                            v-validate="{ required: true }"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`generos`)}]"
                             size="sm"
                             data-vv-as="Gênero"
@@ -275,7 +275,6 @@
                             type="text"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`anuidade`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="anuidade"
                         ></b-form-input>
@@ -294,7 +293,6 @@
                             type="text"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`numero_socio`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="numero_socio"
                         ></b-form-input>
@@ -313,7 +311,6 @@
                             type="text"
                             :disabled="loading"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`obs_isentamos`)}]"
-                            v-validate="{ required: true }"
                             aria-describedby="input-1-live-feedback"
                             data-vv-as="obs_isentamos"
                         ></b-form-input>
@@ -337,7 +334,7 @@
                                 <label for="">CEP</label>
                                 <b-form-input
                                     size="sm"
-                                    v-validate="{ min: 9,required: true }"
+                                    v-validate="{ min: 9 }"
                                     :name="`cep`" @change="getCep()" v-mask="'#####-###'"
                                     placeholder="Digite aqui"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`cep`)}]"
@@ -357,7 +354,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`logradouro`"
-                                    v-validate="{ required: true }"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`logradouro`)}]"
                                     data-vv-as="logradouro"
                                     v-model="post.enderecos.logradouro"
@@ -378,7 +374,6 @@
                                 data-vv-as="estado"
                                 :selectOnTab="true"
                                 v-model="post.enderecos.estado"
-                                v-validate="{ required: true }"
                                 :disabled="loading"
                                 :class="[ {'v-select-invalid': errors.has(`estado`)}]"        
                                 label="sigla"
@@ -397,7 +392,6 @@
                             </span>
                         </div>
 
-
                         <div class="form-group col-12 col-md-6 col-lg-4">
                             <label>Município</label>
                             <v-select
@@ -406,7 +400,6 @@
                                 :disabled="loading"
                                 :options="municipios"
                                 :selectOnTab="false"
-                                v-validate="{ required: true }"
                                 v-model="post.enderecos.municipio"
                                 label="nome"
                                 data-vv-as="municipio"
@@ -416,29 +409,6 @@
                                 {{ errors.first(`municipio`) }}
                             </span>
                         </div>
-
-                        <!-- <b-col cols="12" sm="6" lg="4">
-                            <b-form-group label="País" label-class="font-weight-bold">
-                                <b-form-select
-                                    :disabled="loading"
-                                    name="paises"
-                                    v-validate="{ required: true }"
-                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`paises`)}]"
-                                    size="sm"
-                                    data-vv-as="País"
-                                    class="form-control form-control-sm"
-                                    v-model="post.pais"
-                                >
-                                <option :value="null">Selecione</option>
-                                <option v-for="pais in paises" :value="pais.id" :key="pais.id">
-                                    {{ pais.nome }}
-                                </option>
-                                </b-form-select>
-                                <span v-show="errors.has(`paises`)" class="invalid-feedback">
-                                    {{ errors.first(`paises`) }}
-                                </span>
-                            </b-form-group>
-                        </b-col> -->
                     </div>
                 </div>
             </div>
@@ -537,6 +507,8 @@
                 instituicoes: [],
                 paises: [],
                 titulacoes: [],
+                showHidePasswod: false,
+                showPassaword: "password",
                 post: {
                     id: null,
                     name: null,
@@ -572,8 +544,7 @@
                 ],
             }
         },
-        watch: {
-            
+        watch: {    
             selected() {
                 if(this.selected) {
                     this.$forceUpdate()
@@ -606,8 +577,10 @@
                 } else {
                     this.clear()
                 }
+            },
+            showHidePasswod(){
+                this.showPassaword = this.showHidePasswod == true ? 'text' : 'password'; 
             }
-
         },
         computed: {
             access() {

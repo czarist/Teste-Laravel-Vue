@@ -782,7 +782,7 @@
                     this.post.instituicao_id = this.indicacao ? this.indicacao.instituicao_id : null
                     this.post.categoria = this.indicacao ? this.indicacao.categoria : null
                     this.post.enderecos.municipio = this.indicacao && this.indicacao.enderecos ? this.indicacao.enderecos.municipio : null
-                    this.post.enderecos.estado = this.indicacao && this.indicacao.enderecos ? this.indicacao.enderecos.municipio.estado : null
+                    this.post.enderecos.estado = this.indicacao && this.indicacao.enderecos && this.indicacao.enderecos.municipio ? this.indicacao.enderecos.municipio.estado : null
                     this.post.modalidade = this.indicacao ? this.indicacao.modalidade : null
                 }
             }
@@ -1264,6 +1264,32 @@
                             curso_coautor: element.curso_coautor
                         });
                     });
+                }
+
+                if(
+                    this.user 
+                    && this.user.regional_norte 
+                    && this.user.regional_norte.submissao_expocom
+                    && this.user.regional_norte.submissao_expocom.avaliacao
+                    && this.user.regional_norte.submissao_expocom.avaliacao.edit == 1
+                ){
+                    console.log('habilitado edição')
+
+                }else if(
+                    this.user 
+                    && this.user.regional_norte 
+                    && this.user.regional_norte.submissao_expocom
+                    && this.user.regional_norte.submissao_expocom.avaliacao
+                    && this.user.regional_norte.submissao_expocom.avaliacao.edit == 0
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'         
+                }
+                else if(
+                    this.user 
+                    && this.user.regional_norte 
+                    && this.user.regional_norte.submissao_expocom != null
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'        
                 }
 
             }

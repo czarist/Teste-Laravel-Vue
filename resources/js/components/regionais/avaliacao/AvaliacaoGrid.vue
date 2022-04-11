@@ -11,34 +11,34 @@
                         <b-progress :value="value" :max="max" ></b-progress>
                     </div>
                    
-                    <div class="row mb-3 d-flex justify-content-between" v-if="!loading">
+                    <div class="row d-flex align-items-center mb-3" v-if="!loading">
 
-                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
-                            <span class="invalid-feedback">* Clique no status para filtrar pelo status do avaliador </span>
+                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Itercom Júnior, Divisões Temáticas e Mesas </label>
 
-                            <div class="input-group-prepend" style="display:block !important;">
+                        <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
+                            <div class="input-group-prepend mb-2">
                                 <span class="btn btn-primary">
-                                    <i class="bi bi-activity"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
                                 </span>
                             </div>
-                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusAva" @change="get()">
-                                <option selected value="0">Status Avaliador...</option>
-                                <option v-for="statusAva in statusAvaliador" :key="statusAva.id" :value="statusAva.id">{{ statusAva.descricao }}</option>
-                            </select>
-                        </div>
 
-                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
-                            <span class="invalid-feedback">* Clique no status para filtra pelo status do coordenador </span>
-
-                            <div class="input-group-prepend" style="display:block !important;">
-                                <span class="btn btn-primary">
-                                    <i class="bi bi-activity"></i>
-                                </span>
-                            </div>
-                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusCoo" @change="get()">
-                                <option selected value="0">Status Coordenador...</option>
-                                <option v-for="statusCoo in statusCoordenador" :key="statusCoo.id" :value="statusCoo.id">{{ statusCoo.descricao }}</option>
-                            </select>
+                            <v-select
+                                class="flex-fill"
+                                :name="`modalidade`"
+                                :disabled="loading"
+                                :options="divisoes_tematicas"
+                                :reduce="divisoes_tematicas => divisoes_tematicas.id"
+                                v-model="modalidade.modalidade_search"
+                                label="descricao"
+                                @input="get()"
+                                placeholder="Buscar Categoria..."
+                            >
+                                <template #selected-option="{ descricao }">
+                                    <em>{{ descricao}}</em>
+                                </template>
+                            </v-select>
                         </div>
                     </div>
                        
@@ -49,74 +49,56 @@
                                 <tr>
                                     <th
                                         class="align-middle text-center"
+                                        style="font-size: 11px !important;"
                                         width="5%"
-                                        @click="handleSort('id')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'id',
-                                            'bi-sort-up-alt' : sort== 'id' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'id' && asc == false
-                                        }"></i> Insc-Trab 
+                                        @click="handleSort('id')">Insc-Trab 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="20%"
-                                        @click="handleSort('titulo')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'titulo',
-                                            'bi-sort-up-alt' : sort== 'titulo' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'titulo' && asc == false
-                                        }"></i> Titulo 
+                                        style="font-size: 11px !important;"                                        
+                                        @click="handleSort('titulo')"> Titulo 
                                     </th>
                                     <th
                                         class="align-middle text-center"
-                                        width="10%"
-                                        @click="handleSort('dt')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'dt',
-                                            'bi-sort-up-alt' : sort== 'dt' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'dt' && asc == false
-                                        }"></i> Área 
+                                        width="5%"
+                                        style="font-size: 11px !important;"
+                                        @click="handleSort('dt')">Categoria 
                                     </th>
 
-                                    <th class="align-middle text-center" width="10%" >Avaliador  </th>
+                                    <th class="align-middle text-center" width="10%" style="font-size: 11px !important;">Avaliador  </th>
                                     <th
                                         class="align-middle text-center"
-                                        width="10%"
-                                        @click="handleSort('status_avaliador')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'status_avaliador',
-                                            'bi-sort-up-alt' : sort== 'status_avaliador' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'status_avaliador' && asc == false
-                                        }"></i> Status Avaliador 
+                                        width="5%"
+                                        style="font-size: 11px !important;"
+                                        @click="handleSort('status_avaliador')">Status Avaliador 
                                     </th>
                                     <th
                                         class="align-middle text-center"
-                                        width="10%"
-                                        @click="handleSort('status_coordenador')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'status_coordenador',
-                                            'bi-sort-up-alt' : sort== 'status_coordenador' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
-                                        }"></i> Status Coordenador 
+                                        width="5%"
+                                        style="font-size: 11px !important;"
+                                        @click="handleSort('status_coordenador')"> Status Coordenador 
                                     </th>
-                                    <th class="align-middle text-center" width="5%">PDF</th>
-                                    <th class="align-middle text-center" width="5%">CHAT</th>
-                                    <th class="align-middle text-center" width="5%">AÇÂO</th>
+                                    <th class="align-middle text-center" width="3%" style="font-size: 11px !important;">PDF</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 10px !important;">CHAT AUTOR</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">CHAT AVALIADOR</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 11px !important;">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(registro, index) in registros" :key="index">
-                                    <td class="align-middle text-center" >{{ registro ? registro.id : "NI" }}</td>
-                                    <td class="align-middle text-center" >{{ registro ? registro.titulo : "NI" }}</td>
-                                    <td class="align-middle text-center" >{{ find_dt(registro) }}</td>
-                                    <td class="align-middle text-center" >
-                                        <div v-if="registro && registro.avaliacao">
+                                    <td class="align-middle text-center " style="font-size: 11px !important;" >{{ registro ? registro.id : "NI" }}</td>
+                                    <td class="align-middle text-center " style="font-size: 11px !important;">{{ registro ? registro.titulo : "NI" }}</td>
+                                    <td class="align-middle text-center " style="font-size: 11px !important;">{{ find_dt(registro) }}</td>
+                                    <td class="align-middle text-center " style="font-size: 11px !important;">
+                                        <div v-if="registro && registro.avaliacao">                       
+
                                             {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1_obj ? registro.avaliacao.avaliador_1_obj.name : "NI" }}<br>
                                             {{ registro && registro.avaliacao && registro.avaliacao.avaliador_2_obj ? registro.avaliacao.avaliador_2_obj.name : "NI" }}<br>
                                             {{ registro && registro.avaliacao && registro.avaliacao.avaliador_3_obj ? registro.avaliacao.avaliador_3_obj.name : "NI" }}
                                         </div>
                                     </td>
-                                    <td class="align-middle text-center" >
+                                    <td class="align-middle text-center" style="font-size: 11px !important;">
                                         <div>                                    
                                             {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_1 : "NI" }}<br>
                                             {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_2 : "NI" }}<br>
@@ -125,24 +107,47 @@
 
 
                                     </td>
-                                    <td class="align-middle text-center" >{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
+                                    <td class="align-middle text-center" style="font-size: 11px !important;">{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.link_trabalho">
-                                            <button
-                                                v-tooltip.bottom="{
-                                                content: 'Visualizar Anexo',
+                                                <svg 
+                                                    v-tooltip.bottom="{
+                                                    content: 'Visualizar PDF',
+                                                    delay: 0,
+                                                    class: 'tooltip-custom tooltip-arrow'
+                                                    }"
+                                                    title="Visualizar PDF"
+                                                    @click="visualizarAnexo(registro)"
+                                                    style="font-size:50px;"
+
+                                                id="Capa_1" enable-background="new 0 0 791.454 791.454" height="40" viewBox="0 0 791.454 791.454" width="40" xmlns="http://www.w3.org/2000/svg"><g><g id="Vrstva_x0020_1_15_"><path clip-rule="evenodd" d="m202.808 0h264.609l224.265 233.758v454.661c0 56.956-46.079 103.035-102.838 103.035h-386.036c-56.956 0-103.035-46.079-103.035-103.035v-585.384c-.001-56.956 46.078-103.035 103.035-103.035z" fill="#e5252a" fill-rule="evenodd"/><g fill="#fff"><path clip-rule="evenodd" d="m467.219 0v231.978h224.463z" fill-rule="evenodd" opacity=".302"/><path d="m214.278 590.525v-144.566h61.505c15.228 0 27.292 4.153 36.389 12.657 9.097 8.306 13.646 19.579 13.646 33.62s-4.549 25.314-13.646 33.62c-9.097 8.504-21.161 12.657-36.389 12.657h-24.523v52.012zm36.982-83.456h20.37c5.537 0 9.888-1.187 12.855-3.955 2.966-2.571 4.549-6.131 4.549-10.877s-1.582-8.306-4.549-10.877c-2.966-2.769-7.317-3.955-12.855-3.955h-20.37zm89.785 83.456v-144.566h51.221c10.086 0 19.579 1.384 28.478 4.351 8.899 2.966 17.008 7.12 24.127 12.855 7.12 5.537 12.855 13.052 17.008 22.545 3.955 9.493 6.131 20.37 6.131 32.631 0 12.064-2.175 22.941-6.131 32.433-4.153 9.493-9.888 17.008-17.008 22.545-7.12 5.735-15.228 9.888-24.127 12.855-8.899 2.966-18.392 4.351-28.478 4.351zm36.191-31.444h10.679c5.735 0 11.075-.593 16.019-1.978 4.746-1.384 9.295-3.56 13.646-6.526 4.153-2.966 7.515-7.12 9.888-12.657s3.56-12.064 3.56-19.579c0-7.713-1.187-14.239-3.56-19.776s-5.735-9.69-9.888-12.657c-4.351-2.966-8.899-5.142-13.646-6.526-4.944-1.384-10.284-1.978-16.019-1.978h-10.679zm109.364 31.444v-144.566h102.838v31.445h-65.856v23.138h52.605v31.247h-52.605v58.736z"/></g></g></g></svg>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center" >
+                                        <button
+                                            v-if="
+                                                registro && registro.avaliacao &&
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Aceito' &&
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Recusado' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em Análise' ||
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em avaliação' ||
+                                                registro && registro.avaliacao && !registro.avaliacao.status_coordenador
+                                            "
+                                            v-tooltip.bottom="{
+                                                content: 'MENSAGEM P/ AUTOR',
                                                 delay: 0,
                                                 class: 'tooltip-custom tooltip-arrow'
-                                                }"
-                                                title="Visualizar Anexo"
-                                                class="btn btn-primary"
-                                                @click="visualizarAnexo(registro)"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>
-                                                </svg>   
-                                            </button>
-                                        </div>
+                                            }"
+                                            @click="resetModalChat(),getChat(registro.avaliacao.id)"
+                                            type="button"
+                                            class="btn btn-sm btn-primary p-1 m-0"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+                                                <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                                <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+                                            </svg><br>
+                                            <span style="font-size: 9px !important;">AUTOR</span>
+                                        </button>
                                     </td>
                                     <td class="align-middle text-center">
                                         <button
@@ -155,49 +160,56 @@
                                                 registro && registro.avaliacao && !registro.avaliacao.status_coordenador
                                             "
                                             v-tooltip.bottom="{
-                                                content: 'Chat',
+                                                content: 'MENSAGEM PARA O AVALIADOR',
                                                 delay: 0,
                                                 class: 'tooltip-custom tooltip-arrow'
                                             }"
-                                            @click="resetModalChat(),getChat(registro.avaliacao.id)"
+                                            @click="resetModalChooseChat(),chooseChatAvaliador(registro.avaliacao)"
                                             type="button"
-                                            class="btn btn-sm btn-primary"
-                                            data-toggle="modal"
-                                            data-target="#reiteracao"
-                                        >CHAT
+                                            class="btn btn-sm btn-primary p-1 m-0"
+                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                                            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                            <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                        </svg><br>
+                                            <span style="font-size: 9px !important;">AVALIADOR</span>                                        
                                         </button>
                                     </td>
-                                    <td class="align-middle text-center">
-                                        <span class="d-flex justify-content-center"
+                                    <td class="align-middle text-center" style="font-size: 11px !important;">
+                                        <span
                                             v-if="
                                                 registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Aceito' &&
                                                 registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador != 'Recusado' ||
                                                 registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em Análise' ||
                                                 registro && registro.avaliacao && registro.avaliacao.status_coordenador && registro.avaliacao.status_coordenador == 'Em avaliação' ||
-                                                registro && registro.avaliacao && !registro.avaliacao.status_coordenador
+                                                registro && registro.avaliacao && !registro.avaliacao.status_coordenador ||
+                                                registro && !registro.avaliacao
                                             "
                                         >
-                                            <span
+                                            <a href="#" class="botaoazul p-1 m-1"
                                                 v-tooltip.bottom="{
                                                 content: 'Indicar Avaliadores',
                                                 delay: 0,
                                                 class: 'tooltip-custom tooltip-arrow'
                                                 }"
                                                 title="Indicar Avaliadores"
-                                                class="btn btn-outline-primary btn-sm mr-1"
                                                 @click="Indicar(registro)"
-                                            >Indicar Avaliadores</span>
-                                            <span
+                                            >Indicar Avaliadores                                                                                        
+                                            </a>
+
+                                            <a href="#" class="botaoazul p-1 m-1"
+                                                v-if="registro && registro.avaliacao"
                                                 v-tooltip.bottom="{
                                                 content: 'Status Coordenador',
                                                 delay: 0,
                                                 class: 'tooltip-custom tooltip-arrow'
                                                 }"
                                                 title="Status Coordenador"
-                                                class="btn btn-outline-primary btn-sm mr-1"
                                                 @click="StatusCoordenador(registro)"
-                                            >Status Coordenador</span>
-                                            <span
+                                            >Status Coordenador                                                                                        
+                                            </a>
+
+                                            <a href="#" class="botaoazul p-1 m-1"
                                                 v-if="registro && registro.avaliacao"
                                                 v-tooltip.bottom="{
                                                 content: 'Habilitar Edição do Trabalho',
@@ -209,8 +221,7 @@
                                                 @click="EditTrabalho(registro, index)"
                                             >
                                                 {{ registro && registro.avaliacao && !registro.avaliacao.edit ? "Edição de trabalho desabilitada" : "Edição de trabalho habilitada"}}                                            
-                                            </span>
-
+                                            </a>
                                         </span>
                                     </td>
                                 </tr>
@@ -230,8 +241,9 @@
         </div>
 
         <indicar-modal :selectedIndicar="selectedIndicar"></indicar-modal>
-        <status-coordenador-modal :selectedCoordenador="selectedCoordenador"></status-coordenador-modal>
+        <status-coordenador-modal :selectedCoordenador="selectedCoordenador" :coordenador="coordenador"></status-coordenador-modal>
         <chat-modal :selectedChat="selectedChat" :user="user" :mensagens="mensagens" :scroll.sync="scroll"></chat-modal>
+        <escolha-chat-modal :chooseChat="chooseChat" :user="user"></escolha-chat-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -242,14 +254,15 @@
     import IndicarModal from './IndicarModal.vue'
     import StatusCoordenadorModal from './StatusCoordenadorModal.vue'
     import ChatModal from './ChatModal.vue'
+    import EscolhaChatModal from './EscolhaChatModal.vue'
 
     export default {
         mixins: [GridMixin],
         components: {
             IndicarModal:() => import('./IndicarModal.vue'),
             StatusCoordenadorModal:() => import('./StatusCoordenadorModal.vue'),
-            ChatModal:() => import('./ChatModal.vue')
-
+            ChatModal:() => import('./ChatModal.vue'),
+            EscolhaChatModal:() => import('./EscolhaChatModal.vue')
         },
         data() {
             return {
@@ -267,27 +280,41 @@
                     id: null,
                     avaliacao_id: null,
                     avaliador_id: null,
-                    avaliador_id: null,
+                    avaliado_id: null,
                     coordenador_id: null,
+                    send_avaliador: null,
                     mensagem: null
+                },
+                chooseChat:{
+                    avaliacao: null,
+                    coordenador_id: null,
+                    coordenador: null,
                 },
                 toDelete: null,
                 divisoes_tematicas: [],
+                divisoes_tematicas_jr: [],
+                modalidade: {
+                    modalidade_search : null,
+                },
                 statusAvaliador: [
-                    { id: "Em avaliação" , descricao: "Em avaliação"},
                     { id: "Em Análise" , descricao: "Em Análise"},
-                    { id: "Aceito" , descricao: "Aceito"},
                     { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
-                    { id: "Recusado" , descricao: "Recusado"},
+                    { id: "Avaliado" , descricao: "Avaliado"},
                 ],
                 statusCoordenador: [
-                    { id: "Em Espera" , descricao: "Em Espera"},
-                    { id: "Em avaliação" , descricao: "Em avaliação"},
                     { id: "Em Análise" , descricao: "Em Análise"},
-                    { id: "Aceito" , descricao: "Aceito"},
                     { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
-                    { id: "Recusado" , descricao: "Recusado"},
+                    { id: "Avaliado" , descricao: "Avaliado"},
                 ],
+                searchType: { link: 'titulo', text: 'TITULO' }
+            }
+        },
+        watch: {
+            modalidade: {
+                handler:function(newVal) {
+                    this.modalidade_search = newVal.modalidade_search
+                },
+                deep:true
             }
         },
         methods: {
@@ -307,10 +334,12 @@
             resetModalChat() {
                 this.selectedChat.id = null,
                 this.selectedChat.avaliacao_id = null,
-                this.selectedChat.avaliado_id = null,
-                this.selectedChat.avaliador_id = null,
                 this.selectedChat.coordenador_id = null,
-                this.selectedChat.mensagem = null
+                this.selectedChat.coordenador = null,
+                this.selectedChat.send_avaliador = null,
+                this.selectedChat.mensagem = null,
+                this.selectedChat.avaliado_id = null,
+                this.selectedChat.avaliador_id = null
             },
             async getChat(id) {
                 if(id){
@@ -319,8 +348,6 @@
                         if(res.data.length > 0){
                             this.mensagens = res.data ;
                             this.selectedChat.avaliacao_id = res.data && res.data[0] ? res.data[0].avaliacao_id : null;
-                            this.selectedChat.coordenador_id = this.coordenador ? this.coordenador.id : null;
-                            this.selectedChat.coordenador = this.coordenador ? this.coordenador : null;
                             this.selectedChat.mensagem = null;
                             this.$validator.reset('mensagens');
 
@@ -328,11 +355,29 @@
                         } else{
                             this.mensagens = [];
                             this.selectedChat.id = id;
+                            this.selectedChat.avaliacao_id = (res.data && res.data[0]) ? res.data[0].avaliacao_id : id ? id : null;
+                            this.$validator.reset('mensagens');
                         }
                         $('#modalChat').modal({backdrop: 'static', keyboard: false, show: true})
                         this.$bvModal.show('modalChat')
 
                     })
+                }
+            },
+            resetModalChooseChat() {
+                this.chooseChat.avaliacao = null
+                this.chooseChat.coordenador_id = null,
+                this.chooseChat.coordenador = null
+            },
+            async chooseChatAvaliador(avaliacao) {
+                if(avaliacao && avaliacao.id){
+
+                    this.chooseChat.avaliacao = avaliacao
+                    this.chooseChat.coordenador_id = this.coordenador && this.coordenador.id ? this.coordenador.id : null
+                    this.chooseChat.coordenador = this.coordenador && this.coordenador ? this.coordenador : null
+
+                    $('#modalEscolhaChat').modal({backdrop: 'static', keyboard: false, show: true})
+                    this.$bvModal.show('modalEscolhaChat')
                 }
             },
             Indicar(registro){
@@ -353,7 +398,7 @@
                     window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 3){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_sudeste_2022/'+ registro.link_trabalho, '_blank');
+                    window.open(this.baseUrl+'/pdf/submissao_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 4){
                     window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
@@ -365,8 +410,24 @@
             },
             find_dt(registro){
                 if(registro && registro.dt){
-                    let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
+
+                    if(registro && registro.tipo == "Mesa" || registro.tipo == "Divisões Temáticas"){
+                        let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
+                        let dt = selectedDt ? selectedDt.dt : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+
+                    }
+
+                    if(registro && registro.tipo == "Intercom Júnior"){
+                        let selectedDt =  this.divisoes_tematicas_jr.find(dt => dt.id === registro.dt)
+                        let dt = selectedDt ? selectedDt.dt : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+                    }
+
                 }
             },
             showForm(registro) {
@@ -450,6 +511,23 @@
                     }
                 }); 
             },
+            getDivisoesTematicasJr(){
+                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas-jr";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetDivisoesTematicas,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.divisoes_tematicas_jr = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
             getCoordenador(){
                 let urlgetCoordenador = this.baseUrl+"/get/coordenador/"+this.user.id;
 
@@ -473,6 +551,7 @@
             this.get = debounce(this.get, 500)
 
             this.getDivisoesTematicas(),
+            this.getDivisoesTematicasJr(),            
             this.getCoordenador()
 
         },

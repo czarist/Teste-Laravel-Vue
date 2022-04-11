@@ -43,17 +43,7 @@
                                             'bi-funnel' : sort!= 'dt',
                                             'bi-sort-up-alt' : sort== 'dt' && asc == true,
                                             'bi-sort-down-alt' : sort== 'dt' && asc == false
-                                        }"></i> Área 
-                                    </th>
-                                    <th
-                                        class="align-middle text-center"
-                                        width="10%"
-                                        @click="handleSort('status_avaliador')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'status_avaliador',
-                                            'bi-sort-up-alt' : sort== 'status_avaliador' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'status_avaliador' && asc == false
-                                        }"></i> Status Avaliador 
+                                        }"></i> Categoria 
                                     </th>
                                     <th
                                         class="align-middle text-center"
@@ -63,7 +53,7 @@
                                             'bi-funnel' : sort!= 'status_coordenador',
                                             'bi-sort-up-alt' : sort== 'status_coordenador' && asc == true,
                                             'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
-                                        }"></i> Status Coordenador 
+                                        }"></i> Status da Avaliação 
                                     </th>
                                     <th class="align-middle text-center" width="5%">PDF</th>
                                     <th class="align-middle text-center" width="5%">CHAT</th>
@@ -75,13 +65,6 @@
                                     <td class="align-middle text-center" >{{ registro ? registro.id : "NI" }}</td>
                                     <td class="align-middle text-center" >{{ registro ? registro.titulo : "NI" }}</td>
                                     <td class="align-middle text-center" >{{ find_dt(registro) }}</td>
-                                    <td class="align-middle text-center" >
-                                        <div>                                    
-                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_1 : "NI" }}<br>
-                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_2 : "NI" }}<br>
-                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_3 : "NI" }}<br>
-                                        </div>
-                                    </td>
                                     <td class="align-middle text-center" >{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.link_trabalho">
@@ -119,8 +102,6 @@
                                             @click="resetModalChat(),getChat(registro.avaliacao.id)"
                                             type="button"
                                             class="btn btn-sm btn-primary"
-                                            data-toggle="modal"
-                                            data-target="#reiteracao"
                                         >CHAT
                                         </button>
                                     </td>
@@ -237,19 +218,25 @@
                 }
             },
             visualizarAnexo(registro){
+                console.log(registro)
                 if(registro.regiao == 1){
+                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_sul_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 2){
+                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 3){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_sudeste_2022/'+ registro.link_trabalho, '_blank');
+                    console.log(registro.regiao, registro.link_trabalho)
+                    window.open(this.baseUrl+'/pdf/submissao_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 4){
+                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 5){
+                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_norte_2022/'+ registro.link_trabalho, '_blank');
                 }
 

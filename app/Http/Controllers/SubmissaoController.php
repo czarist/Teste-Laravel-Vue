@@ -14,9 +14,11 @@ use App\Models\SubmissaoRegionalNorte;
 use App\Models\SubmissaoRegionalSudeste;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use stdClass;
 
 class SubmissaoController extends Controller
 {
@@ -32,13 +34,47 @@ class SubmissaoController extends Controller
         $regional_norte = RegionalNorte::select('id', 'user_id')->where('user_id', Auth::user()->id)->first();
         $regional_centro = RegionalCentrooeste::select('id', 'user_id')->where('user_id', Auth::user()->id)->first();
 
-        $submissao_sul = SubmissaoRegionalSul::with('avaliacao')->whereInscricaoId($regional_sul->id)->get();
-        $submissao_sudeste = SubmissaoRegionalSudeste::with('avaliacao')->whereInscricaoId($regional_sudeste->id)->get();
-        $submissao_nordeste = SubmissaoRegionalNordestes::with('avaliacao')->whereInscricaoId($regional_nordeste->id)->get();
-        $submissao_norte = SubmissaoRegionalNorte::with('avaliacao')->whereInscricaoId($regional_norte->id)->get();
-        $submissao_centro = SubmissaoRegionalCentrooeste::with('avaliacao')->whereInscricaoId($regional_centro->id)->get();
+        $submissao = [];
 
-        $submissao = $submissao_sul->merge($submissao_sudeste)->merge($submissao_nordeste)->merge($submissao_norte)->merge($submissao_centro);
+        if($regional_sul && $regional_sul->id){
+            $submissao_sul = SubmissaoRegionalSul::with('avaliacao')->whereInscricaoId($regional_sul->id)->get()->toArray();
+
+            if(isset($submissao_sul)){
+                $submissao = array_merge($submissao, $submissao_sul);
+            }
+        }
+
+        if($regional_sudeste && $regional_sudeste->id){
+            $submissao_sudeste = SubmissaoRegionalSudeste::with('avaliacao')->whereInscricaoId($regional_sudeste->id)->get()->toArray();
+
+            if(isset($submissao_sudeste)){
+                $submissao = array_merge($submissao, $submissao_sudeste);
+            }
+        }
+
+        if($regional_nordeste && $regional_nordeste->id){
+            $submissao_nordeste = SubmissaoRegionalNordestes::with('avaliacao')->whereInscricaoId($regional_nordeste->id)->get()->toArray();
+
+            if(isset($submissao_nordeste)){
+                $submissao = array_merge($submissao, $submissao_nordeste);
+            }
+        }
+
+        if($regional_norte && $regional_norte->id){
+            $submissao_norte = SubmissaoRegionalNorte::with('avaliacao')->whereInscricaoId($regional_norte->id)->get()->toArray();
+
+            if(isset($submissao_norte)){
+                $submissao = array_merge($submissao, $submissao_norte);
+            }
+        }
+
+        if($regional_centro && $regional_centro->id){
+            $submissao_centro = SubmissaoRegionalCentrooeste::with('avaliacao')->whereInscricaoId($regional_centro->id)->get()->toArray();
+
+            if(isset($submissao_centro)){
+                $submissao = array_merge($submissao, $submissao_centro);
+            }
+        }        
 
         return $submissao;
     }

@@ -115,7 +115,7 @@
                                             'bi-funnel' : sort!= 'dt',
                                             'bi-sort-up-alt' : sort== 'dt' && asc == true,
                                             'bi-sort-down-alt' : sort== 'dt' && asc == false
-                                        }"></i> ÁREAS 
+                                        }"></i> Categoria 
                                     </th>
                                     <th
                                         class="align-middle text-center"
@@ -138,8 +138,7 @@
                                     </td>
                                     <td class="align-middle text-center">{{ registro && registro.coordenador_regional ? registro.coordenador_regional.tipo : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro && registro.coordenador_regional ? registro.coordenador_regional.regiao : "NI" }}</td>
-                                    <td class="align-middle text-center">{{ find_dt(registro) }}</td>
-
+                                    <td class="align-middle text-center">{{ registro && registro.coordenador_regional ? registro.coordenador_regional.dt : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro && registro.coordenador_regional ? registro.coordenador_regional.ano : "NI" }}</td>
 
                                     <td class="align-middle text-center">
@@ -220,12 +219,12 @@
                 this.$bvModal.show('deleteModal')
             },
             store($event) {
-                this.registros.splice(0, 0, $event)
+                this.registros.coordenador_regional.splice(0, 0, $event)
                 this.$bvModal.hide('coordenadorModal')
                 this.total++
             },
             update($event) {
-                let index = this.registros.findIndex(registro => registro.id == this.selected.id)
+                let index = this.registros.findIndex(registro => registro.coordenador_regional.id == this.selected.id)
                 this.registros.splice(index, 1, $event)
                 this.$bvModal.hide('coordenadorModal')
             },

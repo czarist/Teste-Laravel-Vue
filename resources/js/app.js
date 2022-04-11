@@ -182,7 +182,7 @@ Validator.extend("passaporteCheck", {
             dataType: 'json',
             success: (retorna) => {
                 return {
-                    valid: retorna
+                    valid: retocopyna
                 }
 
             },
@@ -327,6 +327,17 @@ import AvaliadorGrid from './components/regionais/avaliador/AvaliadorGrid.vue'
 //GRID AVALIADO (AUTOR DA SUBMISSAO)
 import AvaliadoGrid from './components/regionais/avaliado/AvaliadoGrid.vue'
 
+                    //AVALIACAO EXPOCOM//
+
+//AVALIACAO DE TRABALHOS EXPOCOM
+import AvaliacaoExpocomGrid from './components/regionais/avaliacaoExpocom/AvaliacaoExpocomGrid.vue'
+
+//AREA DO AVALIADOR EXPOCOM
+import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/AvaliadorExpocomGrid.vue'
+
+//GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM
+import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
+
 
 const app = new Vue({
     el: '#app',
@@ -383,8 +394,16 @@ const app = new Vue({
         'avaliacao-grid':AvaliacaoGrid,
         'avaliador-grid':AvaliadorGrid,
 
+        //AVALIACAO DE TRABALHOS EXPOCOM
+        'avaliacao-expocom-grid':AvaliacaoExpocomGrid,
+        'avaliador-expocom-grid':AvaliadorExpocomGrid,        
+
         //GRID AVALIADO (AUTOR DA SUBMISSAO)
-        'submissao-grid':AvaliadoGrid
+        'submissao-grid':AvaliadoGrid,
+
+        //GRID AVALIADO EXPOCOM (AUTOR DA SUBMISSAO)
+        'submissao-expocom-grid':AvaliadoExpocomGrid
+
     }
 });
 

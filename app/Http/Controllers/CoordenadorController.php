@@ -72,7 +72,7 @@ class CoordenadorController extends Controller
                 'tipo' => $post['tipo'],
                 'regiao' => $post['regiao'] ?? null,
                 'ano' => $post['ano'],
-                'dt' => $post['dt'][0] ?? null
+                'dt' => $post['dt'] ?? null
             ]);
 
             Log::info('Coordenador create: '.$coordenador->id.' | Request: '.json_encode($request->all()));
@@ -97,7 +97,7 @@ class CoordenadorController extends Controller
                 'tipo' => $request->tipo,
                 'regiao' => $request->regiao ?? null,
                 'ano' => $request->ano,
-                'dt' => $request->dt[0] ?? null
+                'dt' => $request->dt ?? null
             ]);
 
             Log::info('Coordenador updated: '.$coordenador->id.' | Request: '.json_encode($request->all()));

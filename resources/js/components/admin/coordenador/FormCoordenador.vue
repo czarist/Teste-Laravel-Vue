@@ -96,43 +96,28 @@
                 </b-col>
 
                 <b-col cols="12" sm="12" lg="12" v-if="tipo_expocom">
-                    <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">DIVISÕES TEMÁTICAS:</label><br />
-                    <div class="switch-field-one">
-                        <span v-for="(divisoes_tematica, index) in divisoes_tematicas" :key="index">
-                            <input
-                                :disabled="loading"
-                                :id="`dv_${index}`"
-                                name="divisoes_tematicas"
-                                type="checkbox"
-                                :class="[ 'form-control radio-inline radio_lista radio',{ 'is-invalid': errors.has(`divisoes_tematicas`) }]"                                        
-                                aria-describedby="input-1-live-feedback"
-                                data-vv-as="DIVISÃO TEMÁTICA"
-                                :value="divisoes_tematica.id"
-                                v-model="post.dt"
-                            ><label :key="`label_${index}`" :for="`dv_${index}`" class="mr-2">{{ divisoes_tematica.dt }} - {{ divisoes_tematica.descricao }}</label>
+                    <b-form-group label="DIVISÕES TEMÁTICAS:" label-class="font-weight-bold">
+                        <b-form-select
+                            :disabled="loading"
+                            name="divisoes_tematicas"
+                            v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`divisoes_tematicas`)}]"
+                            size="sm"
+                            data-vv-as="DIVISÕES TEMÁTICAS"
+                            class="form-control form-control-sm"
+                            v-model="post.dt"
+                        >
+                        <option :value="null">Selecione</option>
+                        <option v-for="divisoes_tematica in divisoes_tematicas" :value="divisoes_tematica.value" :key="divisoes_tematica.value">
+                            {{ divisoes_tematica.text }}
+                        </option>
+                        </b-form-select>
+
+                        <span v-show="errors.has(`divisoes_tematicas`)" class="invalid-feedback d-block">
+                            {{ errors.first(`divisoes_tematicas`) }}
                         </span>
-                    </div>
+                    </b-form-group>
                 </b-col>
-
-                <!-- <b-col cols="12" sm="12" lg="12" v-if="tipo_ij">
-                    <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">INTERCOM JUNIOR:</label><br />
-                    <div class="switch-field-one">
-                        <span v-for="(divisoes_tematica_jr, indexJunior) in divisoes_tematicas_jr" :key="indexJunior">
-                            <input
-                                :disabled="loading"
-                                :id="`dv_${indexJunior}`"
-                                name="divisoes_tematicas"
-                                type="checkbox"
-                                :class="[ 'form-control radio-inline radio_lista radio',{ 'is-invalid': errors.has(`divisoes_tematicas_jr`) }]"                                        
-                                aria-describedby="input-1-live-feedback"
-                                data-vv-as="DIVISÃO TEMÁTICA"
-                                :value="divisoes_tematica_jr.id"
-                                v-model="post.dt"
-                            ><label :key="`label_${indexJunior}`" :for="`dv_${indexJunior}`" class="mr-2">{{ divisoes_tematica_jr.dt }} - {{ divisoes_tematica_jr.descricao }}</label>
-                        </span>
-                    </div>
-                </b-col> -->
-
 
             </b-row>
 
@@ -160,14 +145,22 @@
                 baseUrl: process.env.MIX_BASE_URL,
                 loading: false,
                 verify: null,
-                divisoes_tematicas: [],
+                divisoes_tematicas: [
+                    { text: "Cinema e Audiovisual", value: "Cinema e Audiovisual" },
+                    { text: "Jornalismo", value: "Jornalismo" },
+                    { text: "Produção Transdisciplinar", value: "Produção Transdisciplinar" },
+                    { text: "Publicidade e Propaganda", value: "Publicidade e Propaganda" },
+                    { text: "Rádio, TV e Internet", value: "Rádio, TV e Internet" },
+                    { text: "Relações Públicas", value: "Relações Públicas" },
+
+                ],
                 tipo_expocom: false,
                 // tipo_ij: false,
                 post: {
                     id: null,
                     user_id: null,
                     name: null,
-                    dt: [],
+                    dt: null,
                     ano: null,
                     tipo: null,
                     _method: 'post'
@@ -200,7 +193,7 @@
                     this.post.name = this.selected.name ? this.selected.name : null
                     this.post.tipo = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.tipo : null
                     this.post.regiao = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.regiao : null
-                    this.post.dt = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? [this.selected.coordenador_regional.dt] : []
+                    this.post.dt = this.selected && this.selected.coordenador_regional ? this.selected.coordenador_regional.dt : null
                     this.post.ano = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.ano : null
                     this.post._method = this.post && this.post.id ? 'put' : 'post'
 
@@ -210,7 +203,6 @@
             },
             post: {
                 handler:function(newVal) {
-                    console.log(newVal)
                     this.tipo_expocom = newVal.tipo == 'Expocom' ? true : false 
                     // this.tipo_ij = newVal.tipo == 'Intercom Junior' ? true : false 
 
@@ -228,7 +220,7 @@
             async save() {
                 this.loading = true
 
-                if(this.post.dt.length > 1){
+                if(this.post.dt == null){
                     this.message('Erro', 'Selecione uma divisão temática apenas!', 'error');
                     this.loading = false
                     return
@@ -243,14 +235,16 @@
                                 axios.post(`${process.env.MIX_BASE_URL}/admin/coordenador${this.url}`, this.post).then( res => {
                                     
                                     this.clear()
-                                    if(res.status == 201) {
+                                    if(res.success == "success") {
+                                        window.location.reload()
                                         this.loading = false
                                         this.$emit('store', res.data.response)
                                     } else {
+                                        window.location.reload()
                                         this.loading = false
                                         this.$emit('update', res.data.response)
                                     }
-                                    this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                    this.message('Sucesso', res.success == "success" ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                 
                                 }).catch(error => {
                                     if(error.response.status == 422) {
@@ -278,23 +272,23 @@
                     })
                 }
             },
-            getDivisoesTematicas(){
-                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
+            // getDivisoesTematicas(){
+            //     let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
 
-                $.ajax({
-                    method: "GET",
-                    url: urlgetDivisoesTematicas,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.divisoes_tematicas = res
-                    },
-                    error: (res) => {
-                        console.log(res)
+            //     $.ajax({
+            //         method: "GET",
+            //         url: urlgetDivisoesTematicas,
+            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //         dataType: 'json',
+            //         success: (res) => {
+            //             this.divisoes_tematicas = res
+            //         },
+            //         error: (res) => {
+            //             console.log(res)
                         
-                    }
-                }); 
-            },
+            //         }
+            //     }); 
+            // },
             clear() {
                 this.post.id = null
                 this.post.name = null
@@ -303,7 +297,7 @@
             }
         },
         created() {
-            this.getDivisoesTematicas()
+            // this.getDivisoesTematicas()
 
         },
 

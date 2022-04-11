@@ -36,11 +36,11 @@ class CadastroController extends Controller
             $data = ['user' => $user, 'senha' => $senha];
             
             Mail::send('cadastro.email', $data, function ($email) use ($user) {
-                $email->subject('Cadastro de Usuário - INTERCOM');
+                $email->subject('Cadastro de Usuário - Intercom');
                 if (App::environment('production')) {
                     $email->to($user['email']);
                 } else {
-                    $email->to('murilocarvalho2204@gmail.com');
+                    $email->to('murilo@kirc.com.br');
                 }
                 Log::info('E-mail enviado apos o cadastro para :'. $user['nome'] .' com o email: '. json_encode($user['email']));
             });

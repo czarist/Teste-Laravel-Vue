@@ -67,7 +67,6 @@
                             data-vv-as="estado"
                             :selectOnTab="true"
                             v-model="post.enderecos.estado"
-                            v-validate="{ required: true }"
                             :disabled="true"
                             :class="[{ 'v-select-invalid': errors.has(`estado`) }]"
                             label="sigla"
@@ -100,7 +99,6 @@
                             :disabled="true"
                             :options="municipios"
                             :selectOnTab="false"
-                            v-validate="{ required: true }"
                             v-model="post.enderecos.municipio"
                             label="nome"
                             data-vv-as="municipio"
@@ -783,7 +781,7 @@
                     this.post.instituicao_id = this.indicacao ? this.indicacao.instituicao_id : null
                     this.post.categoria = this.indicacao ? this.indicacao.categoria : null
                     this.post.enderecos.municipio = this.indicacao && this.indicacao.enderecos ? this.indicacao.enderecos.municipio : null
-                    this.post.enderecos.estado = this.indicacao && this.indicacao.enderecos ? this.indicacao.enderecos.municipio.estado : null
+                    this.post.enderecos.estado = this.indicacao && this.indicacao.enderecos && this.indicacao.enderecos.municipio ? this.indicacao.enderecos.municipio.estado : null
                     this.post.modalidade = this.indicacao ? this.indicacao.modalidade : null
                 }
             }
@@ -1108,6 +1106,7 @@
             },
             getModalidade() {
                 if(this.post && this.post.categoria) {
+                    console.log('chamou get modalidade', this.post.categoria)
                     switch (this.post.categoria)
                     {
                     case "Cinema e Audiovisual":
@@ -1265,6 +1264,32 @@
                             curso_coautor: element.curso_coautor
                         });
                     });
+                }
+
+                if(
+                    this.user 
+                    && this.user.regional_nordeste 
+                    && this.user.regional_nordeste.submissao_expocom
+                    && this.user.regional_nordeste.submissao_expocom.avaliacao
+                    && this.user.regional_nordeste.submissao_expocom.avaliacao.edit == 1
+                ){
+                    console.log('habilitado edição')
+
+                }else if(
+                    this.user 
+                    && this.user.regional_nordeste 
+                    && this.user.regional_nordeste.submissao_expocom
+                    && this.user.regional_nordeste.submissao_expocom.avaliacao
+                    && this.user.regional_nordeste.submissao_expocom.avaliacao.edit == 0
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'         
+                }
+                else if(
+                    this.user 
+                    && this.user.regional_nordeste 
+                    && this.user.regional_nordeste.submissao_expocom != null
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'        
                 }
 
             }

@@ -30,7 +30,11 @@ class SubmissaoExpocomRegionalCentrooeste extends Model
     }
 
     public function avaliacao(){
-        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
+        return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
+    }
+
+    public function inscricao(){
+        return $this->belongsTo(RegionalCentrooeste::class, 'inscricao_id', 'id');
     }
 
 }

@@ -172,15 +172,11 @@
                                 axios.post(`${process.env.MIX_BASE_URL}/avaliacao/avaliador/save`, this.post).then( res => {
                                     
                                     this.clear()
-                                    if(res.status == 201) {
-                                        this.loading = false
-                                        this.$emit('store', res.data.response)
-                                    } else {
-                                        this.loading = false
-                                        this.$emit('update', res.data.response)
-                                    }
-                                    this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
                                     
+                                    this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+
+                                    window.location.reload()
+
                                     this.$bvModal.hide('modalAvaliador')
 
                                 }).catch(error => {

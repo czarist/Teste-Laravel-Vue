@@ -11,8 +11,10 @@ use App\Models\VendaItem;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RegionalCentrooesteController extends Controller
 {
@@ -172,7 +174,26 @@ class RegionalCentrooesteController extends Controller
                 }
             }
 
-            Log::info('User: '. Auth::user()->id . ' | Atualizou Usuario: ' . json_encode($post));
+            Log::info('User: '. Auth::user()->id . ' | Se inscreveu ou atualizou a inscrição no regional Centro-Oeste: ' . json_encode($post));
+
+            //Enviar e-mail informando que se inscreveu no regional centrooeste
+            try {
+
+                $dados_inscricao['post'] = $post;
+
+                Mail::send('email.inscricao_regional', $dados_inscricao, function ($email) use ($dados_inscricao) {
+                    if (App::environment('production')) {
+                        $email->to($dados_inscricao['post']['email']);
+                    } else {
+                        $email->to('murilo@kirc.com.br');
+                    }
+                        $email->subject('Inscrição Regional | Intercom');
+                    Log::info('E-mail Enviado para o usuario informando que foi inscrito' . json_encode($dados_inscricao));
+                });
+            } catch (Exception $e) {
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+            }
+
     
             return response()->json(['message' => 'success', 'response' => $user], 201);
 

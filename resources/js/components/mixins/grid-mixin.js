@@ -6,8 +6,6 @@ export default {
             startDate: null,
             endDate: null,
             status: 0,
-            statusAva: 0,
-            statusCoo: 0,
             statuses: [],
             search: null,
             sort: null,
@@ -20,6 +18,8 @@ export default {
             trashed: false,
             gettingUser: false,
             user: null,
+            regiao_search: null,
+            modalidade_search: 0
         }
     },
     watch: {
@@ -41,12 +41,12 @@ export default {
         url() {
             let url = `${process.env.MIX_BASE_URL}/${this.page}/get?trashed=${this.trashed}&status=${this.status}&asc=${this.asc}`
                 url = this.search ? url.concat(`&search=${this.search}`) : url
-                url = this.statusCoo ? url.concat(`&statusCoo=${this.statusCoo}`) : url
-                url = this.statusAva ? url.concat(`&statusAva=${this.statusAva}`) : url
                 url = this.searchType ? url.concat(`&type=${this.searchType.link}`) : url
                 url = this.startDate ? url.concat(`&start=${this.startDate}`) : url
                 url = this.endDate ? url.concat(`&end=${this.endDate}`) : url
                 url = this.sort ? url.concat(`&sort=${this.sort}`) : url
+                url = this.regiao_search ? url.concat(`&regiao=${this.regiao_search}`) : url
+                url = this.modalidade_search ? url.concat(`&modalidade=${this.modalidade_search}`) : url
             return url
         }
     },

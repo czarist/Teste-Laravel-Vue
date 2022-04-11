@@ -35,7 +35,7 @@ class SubmissaoRegionalSudesteController extends Controller
                 'regional_suldeste.submissaoMesa.avaliacao',
                 'regional_suldeste.submissaoDt.avaliacao',
                 'regional_suldeste.submissaoJunior.avaliacao',
-                'regional_suldeste.submissaoExpocom',
+                'regional_suldeste.submissaoExpocom.avaliacao',
                 'regional_suldeste.submissaoDt.coautorOrientadorSubSudeste',
                 'regional_suldeste.submissaoJunior.coautorOrientadorSubSudeste',
                 'regional_suldeste.submissaoMesa.coautorOrientadorSubSudeste',
@@ -112,7 +112,8 @@ class SubmissaoRegionalSudesteController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 3
                 ]);
 
                 if($request->hasFile('file')){
@@ -159,7 +160,8 @@ class SubmissaoRegionalSudesteController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 3
                 ]);
 
                 if($request->hasFile('file')){
@@ -201,7 +203,7 @@ class SubmissaoRegionalSudesteController extends Controller
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
                     if(!empty($avaliacao)){
                         $avaliacao->update([
-                            'edit' => 0,
+                            'edit' => 1,
                         ]);
                     }                    
                 }                                               

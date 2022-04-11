@@ -65,7 +65,45 @@ class AvaliacaoAvaliadorController extends Controller
             ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
                 $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
             })
-            ->paginate(20);
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->when($request->type == 'titulo', function ($query) use ($request) {
+                        $query->wherehas('submissaoNordeste', function ($query) use ($request) {
+                            $query->where('titulo', 'like', '%' . $request->search . '%');
+                        })
+                        ->orWherehas('submissaoSul', function ($query) use ($request) {
+                            $query->where('titulo', 'like', '%' . $request->search . '%');
+                        })
+                        ->orWherehas('submissaoSudeste', function ($query) use ($request) {
+                            $query->where('titulo', 'like', '%' . $request->search . '%');
+                        })
+                        ->orWherehas('submissaoCentroOeste', function ($query) use ($request) {
+                            $query->where('titulo', 'like', '%' . $request->search . '%');
+                        })
+                        ->orWherehas('submissaoNorte', function ($query) use ($request) {
+                            $query->where('titulo', 'like', '%' . $request->search . '%');
+                        });
+                    });
+                });
+            })
+            ->when($request->modalidade, function ($query) use ($request){
+                $query->wherehas('submissaoNordeste', function ($query) use ($request) {
+                    $query->where('dt', '=', $request->modalidade);
+                })
+                ->orWherehas('submissaoSul', function ($query) use ($request) {
+                    $query->where('dt', '=', $request->modalidade);
+                })
+                ->orWherehas('submissaoSudeste', function ($query) use ($request) {
+                    $query->where('dt', '=', $request->modalidade);
+                })
+                ->orWherehas('submissaoCentroOeste', function ($query) use ($request) {
+                    $query->where('dt', '=', $request->modalidade);
+                })
+                ->orWherehas('submissaoNorte', function ($query) use ($request) {
+                    $query->where('dt', '=', $request->modalidade);
+                });
+            })
+        ->paginate(20);
 
     }
 }

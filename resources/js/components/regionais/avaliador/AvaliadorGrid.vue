@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
         <h5 class="col-12 d-flex justify-content-between">
-            Área do avaliador - Avaliação do Trabalho
+            Área do avaliador - Avaliação do Trabalho DT, IJ e MESA
         </h5>
         <div class="col-12">
             <div class="card">
@@ -11,37 +11,36 @@
                         <b-progress :value="value" :max="max" ></b-progress>
                     </div>
                    
-                    <div class="row mb-3 d-flex justify-content-between" v-if="!loading">
-                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
-                            <span class="invalid-feedback">* Clique no status para filtrar pelo status do avaliador </span>
+                    <div class="row d-flex align-items-center mb-3" v-if="!loading">
 
-                            <div class="input-group-prepend" style="display:block !important;">
+                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Itercom Júnior, Divisões Temáticas e Mesas </label>
+
+                        <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
+                            <div class="input-group-prepend mb-2">
                                 <span class="btn btn-primary">
-                                    <i class="bi bi-activity"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
                                 </span>
                             </div>
-                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusAva" @change="get()">
-                                <option selected value="0">Status Avaliador...</option>
-                                <option v-for="statusAva in statusAvaliador" :key="statusAva.id" :value="statusAva.id">{{ statusAva.descricao }}</option>
-                            </select>
+
+                            <v-select
+                                class="flex-fill"
+                                :name="`modalidade`"
+                                :disabled="loading"
+                                :options="divisoes_tematicas"
+                                :reduce="divisoes_tematicas => divisoes_tematicas.id"
+                                v-model="modalidade.modalidade_search"
+                                label="descricao"
+                                @input="get()"
+                                placeholder="Buscar Categoria..."
+                            >
+                                <template #selected-option="{ descricao }">
+                                    <em>{{ descricao}}</em>
+                                </template>
+                            </v-select>
                         </div>
-
-                        <div class="input-group input-group-sm col-12 col-sm-12 col-md-4 ">
-                            <span class="invalid-feedback">* Clique no status para filtra pelo status do coordenador </span>
-
-                            <div class="input-group-prepend" style="display:block !important;">
-                                <span class="btn btn-primary">
-                                    <i class="bi bi-activity"></i>
-                                </span>
-                            </div>
-                            <select aria-placeholder="Status..." class="form-control form-control-filter mb-2 mb-lg-0" v-model="statusCoo" @change="get()">
-                                <option selected value="0">Status Coordenador...</option>
-                                <option v-for="statusCoo in statusCoordenador" :key="statusCoo.id" :value="statusCoo.id">{{ statusCoo.descricao }}</option>
-                            </select>
-                        </div>
-
                     </div>
-                       
                    
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
                         <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
@@ -58,7 +57,7 @@
                                         }"></i> Insc-Trab 
                                     </th>
                                     <th class="align-middle text-center" width="20%"> Titulo</th>
-                                    <th class="align-middle text-center" width="10%"> Área</th>
+                                    <th class="align-middle text-center" width="10%">Categoria</th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
@@ -69,17 +68,8 @@
                                             'bi-sort-down-alt' : sort== 'status_avaliador' && asc == false
                                         }"></i> Status Avaliador 
                                     </th>
-                                    <th
-                                        class="align-middle text-center"
-                                        width="10%"
-                                        @click="handleSort('status_coordenador')">
-                                        <i class="bi" :class="{
-                                            'bi-funnel' : sort!= 'status_coordenador',
-                                            'bi-sort-up-alt' : sort== 'status_coordenador' && asc == true,
-                                            'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
-                                        }"></i> Status Coordenador 
-                                    </th>
                                     <th class="align-middle text-center" width="5%">PDF</th>
+                                    <th class="align-middle text-center" width="5%">MENSAGEM P/ COORDENADOR</th>
                                     <th class="align-middle text-center" width="5%">AÇÂO</th>
                                 </tr>
                             </thead>
@@ -89,13 +79,18 @@
                                     <td class="align-middle text-center">{{ registro && registro.submissao ? registro.submissao.titulo : "NI" }}</td>
                                     <td class="align-middle text-center">{{ find_dt(registro.submissao) }}</td>
                                     <td class="align-middle text-center">
-                                        <div>                                    
+                                        <div v-if="registro && registro.avaliador_1 == user.id">                                    
                                             {{ registro ? registro.status_avaliador_1 : "NI" }}<br>
+                                        </div>    
+                                        <div v-if="registro && registro.avaliador_2 == user.id">                                    
                                             {{ registro ? registro.status_avaliador_2 : "NI" }}<br>
+                                        </div>    
+
+                                        <div v-if="registro && registro.avaliador_3 == user.id">                                    
                                             {{ registro ? registro.status_avaliador_3 : "NI" }}<br>
                                         </div>    
+
                                     </td>
-                                    <td class="align-middle text-center">{{ registro ? registro.status_coordenador : "NI" }}</td>
                                     <td class="align-middle text-center">
                                         <div v-if="registro && registro.submissao && registro.submissao.link_trabalho">
                                             <button
@@ -113,6 +108,25 @@
                                                 </svg>   
                                             </button>
                                         </div>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <button
+                                            v-if="                                                
+                                                registro && registro.status_coordenador && registro.status_coordenador != 'Aceito' &&
+                                                registro && registro.status_coordenador && registro.status_coordenador != 'Recusado' ||
+                                                registro && registro.status_coordenador && registro.status_coordenador == 'Em Análise' ||
+                                                registro && registro.status_coordenador && registro.status_coordenador == 'Em avaliação'                                            
+                                                "
+                                            v-tooltip.bottom="{
+                                                content: 'Chat',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                            }"
+                                            @click="resetModalChat(),getChatAvaliador(registro)"
+                                            type="button"
+                                            class="btn btn-sm btn-primary"
+                                        >MENSAGEM P/ COORDENADOR
+                                        </button>
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="d-flex justify-content-center"
@@ -152,6 +166,7 @@
             </div>
         </div>
         <status-avaliador-modal :selectedAvaliador="selectedAvaliador" :user="user"></status-avaliador-modal>
+        <chat-avaliador-modal :selectedChat="selectedChat" :user="user" :mensagens="mensagens" :scroll.sync="scroll"></chat-avaliador-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -160,11 +175,13 @@
     import debounce from 'debounce'
     import GridMixin from '../../mixins/grid-mixin'
     import StatusAvaliadorModal from './StatusAvaliadorModal.vue'
+    import ChatAvaliadorModal from './ChatAvaliadorModal.vue'
 
     export default {
         mixins: [GridMixin],
         components: {
             StatusAvaliadorModal:() => import('./StatusAvaliadorModal.vue'),
+            ChatAvaliadorModal:() => import('./ChatAvaliadorModal.vue')
         },
         data() {
             return {
@@ -176,26 +193,97 @@
                 selectedIndicar: null,
                 selectedAvaliador: null,
                 selectedCoordenador: null,
+                scroll: false,
+                mensagens: [],
+                coordenador: null,
+                selectedChat: {
+                    id: null,
+                    avaliacao_id: null,
+                    avaliador_id: null,
+                    avaliador_id: null,
+                    coordenador_id: null,
+                    mensagem: null
+                },
                 toDelete: null,
                 divisoes_tematicas: [],
+                modalidade: {
+                    modalidade_search : null,
+                },
                 statusAvaliador: [
-                    { id: "Em avaliação" , descricao: "Em avaliação"},
+                    { id: "Avaliado" , descricao: "Avaliado"},
                     { id: "Em Análise" , descricao: "Em Análise"},
-                    { id: "Aceito" , descricao: "Aceito"},
                     { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
-                    { id: "Recusado" , descricao: "Recusado"},
                 ],
                 statusCoordenador: [
-                    { id: "Em Espera" , descricao: "Em Espera"},
-                    { id: "Em avaliação" , descricao: "Em avaliação"},
+                    { id: "Avaliado" , descricao: "Avaliado"},
                     { id: "Em Análise" , descricao: "Em Análise"},
-                    { id: "Aceito" , descricao: "Aceito"},
                     { id: "Alteração Solicitada" , descricao: "Alteração Solicitada"},
-                    { id: "Recusado" , descricao: "Recusado"},
                 ],
+                searchType: { link: 'titulo', text: 'TITULO' }
+            }
+        },
+        watch: {
+            modalidade: {
+                handler:function(newVal) {
+                    this.modalidade_search = newVal.modalidade_search
+                },
+                deep:true
             }
         },
         methods: {
+            resetModalChat() {
+                this.selectedChat.id = null,
+                this.selectedChat.avaliacao_id = null,
+                this.selectedChat.avaliado_id = null,
+                this.selectedChat.avaliador_id = null,
+                this.selectedChat.coordenador_id = null,
+                this.selectedChat.mensagem = null
+            },
+            async getChatAvaliador(avaliacao) {
+                if(avaliacao && avaliacao.id) {
+                    await axios.get(`${this.baseUrl}/coordenador/get/chat/avaliador/${avaliacao.id}`)
+                    .then(res =>{
+                        if(res.data.length > 0){
+
+                            if(avaliacao.avaliador_1 != null && avaliacao.avaliador_1 == this.user.id){
+                                var indexChat = 1
+                            }
+
+                            if(avaliacao.avaliador_2 != null && avaliacao.avaliador_2 == this.user.id){
+                                var indexChat = 2
+                            }
+
+                            if(avaliacao.avaliador_3 != null && avaliacao.avaliador_3 == this.user.id){
+                                var indexChat = 3
+                            }
+
+                            this.mensagens = res.data ;
+                            this.selectedChat.avaliacao_id = (res.data && res.data[0]) ? res.data[0].avaliacao_id : avaliacao && avaliacao.id ? avaliacao.id : null
+                            this.selectedChat.avaliador_id = this.user ? this.user.id : null;
+                            this.selectedChat.avaliador = this.user ? this.user : null;
+                            this.selectedChat.mensagem = null;
+                            this.selectedChat.send_avaliador = indexChat ? indexChat : null
+                            this.selectedChat.avaliacao = avaliacao ? avaliacao : null
+                            this.$validator.reset('mensagens');
+
+
+                        } else{
+                            
+                            this.mensagens = [];
+                            this.selectedChat.id = avaliacao && avaliacao.id ? avaliacao.id : null
+                            this.selectedChat.avaliacao_id = (res.data && res.data[0]) ? res.data[0].avaliacao_id : avaliacao && avaliacao.id ? avaliacao.id : null
+                            this.selectedChat.avaliador_id = this.user ? this.user.id : null;
+                            this.selectedChat.avaliador = this.user ? this.user : null;
+                            this.selectedChat.send_avaliador = indexChat ? indexChat : null
+                            this.selectedChat.avaliacao = avaliacao ? avaliacao : null
+                            this.$validator.reset('mensagens');
+                        }
+                        $('#modalChatAvaliador').modal({backdrop: 'static', keyboard: false, show: true})
+                        this.$bvModal.show('modalChatAvaliador')
+
+                    })
+                }
+            },
             StatusAvaliador(registro){
                 this.selectedAvaliador = registro
                 $('#modalAvaliador').modal({backdrop: 'static', keyboard: false, show: true})
@@ -209,7 +297,7 @@
                     window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 3){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_sudeste_2022/'+ registro.link_trabalho, '_blank');
+                    window.open(this.baseUrl+'/pdf/submissao_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 4){
                     window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
@@ -222,7 +310,10 @@
             find_dt(registro){
                 if(registro && registro.dt){
                     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
+                    let dt = selectedDt ? selectedDt.dt : ''
+                    let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                    let returno = dt+' - '+dt_descricao
+                    return returno ? returno : "NI"
                 }
             },
             find_avaliacoes(registro){

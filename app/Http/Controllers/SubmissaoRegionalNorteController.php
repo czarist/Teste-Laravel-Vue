@@ -32,7 +32,7 @@ class SubmissaoRegionalNorteController extends Controller
                 'regional_norte.submissaoMesa.avaliacao',
                 'regional_norte.submissaoDt.avaliacao',
                 'regional_norte.submissaoJunior.avaliacao',
-                'regional_norte.submissaoExpocom',
+                'regional_norte.submissaoExpocom.avaliacao',
                 'regional_norte.submissaoDt.coautorOrientadorSubNortes',
                 'regional_norte.submissaoJunior.coautorOrientadorSubNortes',
                 'regional_norte.submissaoMesa.coautorOrientadorSubNortes',
@@ -108,7 +108,8 @@ class SubmissaoRegionalNorteController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 5
                 ]);
 
                 if($request->hasFile('file')){
@@ -155,7 +156,8 @@ class SubmissaoRegionalNorteController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 5
                 ]);
 
                 if($request->hasFile('file')){
@@ -197,7 +199,7 @@ class SubmissaoRegionalNorteController extends Controller
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
                     if(!empty($avaliacao)){
                         $avaliacao->update([
-                            'edit' => 0,
+                            'edit' => 1,
                         ]);
                     }                    
                 }                                                            

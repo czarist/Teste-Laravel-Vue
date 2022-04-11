@@ -33,7 +33,7 @@ class SubmissaoRegionalSulController extends Controller
                 'regional_sul.submissaoMesa.avaliacao',
                 'regional_sul.submissaoDt.avaliacao',
                 'regional_sul.submissaoJunior.avaliacao',
-                'regional_sul.submissaoExpocom',
+                'regional_sul.submissaoExpocom.avaliacao',
                 'regional_sul.submissaoDt.coautorOrientadorSubSuls',
                 'regional_sul.submissaoJunior.coautorOrientadorSubSuls',
                 'regional_sul.submissaoMesa.coautorOrientadorSubSuls',
@@ -108,7 +108,8 @@ class SubmissaoRegionalSulController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 1
                 ]);
 
                 if($request->hasFile('file')){
@@ -155,7 +156,8 @@ class SubmissaoRegionalSulController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 1
                 ]);
 
                 if($request->hasFile('file')){
@@ -197,7 +199,7 @@ class SubmissaoRegionalSulController extends Controller
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
                     if(!empty($avaliacao)){
                         $avaliacao->update([
-                            'edit' => 0,
+                            'edit' => 1,
                         ]);
                     }                    
                 }                               

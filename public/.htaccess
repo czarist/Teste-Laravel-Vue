@@ -7,8 +7,8 @@
 
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-    RewriteCond %{HTTP_HOST} ^sistemas.intercom.org.br [NC]
-    RewriteRule ^(.*)$ https://www.sistemas.intercom.org.br/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^homolog.intercom.org.br [NC]
+    RewriteRule ^(.*)$ https://www.homolog.intercom.org.br/$1 [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

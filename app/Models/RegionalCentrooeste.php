@@ -37,5 +37,9 @@ class RegionalCentrooeste extends Model
         return $this->hasOne(SubmissaoExpocomRegionalCentrooeste::class, 'inscricao_id', 'id');
     }
 
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
 
 }

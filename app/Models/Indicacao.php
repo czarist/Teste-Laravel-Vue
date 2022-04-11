@@ -28,8 +28,14 @@ class Indicacao extends Model
         'modalidade',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'cpf_autor', 'cpf');
+    }
+
     public function enderecos()
     {
         return $this->hasOne(EnderecoIndicacao::class, 'id', 'endereco_id');
     }
+
 }

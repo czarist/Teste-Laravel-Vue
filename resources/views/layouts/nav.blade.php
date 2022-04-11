@@ -85,18 +85,12 @@
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
                     <li>
-                        <a href="#sm2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> Área de Pagamento <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg> </a>
-                        <ul class="collapse list-unstyled sub-submenu" id="sm2" data-parent="#submenu2"> 
-                            <li>
-                                <a href="{{ route('pagamento.index') }}"> Meus Pagamentos </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('perfil') }}"> Meus Dados </a>
-                            </li>
-
-                        </ul>
+                        <a href="{{ route('pagamento.index') }}" > Meus Pagamentos</a>
                     </li>
+                    <li>
+                        <a href="{{ route('perfil') }}"> Editar Dados </a>
+                    </li>
+
                 </ul>
             </li>
             <h6 style="color:black; z-index:999;" class="text-center mt-1">Dúvidas sobre o sistema? <br> suporte@kirc.com.br</h6><br>

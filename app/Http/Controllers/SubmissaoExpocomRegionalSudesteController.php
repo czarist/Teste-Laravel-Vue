@@ -49,6 +49,7 @@ class SubmissaoExpocomRegionalSudesteController extends Controller
                     'desc_producao' => $post->desc_producao,
                     'termo_autoria' => $post->termo_autoria,
                     'autorizacao' => $post->autorizacao,
+                    'regiao' => 3,
                 ]);
 
                 if($request->hasFile('file')){

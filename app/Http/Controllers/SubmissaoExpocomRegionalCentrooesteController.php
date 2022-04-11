@@ -47,6 +47,7 @@ class SubmissaoExpocomRegionalCentrooesteController extends Controller
                     'desc_producao' => $post->desc_producao,
                     'termo_autoria' => $post->termo_autoria,
                     'autorizacao' => $post->autorizacao,
+                    'regiao' => 4,
                 ]);
 
                 if($request->hasFile('file')){
@@ -94,6 +95,8 @@ class SubmissaoExpocomRegionalCentrooesteController extends Controller
                     'desc_producao' => $post->desc_producao,
                     'termo_autoria' => $post->termo_autoria,
                     'autorizacao' => $post->autorizacao,
+                    'regiao' => 4,
+
                 ]);
 
                 if($request->hasFile('file')){

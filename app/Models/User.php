@@ -317,6 +317,12 @@ class User extends Authenticatable
         return $this->hasOne(RegionalNorte::class);
     }
 
+    public function indicacao()
+    {
+        return $this->hasOne(Indicacao::class, 'cpf_autor', 'cpf');
+    }
+
+
     public function todos_divisoes_tematicas()
     {
         return $this->belongsToMany(DivisoesTematicas::class, 'todos_divisoes_tematicas' , 'user_id',  'dt_id');

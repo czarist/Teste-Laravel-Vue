@@ -3,11 +3,13 @@
 use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\AvaliacaoAvaliadorController;
+use App\Http\Controllers\AvaliacaoAvaliadorExpocomController;
 use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\ChatAvaliacaoController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\DistribuicaoTipo123Controller;
+use App\Http\Controllers\DistribuicaoTipoExpocomController;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndicacaoController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
 use App\Http\Controllers\SexoController;
 use App\Http\Controllers\SubmissaoController;
+use App\Http\Controllers\SubmissaoExpocomController;
 use App\Http\Controllers\SubmissaoExpocomRegionalCentrooesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalNordesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalNorteController;
@@ -185,15 +188,43 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('avaliacao/avaliador/save', [DistribuicaoTipo123Controller::class , 'avaliadorSave'])->name('avaliacao.avaliador.save');
     Route::post('avaliacao/coordenador/save', [DistribuicaoTipo123Controller::class , 'coordenadorSave'])->name('avaliacao.coordenador.save');
 
+    Route::resource('avaliacaoexpocom', DistribuicaoTipoExpocomController::class)->except(['show', 'create', 'edit']);
+
+    Route::get('avaliacaoexpocom/view/{regiao}', [DistribuicaoTipoExpocomController::class ,'view'])->name('avaliacaoexpocom.view');
+
+    Route::get('avaliacaoexpocom/get', [DistribuicaoTipoExpocomController::class ,'get'])->name('avaliacaoexpocom.get');
+    Route::post('avaliacaoexpocom/avaliador/save', [DistribuicaoTipoExpocomController::class , 'avaliadorSave'])->name('avaliacaoexpocom.avaliador.save');
+    Route::post('avaliacaoexpocom/coordenador/save', [DistribuicaoTipoExpocomController::class , 'coordenadorSave'])->name('avaliacaoexpocom.coordenador.save');
+
+    //GRID AVALIADOR TIPO 1,2,3
     Route::resource('avaliador', AvaliacaoAvaliadorController::class)->except(['show', 'create', 'edit']);
     Route::get('avaliador/get', [AvaliacaoAvaliadorController::class ,'get'])->name('avaliador.get');
 
+    //GRID AVALIADOR EXPOCOM
+    Route::resource('avaliador-expocom', AvaliacaoAvaliadorExpocomController::class)->except(['show', 'create', 'edit']);
+    Route::get('avaliador-expocom/get', [AvaliacaoAvaliadorExpocomController::class ,'get'])->name('avaliador.get');
+
+    //CHAT TIPO 1,2,3
     Route::get('coordenador/get/chat/{id}', [ChatAvaliacaoController::class ,'getChat'])->name('chatcoordenador.get.chat');
     Route::post('coordenador/send/message',[ChatAvaliacaoController::class,'sendMensagem'])->name('chatcoordenador.send.message');
+    
+    //CHAT ENTRE COORDENADOR E AVALIADOR TIPO 1,2,3
+    Route::get('coordenador/get/chat/avaliador/{id}', [ChatAvaliacaoController::class ,'getChatAvaliador'])->name('chatcoordenador.get.chat.avaliador');
+    Route::post('coordenador/avaliador/send/message',[ChatAvaliacaoController::class,'sendMensagemAvaliador'])->name('chatcoordenador.avaliador.send.message');
 
+    //CHAT EXPOCOM
+    Route::get('coordenador/expocom/get/chat/{id}', [ChatAvaliacaoController::class ,'getChatExpocom'])->name('chatcoordenador.expocom.get.chat');
+    Route::post('coordenador/expocom/send/message',[ChatAvaliacaoController::class,'sendMensagemExpocom'])->name('chatcoordenador.expocom.send.message');
+
+    //GRID AUTOR (AVALIADO)
     Route::resource('submissao', SubmissaoController::class)->except(['show', 'create', 'edit']);
     Route::get('submissao/get', [SubmissaoController::class ,'get'])->name('submissao.get');
     Route::post('submissao/edit', [SubmissaoController::class , 'edit'])->name('submissao.edit');
+
+    //GRID AUTOR (AVALIADO EXPOCOM)
+    Route::resource('submissao-expocom', SubmissaoExpocomController::class)->except(['show', 'create', 'edit']);
+    Route::get('submissao-expocom/get', [SubmissaoExpocomController::class ,'get'])->name('submissao-expocom.get');
+    Route::post('submissao-expocom/edit', [SubmissaoExpocomController::class , 'edit'])->name('submissao-expocom.edit');
 
 });
 //END AUTH
@@ -226,6 +257,7 @@ Route::prefix('get')->group(function () {
     Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
     Route::get('indicacao-expocom-2022', [GetController::class, 'getIndicacaoExpocom2022'])->name('get.indicacao.expocom.2022');
     Route::get('avaliadores', [GetController::class, 'getAvaliadores'])->name('get.avaliadores');
+    Route::get('avaliadores-expocom', [GetController::class, 'getAvaliadoresExpocom'])->name('get.avaliadores.expocom');
     Route::get('coordenador/{id}', [GetController::class, 'getCoordenador'])->name('get.coordenador');
 
 });

@@ -37,4 +37,9 @@ class RegionalNordeste extends Model
         return $this->hasOne(SubmissaoExpocomRegionalNordeste::class, 'inscricao_id', 'id');
     }
 
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+
 }

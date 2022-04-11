@@ -18,7 +18,7 @@
                 >
                 <div class="d-flex justify-content-between">
                     <span v-if="mensagem && mensagem.coordenador"> 
-                        <b>{{ mensagem && mensagem.created_at | momentFullDate }} - {{ mensagem && mensagem.coordenador  && mensagem.coordenador.user ? mensagem.coordenador.user.name : 'Coordenador' }}</b> 
+                        <b>{{ mensagem && mensagem.created_at | momentFullDate }} - {{ mensagem && mensagem.coordenador  && mensagem.coordenador.user ? mensagem.coordenador.user.name : 'Coordenador' }} - Coordenador</b> 
                     </span>
 
                     <span v-if="mensagem && mensagem.avaliado"> 
@@ -26,7 +26,7 @@
                     </span>
 
                     <span v-if="mensagem && mensagem.avaliador"> 
-                        <b>{{ mensagem && mensagem.created_at | momentFullDate }} - {{ mensagem && mensagem.avaliador  && mensagem.avaliador.user ? mensagem.avaliador.user.name : 'Avaliador' }}</b> 
+                        <b>{{ mensagem && mensagem.created_at | momentFullDate }} - {{ mensagem && mensagem.avaliador ? mensagem.avaliador.name : 'Avaliador' }} - Avaliador</b> 
                     </span>
 
                 </div><br /><br />

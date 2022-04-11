@@ -32,7 +32,7 @@ class SubmissaoRegionalNordestesController extends Controller
                 'regional_nordeste.submissaoMesa.avaliacao',
                 'regional_nordeste.submissaoDt.avaliacao',
                 'regional_nordeste.submissaoJunior.avaliacao',
-                'regional_nordeste.submissaoExpocom',
+                'regional_nordeste.submissaoExpocom.avaliacao',
                 'regional_nordeste.submissaoDt.coautorOrientadorSubNordeste',
                 'regional_nordeste.submissaoJunior.coautorOrientadorSubNordeste',
                 'regional_nordeste.submissaoMesa.coautorOrientadorSubNordeste',
@@ -107,7 +107,8 @@ class SubmissaoRegionalNordestesController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 2
                 ]);
 
                 if($request->hasFile('file')){
@@ -154,7 +155,8 @@ class SubmissaoRegionalNordestesController extends Controller
                     'palavra_chave_4' => $post->palavra_chave_4,
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao
+                    'autorizacao' => $post->autorizacao,
+                    'regiao' => 2
                 ]);
 
                 if($request->hasFile('file')){
@@ -196,7 +198,7 @@ class SubmissaoRegionalNordestesController extends Controller
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
                     if(!empty($avaliacao)){
                         $avaliacao->update([
-                            'edit' => 0,
+                            'edit' => 1,
                         ]);
                     }                    
                 }                   

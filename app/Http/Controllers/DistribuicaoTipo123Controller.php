@@ -9,9 +9,7 @@ use App\Models\SubmissaoRegionalSul;
 use App\Models\SubmissaoRegionalNorte;
 use App\Models\SubmissaoRegionalNordestes;
 use App\Models\SubmissaoRegionalCentrooeste;
-
-use App\Models\User;
-use App\Services\CreateChatAvaliacao;
+use App\Services\CreateChatAvaliador;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +27,7 @@ class DistribuicaoTipo123Controller extends Controller
         $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
 
         if(!empty($coordenador) &&  $coordenador->tipo != "Expocom"){
-            return SubmissaoRegionalSul::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho')
+            return SubmissaoRegionalSul::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
             ->with(
                 'avaliacao',
                 'avaliacao.avaliador_1_obj',
@@ -44,7 +42,7 @@ class DistribuicaoTipo123Controller extends Controller
         $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
 
         if(!empty($coordenador) &&  $coordenador->tipo != "Expocom"){
-            return SubmissaoRegionalSudeste::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho')
+            return SubmissaoRegionalSudeste::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
             ->with(
                 'avaliacao',
                 'avaliacao.avaliador_1_obj',
@@ -59,7 +57,7 @@ class DistribuicaoTipo123Controller extends Controller
         $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
 
         if(!empty($coordenador) &&  $coordenador->tipo != "Expocom"){
-            return SubmissaoRegionalNorte::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho')
+            return SubmissaoRegionalNorte::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
             ->with(
                 'avaliacao',
                 'avaliacao.avaliador_1_obj',
@@ -74,7 +72,7 @@ class DistribuicaoTipo123Controller extends Controller
         $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
 
         if(!empty($coordenador) &&  $coordenador->tipo != "Expocom"){
-            return SubmissaoRegionalNordestes::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho')
+            return SubmissaoRegionalNordestes::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
             ->with(
                 'avaliacao',
                 'avaliacao.avaliador_1_obj',
@@ -89,7 +87,7 @@ class DistribuicaoTipo123Controller extends Controller
         $coordenador = Coordenador::where('user_id', Auth::user()->id)->first();
 
         if(!empty($coordenador) &&  $coordenador->tipo != "Expocom"){
-            return SubmissaoRegionalCentrooeste::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho')
+            return SubmissaoRegionalCentrooeste::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
             ->with(
                 'avaliacao',
                 'avaliacao.avaliador_1_obj',
@@ -106,6 +104,39 @@ class DistribuicaoTipo123Controller extends Controller
                 return $this->submissoes_sudeste()
                     ->when($request->statusAva, function ($query) use ($request) {
                         $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_avaliador_1', '=', $request->statusAva)
+                            ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                            ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                            });
+                    })
+                    ->when($request->statusCoo, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_coordenador', '=', $request->statusCoo);
+                        });
+                    })  
+                    ->when($request->sort == 'id', function ($query) use ($request) {
+                        $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'dt', function ($query) use ($request) {
+                        $query->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->where('titulo', 'like', '%' . $request->search . '%');
+                            });
+                        });
+                    })
+                    ->when($request->modalidade, function ($query) use ($request){
+                        $query->where('dt', '=', $request->modalidade);
+                    })
+                ->paginate(20);
+            }
+
+            if(Auth::user()->coordenador_regional->regiao == "Sul"){
+                return $this->submissoes_sul()
+                    ->when($request->statusAva, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
                             $q->where('status_avaliador_1', '=', $request->statusAva);
                         });
                     })
@@ -115,7 +146,9 @@ class DistribuicaoTipo123Controller extends Controller
                         });
                     })  
                     ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
-                        $query->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
                     })
                     ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
                         $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
@@ -133,150 +166,126 @@ class DistribuicaoTipo123Controller extends Controller
                             $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
                         });
                     })
-                    ->paginate(20);
-            }
-
-            if(Auth::user()->coordenador_regional->regiao == "Sul"){
-                return $this->submissoes_sul()
-                ->when($request->statusAva, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_avaliador_1', '=', $request->statusAva);
-                    });
-                })
-                ->when($request->statusCoo, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_coordenador', '=', $request->statusCoo);
-                    });
-                })  
-                ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
-                    $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'id', function ($query) use ($request) {
-                    $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'dt', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'titulo', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
+                    ->when($request->modalidade, function ($query) use ($request){
+                        $query->where('dt', '=', $request->modalidade);
+                    })
                 ->paginate(20);
             }
 
             if(Auth::user()->coordenador_regional->regiao == "Norte"){
                 return $this->submissoes_norte()
-                ->when($request->statusAva, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_avaliador_1', '=', $request->statusAva);
-                    });
-                })
-                ->when($request->statusCoo, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_coordenador', '=', $request->statusCoo);
-                    });
-                })  
-                ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
-                    $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'id', function ($query) use ($request) {
-                    $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'dt', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'titulo', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
+                    ->when($request->statusAva, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_avaliador_1', '=', $request->statusAva);
+                        });
+                    })
+                    ->when($request->statusCoo, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_coordenador', '=', $request->statusCoo);
+                        });
+                    })  
+                    ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
+                        $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'id', function ($query) use ($request) {
+                        $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'dt', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'titulo', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->modalidade, function ($query) use ($request){
+                        $query->where('dt', '=', $request->modalidade);
+                    })
                 ->paginate(20);
             }
 
             if(Auth::user()->coordenador_regional->regiao == "Nordeste"){
                 return $this->submissoes_nordeste()
-                ->when($request->statusAva, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_avaliador_1', '=', $request->statusAva);
-                    });
-                })
-                ->when($request->statusCoo, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_coordenador', '=', $request->statusCoo);
-                    });
-                })  
-                ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
-                    $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'id', function ($query) use ($request) {
-                    $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'dt', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'titulo', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
+                    ->when($request->statusAva, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_avaliador_1', '=', $request->statusAva);
+                        });
+                    })
+                    ->when($request->statusCoo, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_coordenador', '=', $request->statusCoo);
+                        });
+                    })  
+                    ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
+                        $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'id', function ($query) use ($request) {
+                        $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'dt', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'titulo', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->modalidade, function ($query) use ($request){
+                        $query->where('dt', '=', $request->modalidade);
+                    })
                 ->paginate(20);
             }
 
             if(Auth::user()->coordenador_regional->regiao == "Centro-Oeste"){
                 return $this->submissoes_centrooeste()
-                ->when($request->statusAva, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_avaliador_1', '=', $request->statusAva);
-                    });
-                })
-                ->when($request->statusCoo, function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->where('status_coordenador', '=', $request->statusCoo);
-                    });
-                })  
-                ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
-                    $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'id', function ($query) use ($request) {
-                    $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
-                })
-                ->when($request->sort == 'dt', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
-                ->when($request->sort == 'titulo', function ($query) use ($request) {
-                    $query->whereHas('avaliacao', function($q) use ($request) {
-                        $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
-                    });
-                })
+                    ->when($request->statusAva, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_avaliador_1', '=', $request->statusAva);
+                        });
+                    })
+                    ->when($request->statusCoo, function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->where('status_coordenador', '=', $request->statusCoo);
+                        });
+                    })  
+                    ->when($request->sort == 'status_avaliador', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('status_avaliador_1', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
+                        $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'id', function ($query) use ($request) {
+                        $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
+                    })
+                    ->when($request->sort == 'dt', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->sort == 'titulo', function ($query) use ($request) {
+                        $query->whereHas('avaliacao', function($q) use ($request) {
+                            $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        });
+                    })
+                    ->when($request->modalidade, function ($query) use ($request){
+                        $query->where('dt', '=', $request->modalidade);
+                    })
                 ->paginate(20);
             }
         }
@@ -294,7 +303,7 @@ class DistribuicaoTipo123Controller extends Controller
                 'status_avaliador_2' => $post['status_avaliador_2'] ?? null,
                 'avaliador_3' => $post['avaliador_3']['id'] ?? null,
                 'status_avaliador_3' => $post['status_avaliador_3'] ?? null,
-                'status_coordenador' => "Em Espera"
+                'status_coordenador' => "Em Análise"
             ]);
 
             if($post['regiao'] == 1){
@@ -388,12 +397,11 @@ class DistribuicaoTipo123Controller extends Controller
                     'justificativa_avaliador_1' => $post['justificativa_avaliador'] ?? null,
                 ]);
 
-                $chat = CreateChatAvaliacao::create(
+                $chat = CreateChatAvaliador::create(
                     $distribuicao->id,
-                    null,
                     $distribuicao->avaliador_1,
                     null,
-                    $post['justificativa_avaliador']);
+                    $post['justificativa_avaliador'] ?? null, 1);
             }
 
             if($distribuicao->avaliador_2 == Auth::user()->id){
@@ -402,12 +410,11 @@ class DistribuicaoTipo123Controller extends Controller
                     'justificativa_avaliador_2' => $post['justificativa_avaliador'] ?? null,
                 ]);
 
-                $chat = CreateChatAvaliacao::create(
+                $chat = CreateChatAvaliador::create(
                     $distribuicao->id,
-                    null,
                     $distribuicao->avaliador_2,
                     null,
-                    $post['justificativa_avaliador']);
+                    $post['justificativa_avaliador'] ?? null, 2);
 
             }
 
@@ -417,12 +424,11 @@ class DistribuicaoTipo123Controller extends Controller
                     'justificativa_avaliador_3' => $post['justificativa_avaliador'] ?? null,
                 ]);
 
-                $chat = CreateChatAvaliacao::create(
+                $chat = CreateChatAvaliador::create(
                     $distribuicao->id,
-                    null,
                     $distribuicao->avaliador_3,
                     null,
-                    $post['justificativa_avaliador']);
+                    $post['justificativa_avaliador'] ?? null, 3);
             }
             Log::info('Distribuicao de trabalho status e justificativa avaliador updated: '.$distribuicao->id.' | Request: '.json_encode($request->all()));
             return response()->json(['message' => 'success', 'response' => $distribuicao], 201);

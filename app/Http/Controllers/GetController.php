@@ -180,9 +180,30 @@ class GetController extends Controller
                     ->orderBy('name')->get();
     }
 
+    public function getAvaliadoresExpocom(User $user)
+    {
+        return $user->select('id','name')
+                    ->with(
+                        'avaliador_expocom',
+                        'todos_divisoes_tematicas:id,descricao',
+                        'todos_divisoes_tematicas_jr:id,descricao',
+                        'todos_cinema_audiovisual:id,descricao',
+                        'todos_jornalismo:id,descricao',
+                        'todos_publicidade_propaganda:id,descricao',
+                        'todos_relacoes_publicas:id,descricao',
+                        'todos_producao_editorial:id,descricao',
+                        'todos_radio_internet:id,descricao',
+                    )
+                    ->whereHas('avaliador_expocom', function ($query) {
+                        return $query->where('avaliador', '=', 1);
+                    })
+                    ->orderBy('name')->get();
+    }
+
+
     public function getCoordenador(Coordenador $coordenador, $id)
     {
-        return $coordenador->select('id', 'user_id')
+        return $coordenador->select('id', 'user_id', 'tipo', 'regiao', 'dt')
             ->with('user:id,name')
             ->whereUserId($id)
             ->first();

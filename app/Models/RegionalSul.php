@@ -38,4 +38,8 @@ class RegionalSul extends Model
         return $this->hasOne(SubmissaoExpocomRegionalSul::class, 'inscricao_id', 'id');
     }
 
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
 }

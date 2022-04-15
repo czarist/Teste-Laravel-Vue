@@ -1106,7 +1106,6 @@
             },
             getModalidade() {
                 if(this.post && this.post.categoria) {
-                    console.log('chamou get modalidade', this.post.categoria)
                     switch (this.post.categoria)
                     {
                     case "Cinema e Audiovisual":

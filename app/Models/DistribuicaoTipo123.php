@@ -56,26 +56,4 @@ class DistribuicaoTipo123 extends Model
         return $this->hasOne(SubmissaoRegionalNorte::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomNordeste(){
-        return $this->hasOne(SubmissaoExpocomRegionalNordeste::class, 'avaliacao', 'id');
-    }
-
-    public function submissaoExpocomSul(){
-        return $this->hasOne(SubmissaoExpocomRegionalSul::class, 'avaliacao', 'id');
-    }
-
-    public function submissaoExpocomSudeste(){
-        return $this->hasOne(SubmissaoExpocomRegionalSudeste::class, 'avaliacao', 'id');
-    }
-
-    public function submissaoExpocomCentrooeste(){
-        return $this->hasOne(SubmissaoExpocomRegionalCentrooeste::class, 'avaliacao', 'id');
-    }
-
-    public function submissaoExpocomNorte(){
-        return $this->hasOne(SubmissaoExpocomRegionalNorte::class, 'avaliacao', 'id');
-    }
-
-
-
 }

@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class AddColumnAvaliacaoInSubimissaoExpocomRegionalCentrooestes extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::table('submissao_expocom_regional_centrooestes', function (Blueprint $table) {
@@ -19,11 +14,6 @@ class AddColumnAvaliacaoInSubimissaoExpocomRegionalCentrooestes extends Migratio
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('submissao_expocom_regional_centrooestes', function (Blueprint $table) {

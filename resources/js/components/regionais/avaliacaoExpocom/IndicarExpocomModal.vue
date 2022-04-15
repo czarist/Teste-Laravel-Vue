@@ -27,18 +27,21 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 1" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_1`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_1"
                             v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_1`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_1"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_1`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
                         <span v-show="errors.has(`avaliador_1`)" class="invalid-feedback">
                             {{ errors.first(`avaliador_1`) }}
                         </span>
@@ -47,17 +50,20 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 2" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_2`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_2"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_2`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_2"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_2`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
                         <span v-show="errors.has(`avaliador_2`)" class="v-select-invalid-feedback">
                             {{ errors.first(`avaliador_2`) }}
                         </span>
@@ -67,17 +73,20 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 3" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_3`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_3"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_3`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_3"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_3`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
                         <span v-show="errors.has(`avaliador_3`)" class="v-select-invalid-feedback">
                             {{ errors.first(`avaliador_3`) }}
                         </span>
@@ -112,6 +121,9 @@
                 verify: null,
                 divisoes_tematicas: [],
                 avaliadores: [],
+                avaliadores_all: [],
+                categoria: null,
+                modalidade: null,
                 post: {
                     id: null,
                     titulo: null,
@@ -134,13 +146,82 @@
                     this.post.inscricao_id = this.selectedIndicar ? this.selectedIndicar.inscricao_id : null
                     this.post.submissao_id = this.selectedIndicar ? this.selectedIndicar.id : null
                     this.post.regiao = this.selectedIndicar ? this.selectedIndicar.regiao : null
-                    this.post.titulo = this.selectedIndicar ? this.selectedIndicar.titulo : null
-                    this.post.dt = this.selectedIndicar ? this.selectedIndicar.dt : null
+                    this.post.titulo = this.selectedIndicar && this.selectedIndicar.inscricao && this.selectedIndicar.inscricao.user && this.selectedIndicar.inscricao.user.indicacao ? this.selectedIndicar.inscricao.user.indicacao.titulo_trabalho.substring(40,0) : null
+                    this.post.dt = this.selectedIndicar && this.selectedIndicar.inscricao && this.selectedIndicar.inscricao.user && this.selectedIndicar.inscricao.user.indicacao ? this.selectedIndicar.inscricao.user.indicacao.categoria : null
                     this.post.avaliador_1 = this.selectedIndicar && this.selectedIndicar.avaliacao  ? this.selectedIndicar.avaliacao.avaliador_1_obj : null
                     this.post.avaliador_2 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_2_obj : null
                     this.post.avaliador_3 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_3_obj : null
                     this.post.avaliacao = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao : null
                     this.post._method = this.post && this.post.id ? 'put' : 'post'
+                    this.categoria = this.selectedIndicar && this.selectedIndicar.inscricao &&  this.selectedIndicar.inscricao.user && this.selectedIndicar.inscricao.user.indicacao ?  this.selectedIndicar.inscricao.user.indicacao.categoria : null
+                    this.modalidade = this.selectedIndicar && this.selectedIndicar.inscricao &&  this.selectedIndicar.inscricao.user && this.selectedIndicar.inscricao.user.indicacao ?  this.selectedIndicar.inscricao.user.indicacao.modalidade : null
+
+                   if(this.categoria && this.categoria != null && this.modalidade && this.modalidade != null){
+                        if(this.categoria == "Jornalismo"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_jornalismo.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                        if(this.categoria == "Cinema e Audiovisual"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_cinema_audiovisual.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                        if(this.categoria == "Publicidade e Propaganda"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_publicidade_propaganda.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                        if(this.categoria == "Rádio, TV e Internet"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_radio_internet.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                        if(this.categoria == "Produção Transdisciplinar"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_producao_editorial.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                        if(this.categoria == "Relações Públicas"){
+                            let avaliador = []
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_relacoes_publicas.find(descricao => descricao.descricao  == this.modalidade)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+                   } 
 
                 } else {
                     this.clear()
@@ -148,7 +229,6 @@
             },
             post: {
                 handler:function(newVal) {
-
                     if(newVal && newVal.avaliador_1){
                         this.post.status_avaliador_1 = "Em Análise"
                     }
@@ -171,10 +251,11 @@
         },
         methods: {
             find_dt(post){
-                if(post && post.dt){
-                    let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
-                }
+                // if(post && post.dt){
+                //     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
+                //     return selectedDt ? selectedDt.descricao : "NI"
+                // }
+                return post.dt
             },    
             async save() {
                 this.loading = true
@@ -244,7 +325,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     dataType: 'json',
                     success: (res) => {
-                        this.avaliadores = res
+                        this.avaliadores_all = res
                     },
                     error: (res) => {
                         console.log(res)

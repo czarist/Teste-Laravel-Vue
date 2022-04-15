@@ -36,4 +36,8 @@ class SubmissaoRegionalSul extends Model
         return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
+    public function inscricao(){
+        return $this->belongsTo(RegionalSul::class, 'inscricao_id', 'id');
+    }
+
 }

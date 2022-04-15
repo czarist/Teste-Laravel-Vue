@@ -21,7 +21,7 @@ class IndicacaoController extends Controller
     public function cpfCheckIndicacao(Request $request)
     {
         try {
-            $usuario = Indicacao::select('id', 'cpf_autor')->where('cpf_autor', '=', $request->cpf)->withTrashed();
+            $usuario = Indicacao::select('id', 'cpf_autor')->where('cpf_autor', '=', $request->cpf);
 
             if($usuario->first()) {
                 if($usuario->first()->cpf_autor == $request->cpf) {

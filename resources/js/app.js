@@ -294,6 +294,10 @@ import RegionalNorteForm from './components/regionais/norte/RegionalNorteForm.vu
 import RegionalNordesteForm from './components/regionais/nordeste/RegionalNordesteForm.vue'
 import RegionalSuldesteForm from './components/regionais/suldeste/RegionalSuldesteForm.vue'
 import RegionalCentrooesteForm from './components/regionais/centrooeste/RegionalCentrooesteForm.vue'
+import InscricaoNacionalForm from './components/nacional/InscricaoNacionalForm.vue'
+
+//SUBMISSAO NACIONAL
+import SubmissaoNacionalForm from './components/nacional/SubmissaoNacionalForm.vue'
 
 //SUBMICOES SUL
 import SubmissaoSul from './components/regionais/sul/SubmissaoSul.vue'
@@ -339,6 +343,7 @@ import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/Avalia
 import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
 
 
+
 const app = new Vue({
     el: '#app',
     components: {
@@ -366,6 +371,10 @@ const app = new Vue({
         'regional-nordesteform': RegionalNordesteForm,
         'regional-suldesteform': RegionalSuldesteForm,
         'regional-centrooeste': RegionalCentrooesteForm,
+        'inscricao-nacional': InscricaoNacionalForm,
+
+        //SUBMISSAO NACIONAL 2022
+        'submissao-nacional': SubmissaoNacionalForm,
 
         //SUBMISSOES SUL 2022
         'submissao-sul':SubmissaoSul,

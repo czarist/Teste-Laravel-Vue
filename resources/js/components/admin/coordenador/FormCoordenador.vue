@@ -6,8 +6,7 @@
             <b-button size="sm" variant="outline-danger" @click="close()">x</b-button>
         </template>
         <template>
-            <b-row>
-                
+            <b-row>                
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Nome" label-class="font-weight-bold">
                         <b-form-input
@@ -45,23 +44,21 @@
                         </option>
                         </b-form-select>
 
-
                         <span v-show="errors.has(`tipo`)" class="invalid-feedback d-block">
                             {{ errors.first(`tipo`) }}
                         </span>
                     </b-form-group>
                 </b-col>
 
-                <b-col cols="12" sm="6" lg="6" v-if="!tipo_expocom">
+                <b-col cols="12" sm="6" lg="6" v-if="tipo_expocom == false">
                     <b-form-group label="Regiao" label-class="font-weight-bold" >
                         <b-form-select
                             :disabled="loading"
                             name="regiao"
-                            v-validate="{ required: true }"
-                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`regiao`)}]"
+                            v-validate="{ required: tipo_expocom == true ? false : true }"
+                            :class="['form-control form-control-sm', { 'is-invalid': errors.has(`regiao`)}]"
                             size="sm"
                             data-vv-as="Regiao"
-                            class="form-control form-control-sm"
                             v-model="post.regiao"
                         >
                         <option :value="null">Selecione</option>
@@ -95,16 +92,37 @@
                     </b-form-group>
                 </b-col>
 
-                <b-col cols="12" sm="12" lg="12" v-if="tipo_expocom">
+                <b-col cols="12" sm="6" lg="4">
+                    <b-form-group
+                        label="Coordenador Geral"
+                        label-class="font-weight-bold"
+                        >
+                        <b-form-radio-group
+                            :disabled="loading"
+                            v-model="post.geral"
+                            :options="options"
+                            :button-variant="`outline-primary`" 
+                            size="sm"
+                            v-validate="{ required: post.geral == 0 ? true : false }"
+                            name="geral"
+                            buttons
+                        ></b-form-radio-group>
+                        <span v-show="errors.has(`geral`)" class="invalid-feedback d-block">
+                            {{ errors.first(`geral`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+
+                <b-col cols="12" sm="12" lg="12" v-if="tipo_expocom == true">
                     <b-form-group label="DIVISÕES TEMÁTICAS:" label-class="font-weight-bold">
                         <b-form-select
                             :disabled="loading"
                             name="divisoes_tematicas"
-                            v-validate="{ required: true }"
+                            v-validate="{ required: tipo_expocom == true ? true : false }"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`divisoes_tematicas`)}]"
                             size="sm"
                             data-vv-as="DIVISÕES TEMÁTICAS"
-                            class="form-control form-control-sm"
                             v-model="post.dt"
                         >
                         <option :value="null">Selecione</option>
@@ -152,10 +170,8 @@
                     { text: "Publicidade e Propaganda", value: "Publicidade e Propaganda" },
                     { text: "Rádio, TV e Internet", value: "Rádio, TV e Internet" },
                     { text: "Relações Públicas", value: "Relações Públicas" },
-
                 ],
                 tipo_expocom: false,
-                // tipo_ij: false,
                 post: {
                     id: null,
                     user_id: null,
@@ -163,6 +179,7 @@
                     dt: null,
                     ano: null,
                     tipo: null,
+                    geral: null,
                     _method: 'post'
                 },
                 options: [
@@ -195,6 +212,7 @@
                     this.post.regiao = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.regiao : null
                     this.post.dt = this.selected && this.selected.coordenador_regional ? this.selected.coordenador_regional.dt : null
                     this.post.ano = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.ano : null
+                    this.post.geral = this.selected && this.selected.coordenador_regional && this.selected.coordenador_regional ? this.selected.coordenador_regional.geral : null
                     this.post._method = this.post && this.post.id ? 'put' : 'post'
 
                 } else {
@@ -205,6 +223,9 @@
                 handler:function(newVal) {
                     this.tipo_expocom = newVal.tipo == 'Expocom' ? true : false 
                     // this.tipo_ij = newVal.tipo == 'Intercom Junior' ? true : false 
+                    if(this.tipo_expocom == true){
+                        this.$validator.pause('regiao')
+                    }
 
                 },
                 deep:true
@@ -220,7 +241,7 @@
             async save() {
                 this.loading = true
 
-                if(this.post.dt == null){
+                if(this.post.dt == null && this.post.tipo == "Expocom"){
                     this.message('Erro', 'Selecione uma divisão temática apenas!', 'error');
                     this.loading = false
                     return
@@ -272,23 +293,6 @@
                     })
                 }
             },
-            // getDivisoesTematicas(){
-            //     let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
-
-            //     $.ajax({
-            //         method: "GET",
-            //         url: urlgetDivisoesTematicas,
-            //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            //         dataType: 'json',
-            //         success: (res) => {
-            //             this.divisoes_tematicas = res
-            //         },
-            //         error: (res) => {
-            //             console.log(res)
-                        
-            //         }
-            //     }); 
-            // },
             clear() {
                 this.post.id = null
                 this.post.name = null
@@ -297,7 +301,6 @@
             }
         },
         created() {
-            // this.getDivisoesTematicas()
 
         },
 

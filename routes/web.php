@@ -14,6 +14,7 @@ use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\NacionalController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagSeguroController;
 use App\Http\Controllers\PerfilController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\SubmissaoExpocomRegionalNordesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalNorteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalSudesteController;
 use App\Http\Controllers\SubmissaoExpocomRegionalSulController;
+use App\Http\Controllers\SubmissaoNacionalController;
 use App\Http\Controllers\SubmissaoRegionalCentrooesteController;
 use App\Http\Controllers\SubmissaoRegionalNordestesController;
 use App\Http\Controllers\SubmissaoRegionalNorteController;
@@ -37,6 +39,7 @@ use App\Http\Controllers\SubmissaoRegionalSudesteController;
 use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
+use App\Models\SubmissaoNacional;
 use Illuminate\Support\Facades\Route;
 
 
@@ -108,6 +111,11 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('pagseguro/regionais/credito', [PagSeguroController::class , 'regionaiscredito'])->name('pagseguro.regionais.credito');
     Route::post('pagseguro/regionais/boleto', [PagSeguroController::class , 'regionaisboleto'])->name('pagseguro.regionais.boleto');
 
+    //PAGSEGURO NACIONAL
+    Route::post('pagseguro/nacional/credito', [PagSeguroController::class , 'nacionalcredito'])->name('pagseguro.nacional.credito');
+    Route::post('pagseguro/nacional/boleto', [PagSeguroController::class , 'nacionalboleto'])->name('pagseguro.nacional.boleto');
+    
+
     //Associado
     Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
     Route::get('associado', [AssociadoController::class ,'area'])->name('associado');
@@ -121,7 +129,16 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('/avaliadorexpocom', [AvaliadorExpocomController::class, 'formavaliadorexpocom'])->name('avaliadorexpocom');
     Route::post('avaliador/save', [AvaliadorExpocomController::class , 'store'])->name('avaliador.save');
 
+    //NACIONAL 
+    Route::get('nacional', [NacionalController::class ,'index'])->name('nacional');
+    Route::post('nacional/save', [NacionalController::class , 'store'])->name('nacional.save');
 
+    //SUBMISSAO NACIONAL
+    Route::get('submissao/nacional/gp', [SubmissaoNacionalController::class ,'submissaoGp'])->name('submissao.nacional.gp');
+    Route::get('submissao/nacional/junior', [SubmissaoNacionalController::class ,'submissaoJunior'])->name('submissao.nacional.junior');
+    Route::get('submissao/nacional/publicom', [SubmissaoNacionalController::class ,'submissaoPublicom'])->name('submissao.nacional.publicom');
+    Route::post('submissao/nacional/save', [SubmissaoNacionalController::class , 'store'])->name('submissao.nacional.save');
+    
     //REGIONAL SUL
     Route::get('regional/sul', [RegionalSulController::class ,'formregionalsul'])->name('reginal.sul');
     Route::post('regional/sul/save', [RegionalSulController::class , 'store'])->name('regional.sul.save');
@@ -242,6 +259,7 @@ Route::prefix('get')->group(function () {
     Route::get('instituicoes', [GetController::class, 'getInstituicoes'])->name('get.instituicoes');
     Route::get('produtos', [GetController::class, 'getProdutos'])->name('get.produtos');
     Route::get('divisoes-tematicas', [GetController::class, 'getDivisoesTematicas'])->name('get.divisoes-tematicas');
+    Route::get('gp', [GetController::class, 'getGrupoPesquisa'])->name('get.gp');
     Route::get('divisoes-tematicas-jr', [GetController::class, 'getDivisoesTematicasJr'])->name('get.divisoes-tematicas-jr');
     Route::get('cinema-audiovisual', [GetController::class, 'getCinemaAudiovisual'])->name('get.cinema-audiovisual');
     Route::get('jornalismo', [GetController::class, 'getJornalismo'])->name('get.jornalismo');
@@ -254,6 +272,7 @@ Route::prefix('get')->group(function () {
     Route::get('produtos-regionais-norte', [GetController::class, 'getProdutosRegionaisNorte'])->name('get.produtos.regionais.norte');
     Route::get('produtos-regionais-nordeste', [GetController::class, 'getProdutosRegionaisNordeste'])->name('get.produtos.regionais.nordeste');
     Route::get('produtos-regionais-centrooeste', [GetController::class, 'getProdutosRegionaisCentrooeste'])->name('get.produtos.regionais.centrooeste');
+    Route::get('produtos-nacional', [GetController::class, 'getProdutosNacional'])->name('get.produtos.nacional');
     Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
     Route::get('indicacao-expocom-2022', [GetController::class, 'getIndicacaoExpocom2022'])->name('get.indicacao.expocom.2022');
     Route::get('avaliadores', [GetController::class, 'getAvaliadores'])->name('get.avaliadores');

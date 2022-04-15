@@ -16,6 +16,7 @@ use App\Models\Coordenador;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
+use App\Models\GrupoPesquisa;
 use App\Models\Indicacao;
 use App\Models\Municipio;
 use App\Models\Produto;
@@ -89,6 +90,11 @@ class GetController extends Controller
         return $divisoesTematicas->select('id', 'dt', 'descricao')->get();
     }
 
+    public function getGrupoPesquisa(GrupoPesquisa $gp)
+    {
+        return $gp->select('id', 'gp', 'descricao')->get();
+    }
+
     public function getDivisoesTematicasJr(DivisoesTematicasJr $divisoesTematicasJr)
     {
         return $divisoesTematicasJr->select('id', 'dt', 'descricao')->get();
@@ -149,6 +155,10 @@ class GetController extends Controller
         return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Centro-Oeste')->get();
     }
 
+    public function getProdutosNacional(Produto $produtos){
+        return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Nacional')->get();
+    }
+
     public function getProdutosRegionais(Produto $produtos)
     {
         return $produtos->select('id', 'categoria', 'nome', 'valor')->get();
@@ -173,6 +183,8 @@ class GetController extends Controller
                         'todos_relacoes_publicas:id,descricao',
                         'todos_producao_editorial:id,descricao',
                         'todos_radio_internet:id,descricao',
+                        'associado',
+                        'associado.instituicao:id,sigla_instituicao'
                     )
                     ->whereHas('avaliador_expocom', function ($query) {
                         return $query->where('avaliador_junior', '=', 1);
@@ -193,6 +205,8 @@ class GetController extends Controller
                         'todos_relacoes_publicas:id,descricao',
                         'todos_producao_editorial:id,descricao',
                         'todos_radio_internet:id,descricao',
+                        'associado',
+                        'associado.instituicao:id,sigla_instituicao'
                     )
                     ->whereHas('avaliador_expocom', function ($query) {
                         return $query->where('avaliador', '=', 1);

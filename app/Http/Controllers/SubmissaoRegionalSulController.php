@@ -199,7 +199,7 @@ class SubmissaoRegionalSulController extends Controller
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
                     if(!empty($avaliacao)){
                         $avaliacao->update([
-                            'edit' => 1,
+                            'edit' => 0,
                         ]);
                     }                    
                 }                               

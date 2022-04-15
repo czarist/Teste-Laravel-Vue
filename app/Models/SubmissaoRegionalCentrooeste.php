@@ -36,4 +36,8 @@ class SubmissaoRegionalCentrooeste extends Model
         return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
+    public function inscricao(){
+        return $this->belongsTo(RegionalCentrooeste::class, 'inscricao_id', 'id');
+    }
+
 }

@@ -6,7 +6,9 @@ use App\Models\Coordenador;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CoordenadorController extends Controller
 {
@@ -72,10 +74,34 @@ class CoordenadorController extends Controller
                 'tipo' => $post['tipo'],
                 'regiao' => $post['regiao'] ?? null,
                 'ano' => $post['ano'],
-                'dt' => $post['dt'] ?? null
+                'dt' => $post['dt'] ?? null,
+                'geral' => $post['geral'] ?? null,
             ]);
 
             Log::info('Coordenador create: '.$coordenador->id.' | Request: '.json_encode($request->all()));
+
+            //Enviar e-mail informando que foi selecionado como Coordenador
+            try {
+
+                $user = User::findOrFail($post['user_id']);
+                $dados_coordenador['email'] = $user->email;
+                $dados_coordenador['name'] = $user->name;
+                $dados_coordenador['cpf'] = $user->cpf;
+                $dados_coordenador['post'] = $post;
+
+                Mail::send('email.create_coordenador', $dados_coordenador, function ($email) use ($dados_coordenador) {
+                    if (App::environment('production')) {
+                        $email->to($dados_coordenador['email']);
+                    } else {
+                        $email->to('murilo@kirc.com.br');
+                    }
+                        $email->subject('Cadastro de Coordenador | Intercom');
+                    Log::info('E-mail Enviado para o usuario informando que ele foi cadastrado como coordenador' . json_encode($dados_coordenador));
+                });
+            } catch (Exception $e) {
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+            }
+
             return response()->json(['message' => 'success', 'response' => $coordenador], 201);
     
         } catch (Exception $exception) {
@@ -97,7 +123,8 @@ class CoordenadorController extends Controller
                 'tipo' => $request->tipo,
                 'regiao' => $request->regiao ?? null,
                 'ano' => $request->ano,
-                'dt' => $request->dt ?? null
+                'dt' => $request->dt ?? null,
+                'geral' => $request->geral ?? null,
             ]);
 
             Log::info('Coordenador updated: '.$coordenador->id.' | Request: '.json_encode($request->all()));

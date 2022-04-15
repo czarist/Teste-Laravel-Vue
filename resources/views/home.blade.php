@@ -97,7 +97,7 @@
                     <div class="account-box">
                         <div class="info">
                             <div class="inv-title">
-                                <h4 class="" style="color:#FFF;">Congressos Anuais</h4>
+                                <h4 class="" style="color:#FFF;">Congresso Nacional</h4>
                             </div>
                             <div class="inv-balance-info">
                             </div>
@@ -105,7 +105,7 @@
                         <div class="acc-action">
                             <div class="">
                             </div>
-                            <a href="javascript:void(0);"  type="button" data-bs-toggle="modal"data-bs-target="#congressoanuais">Acesse</a>
+                            <a href="javascript:void(0);"  type="button" data-bs-toggle="modal"data-bs-target="#conregresso_nacional">Acesse</a>
                         </div>
                     </div>
                 </div>
@@ -210,12 +210,9 @@
                             )                                        
                                 @if (Auth::user()->pago_regional_sul_2022)                                        
                                     @if (
-                                        Auth::user()->regional_sul->categoria_inscricao == 1 
-                                        || Auth::user()->regional_sul->categoria_inscricao == 2 
-                                        || Auth::user()->regional_sul->categoria_inscricao == 10
-                                        || Auth::user()->regional_sul->categoria_inscricao == 8
-                                        || Auth::user()->regional_sul->categoria_inscricao == 9
-                                        
+                                        Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 1                                         
+                                        || Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 2 
+                                        || Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 10                                        
                                         )
 
                                             <div class="row">
@@ -233,11 +230,14 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_sul->categoria_inscricao == 3 
-                                        || Auth::user()->regional_sul->categoria_inscricao == 4
-                                        || Auth::user()->regional_sul->categoria_inscricao == 5
-                                        || Auth::user()->regional_sul->categoria_inscricao == 6
-                                        || Auth::user()->regional_sul->categoria_inscricao == 7
+                                        Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 3 
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 4
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao &&  Auth::user()->regional_sul->categoria_inscricao == 5
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 6
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 7
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 8
+                                        || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 9
+
                                     )
                                         <div class="row">
                                             <div class="col-6">
@@ -253,11 +253,9 @@
 
                                 @if (Auth::user()->pago_regional_nordeste_2022)                                           
                                     @if (
-                                        Auth::user()->regional_nordeste->categoria_inscricao == 1 
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 2 
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 10
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 8
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 9
+                                        Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 1                                         
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 2 
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 10
                                         )
 
                                             <div class="row">
@@ -275,11 +273,14 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_nordeste->categoria_inscricao == 3 
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 4
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 5
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 6
-                                        || Auth::user()->regional_nordeste->categoria_inscricao == 7
+                                        Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 3                                         
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao &&  Auth::user()->regional_nordeste->categoria_inscricao == 4
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 5
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 6
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 7
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 8
+                                        || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 9
+
                                     )
                                         <div class="row">
                                             <div class="col-6">
@@ -295,12 +296,9 @@
 
                                 @if (Auth::user()->pago_regional_suldeste_2022)                                                
                                     @if (
-                                        Auth::user()->regional_suldeste->categoria_inscricao == 1 
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 2 
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 10
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 8
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 9
-
+                                        Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 1                                         
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 2 
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 10
                                         )
 
                                             <div class="row">
@@ -318,11 +316,13 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_suldeste->categoria_inscricao == 3 
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 4
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 5
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 6
-                                        || Auth::user()->regional_suldeste->categoria_inscricao == 7
+                                        Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 3                                         
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 4
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 5
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 6
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 7
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 8
+                                        || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 9
                                     )
                                         <div class="row">
                                             <div class="col-6">
@@ -337,11 +337,9 @@
 
                                 @if (Auth::user()->pago_regional_centrooeste_2022)
                                     @if (
-                                        Auth::user()->regional_centrooeste->categoria_inscricao == 1 
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 2 
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 10
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 8
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 9
+                                        Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 1                                         
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 2 
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 10
                                         )
 
                                             <div class="row">
@@ -359,11 +357,13 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_centrooeste->categoria_inscricao == 3 
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 4
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 5
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 6
-                                        || Auth::user()->regional_centrooeste->categoria_inscricao == 7
+                                        Auth::user()->regional_centrooeste->categoria_inscricao == 3                                         
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 4
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 5
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 6
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 7
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 8
+                                        || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 9
                                     )
                                         <div class="row">
                                             <div class="col-6">
@@ -378,11 +378,9 @@
 
                                 @if (Auth::user()->pago_regional_norte_2022)
                                     @if (
-                                        Auth::user()->regional_norte->categoria_inscricao == 1 
-                                        || Auth::user()->regional_norte->categoria_inscricao == 2 
-                                        || Auth::user()->regional_norte->categoria_inscricao == 10
-                                        || Auth::user()->regional_norte->categoria_inscricao == 8
-                                        || Auth::user()->regional_norte->categoria_inscricao == 9                                        
+                                        Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 1                                         
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 2 
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 10
                                         )
 
                                             <div class="row">
@@ -400,11 +398,13 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_norte->categoria_inscricao == 3 
-                                        || Auth::user()->regional_norte->categoria_inscricao == 4
-                                        || Auth::user()->regional_norte->categoria_inscricao == 5
-                                        || Auth::user()->regional_norte->categoria_inscricao == 6
-                                        || Auth::user()->regional_norte->categoria_inscricao == 7
+                                        Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 3 
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 4
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 5
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 6
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 7
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 8
+                                        || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 9
                                     )
                                         <div class="row">
                                             <div class="col-6">
@@ -418,11 +418,23 @@
                                 @endif
                             @else
 
-                                <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
-                                <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
-                                <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
-                                <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
-                                <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
+                                    </div>
+                                </div>
 
                             @endif
 
@@ -436,15 +448,53 @@
         </div>
 
         <!--MODAL Congressos Anuais-->
-        <div class="modal fade" id="congressoanuais" tabindex="-1" aria-labelledby="congressoanuais" aria-hidden="true">
+        <div class="modal fade" id="conregresso_nacional" tabindex="-1" aria-labelledby="conregresso_nacional" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="congressoanuaisLabel">Congressos Anuais</h5>
+                        <h5 class="modal-title" id="conregresso_nacionalLabel">Formulários de inscrições</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                     </div>
                     <div class="modal-body">
-                        Em desenvolvimento...
+                        <div class="row">
+                            
+                            @if (Auth::user()->pago_nacional_2022)
+
+                                @if (                                    
+                                    Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 3
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 4
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 5
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 6
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 7
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 8
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 9
+                                )
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('submissao.nacional.gp') }}">Submissão GP - Nacional</a>
+                                    </div>
+
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('submissao.nacional.publicom') }}">Submissão Publicom - Nacional</a>
+                                    </div>
+                                    
+                                @endif
+
+                                @if (                                    
+                                    Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 1
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 2
+                                    || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 10
+                                )
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('submissao.nacional.junior') }}">Submissão Intercom Júnior - Nacional</a>
+                                    </div>                                    
+                                @endif
+
+                            @else
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-primary m-1" href="{{ route('nacional') }}">Inscricão Nacional</a>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

@@ -329,7 +329,7 @@
                 </div>
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-12 col-md-6 col-lg-4">
+                        <div class="col-12 col-md-6 col-lg-6">
                             <div class="form-group ">
                                 <label for="">CEP</label>
                                 <b-form-input
@@ -348,7 +348,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-lg-4">
+                        <div class="col-12 col-md-6 col-lg-6">
                             <div class="form-group ">
                                 <label for="">logradouro</label>
                                 <b-form-input
@@ -364,9 +364,59 @@
                                     {{ errors.first(`logradouro`) }}
                                 </span>
                             </div>
-                        </div>                
+                        </div>       
 
-                        <div class="form-group col-12 col-md-6 col-lg-4">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Número</label>
+                                <b-form-input
+                                    size="sm"
+                                    :name="`numero`"
+                                    v-validate="{ required: true }"
+                                    :class="[
+                                    'form-control form-control-sm',
+                                    { 'is-invalid': errors.has(`numero`) },
+                                    ]"
+                                    data-vv-as="Número"
+                                    v-model="post.enderecos.numero"
+                                    type="number"
+                                    :disabled="loading"
+                                ></b-form-input>
+                                <span
+                                    v-show="errors.has(`numero`)"
+                                    class="invalid-feedback d-block"
+                                >
+                                    {{ errors.first(`numero`) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Complemento</label>
+                                <b-form-input
+                                    size="sm"
+                                    :name="`complemento`"
+                                    :class="[
+                                    'form-control form-control-sm',
+                                    { 'is-invalid': errors.has(`complemento`) },
+                                    ]"
+                                    data-vv-as="Complemento"
+                                    v-model="post.enderecos.complemento"
+                                    type="text"
+                                    :disabled="loading"
+                                ></b-form-input>
+                                <span
+                                    v-show="errors.has(`complemento`)"
+                                    class="invalid-feedback d-block"
+                                >
+                                    {{ errors.first(`complemento`) }}
+                                </span>
+                            </div>
+                        </div>
+         
+
+                        <div class="form-group col-12 col-md-6 col-lg-6">
                             <label>Estado</label>
                             <v-select
                                 class="flex-fill"
@@ -392,7 +442,7 @@
                             </span>
                         </div>
 
-                        <div class="form-group col-12 col-md-6 col-lg-4">
+                        <div class="form-group col-12 col-md-6 col-lg-6">
                             <label>Município</label>
                             <v-select
                                 class="flex-fill"
@@ -532,6 +582,8 @@
                         id: null,
                         cep: null,
                         logradouro: null,
+                        numero : null,
+                        complemento: null,
                         bairro: null, 
                         municipio: null,
                         estado: null,
@@ -571,6 +623,8 @@
                         id: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].id : null,
                         cep: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].cep : null,
                         logradouro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].logradouro : null,
+                        numero: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].numero : null,
+                        complemento: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].complemento : null,
                         municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio : null,
                         estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio.estado: null,
                     }
@@ -615,8 +669,8 @@
                         this.municipios =  res.data
                     }).then(() => {
                         if(this.selected && this.selected.enderecos) {
-                            this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos.municipio.nome)
-                            this.$validator.reset(`municipio${i}`)
+                            this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.selected.enderecos[0].municipio.nome)
+                            this.$validator.reset(`municipio`)
                         }
                     })
                 }

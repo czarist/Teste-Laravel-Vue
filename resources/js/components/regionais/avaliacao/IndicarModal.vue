@@ -27,18 +27,22 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 1" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_1`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_1"
                             v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_1`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_1"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_1`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
+
                         <span v-show="errors.has(`avaliador_1`)" class="invalid-feedback">
                             {{ errors.first(`avaliador_1`) }}
                         </span>
@@ -47,17 +51,20 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 2" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_2`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_2"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_2`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_2"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_2`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
                         <span v-show="errors.has(`avaliador_2`)" class="v-select-invalid-feedback">
                             {{ errors.first(`avaliador_2`) }}
                         </span>
@@ -67,17 +74,20 @@
 
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 3" label-class="font-weight-bold">
-                        <v-select
-                            class="flex-fill"
-                            :name="`avaliador_3`"
+                        <b-form-select
                             :disabled="loading"
-                            :options="avaliadores"
-                            :selectOnTab="false"
+                            name="avaliador_3"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`avaliador_3`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
                             v-model="post.avaliador_3"
-                            label="name"
-                            data-vv-as="Avaliador 1"
-                            :class="{ 'v-select-invalid': errors.has(`avaliador_3`) }"
-                        ></v-select>
+                        >
+                            <option :value="null">Selecione</option>
+                            <option v-for="avaliador in avaliadores" :value="avaliador" :key="avaliador.id">
+                                {{ avaliador.name }} - {{ avaliador && avaliador.associado && avaliador.associado.instituicao ? avaliador.associado.instituicao.sigla_instituicao : '' }}
+                            </option>
+                        </b-form-select>
                         <span v-show="errors.has(`avaliador_3`)" class="v-select-invalid-feedback">
                             {{ errors.first(`avaliador_3`) }}
                         </span>
@@ -111,7 +121,10 @@
                 loading: false,
                 verify: null,
                 divisoes_tematicas: [],
+                avaliadores_all: [],
                 avaliadores: [],
+                tipo: null,
+                categoria: null,
                 post: {
                     id: null,
                     titulo: null,
@@ -141,6 +154,35 @@
                     this.post.avaliador_3 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_3_obj : null
                     this.post.avaliacao = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao : null
                     this.post._method = this.post && this.post.id ? 'put' : 'post'
+                    this.tipo = this.selectedIndicar && this.selectedIndicar.tipo ? this.selectedIndicar.tipo : null
+                    this.categoria = this.selectedIndicar && this.selectedIndicar.dt ? this.selectedIndicar.dt : null
+
+                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null){
+                        if(this.tipo == "Intercom Júnior"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_divisoes_tematicas_jr.find(dtij => dtij.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+
+                    }
+
+                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null){
+                        if(this.tipo == "Mesa" || this.tipo == "Divisões Temáticas"){
+                            let avaliador = []
+
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_divisoes_tematicas.find(dt => dt.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                            this.avaliadores = avaliador
+                        }
+                    }
 
                 } else {
                     this.clear()
@@ -251,7 +293,7 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     dataType: 'json',
                     success: (res) => {
-                        this.avaliadores = res
+                        this.avaliadores_all = res
                     },
                     error: (res) => {
                         console.log(res)

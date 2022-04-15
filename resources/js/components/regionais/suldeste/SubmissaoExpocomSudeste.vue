@@ -1268,31 +1268,31 @@
                     });
                 }
 
-                if(
-                    this.user 
-                    && this.user.regional_suldeste 
-                    && this.user.regional_suldeste.submissao_expocom
-                    && this.user.regional_suldeste.submissao_expocom.avaliacao
-                    && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 1
-                ){
-                    console.log('habilitado edição')
+                // if(
+                //     this.user 
+                //     && this.user.regional_suldeste 
+                //     && this.user.regional_suldeste.submissao_expocom
+                //     && this.user.regional_suldeste.submissao_expocom.avaliacao
+                //     && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 1
+                // ){
+                //     console.log('habilitado edição')
 
-                }else if(
-                    this.user 
-                    && this.user.regional_suldeste 
-                    && this.user.regional_suldeste.submissao_expocom
-                    && this.user.regional_suldeste.submissao_expocom.avaliacao
-                    && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 0
-                ){
-                    window.location.href = this.baseUrl+'/submissao-expocom'         
-                }
-                else if(
-                    this.user 
-                    && this.user.regional_suldeste 
-                    && this.user.regional_suldeste.submissao_expocom != null
-                ){
-                    window.location.href = this.baseUrl+'/submissao-expocom'        
-                }
+                // }else if(
+                //     this.user 
+                //     && this.user.regional_suldeste 
+                //     && this.user.regional_suldeste.submissao_expocom
+                //     && this.user.regional_suldeste.submissao_expocom.avaliacao
+                //     && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 0
+                // ){
+                //     window.location.href = this.baseUrl+'/submissao-expocom'         
+                // }
+                // else if(
+                //     this.user 
+                //     && this.user.regional_suldeste 
+                //     && this.user.regional_suldeste.submissao_expocom != null
+                // ){
+                //     window.location.href = this.baseUrl+'/submissao-expocom'        
+                // }
 
             }
         }

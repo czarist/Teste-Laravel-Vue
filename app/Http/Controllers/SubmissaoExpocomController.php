@@ -35,7 +35,7 @@ class SubmissaoExpocomController extends Controller
 
         if($regional_sul && $regional_sul->id){
 
-            $submissao_sul = SubmissaoExpocomRegionalSul::with('avaliacao')->whereInscricaoId($regional_sul->id)->get();
+            $submissao_sul = SubmissaoExpocomRegionalSul::with('avaliacao')->whereInscricaoId($regional_sul->id)->get()->toArray();
             
             if(isset($submissao_sul)){
                 $submissao = array_merge($submissao, $submissao_sul);

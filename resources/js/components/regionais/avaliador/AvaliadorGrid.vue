@@ -48,6 +48,7 @@
                                 <tr>
                                     <th
                                         class="align-middle text-center"
+                                        style="font-size: 9px !important;"
                                         width="5%"
                                         @click="handleSort('id')">
                                         <i class="bi" :class="{
@@ -56,10 +57,11 @@
                                             'bi-sort-down-alt' : sort == 'id' && asc == false
                                         }"></i> Insc-Trab 
                                     </th>
-                                    <th class="align-middle text-center" width="20%"> Titulo</th>
-                                    <th class="align-middle text-center" width="10%">Categoria</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="20%"> Titulo</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="10%">Categoria</th>
                                     <th
                                         class="align-middle text-center"
+                                        style="font-size: 9px !important;"
                                         width="10%"
                                         @click="handleSort('status_avaliador')">
                                         <i class="bi" :class="{
@@ -68,9 +70,9 @@
                                             'bi-sort-down-alt' : sort== 'status_avaliador' && asc == false
                                         }"></i> Status Avaliador 
                                     </th>
-                                    <th class="align-middle text-center" width="5%">PDF</th>
-                                    <th class="align-middle text-center" width="5%">MENSAGEM P/ COORDENADOR</th>
-                                    <th class="align-middle text-center" width="5%">AÇÂO</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">PDF</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">MENSAGEM P/ COORDENADOR</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -312,7 +314,7 @@
                     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
                     let dt = selectedDt ? selectedDt.dt : ''
                     let dt_descricao = selectedDt ? selectedDt.descricao : ''
-                    let returno = dt+' - '+dt_descricao
+                    let returno = dt
                     return returno ? returno : "NI"
                 }
             },

@@ -126,8 +126,8 @@
                     this.post.inscricao_id = this.selectedCoordenador ? this.selectedCoordenador.inscricao_id : null
                     this.post.submissao_id = this.selectedCoordenador ? this.selectedCoordenador.id : null
                     this.post.regiao = this.selectedCoordenador ? this.selectedCoordenador.regiao : null
-                    this.post.titulo = this.selectedCoordenador ? this.selectedCoordenador.titulo : null
-                    this.post.dt = this.selectedCoordenador ? this.selectedCoordenador.dt : null
+                    this.post.titulo = this.selectedCoordenador && this.selectedCoordenador.inscricao && this.selectedCoordenador.inscricao.user && this.selectedCoordenador.inscricao.user.indicacao ? this.selectedCoordenador.inscricao.user.indicacao.titulo_trabalho.substring(40,0) : null
+                    this.post.dt = this.selectedCoordenador && this.selectedCoordenador.inscricao && this.selectedCoordenador.inscricao.user && this.selectedCoordenador.inscricao.user.indicacao ? this.selectedCoordenador.inscricao.user.indicacao.categoria : null
                     this.post.justificativa_coordenador = this.selectedCoordenador && this.selectedCoordenador.avaliacao ? this.selectedCoordenador.avaliacao.justificativa_coordenador : null
                     this.post.status_coordenador = this.selectedCoordenador && this.selectedCoordenador.avaliacao ? this.selectedCoordenador.avaliacao.status_coordenador : null        
                     this.post.avaliacao = this.selectedCoordenador && this.selectedCoordenador.avaliacao ? this.selectedCoordenador.avaliacao : null
@@ -150,10 +150,11 @@
                 this.generateErr = this.totalRemainCount > 0;
             },
             find_dt(post){
-                if(post && post.dt){
-                    let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
-                }
+                // if(post && post.dt){
+                //     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
+                //     return selectedDt ? selectedDt.descricao : "NI"
+                // }
+                return post.dt
             },    
             async save() {
                 this.loading = true

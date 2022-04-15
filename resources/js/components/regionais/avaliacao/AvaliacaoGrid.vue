@@ -41,48 +41,47 @@
                             </v-select>
                         </div>
                     </div>
-                       
-                   
+                                          
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
                         <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
                             <thead>
                                 <tr>
                                     <th
                                         class="align-middle text-center"
-                                        style="font-size: 11px !important;"
+                                        style="font-size: 9px !important;"
                                         width="5%"
                                         @click="handleSort('id')">Insc-Trab 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="20%"
-                                        style="font-size: 11px !important;"                                        
+                                        style="font-size: 9px !important;"                                        
                                         @click="handleSort('titulo')"> Titulo 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
-                                        style="font-size: 11px !important;"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('dt')">Categoria 
                                     </th>
 
-                                    <th class="align-middle text-center" width="10%" style="font-size: 11px !important;">Avaliador  </th>
+                                    <th class="align-middle text-center" width="10%" style="font-size: 9px !important;">Avaliador  </th>
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
-                                        style="font-size: 11px !important;"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('status_avaliador')">Status Avaliador 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
-                                        style="font-size: 11px !important;"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('status_coordenador')"> Status Coordenador 
                                     </th>
-                                    <th class="align-middle text-center" width="3%" style="font-size: 11px !important;">PDF</th>
-                                    <th class="align-middle text-center" width="5%" style="font-size: 10px !important;">CHAT AUTOR</th>
+                                    <th class="align-middle text-center" width="3%" style="font-size: 9px !important;">PDF</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">CHAT AUTOR</th>
                                     <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">CHAT AVALIADOR</th>
-                                    <th class="align-middle text-center" width="5%" style="font-size: 11px !important;">AÇÂO</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -348,19 +347,20 @@
                         if(res.data.length > 0){
                             this.mensagens = res.data ;
                             this.selectedChat.avaliacao_id = res.data && res.data[0] ? res.data[0].avaliacao_id : null;
+                            this.selectedChat.coordenador_id = this.coordenador && this.coordenador.id ? this.coordenador.id : null
+                            this.selectedChat.coordenador = this.coordenador && this.coordenador ? this.coordenador : null
                             this.selectedChat.mensagem = null;
                             this.$validator.reset('mensagens');
-
-
                         } else{
                             this.mensagens = [];
                             this.selectedChat.id = id;
                             this.selectedChat.avaliacao_id = (res.data && res.data[0]) ? res.data[0].avaliacao_id : id ? id : null;
+                            this.selectedChat.coordenador_id = this.coordenador && this.coordenador.id ? this.coordenador.id : null
+                            this.selectedChat.coordenador = this.coordenador && this.coordenador ? this.coordenador : null
                             this.$validator.reset('mensagens');
                         }
                         $('#modalChat').modal({backdrop: 'static', keyboard: false, show: true})
                         this.$bvModal.show('modalChat')
-
                     })
                 }
             },
@@ -415,7 +415,7 @@
                         let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
                         let dt = selectedDt ? selectedDt.dt : ''
                         let dt_descricao = selectedDt ? selectedDt.descricao : ''
-                        let returno = dt+' - '+dt_descricao
+                        let returno = dt
                         return returno ? returno : "NI"
 
                     }
@@ -424,7 +424,7 @@
                         let selectedDt =  this.divisoes_tematicas_jr.find(dt => dt.id === registro.dt)
                         let dt = selectedDt ? selectedDt.dt : ''
                         let dt_descricao = selectedDt ? selectedDt.descricao : ''
-                        let returno = dt+' - '+dt_descricao
+                        let returno = dt
                         return returno ? returno : "NI"
                     }
 

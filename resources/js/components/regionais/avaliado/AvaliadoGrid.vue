@@ -218,25 +218,19 @@
                 }
             },
             visualizarAnexo(registro){
-                console.log(registro)
                 if(registro.regiao == 1){
-                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_sul_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 2){
-                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 3){
-                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 4){
-                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 5){
-                    console.log(registro.regiao, registro.link_trabalho)
                     window.open(this.baseUrl+'/pdf/submissao_regional_norte_2022/'+ registro.link_trabalho, '_blank');
                 }
 

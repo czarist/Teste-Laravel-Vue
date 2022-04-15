@@ -215,6 +215,20 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getPagoNacional2022Attribute()
+    {
+        if(Auth::user()){
+
+            foreach (Auth::user()->todos_tipos as $tipo) {
+                if ($tipo->id == 11) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public function getIsIndicadoExpocom2022Attribute()
     {
         if(Auth::user()){
@@ -315,6 +329,10 @@ class User extends Authenticatable
 
     public function regional_norte(){
         return $this->hasOne(RegionalNorte::class);
+    }
+
+    public function nacional(){
+        return $this->hasOne(Nacional::class);
     }
 
     public function indicacao()

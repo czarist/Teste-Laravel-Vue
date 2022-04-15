@@ -284,10 +284,11 @@
                                     v-model="post.trabalho_produzido"
                                 >
                                     <option value="null">Selecione</option>
+                                    <option value="Agência Escola / Agência Jr">Agência Escola / Agência Jr</option>
                                     <option value="Disciplina">Disciplina</option>
-                                    <option value="Agência Experimental Jr">Agência Experimental Jr</option>
-                                    <option value="TCC (projeto experimental)">TCC (projeto experimental)</option>
-                                    <option value="TCC (monografia)">TCC (monografia)</option>
+                                    <option value="Extensão Curricular">Extensão Curricular</option>
+                                    <option value="Projeto de extensão">Projeto de extensão</option>
+                                    <option value="TCC">TCC</option>
 
                                 </b-form-select>
                                 <span v-show="errors.has(`trabalho_produzido`)" class="invalid-feedback">

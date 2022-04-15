@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-
+<title>Email Intercom</title>
 </head>
 
-<body>
-	<div align="center">
-		<div id="topo" style="background: #285aa7; min-height: 25px; position: relative; width: 650px; border: 0.5px #285aa7 solid; color: #fff; font-family: Gill Sans, Gill Sans MT, Myriad Pro, DejaVu Sans Condensed, Helvetica, Arial, sans-serif; font-size: 13px; vertical-align: middle; padding-top: 8px; padding-bottom: 0px;">
-			{{ env('APP_NAME') }}
-		</div>
-		<div id="header" style="margin: 0; width: 650px; background: #fff; height: 280px; border-left: #ccc 0.5px solid; border-right: #ccc solid 0.5px; ">
-			<div align="center"><img src="{{ asset('images/logo-principal.png') }}" style="margin-top: 8px; width: 280px;"></div>
-		
-		</div>
-		<div id="corpo" style="margin-top: -10px; width: 650px; background: #f5f9fb; border-left: #ccc 0.5px solid; border-right: #ccc solid 0.5px; font-family: Gill Sans, Gill Sans MT, Myriad Pro, DejaVu Sans Condensed, Helvetica, Arial, sans-serif; font-size: 16px; color: #5F5C5C; border-bottom: 0.5px solid #ccc;">
-			
+<body style="margin: 0">
+    <div id="mensagem" style="border: solid #3A48E5 1px">
+        <div id="top" style="background:#285aa7; text-align-last: center; padding-top: 10px; padding-bottom: 10px; margin: 0; color: #FFF" align="center">
+                {{ env('APP_NAME') }}
+        </div>
+        <div id="cabecalho" style="background: #fff; height: auto; padding-bottom: 20px; padding-top: 20px; margin: 0" align="center">
+            <img src="{{ asset('https://portalintercom.org.br/assets/images/logo-principal.png') }}">
+        </div>
+        <div id="corpo" style="background: #f5f9fb; color: 5F5C5C; padding: 30px; font-size: 14px; font-family: Arial; line-height: 24px;">
+
 			<p style="padding-left: 20px; padding-right: 20px; text-align: center;">
-				Seu inscricão foi realizada com sucesso
-			
+				Seu cadastro foi realizado com sucesso. 
+				<br>
+				Para que sua inscrição seja efetuada é necessário que o pagamento seja compensado pela instituição financeira.			
 			</p>
 
             <p style="padding-left: 20px; padding-right: 20px; text-align: center;">
@@ -34,14 +34,12 @@
 
                 Link para acessar sua área restrita <a href="{{ env('APP_URL')}}">{{ env('APP_URL')}}</a>.
 			</p>
-            <br><br>
-
-            <p style="padding-left: 20px; padding-right: 20px; text-align: left"> Um sistema desenvolvido por
-                <a href="http://kirc.com.br"><img src="{{ asset('images/logo-email.png') }}"></a>
-            </p>
             <br>
-
-		</div>	
-	</div>
+        </div>
+        <div id="kirc" style="background: #f5f9fb; color: 5F5C5C; padding: 30px; font-size: 14px; font-family: Arial; line-height: 24px; text-align: center" align="center">
+            Um sistema desenvolvido por <a href="http://kirc.com.br"><img src="{{ asset('images/logo-email.png') }}"></a>
+            <a href="http://kirc.com.br">http://kirc.com.br</a>
+        </div>
+    </div>
 </body>
 </html>

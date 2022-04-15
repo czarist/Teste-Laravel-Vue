@@ -125,13 +125,13 @@ class AvaliadorExpocomController extends Controller
             $endereco = Endereco::create(
                 [
                     'user_id' => $user->id,
-                    'logradouro' => $request->enderecos['logradouro'] ?? 'Rua Vitorino Carmilo',
-                    'numero' => $request->enderecos['numero'] ?? '0',
-                    'complemento' => $request->enderecos['complemento'] ?? '',
-                    'bairro' => $request->enderecos['bairro'] ?? 'Centro',
-                    'municipio_id' => $request->enderecos['municipio']['id'] ?? 1,
-                    'cep' => $request->enderecos['cep'] ?? '01153000',
-                    'pais_id' => $request->enderecos['pais'] ?? 'Brasil',
+                    'logradouro' => $request->enderecos['logradouro'],
+                    'numero' => $request->enderecos['numero'],
+                    'complemento' => $request->enderecos['complemento'],
+                    'bairro' => $request->enderecos['bairro'],
+                    'municipio_id' => $request->enderecos['municipio']['id'],
+                    'cep' => $request->enderecos['cep'],
+                    'pais_id' => $request->enderecos['pais'],
                     'updated_at' => Carbon::now()
                 ]
             );
@@ -140,13 +140,13 @@ class AvaliadorExpocomController extends Controller
             $endereco->update(
                 [
                     'user_id' => $user->id,
-                    'logradouro' => $request->enderecos['logradouro'] ?? 'Rua Vitorino Carmilo',
-                    'numero' => $request->enderecos['numero'] ?? '0',
-                    'complemento' => $request->enderecos['complemento'] ?? '',
-                    'bairro' => $request->enderecos['bairro'] ?? 'Centro',
-                    'municipio_id' => $request->enderecos['municipio']['id'] ?? 1,
-                    'cep' => $request->enderecos['cep'] ?? '01153000',
-                    'pais_id' => $request->enderecos['pais'] ?? 'Brasil',
+                    'logradouro' => $request->enderecos['logradouro'],
+                    'numero' => $request->enderecos['numero'],
+                    'complemento' => $request->enderecos['complemento'],
+                    'bairro' => $request->enderecos['bairro'],
+                    'municipio_id' => $request->enderecos['municipio']['id'],
+                    'cep' => $request->enderecos['cep'],
+                    'pais_id' => $request->enderecos['pais'],
                     'updated_at' => Carbon::now()
                 ]
             );

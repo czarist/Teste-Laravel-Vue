@@ -14,7 +14,33 @@
                     <div class="row d-flex align-items-center mb-3" v-if="!loading">
                         <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Expocom </label>
                         <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
-                            <div class="input-group-prepend mb-2">
+                            <div class="input-group-prepend mb-3">
+                                <span class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <v-select
+                                class="flex-fill"
+                                :name="`modalidade`"
+                                :disabled="loading"
+                                :options="categorias"
+                                :reduce="categoria => categoria.descricao"
+                                v-model="categoria.categoria_search"
+                                label="descricao"
+                                @input="getModalidade()"
+                                placeholder="Buscar Categoria..."
+                            >
+                                <template #selected-option="{ descricao }">
+                                    <em>{{ descricao }}</em>
+                                </template>
+                            </v-select>
+                        </div>
+
+                        <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
+                            <div class="input-group-prepend mb-3">
                                 <span class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -31,15 +57,15 @@
                                 v-model="modalidade.modalidade_search"
                                 label="descricao"
                                 @input="get()"
-                                placeholder="Buscar Categoria..."
+                                placeholder="Buscar Modalidade..."
                             >
                                 <template #selected-option="{ descricao }">
                                     <em>{{ descricao }}</em>
                                 </template>
                             </v-select>
                         </div>
-                    </div>                       
-                   
+                    </div>
+
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
                         <table class="table table-sm table-striped table-hover table-bordered" v-if="user">
                             <thead>
@@ -47,6 +73,7 @@
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('id')">
                                         <i class="bi" :class="{
                                             'bi-funnel' : sort != 'id',
@@ -54,11 +81,12 @@
                                             'bi-sort-down-alt' : sort == 'id' && asc == false
                                         }"></i> Insc-Trab 
                                     </th>
-                                    <th class="align-middle text-center" width="15%"> Titulo</th>
-                                    <th class="align-middle text-center" width="10%"> Categoria</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="15%"> Titulo</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;"  width="10%"> Categoria</th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('status_avaliador')">
                                         <i class="bi" :class="{
                                             'bi-funnel' : sort!= 'status_avaliador',
@@ -69,10 +97,12 @@
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
+                                        style="font-size: 9px !important;"
                                     >Média</th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                         @click="handleSort('status_coordenador')">
                                         <i class="bi" :class="{
                                             'bi-funnel' : sort!= 'status_coordenador',
@@ -80,9 +110,9 @@
                                             'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
                                         }"></i> Status Coordenador 
                                     </th>
-                                    <th class="align-middle text-center" width="5%">PDF</th>
-                                    <th class="align-middle text-center" width="5%">CHAT COORDENADOR</th>
-                                    <th class="align-middle text-center" width="5%">AÇÂO</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">PDF</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">CHAT COORDENADOR</th>
+                                    <th class="align-middle text-center" style="font-size: 9px !important;" width="5%">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,7 +132,7 @@
                                             </button>
 
                                     </td>
-                                    <td class="align-middle text-center">{{ registro && registro.submissao && registro.submissao.inscricao && registro.submissao.inscricao.user &&  registro.submissao.inscricao.user.indicacao ? registro.submissao.inscricao.user.indicacao.modalidade : "NI" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.submissao && registro.submissao.inscricao && registro.submissao.inscricao.user &&  registro.submissao.inscricao.user.indicacao ? registro.submissao.inscricao.user.indicacao.modalidade.substring(50, 0) : "NI" }}</td>
                                     <td class="align-middle text-center">
                                         <div>                                    
                                             {{ registro ? registro.status_avaliador_1 : "NI" }}<br>
@@ -226,7 +256,7 @@
                 loading: true,
                 scroll: false,
                 mensagens: [],
-                modalidades: [
+                categorias: [
                     { descricao: 'Cinema e Audiovisual', value: 'Cinema e Audiovisual'},
                     { descricao: 'Jornalismo', value: 'Jornalismo'},
                     { descricao: 'Produção Transdisciplinar', value: 'Produção Transdisciplinar'},
@@ -234,6 +264,10 @@
                     { descricao: 'Rádio, TV e Internet', value: 'Rádio, TV e Internet'},
                     { descricao: 'Relações Públicas', value: 'Relações Públicas'}
                 ],
+                modalidades: [],
+                categoria:{
+                    categoria_search: null,
+                },
                 modalidade: {
                     modalidade_search: null
                 },
@@ -271,7 +305,17 @@
         watch: {
             modalidade: {
                 handler:function(newVal) {
-                    this.modalidade_search = newVal.modalidade_search
+                    if(newVal){
+                        this.modalidade_search = newVal.modalidade_search
+                    }
+                },
+                deep:true
+            },
+            categoria: {
+                handler:function(newVal) {
+                    if(newVal){
+                        this.categoria_search = newVal.categoria_search
+                    }
                 },
                 deep:true
             }
@@ -280,8 +324,8 @@
             resetModalChat() {
                 this.selectedChat.id = null,
                 this.selectedChat.avaliacao_id = null,
-                this.selectedChat.coordenador_id = null,
-                this.selectedChat.coordenador = null,
+                // this.selectedChat.coordenador_id = null,
+                // this.selectedChat.coordenador = null,
                 this.selectedChat.send_avaliador = null,
                 this.selectedChat.mensagem = null,
                 this.selectedChat.avaliado_id = null,
@@ -470,13 +514,144 @@
                         
                     }
                 }); 
+            },
+            getModalidade() {
+                if(this.categoria && this.categoria.categoria_search) {
+                    console.log('entrou no if categoria search: '+this.categoria.categoria_search)
+                    switch (this.categoria.categoria_search)
+                    {
+                    case "Cinema e Audiovisual":
+                        this.modalidades = this.cinema_audiovisual;
+                        break;
+                    case "Jornalismo":
+                        this.modalidades = this.jornalismo;
+                        break;
+                    case "Produção Transdisciplinar":
+                        this.modalidades = this.producao_editorial;
+                        break;
+                    case "Publicidade e Propaganda":
+                        this.modalidades = this.publicidade_propaganda;
+                        break;
+                    case "Rádio, TV e Internet":
+                        this.modalidades = this.radio_internet;
+                        break;
+                    case "Relações Públicas":
+                        this.modalidades = this.relacoes_publicas;
+                        break;
+                    default: 
+                        this.modalidades = null;
+                    }
+                }
+            },
+            getCinemaAudiovisual(){
+                let urlgetCinemaAudiovisual = this.baseUrl+"/get/cinema-audiovisual";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetCinemaAudiovisual,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.cinema_audiovisual = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getJornalismo(){
+                let urlgetJornalismo = this.baseUrl+"/get/jornalismo";
+                $.ajax({
+                    method: "GET",
+                    url: urlgetJornalismo,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.jornalismo = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getPublicidadePropaganda(){
+                let urlgetPublicidadePropaganda = this.baseUrl+"/get/publicidade-propaganda";
+                $.ajax({
+                    method: "GET",
+                    url: urlgetPublicidadePropaganda,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.publicidade_propaganda = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getRelacoesPublicas(){
+                let urlgetRelacoesPublicas = this.baseUrl+"/get/relacoes-publicas";
+                $.ajax({
+                    method: "GET",
+                    url: urlgetRelacoesPublicas,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.relacoes_publicas = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getProdEdit(){
+                let urlgetProdEdit = this.baseUrl+"/get/producao-editorial";
+                $.ajax({
+                    method: "GET",
+                    url: urlgetProdEdit,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.producao_editorial = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getRadioInternet(){
+                let urlgetRadioInternet = this.baseUrl+"/get/radio-internet";
+                $.ajax({
+                    method: "GET",
+                    url: urlgetRadioInternet,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.radio_internet = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
             }
         },
         async created() {
             await this.getLoggedUser().then(() => this.get())
             this.get = debounce(this.get, 500)
 
-            this.getDivisoesTematicas()
+            this.getDivisoesTematicas(),
+            this.getCinemaAudiovisual(),
+            this.getJornalismo(),
+            this.getPublicidadePropaganda(),
+            this.getRelacoesPublicas(),
+            this.getProdEdit(),
+            this.getRadioInternet()
         },
         mounted() {
             this.$refs['scroll'].addEventListener('scroll', debounce(this.handleScroll, 500))

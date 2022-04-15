@@ -90,13 +90,13 @@ class AvaliacaoAvaliadorExpocomController extends Controller
             ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
                 $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
             })
-            ->when($request->modalidade, function ($query) use ($request){
+            ->when($request->categoria, function ($query) use ($request){
                 $query->where(function ($query) use ($request) {
                     $query->wherehas('submissaoNordeste', function ($query) use ($request) {
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('categoria', '=', $request->modalidade);
+                                    $query->where('categoria', '=', $request->categoria);
                                 });
                             });
                         });
@@ -105,7 +105,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('categoria', '=', $request->modalidade);
+                                    $query->where('categoria', '=', $request->categoria);
                                 });
                             });
                         });
@@ -114,7 +114,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('categoria', '=', $request->modalidade);
+                                    $query->where('categoria', '=', $request->categoria);
                                 });
                             });
                         });
@@ -123,7 +123,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('categoria', '=', $request->modalidade);
+                                    $query->where('categoria', '=', $request->categoria);
                                 });
                             });
                         });
@@ -132,7 +132,57 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('categoria', '=', $request->modalidade);
+                                    $query->where('categoria', '=', $request->categoria);
+                                });
+                            });
+                        });
+                    });
+                });
+
+            })
+            ->when($request->modalidade, function ($query) use ($request){
+                $query->where(function ($query) use ($request) {
+                    $query->wherehas('submissaoNordeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('modalidade', '=', $request->modalidade);
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoSul', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('modalidade', '=', $request->modalidade);
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoSudeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('modalidade', '=', $request->modalidade);
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoCentroOeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('modalidade', '=', $request->modalidade);
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoNorte', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('modalidade', '=', $request->modalidade);
                                 });
                             });
                         });

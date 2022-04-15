@@ -15,6 +15,7 @@ class Coordenador extends Model
         'regiao',
         'dt',
         'ano',
+        'geral',
     ];
 
     public function user()

@@ -12,9 +12,35 @@
                     </div>
                                           
                     <div class="row d-flex align-items-center mb-3" v-if="!loading">
-                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Itercom Júnior, Divisões Temáticas e Mesas </label>
+                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Expocom </label>
                         <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
-                            <div class="input-group-prepend mb-2">
+                            <div class="input-group-prepend mb-3">
+                                <span class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <v-select
+                                class="flex-fill"
+                                :name="`modalidade`"
+                                :disabled="loading"
+                                :options="categorias"
+                                :reduce="categoria => categoria.descricao"
+                                v-model="categoria.categoria_search"
+                                label="descricao"
+                                @input="getModalidade()"
+                                placeholder="Buscar Categoria..."
+                            >
+                                <template #selected-option="{ descricao }">
+                                    <em>{{ descricao }}</em>
+                                </template>
+                            </v-select>
+                        </div>
+
+                        <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
+                            <div class="input-group-prepend mb-3">
                                 <span class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -31,13 +57,14 @@
                                 v-model="modalidade.modalidade_search"
                                 label="descricao"
                                 @input="get()"
-                                placeholder="Buscar Categoria..."
+                                placeholder="Buscar Modalidade..."
                             >
                                 <template #selected-option="{ descricao }">
-                                    <em>{{ descricao.substring(5,0)}}</em>
+                                    <em>{{ descricao }}</em>
                                 </template>
                             </v-select>
                         </div>
+
                     </div>
 
                     <div class="table-responsive scroll" ref="scroll" v-show="!loading && registros.length > 0">
@@ -47,18 +74,22 @@
                                     <th
                                         class="align-middle text-center"
                                         width="5%"
-                                        @click="handleSort('id')">
+                                        @click="handleSort('id')"
+                                        style="font-size: 9px !important;">
                                         Insc-Trab 
+                                        
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="20%"
+                                        style="font-size: 9px !important;"
                                     >
                                         Titulo 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                     >
                                         Categoria 
                                     </th>
@@ -67,18 +98,21 @@
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                     >
                                         Status Avaliador 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                         >
                                         Status Coordenador 
                                     </th>
                                     <th
                                         class="align-middle text-center"
                                         width="10%"
+                                        style="font-size: 9px !important;"
                                         @click="sorts('media_final')">
                                         <i class="bi" :class="{
                                             'bi-funnel' : currentSort != 'media_final',
@@ -87,9 +121,9 @@
                                         }"></i>
                                         Média Geral
                                     </th>
-                                    <th class="align-middle text-center" width="3%" style="font-size: 11px !important;">PDF</th>
+                                    <th class="align-middle text-center" width="3%" style="font-size: 9px !important;">PDF</th>
                                     <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">CHAT AVALIADOR</th>
-                                    <th class="align-middle text-center" width="5%" style="font-size: 11px !important;">AÇÂO</th>
+                                    <th class="align-middle text-center" width="5%" style="font-size: 9px !important;">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +139,7 @@
                                             </button>
 
                                     </td>
-                                    <td class="align-middle text-center">{{ registro && registro.inscricao && registro.inscricao.user &&  registro.inscricao.user.indicacao ? registro.inscricao.user.indicacao.modalidade : "NI" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.inscricao && registro.inscricao.user &&  registro.inscricao.user.indicacao ? registro.inscricao.user.indicacao.modalidade.substring(6, 0) : "NI" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.avaliacao">
                                             {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1_obj ? registro.avaliacao.avaliador_1_obj.name : "NI" }}<br>
@@ -316,7 +350,18 @@
                 selectedCoordenador: null,
                 scroll: false,
                 mensagens: [],
+                categorias: [
+                    { descricao: 'Cinema e Audiovisual', value: 'Cinema e Audiovisual'},
+                    { descricao: 'Jornalismo', value: 'Jornalismo'},
+                    { descricao: 'Produção Transdisciplinar', value: 'Produção Transdisciplinar'},
+                    { descricao: 'Publicidade e Propaganda', value: 'Publicidade e Propaganda'},
+                    { descricao: 'Rádio, TV e Internet', value: 'Rádio, TV e Internet'},
+                    { descricao: 'Relações Públicas', value: 'Relações Públicas'}
+                ],
                 modalidades: [],
+                categoria:{
+                    categoria_search: null,
+                },
                 modalidade: {
                     modalidade_search: null
                 },
@@ -354,7 +399,17 @@
         watch: {
             modalidade: {
                 handler:function(newVal) {
-                    this.modalidade_search = newVal.modalidade_search
+                    if(newVal){
+                        this.modalidade_search = newVal.modalidade_search
+                    }
+                },
+                deep:true
+            },
+            categoria: {
+                handler:function(newVal) {
+                    if(newVal){
+                        this.categoria_search = newVal.categoria_search
+                    }
                 },
                 deep:true
             }
@@ -371,9 +426,9 @@
                 if (registro && registro.avaliacao && registro.avaliacao.media_final == null) {
                     let media_final = (registro.avaliacao.media_1 + registro.avaliacao.media_2 + registro.avaliacao.media_3) / 3
 
-                    return media_final.toString().substring(3, 0)
+                    return media_final.toString().substring(5, 0)
                 } else if(registro && registro.avaliacao && registro.avaliacao.media_final != null){
-                    return registro.avaliacao.media_final.toString().substring(3, 0)
+                    return registro.avaliacao.media_final.toString().substring(5, 0)
                 }
                 return "Sem média geral"
 
@@ -566,29 +621,9 @@
                     }
                 }); 
             },
-            getCoordenador(){
-                let urlgetCoordenador = this.baseUrl+"/get/coordenador/"+this.user.id;
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetCoordenador,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.coordenador = res
-                        this.getModalidade()
-
-                        
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
-            },
             getModalidade() {
-                if(this.coordenador && this.coordenador.dt) {
-                    switch (this.coordenador.dt)
+                if(this.categoria && this.categoria.categoria_search) {
+                    switch (this.categoria.categoria_search)
                     {
                     case "Cinema e Audiovisual":
                         this.modalidades = this.cinema_audiovisual;
@@ -710,33 +745,57 @@
                     }
                 }); 
             },
+            getCoordenador(){
+                let urlgetCoordenador = this.baseUrl+"/get/coordenador/"+this.user.id;
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetCoordenador,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.coordenador = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            }
         },
         computed: {
             sortedRegistros:function() {
                 return this.registros.sort((a,b) => {
+
                     let modifier = 1;
-                    if(this.currentSortDir === 'desc') modifier = -1;
-                    if(a.avaliacao[this.currentSort] < b.avaliacao[this.currentSort]) return -1 * modifier;
-                    if(a.avaliacao[this.currentSort] > b.avaliacao[this.currentSort]) return 1 * modifier;
+
+                    if(this.currentSortDir == 'desc') modifier = -1;
+
+                    let aa = a && a.avaliacao && a.avaliacao[this.currentSort] != null ? a.avaliacao[this.currentSort] : 0;
+                    let bb = b && b.avaliacao && b.avaliacao[this.currentSort] != null ? b.avaliacao[this.currentSort] : 0;
+                    aa = Math.round(aa,1)
+                    bb = Math.round(bb,1)
+                    
+                    if(aa < bb ) return -1 * modifier;
+                    if(aa > bb) return 1 * modifier;
+
                     return 0;
                 });
-            },
-
+            }
         },
         async created() {
             this.regiao_search = this.regiao
 
             await this.getLoggedUser().then(() => this.get())
             this.get = debounce(this.get, 500)
+            this.getCoordenador(),
             this.getDivisoesTematicas(),
             this.getCinemaAudiovisual(),
             this.getJornalismo(),
             this.getPublicidadePropaganda(),
             this.getRelacoesPublicas(),
             this.getProdEdit(),
-            this.getRadioInternet(),
-            this.getCoordenador()
-
+            this.getRadioInternet()
 
             if(this.regiao == 1){
                 this.regiao_nome = "Sul"

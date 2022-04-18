@@ -16,6 +16,7 @@ use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\NacionalController;
 use App\Http\Controllers\PagamentoController;
+use App\Http\Controllers\PagamentosAdminController;
 use App\Http\Controllers\PagSeguroController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegionalCentrooesteController;
@@ -98,6 +99,14 @@ Route::group(['middleware' => 'auth'] , function() {
             Route::resource('titulacao', TitulacaoController::class)->except(['show', 'create', 'edit']);
             Route::get('titulacao/get', [TitulacaoController::class ,'get'])->name('titulacao.get');
         });    
+
+        Route::middleware(['roles:admin/pagamento'])->group(function () {
+            Route::resource('pagamentos', PagamentosAdminController::class)->except(['show', 'create', 'edit']);
+            Route::get('pagamentos/get', [PagamentosAdminController::class ,'get'])->name('pagamentos.get');
+            Route::get('pagamentos/pago/{id}', [PagamentosAdminController::class ,'pago'])->name('pagamentos.pago');
+
+        });    
+
     });
 
     //PAGSEGURO
@@ -278,6 +287,7 @@ Route::prefix('get')->group(function () {
     Route::get('avaliadores', [GetController::class, 'getAvaliadores'])->name('get.avaliadores');
     Route::get('avaliadores-expocom', [GetController::class, 'getAvaliadoresExpocom'])->name('get.avaliadores.expocom');
     Route::get('coordenador/{id}', [GetController::class, 'getCoordenador'])->name('get.coordenador');
+    Route::get('status-pagamento', [GetController::class, 'getPagamentosStatuses'])->name('get.status-pagamento');
 
 });
 

@@ -55,6 +55,19 @@
             </div>          
             <br><br>
 
+            <div class="text-center text-black">
+                <h6
+                    class="text-black"
+                >
+                    Trabalho produzido em:
+                </h6>
+                <h6
+                    class="text-black"
+                    >{{ form ? form.trabalho_produzido : "Nenhuma Informação" }}
+                </h6>
+            </div>          
+            <br><br>
+
             <div class="text-center"><h6>Descrição do objeto de estudo</h6></div>
 
             <b-form-textarea class="text-black" plaintext rows="8" :value="form ? form.desc_obj_estudo : 'NI'"></b-form-textarea>
@@ -151,7 +164,8 @@
                     coautores: [],
                     categoria: null,
                     modalidade: null,
-                    titulo: null
+                    titulo: null,
+                    trabalho_produzido: null,
                 },
             }
         },
@@ -167,6 +181,7 @@
                     this.form.modalidade = newVal && newVal.submissao.inscricao && newVal.submissao.inscricao.user && newVal.submissao.inscricao.user.indicacao ? newVal.submissao.inscricao.user.indicacao.modalidade : null
                     this.form.categoria = newVal && newVal.submissao.inscricao && newVal.submissao.inscricao.user && newVal.submissao.inscricao.user.indicacao ? newVal.submissao.inscricao.user.indicacao.categoria : null
                     this.form.titulo = newVal && newVal.submissao.inscricao && newVal.submissao.inscricao.user && newVal.submissao.inscricao.user.indicacao ? newVal.submissao.inscricao.user.indicacao.titulo_trabalho : null
+                    this.form.trabalho_produzido = newVal && newVal.submissao.inscricao && newVal.submissao.inscricao.user && newVal.submissao.inscricao.user.indicacao ? newVal.submissao.inscricao.user.indicacao.trabalho_produzido : null
 
                     if(newVal && newVal.submissao.coautor_orientador_sub_sudeste){
                         this.form.coautores = newVal.submissao.coautor_orientador_sub_sudeste;

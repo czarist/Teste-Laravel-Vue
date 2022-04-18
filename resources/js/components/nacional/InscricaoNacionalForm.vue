@@ -259,9 +259,14 @@
                                     {{ instituicao.instituicao }} - {{ instituicao.sigla_instituicao }}
                                 </option>
                                 </b-form-select>
+                                <span class="invalid-feedback">
+                                    Caso sua IES não esteja em nosso sistema, por gentileza, enviar um e-mail para secretaria@intercom.org.br 
+                                    informando o nome da IES, para que possamos fazer o cadastro.                            
+                                </span>
                                 <span v-show="errors.has(`instituicao`)" class="invalid-feedback">
                                     {{ errors.first(`instituicao`) }}
                                 </span>
+
                             </b-form-group>
                         </b-col>
 

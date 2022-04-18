@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(TipoSeeder::class);
-        // $this->call(AcessoSeeder::class);
+        $this->call(AcessoSeeder::class);
         // $this->call(TitulacaoSeeder::class);
         // $this->call(SexoSeeder::class);
         // $this->call(InstituicaoSeeder::class);
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(CategoriaPublicidadePropagandaSeeder::class);
         // $this->call(CategoriaRadioInternetSeeder::class);
         // $this->call(CategoriaRelacoesPublicasSeeder::class);
-        $this->call(ProdutosRegionaisSeeder::class);
+        // $this->call(ProdutosRegionaisSeeder::class);
         
     }
 }

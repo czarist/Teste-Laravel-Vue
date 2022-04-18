@@ -377,8 +377,10 @@ class DistribuicaoTipoExpocomController extends Controller
             }
 
             if(Auth::user()->coordenador_regional->geral == 1){
+                   
+                if($request && $request->regiao && $request->regiao == 1){
                                     
-                    $submissao_sul = $this->submissao_sul()
+                    return $this->submissao_sul()
                         ->when($request->statusAva, function ($query) use ($request) {
                             $query->wherehas('avaliacao', function($q) use ($request){
 
@@ -409,144 +411,322 @@ class DistribuicaoTipoExpocomController extends Controller
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
                         })
-                    ->get();
-
-                    $submissao_sudeste = $this->submissao_sudeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                                });
-                            });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('categoria', '=', $request->categoria);
-                            });
-                        })
-                        ->when($request->modalidade, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('modalidade', '=', $request->modalidade);
-                            });
-                        })
-                    ->get();
-
-                    $submissao_centrooeste = $this->submissao_centrooeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                                });
-                            });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('categoria', '=', $request->categoria);
-                            });
-                        })
-                        ->when($request->modalidade, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('modalidade', '=', $request->modalidade);
-                            });
-                        })
-                    ->get();
-
-                    $submissao_nordeste = $this->submissao_nordeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                                });
-                            });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('categoria', '=', $request->categoria);
-                            });
-                        })
-                        ->when($request->modalidade, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('modalidade', '=', $request->modalidade);
-                            });
-                        })
-                    ->get();
-
-                    $submissao_norte = $this->submissao_norte()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                                });
-                            });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('categoria', '=', $request->categoria);
-                            });
-                        })
-                        ->when($request->modalidade, function ($query) use ($request){
-                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                                $q->where('modalidade', '=', $request->modalidade);
-                            });
-                        })
-                    ->get();
-
-                    $data['data'] = $submissao_sul->merge($submissao_centrooeste)->merge($submissao_nordeste)->merge($submissao_norte)->merge($submissao_sudeste);
-
-                    return response()->json($data);
+                    ->paginate(10);
                 }
+
+                if($request && $request->regiao && $request->regiao == 3){
+
+                    return $this->submissao_sudeste()
+                        ->when($request->statusAva, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+
+                                $q->where('status_avaliador_1', '=', $request->statusAva)
+                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                            });    
+                        })
+                        ->when($request->statusCoo, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+                                $q->where('status_coordenador', '=', $request->statusCoo);
+                            });      
+                        })
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        })
+                        ->when($request->categoria, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('categoria', '=', $request->categoria);
+                            });
+                        })
+                        ->when($request->modalidade, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('modalidade', '=', $request->modalidade);
+                            });
+                        })
+                    ->paginate(10);
+                }
+
+                if($request && $request->regiao && $request->regiao == 5){
+
+                    return $this->submissao_norte()
+                        ->when($request->statusAva, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+
+                                $q->where('status_avaliador_1', '=', $request->statusAva)
+                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                            });    
+                        })
+                        ->when($request->statusCoo, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+                                $q->where('status_coordenador', '=', $request->statusCoo);
+                            });      
+                        })
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        })
+                        ->when($request->categoria, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('categoria', '=', $request->categoria);
+                            });
+                        })
+                        ->when($request->modalidade, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('modalidade', '=', $request->modalidade);
+                            });
+                        })
+                    ->paginate(10);
+                }
+
+                if($request && $request->regiao && $request->regiao == 2){
+
+                    return $this->submissao_nordeste()
+                        ->when($request->statusAva, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+
+                                $q->where('status_avaliador_1', '=', $request->statusAva)
+                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                            });    
+                        })
+                        ->when($request->statusCoo, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+                                $q->where('status_coordenador', '=', $request->statusCoo);
+                            });      
+                        })
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        })
+                        ->when($request->categoria, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('categoria', '=', $request->categoria);
+                            });
+                        })
+                        ->when($request->modalidade, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('modalidade', '=', $request->modalidade);
+                            });
+                        })
+                    ->paginate(10);
+                }
+
+                if($request && $request->regiao && $request->regiao == 4){
+
+                    return $this->submissao_centrooeste()
+                        ->when($request->statusAva, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+
+                                $q->where('status_avaliador_1', '=', $request->statusAva)
+                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                            });    
+                        })
+                        ->when($request->statusCoo, function ($query) use ($request) {
+                            $query->wherehas('avaliacao', function($q) use ($request){
+                                $q->where('status_coordenador', '=', $request->statusCoo);
+                            });      
+                        })
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        })
+                        ->when($request->categoria, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('categoria', '=', $request->categoria);
+                            });
+                        })
+                        ->when($request->modalidade, function ($query) use ($request){
+                            $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                $q->where('modalidade', '=', $request->modalidade);
+                            });
+                        })
+                    ->paginate(10);
+                }
+
+                    // $submissao_sul = $this->submissao_sul()
+                    //     ->when($request->statusAva, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+
+                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
+                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                    //         });    
+                    //     })
+                    //     ->when($request->statusCoo, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+                    //             $q->where('status_coordenador', '=', $request->statusCoo);
+                    //         });      
+                    //     })
+                    //     ->when($request->search, function ($query) use ($request) {
+                    //         $query->where(function ($query) use ($request) {
+                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
+                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    //             });
+                    //         });
+                    //     })
+                    //     ->when($request->categoria, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('categoria', '=', $request->categoria);
+                    //         });
+                    //     })
+                    //     ->when($request->modalidade, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('modalidade', '=', $request->modalidade);
+                    //         });
+                    //     })
+                    // ->get();
+
+                    // $submissao_sudeste = $this->submissao_sudeste()
+                    //     ->when($request->statusAva, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+
+                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
+                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                    //         });    
+                    //     })
+                    //     ->when($request->statusCoo, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+                    //             $q->where('status_coordenador', '=', $request->statusCoo);
+                    //         });      
+                    //     })
+                    //     ->when($request->search, function ($query) use ($request) {
+                    //         $query->where(function ($query) use ($request) {
+                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
+                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    //             });
+                    //         });
+                    //     })
+                    //     ->when($request->categoria, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('categoria', '=', $request->categoria);
+                    //         });
+                    //     })
+                    //     ->when($request->modalidade, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('modalidade', '=', $request->modalidade);
+                    //         });
+                    //     })
+                    // ->get();
+
+                    // $submissao_centrooeste = $this->submissao_centrooeste()
+                    //     ->when($request->statusAva, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+
+                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
+                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                    //         });    
+                    //     })
+                    //     ->when($request->statusCoo, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+                    //             $q->where('status_coordenador', '=', $request->statusCoo);
+                    //         });      
+                    //     })
+                    //     ->when($request->search, function ($query) use ($request) {
+                    //         $query->where(function ($query) use ($request) {
+                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
+                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    //             });
+                    //         });
+                    //     })
+                    //     ->when($request->categoria, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('categoria', '=', $request->categoria);
+                    //         });
+                    //     })
+                    //     ->when($request->modalidade, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('modalidade', '=', $request->modalidade);
+                    //         });
+                    //     })
+                    // ->get();
+
+                    // $submissao_nordeste = $this->submissao_nordeste()
+                    //     ->when($request->statusAva, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+
+                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
+                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                    //         });    
+                    //     })
+                    //     ->when($request->statusCoo, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+                    //             $q->where('status_coordenador', '=', $request->statusCoo);
+                    //         });      
+                    //     })
+                    //     ->when($request->search, function ($query) use ($request) {
+                    //         $query->where(function ($query) use ($request) {
+                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
+                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    //             });
+                    //         });
+                    //     })
+                    //     ->when($request->categoria, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('categoria', '=', $request->categoria);
+                    //         });
+                    //     })
+                    //     ->when($request->modalidade, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('modalidade', '=', $request->modalidade);
+                    //         });
+                    //     })
+                    // ->get();
+
+                    // $submissao_norte = $this->submissao_norte()
+                    //     ->when($request->statusAva, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+
+                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
+                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
+                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
+                    //         });    
+                    //     })
+                    //     ->when($request->statusCoo, function ($query) use ($request) {
+                    //         $query->wherehas('avaliacao', function($q) use ($request){
+                    //             $q->where('status_coordenador', '=', $request->statusCoo);
+                    //         });      
+                    //     })
+                    //     ->when($request->search, function ($query) use ($request) {
+                    //         $query->where(function ($query) use ($request) {
+                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
+                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    //             });
+                    //         });
+                    //     })
+                    //     ->when($request->categoria, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('categoria', '=', $request->categoria);
+                    //         });
+                    //     })
+                    //     ->when($request->modalidade, function ($query) use ($request){
+                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                    //             $q->where('modalidade', '=', $request->modalidade);
+                    //         });
+                    //     })
+                    // ->get();
+
+                    // $data['data'] = $submissao_sul->merge($submissao_centrooeste)->merge($submissao_nordeste)->merge($submissao_norte)->merge($submissao_sudeste);
+
+                    // return response()->json($data);
+            }
 
         }
     }

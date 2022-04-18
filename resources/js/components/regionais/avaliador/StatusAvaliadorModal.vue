@@ -93,7 +93,6 @@
                 verify: null,
                 divisoes_tematicas: [],
                 avaliadores: [],
-                statuses: null,
                 post: {
                     id: null,
                     titulo: null,

@@ -280,6 +280,8 @@ import AssociadoGrid from './components/admin/associado/AssociadoGrid.vue'
 import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
 import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
+import PagamentosGrid from './components/admin/pagamentos/PagamentosGrid.vue'
+
 // import PagarModal from './components/cadastro/PagarModal.vue'
 import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
 import AssociadoArea from './components/associado/AssociadoArea.vue'
@@ -364,6 +366,10 @@ const app = new Vue({
         'anuidade-cadastro': AnuidadeCadastro,
         'form-avaliador': FormAvaliador,
         'form-indicacao': FormIndicacao,
+
+        //ADMIN PAGAMENTOS
+        'pagamentos-grid': PagamentosGrid,
+
 
         //INSCRICOES
         'regional-sulform': RegionalSulForm,

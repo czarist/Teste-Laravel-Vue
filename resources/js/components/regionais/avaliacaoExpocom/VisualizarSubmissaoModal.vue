@@ -42,6 +42,7 @@
             </div>          
             <br><br>
 
+
             <div class="text-center text-black">
                 <h6
                     class="text-black"
@@ -51,6 +52,19 @@
                 <h6
                     class="text-black"
                     >{{ form ? form.titulo : "Nenhuma Informação" }}
+                </h6>
+            </div>          
+            <br><br>
+
+            <div class="text-center text-black">
+                <h6
+                    class="text-black"
+                >
+                    Trabalho produzido em:
+                </h6>
+                <h6
+                    class="text-black"
+                    >{{ form ? form.trabalho_produzido : "Nenhuma Informação" }}
                 </h6>
             </div>          
             <br><br>
@@ -153,7 +167,8 @@
                     coautores: [],
                     categoria: null,
                     modalidade: null,
-                    titulo: null
+                    titulo: null,
+                    trabalho_produzido: null,
                 },
             }
         },
@@ -169,6 +184,7 @@
                     this.form.modalidade = newVal.inscricao && newVal.inscricao.user && newVal.inscricao.user.indicacao ? newVal.inscricao.user.indicacao.modalidade : null
                     this.form.categoria = newVal.inscricao && newVal.inscricao.user && newVal.inscricao.user.indicacao ? newVal.inscricao.user.indicacao.categoria : null
                     this.form.titulo = newVal.inscricao && newVal.inscricao.user && newVal.inscricao.user.indicacao ? newVal.inscricao.user.indicacao.titulo_trabalho : null
+                    this.form.trabalho_produzido = newVal.inscricao && newVal.inscricao.user && newVal.inscricao.user.indicacao ? newVal.inscricao.user.indicacao.trabalho_produzido : null
 
                     if(newVal && newVal.coautor_orientador_sub_sudeste){
                         this.form.coautores = newVal.coautor_orientador_sub_sudeste;

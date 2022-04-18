@@ -18,7 +18,7 @@ class Nacional extends Model
         'guardador_sabado',
         'port_nece_espe',
         'port_nece_espe_qual',
-        'port_nece_espe_outra'
+        'port_nece_espe_outra',
     ];
 
     public function submissaoPublicom(){

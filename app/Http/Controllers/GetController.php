@@ -19,12 +19,14 @@ use App\Models\Estado;
 use App\Models\GrupoPesquisa;
 use App\Models\Indicacao;
 use App\Models\Municipio;
+use App\Models\PagSeguroTipoStatus;
 use App\Models\Produto;
 use App\Models\ProdutosRegionais;
 use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
 use App\Models\User;
+use Database\Seeders\PagSeguroTipoStatusSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -222,4 +224,10 @@ class GetController extends Controller
             ->whereUserId($id)
             ->first();
     }
+
+    public function getPagamentosStatuses(PagSeguroTipoStatus $pagSeguroTipoStatus)
+    {
+        return $pagSeguroTipoStatus->select('id', 'nome')->get();
+    }
 }
+

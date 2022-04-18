@@ -62,7 +62,7 @@ class CoordenadorController extends Controller
                 $query->whereHas('coordenador_regional');
             })
 
-            ->paginate(20);
+        ->paginate(20);
     }
 
     public function store(Request $request)

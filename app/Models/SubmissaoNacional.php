@@ -16,16 +16,12 @@ class SubmissaoNacional extends Model
         'dt',
         'tipo',
         'titulo',
-        'palavra_chave_1',
-        'palavra_chave_2',
-        'palavra_chave_3',
-        'palavra_chave_4',
-        'palavra_chave_5',
         'termo_autoria',
         'autorizacao',
         'link_trabalho',
         'ano',
-        'editora'
+        'editora',
+        'lattes'
     ];
 
     public function CoautorOrganizadoresSubNaci()

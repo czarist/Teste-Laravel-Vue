@@ -89,7 +89,7 @@ class HomeController extends Controller
 
                         if($tipo_venda == "Associado")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 3, 1 => 5];
@@ -152,7 +152,7 @@ class HomeController extends Controller
 
                             if($tipo_venda == "Anuidade 2022")
                             {
-                                if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                                if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                                 {
                                     $user = User::findOrFail(Auth::user()->id);
     
@@ -205,7 +205,7 @@ class HomeController extends Controller
 
                         if($categoria_venda == "Regional-Sul")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 6];
@@ -244,7 +244,7 @@ class HomeController extends Controller
 
                         if($categoria_venda == "Regional-Nordeste")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 7];
@@ -284,7 +284,7 @@ class HomeController extends Controller
                         
                         if($categoria_venda == "Regional-Suldeste")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 8];
@@ -323,7 +323,7 @@ class HomeController extends Controller
 
                         if($categoria_venda == "Regional-Centro-Oeste")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 9];
@@ -362,7 +362,7 @@ class HomeController extends Controller
 
                         if($categoria_venda == "Regional-Norte")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 10];
@@ -401,7 +401,7 @@ class HomeController extends Controller
 
                         if($categoria_venda == "Nacional")
                         {
-                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3)
+                            if(!empty($venda->pagamento) && $venda->pagamento->status_id == 3 || !empty($venda->pagamento) && $venda->pagamento->status_id == 4)
                             {
                                 $user = User::findOrFail(Auth::user()->id);
                                 $todos_tipos = [0 => 11];

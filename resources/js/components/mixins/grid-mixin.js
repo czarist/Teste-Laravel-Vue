@@ -20,7 +20,8 @@ export default {
             user: null,
             regiao_search: null,
             modalidade_search: 0,
-            categoria_search: 0
+            categoria_search: 0,
+            produto_search: 0,
         }
     },
     watch: {
@@ -49,6 +50,7 @@ export default {
                 url = this.regiao_search ? url.concat(`&regiao=${this.regiao_search}`) : url
                 url = this.modalidade_search ? url.concat(`&modalidade=${this.modalidade_search}`) : url
                 url = this.categoria_search ? url.concat(`&categoria=${this.categoria_search}`) : url
+                url = this.produto_search ? url.concat(`&produto=${this.produto_search}`) : url
             return url
         }
     },

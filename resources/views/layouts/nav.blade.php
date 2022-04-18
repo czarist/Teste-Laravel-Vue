@@ -53,6 +53,10 @@
                             <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
                         @endif
 
+                        @if (Auth::user()->is_root || in_array('admin/pagamentos', Auth::user()->roles()))
+                            <li> <a href="{{ route('pagamentos.index') }}"> Pagamentos </a> </li>
+                        @endif
+
                         @if (Auth::user()->is_root || in_array('admin/coordenador', Auth::user()->roles()))
                             <li> <a href="{{ route('coordenador.index') }}"> Cadastro Coordenador </a> </li>
                         @endif

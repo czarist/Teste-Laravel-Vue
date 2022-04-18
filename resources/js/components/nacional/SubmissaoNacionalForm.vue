@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h1>SUBMISSÃO DE TRABALHO - NACIONAL</h1>
+                    <h1> {{ post.tipo && post.tipo.numero == 3 ? 'SUBMISSÃO DE LIVRO' : 'SUBMISSÃO DE TRABALHO' }} - NACIONAL</h1>
                     
                 </div>
             </div>
@@ -16,10 +16,10 @@
                 </div>
 
                 <div class="card-body">
-                    <b-row>
-                        <div class="col-12  text-center">
+                    <b-row class="align-items-center">
+                        <div class="col-12 col-sm-12 col-lg-12 text-center">
                             <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">CLIQUE NOS BOTÕES E ESCOLHA UM GRUPO DE PESQUISA:</label><br />
-                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Selecione apenas um grupo de pesquisa</label><br />
+                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Selecione apenas um Grupo de Pesquisa</label><br />
 
                             <div class="">
                                 <v-select
@@ -34,6 +34,7 @@
                                     :class="[{ 'v-select-invalid': errors.has(`gps`) }]"
                                     label="descricao"
                                     :name="`gps`"
+                                    placeholder="Selecione um grupo de pesquisa"
                                 >
                                     <template v-slot:no-options="{ search, searching }">
                                         <template v-if="searching">
@@ -47,6 +48,24 @@
                                 </v-select>
                             </div>
                         </div>
+
+                        <b-col cols="12" sm="1" lg="12" class="text-center mt-2">
+                            <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">Curriculo Lattes</label><br />
+                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Campo não obrigatório</label><br />
+
+                            <b-form-group >
+                                <b-form-input
+                                    name="lattes"
+                                    size="sm"
+                                    v-model="post.lattes"
+                                    type="text"
+                                    :disabled="loading"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`lattes`)}]"
+                                    aria-describedby="input-1-live-feedback"
+                                    data-vv-as="lattes da publicação do trabalho"
+                                ></b-form-input>
+                            </b-form-group>
+                        </b-col>
 
                     </b-row>    
                     <span v-show="errors.has(`gps`)" class="invalid-feedback d-block m-0">
@@ -126,6 +145,25 @@
                                 </span>
                             </b-form-group>
                         </b-col>
+
+                        <b-col cols="12" sm="6" lg="6" class="text-center" >
+                            <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">Curriculo Lattes</label><br />
+                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Campo não obrigatório</label><br />
+
+                            <b-form-group >
+                                <b-form-input
+                                    name="lattes"
+                                    size="sm"
+                                    v-model="post.lattes"
+                                    type="text"
+                                    :disabled="loading"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`lattes`)}]"
+                                    aria-describedby="input-1-live-feedback"
+                                    data-vv-as="lattes da publicação do trabalho"
+                                ></b-form-input>
+                            </b-form-group>
+                        </b-col>
+
                     </b-row>    
                 </div>
             </div>
@@ -137,7 +175,7 @@
 
                 <div class="card-body">
                     <b-row>
-                        <div class="col-12  text-center">
+                        <div class="col-12  text-center m-1">
                             <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">CLIQUE NOS BOTÕES E ESCOLHA DIVISÕES TEMÁTICAS:</label><br />
                             <label for="ativo" label-class="font-weight-bold" style="color:red;">*Selecione apenas uma divisão temática</label><br />
 
@@ -157,12 +195,30 @@
                                     ><label :key="`label_${index}`" :for="`dv_${index}`" class="mr-2">{{ divisoes_tematica.dt }} - {{ divisoes_tematica.descricao }}</label>
                                 </span>
                             </div>
+                            <span v-show="errors.has(`divisoes_tematicas`)" class="invalid-feedback d-block m-0">
+                                {{ errors.first(`divisoes_tematicas`) }}
+                            </span>
                         </div>
 
+                        <b-col cols="12" sm="6" lg="6" class="text-center" >
+                            <label for="ativo" label-class="font-weight-bold" style="font-size:20px !important; color:black;">Curriculo Lattes</label><br />
+                            <label for="ativo" label-class="font-weight-bold" style="color:red;">*Campo não obrigatório</label><br />
+
+                            <b-form-group >
+                                <b-form-input
+                                    name="lattes"
+                                    size="sm"
+                                    v-model="post.lattes"
+                                    type="text"
+                                    :disabled="loading"
+                                    :class="['form-control form-control-sm', {'is-invalid': errors.has(`lattes`)}]"
+                                    aria-describedby="input-1-live-feedback"
+                                    data-vv-as="lattes da publicação do trabalho"
+                                ></b-form-input>
+                            </b-form-group>
+                        </b-col>
+
                     </b-row>    
-                    <span v-show="errors.has(`divisoes_tematicas`)" class="invalid-feedback d-block m-0">
-                        {{ errors.first(`divisoes_tematicas`) }}
-                    </span>
 
                 </div>
             </div>
@@ -174,7 +230,7 @@
                 <div class="card-body">
                     <b-row>
                         <b-col cols="12" sm="12" lg="12" class="text-center">
-                            <b-form-group label="TÍTULO" style="font-size:20px !important; color:black;">
+                            <b-form-group :label="post.tipo && post.tipo.numero == 3 ? 'Título do Livro' : 'Título do Trabalho'" style="font-size:20px !important; color:black;">
                                     <textarea 
                                         class="form-control" 
                                         v-on:keyup="liveCountDown" 
@@ -191,7 +247,6 @@
                                 </span>
                             </b-form-group>
                         </b-col>
-
 
                         <!-- <b-col cols="12" sm="12" lg="12" class="text-center">
                             <label label-class="font-weight-bold" style="font-size:20px !important; color:black;">PALAVRAS-CHAVE</label><br />
@@ -297,8 +352,8 @@
             </div>
 
             <div class="card mt-3">
-                <div class="card-header py-1 d-flex justify-content-between align-items-center">
-                    <h2 >Coautor(es) e {{ post.tipo && post.tipo.numero == 3 ? "Organizadores" : "Orientadores"}}</h2>
+                <div class="card-header py-1 d-flex justify-content-between align-items-center text-center">
+                    <h2 >Coautor(es) e {{ post.tipo && post.tipo.numero == 3 ? "Organizador(es)" : "Orientador(es)"}}</h2>
                     <button :disabled="loading"  class="btn btn-sm btn-primary" title="Adicionar Endereço" @click="addCoaOri()">
                         <i class="fas fa-plus"></i> Adicionar
                     </button>
@@ -422,7 +477,7 @@
                     <b-col cols="12" sm="12" lg="12" class="text-center m-3">
                         <b-row>
                             <b-col cols="6" sm="6" lg="6">
-                                <b-form-invalid-feedback v-if="acordoTermoAutoria == 0" class="text-center">Declare que esta de acordo com termo de autoria</b-form-invalid-feedback>
+                                <b-form-invalid-feedback v-if="acordoTermoAutoria == 0" class="text-center">Declare que está de acordo com termo de autoria</b-form-invalid-feedback>
 
                                 <b-form-checkbox
                                     id="termo_autoria"
@@ -446,7 +501,7 @@
                             </b-col>
 
                             <b-col cols="6" sm="6" lg="6">
-                                <b-form-invalid-feedback v-if="acordoAutorizacao == 0" class="text-center">Declare que esta de acordo com a autorização</b-form-invalid-feedback>
+                                <b-form-invalid-feedback v-if="acordoAutorizacao == 0" class="text-center">Declare que está de acordo com a autorização</b-form-invalid-feedback>
                                 <b-form-checkbox
                                     id="autorizacao"
                                     v-model="post.autorizacao"
@@ -657,6 +712,7 @@
                     ciente: this.submissao ? this.submissao.ciente : 1,
                     editora: this.submissao ? this.submissao.editora : null,
                     ano: this.submissao ? this.submissao.ano : null,
+                    lattes: this.submissao ? this.submissao.lattes : null,
                     coautoresOrientadores: 
                         this.submissao 
                         && this.submissao.coautor_orientador_sub_centrooeste
@@ -711,6 +767,7 @@
                     this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
                     this.post.editora = this.submissao ? this.submissao.editora : null
                     this.post.ano = this.submissao ? this.submissao.ano : null
+                    this.post.lattes = this.submissao ? this.submissao.lattes : null
                 }
             }
         },

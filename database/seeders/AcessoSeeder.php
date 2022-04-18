@@ -68,5 +68,14 @@ class AcessoSeeder extends Seeder
             ]
         );
 
+        Acesso::updateOrCreate(
+            ['id' => 7],
+            [
+                'id'  => 7,
+                'pagina' => 'Pagamentos',
+                'link' => 'admin/pagamento'
+            ]
+        );
+
     }
 }

@@ -109,16 +109,22 @@ class ChatAvaliacaoController extends Controller
             }
     
             if($request->coordenador_id == null){
-                // Enviar e-mail informando ao avaliador que tem uma nova mensagem no chat
+                // Enviar e-mail informando ao coordenador que tem uma nova mensagem no chat
                 try {
                            
                     if($request->avaliacao_id){
     
-                        $coordenador = ChatAvaliacao::select('id', 'coordenador_id')
+                        $coordenador_id = ChatAvaliacao::select('id', 'coordenador_id')
                         ->whereAvaliacaoId($request->avaliacao_id)
                         ->whereNotNull('coordenador_id')->first();
+
+                        if($coordenador_id && $coordenador_id->coordenador_id){
+                            $coordenador = Coordenador::findOrFail($coordenador_id->coordenador_id);
+                        }
     
-                        $dados['user'] = User::findOrFail($coordenador->coordenador_id);
+                        $dados['user'] = User::findOrFail($coordenador->user_id);
+
+
                     }
     
                     $emails = $dados['user']->email;
@@ -240,16 +246,20 @@ class ChatAvaliacaoController extends Controller
             }
     
             if($request->coordenador_id == null){
-                // Enviar e-mail informando ao avaliador que tem uma nova mensagem no chat
+                // Enviar e-mail informando ao coordenador que tem uma nova mensagem no chat
                 try {
                            
                     if($request->avaliacao_id){
     
-                        $coordenador = ChatAvaliador::select('id', 'coordenador_id')
+                        $coordenador_id = ChatAvaliador::select('id', 'coordenador_id')
                         ->whereAvaliacaoId($request->avaliacao_id)
                         ->whereNotNull('coordenador_id')->first();
     
-                        $dados['user'] = User::findOrFail($coordenador->coordenador_id);
+                        if($coordenador_id && $coordenador_id->coordenador_id){
+                            $coordenador = Coordenador::findOrFail($coordenador_id->coordenador_id);
+                        }
+    
+                        $dados['user'] = User::findOrFail($coordenador->user_id);
                     }
     
                     $emails = $dados['user']->email;
@@ -382,17 +392,21 @@ class ChatAvaliacaoController extends Controller
         }
 
         if($request->coordenador_id == null){
-            // Enviar e-mail informando ao avaliador que tem uma nova mensagem no chat
+            // Enviar e-mail informando ao coordenador que tem uma nova mensagem no chat
             try {
                        
                 if($request->avaliacao_id){
 
-                    $coordenador = ChatAvaliacaoExpocom::select('id', 'coordenador_id')
+                    $coordenador_id = ChatAvaliacaoExpocom::select('id', 'coordenador_id')
                     ->whereAvaliacaoId($request->avaliacao_id)
                     ->whereNotNull('coordenador_id')->first();
 
-                    $dados['user'] = User::findOrFail($coordenador->coordenador_id);
-                }
+                    if($coordenador_id && $coordenador_id->coordenador_id){
+                        $coordenador = Coordenador::findOrFail($coordenador_id->coordenador_id);
+                    }
+
+                    $dados['user'] = User::findOrFail($coordenador->user_id);
+            }
 
                 $emails = $dados['user']->email;
 

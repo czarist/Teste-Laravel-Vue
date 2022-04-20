@@ -36,7 +36,7 @@ class HomeController extends Controller
         //         if(count($vendas_items) > 0) {
         //             foreach ($vendas_items as $venda_item) {
         //                 $transacao = PagSeguroPgto::where('venda_id', $venda_item->id)
-        //                                                 ->where('status_id', '=', '3')
+        //                                                 ->whereIn('status_id', [3,4])
         //                                                     ->get()->toArray();
 
         //                 if(count($transacao) > 0) {

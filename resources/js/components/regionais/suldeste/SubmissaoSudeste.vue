@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.submissao != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-show="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -533,6 +533,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão sudeste encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -545,6 +549,7 @@
         mixins: [ MixinsGlobal],
         data() {
             return {
+                moment: moment,
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
                 edit: false,
@@ -901,16 +906,19 @@
 
             }
 
-            // if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
-            //     console.log('habilitado edição')
-                
-            // }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
-            //     window.location.href = this.baseUrl+'/submissao'         
-            // }
-            // else if(this.submissao && this.submissao != null){
-            //     window.location.href = this.baseUrl+'/submissao'               
-            // }
+            let date = moment().format('L')
+            let hours = moment().format('LTS');
 
+            if(date >= '04/21/2022' && hours >= '00:00:00'){
+                if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
+                    
+                }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
+                    window.location.href = this.baseUrl+'/submissao'         
+                }
+                else if(this.submissao && this.submissao != null){
+                    window.location.href = this.baseUrl+'/submissao'               
+                }
+            }
         }
     }
 </script>

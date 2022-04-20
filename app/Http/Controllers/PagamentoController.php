@@ -25,9 +25,9 @@ class PagamentoController extends Controller
                                 'pagamento.tipo_pgto',
                                 'vendas_item', 
                                 'vendas_item.produto',
-                                'user:id,name'
-                                
+                                'user:id,name'                                
                                 )
+                        ->wherehas('pagamento')
                         ->when($request->sort == 'id', function ($query) {
                             $query->orderBy('id', 'DESC');
                         })

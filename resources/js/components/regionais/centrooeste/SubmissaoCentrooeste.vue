@@ -889,14 +889,19 @@
 
             }
 
-            // if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
-                
-            // }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
-            //     window.location.href = this.baseUrl+'/submissao'         
-            // }
-            // else if(this.submissao && this.submissao != null){
-            //     window.location.href = this.baseUrl+'/submissao'               
-            // }
+            let now = moment().format('L')
+
+            if(now >= '04/26/2022'){
+
+                if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
+                    
+                }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
+                    window.location.href = this.baseUrl+'/submissao'         
+                }
+                else if(this.submissao && this.submissao != null){
+                    window.location.href = this.baseUrl+'/submissao'               
+                }
+            }
 
         }
     }

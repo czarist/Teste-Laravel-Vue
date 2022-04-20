@@ -25,8 +25,8 @@
                     </div>
                 </a>
             </li>
-
-            @if (Auth::user()->is_root || array_intersect(['admin/coordenador' ,'admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
+                {{-- @dd(Auth::user()->roles()) --}}
+            @if (Auth::user()->is_root || array_intersect(['admin/coordenador' ,'admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo', 'admin/pagamento', 'admin/indicacao'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
                 <li class="menu">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -53,8 +53,12 @@
                             <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
                         @endif
 
-                        @if (Auth::user()->is_root || in_array('admin/pagamentos', Auth::user()->roles()))
+                        @if (Auth::user()->is_root || in_array('admin/pagamento', Auth::user()->roles()))
                             <li> <a href="{{ route('pagamentos.index') }}"> Pagamentos </a> </li>
+                        @endif
+
+                        @if (Auth::user()->is_root || in_array('admin/indicacao', Auth::user()->roles()))
+                            <li> <a href="{{ route('admin.indicacao.index') }}"> Indicacão Expocom </a> </li>
                         @endif
 
                         @if (Auth::user()->is_root || in_array('admin/coordenador', Auth::user()->roles()))

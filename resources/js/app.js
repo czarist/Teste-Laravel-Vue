@@ -281,6 +281,7 @@ import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
 import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
 import PagamentosGrid from './components/admin/pagamentos/PagamentosGrid.vue'
+import IndicacaoExpocomGrid from "./components/admin/indicacao/IndicacaoExpocomGrid.vue"
 
 // import PagarModal from './components/cadastro/PagarModal.vue'
 import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
@@ -370,6 +371,8 @@ const app = new Vue({
         //ADMIN PAGAMENTOS
         'pagamentos-grid': PagamentosGrid,
 
+        //ADMIN INDICACAO
+        'indicacao_expocom-grid': IndicacaoExpocomGrid,
 
         //INSCRICOES
         'regional-sulform': RegionalSulForm,

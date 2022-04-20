@@ -77,5 +77,13 @@ class AcessoSeeder extends Seeder
             ]
         );
 
+        Acesso::updateOrCreate(
+            ['id' => 8],
+            [
+                'id'  => 8,
+                'pagina' => 'Indicação Expocom',
+                'link' => 'admin/indicacao'
+            ]
+        );
     }
 }

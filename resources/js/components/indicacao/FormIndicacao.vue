@@ -575,8 +575,8 @@
 
         </div>
     </div>
-        <notifications group="submit" position="bottom center" width="600px" />
-        <visualizar-modal :selected="selected"></visualizar-modal>
+    <notifications group="submit" position="bottom center" width="600px" />
+    <visualizar-modal :selected="selected"></visualizar-modal>
 
 </div>
 

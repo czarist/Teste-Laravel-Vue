@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.user.regional_nordeste.submissao_expocom != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-if="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -649,6 +649,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão nordeste encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -661,6 +665,9 @@
         mixins: [ MixinsGlobal],
         data() {
             return {
+                moment: moment,
+                now: moment().format('L'),
+                fechamento: "04/01/2022",
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
                 edit: this.user && this.user.regional_nordeste && this.user.regional_nordeste && this.user.regional_nordeste.submissao_expocom ? false : true,

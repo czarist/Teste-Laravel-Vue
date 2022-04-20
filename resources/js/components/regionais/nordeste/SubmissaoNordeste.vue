@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.submissao != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-show="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -532,6 +532,11 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão nordeste encerrado</h1>
+</div>
+
+
 </template>
 
 <script>
@@ -544,6 +549,7 @@
         mixins: [ MixinsGlobal],
         data() {
             return {
+                moment: moment,
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
                 edit: false,
@@ -895,8 +901,8 @@
                 window.location.href = this.baseUrl+'/submissao'         
             }
             else if(this.submissao && this.submissao != null){
-                window.location.href = this.baseUrl+'/submissao'               
-            }
+                window.location.href = this.baseUrl+'/submissao' 
+            }             
 
         }
     }

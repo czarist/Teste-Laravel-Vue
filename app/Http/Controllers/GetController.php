@@ -172,6 +172,12 @@ class GetController extends Controller
 
     }
 
+    public function getAdminIndicacaoExpocom2022($id, Indicacao $indicacao){
+
+        return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->findOrFail($id);
+
+    }
+
     public function getAvaliadores(User $user)
     {
         return $user->select('id','name')

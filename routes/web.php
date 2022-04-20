@@ -8,10 +8,12 @@ use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\ChatAvaliacaoController;
 use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\DistribuicaoTipo123Controller;
 use App\Http\Controllers\DistribuicaoTipoExpocomController;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IndicacaoAdminController;
 use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\NacionalController;
@@ -104,8 +106,14 @@ Route::group(['middleware' => 'auth'] , function() {
             Route::resource('pagamentos', PagamentosAdminController::class)->except(['show', 'create', 'edit']);
             Route::get('pagamentos/get', [PagamentosAdminController::class ,'get'])->name('pagamentos.get');
             Route::get('pagamentos/pago/{id}', [PagamentosAdminController::class ,'pago'])->name('pagamentos.pago');
-
         });    
+
+        Route::middleware(['roles:admin/indicacao'])->group(function () {
+            Route::resource('indicacao', IndicacaoAdminController::class)->except(['index', 'show', 'create', 'edit']);
+            Route::get('indicacao/index', [IndicacaoAdminController::class ,'index'])->name('admin.indicacao.index');
+            Route::get('indicacao/get', [IndicacaoAdminController::class ,'get'])->name('admin.indicacao.get');
+        });    
+
 
     });
 
@@ -284,12 +292,15 @@ Route::prefix('get')->group(function () {
     Route::get('produtos-nacional', [GetController::class, 'getProdutosNacional'])->name('get.produtos.nacional');
     Route::get('produtos-regionais', [GetController::class, 'getProdutosRegionais'])->name('get.produtos.regionais');
     Route::get('indicacao-expocom-2022', [GetController::class, 'getIndicacaoExpocom2022'])->name('get.indicacao.expocom.2022');
+    Route::get('admin-indicacao-expocom-2022/{id}', [GetController::class, 'getAdminIndicacaoExpocom2022'])->name('get.admin.indicacao.expocom.2022');
     Route::get('avaliadores', [GetController::class, 'getAvaliadores'])->name('get.avaliadores');
     Route::get('avaliadores-expocom', [GetController::class, 'getAvaliadoresExpocom'])->name('get.avaliadores.expocom');
     Route::get('coordenador/{id}', [GetController::class, 'getCoordenador'])->name('get.coordenador');
     Route::get('status-pagamento', [GetController::class, 'getPagamentosStatuses'])->name('get.status-pagamento');
 
 });
+
+Route::get('cronjob', [CronController::class, 'verificar_pagos'])->name('cronjob');
 
 Route::prefix('indicacao')->group(function(){
     Route::get('/', [IndicacaoController::class, 'index'])->name('indicacao.index');

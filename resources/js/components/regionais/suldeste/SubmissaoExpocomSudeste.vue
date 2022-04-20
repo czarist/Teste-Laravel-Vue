@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div div v-if="this.user.regional_suldeste.submissao_expocom != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-if="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -651,6 +651,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão sudeste encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -1268,31 +1272,37 @@
                     });
                 }
 
-                // if(
-                //     this.user 
-                //     && this.user.regional_suldeste 
-                //     && this.user.regional_suldeste.submissao_expocom
-                //     && this.user.regional_suldeste.submissao_expocom.avaliacao
-                //     && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 1
-                // ){
-                //     console.log('habilitado edição')
+                let date = moment().format('L')
+                let hours = moment().format('LTS');
 
-                // }else if(
-                //     this.user 
-                //     && this.user.regional_suldeste 
-                //     && this.user.regional_suldeste.submissao_expocom
-                //     && this.user.regional_suldeste.submissao_expocom.avaliacao
-                //     && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 0
-                // ){
-                //     window.location.href = this.baseUrl+'/submissao-expocom'         
-                // }
-                // else if(
-                //     this.user 
-                //     && this.user.regional_suldeste 
-                //     && this.user.regional_suldeste.submissao_expocom != null
-                // ){
-                //     window.location.href = this.baseUrl+'/submissao-expocom'        
-                // }
+                if(date >= '04/21/2022' && hours >= '00:00:00'){
+
+                    if(
+                        this.user 
+                        && this.user.regional_suldeste 
+                        && this.user.regional_suldeste.submissao_expocom
+                        && this.user.regional_suldeste.submissao_expocom.avaliacao
+                        && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 1
+                    ){
+                        console.log('habilitado edição')
+
+                    }else if(
+                        this.user 
+                        && this.user.regional_suldeste 
+                        && this.user.regional_suldeste.submissao_expocom
+                        && this.user.regional_suldeste.submissao_expocom.avaliacao
+                        && this.user.regional_suldeste.submissao_expocom.avaliacao.edit == 0
+                    ){
+                        window.location.href = this.baseUrl+'/submissao-expocom'         
+                    }
+                    else if(
+                        this.user 
+                        && this.user.regional_suldeste 
+                        && this.user.regional_suldeste.submissao_expocom != null
+                    ){
+                        window.location.href = this.baseUrl+'/submissao-expocom'        
+                    }
+                }
 
             }
         }

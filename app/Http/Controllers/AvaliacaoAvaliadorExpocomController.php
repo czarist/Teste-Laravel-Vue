@@ -190,6 +190,56 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                 });
 
             })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->wherehas('submissaoNordeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoSul', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoSudeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoCentroOeste', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        });
+                    })
+                    ->orWherehas('submissaoNorte', function ($query) use ($request) {
+                        $query->wherehas('inscricao', function ($query) use ($request) {
+                            $query->wherehas('user', function ($query) use ($request) {
+                                $query->wherehas('indicacao', function ($query) use ($request) {
+                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        });
+                    });
+                });
+
+            })
             ->where(function ($query) {
                 $query->where('avaliador_1', "=", Auth::user()->id)
                     ->orWhere('avaliador_2', "=", Auth::user()->id)

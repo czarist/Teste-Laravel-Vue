@@ -194,8 +194,8 @@
                         this.form.coautores = newVal.coautor_orientador_sub_nordeste;
                     }
 
-                    if(newVal && newVal.coautor_orientador_sub_centro){
-                        this.form.coautores = newVal.coautor_orientador_sub_centro;
+                    if(newVal && newVal.coautor_orientador_sub_centrooeste){
+                        this.form.coautores = newVal.coautor_orientador_sub_centrooeste;
                     }
 
                     if(newVal && newVal.coautor_orientador_sub_suls){
@@ -203,7 +203,7 @@
                     }
 
                     if(newVal && newVal.coautor_orientador_sub_nortes){
-                        this.form.coautores = newVal.coautor_orientador_sub_norte;
+                        this.form.coautores = newVal.coautor_orientador_sub_nortes;
                     }
                      
                 }

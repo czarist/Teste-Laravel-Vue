@@ -632,7 +632,27 @@
                     this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
 
                 }
+            },
+            submissao(){
+                if(this.user){
+                    this.$forceUpdate()
+                    this.post._method = "post",
+                    this.post.divisoes_tematicas = this.submissao && this.submissao.dt ? [ this.submissao.dt]  : [],
+                    this.post.id = this.submissao ? this.submissao.id : null,
+                    this.post.titulo = this.submissao ? this.submissao.titulo : null
+                    this.post.palavra_chave_1 = this.submissao ? this.submissao.palavra_chave_1 : null
+                    this.post.palavra_chave_2 = this.submissao ? this.submissao.palavra_chave_2 : null
+                    this.post.palavra_chave_3 = this.submissao ? this.submissao.palavra_chave_3 : null
+                    this.post.palavra_chave_4 = this.submissao ? this.submissao.palavra_chave_4 : null
+                    this.post.palavra_chave_5 = this.submissao ? this.submissao.palavra_chave_5 : null
+                    this.post.file = this.submissao ? this.submissao.link_trabalho : null
+                    this.post.autorizacao = this.submissao ? this.submissao.autorizacao : 0
+                    this.post.ciente = this.submissao ? this.submissao.ciente : 0
+                    this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
+
+                }
             }
+
         },
         computed: {
             estaCiente() {

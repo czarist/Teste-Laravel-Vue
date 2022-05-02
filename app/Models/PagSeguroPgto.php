@@ -38,6 +38,10 @@ class PagSeguroPgto extends Model
         return $this->belongsTo(PagSeguroTipoPagtoDetalhe::class, 'tipo_pgto_detalhe', 'id');
     }
 
+    public function vendas()
+    {
+        return $this->belongsTo(Venda::class, 'venda_id', 'id');
+    }
 
 
 }

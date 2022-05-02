@@ -567,14 +567,14 @@ class DistribuicaoTipo123Controller extends Controller
                         $dados['avaliador_1']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails) . ' | Dados: ' . json_encode($dados));
                     });
 
                     unset($dados['avaliador_1']);
@@ -588,14 +588,14 @@ class DistribuicaoTipo123Controller extends Controller
                         $dados['avaliador_2']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails)  . ' | Dados: ' . json_encode($dados));
                     });
 
                     unset($dados['avaliador_2']);
@@ -609,14 +609,14 @@ class DistribuicaoTipo123Controller extends Controller
                         $dados['avaliador_3']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails). ' | Dados: ' . json_encode($dados));
                     });
 
                     unset($dados['avaliador_3']);
@@ -798,14 +798,14 @@ class DistribuicaoTipo123Controller extends Controller
                     $emails[] = User::findOrFail($coordenador->user_id)->email;
                 }
     
-                Mail::send('email.avaliacao_avaliador', $dados, function ($email) use ($emails) {
+                Mail::send('email.avaliacao_avaliador', $dados, function ($email) use ($emails, $dados) {
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
                         $email->to('murilo@kirc.com.br');
                     }
                         $email->subject('Indicação de Avaliador | Intercom');
-                    Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                    Log::info('E-mail Enviado para o usuario informando que o status foi alterado | E-mail:' . json_encode($emails) . ' | Dados: ' . json_encode($dados));
                 });
     
             } catch (Exception $e) {
@@ -879,39 +879,48 @@ class DistribuicaoTipo123Controller extends Controller
         try{
             $post = $request->all();
 
-            $distribuicao->update([
-                'status_coordenador' => $post['status_coordenador'],
-                "justificativa_coordenador" =>$post['justificativa_coordenador'] ?? null
-            ]);
+            if($post['status_coordenador'] == "Alteração solicitada"){
+                $distribuicao->update([
+                    'status_coordenador' => $post['status_coordenador'],
+                    "justificativa_coordenador" => $post['justificativa_coordenador'] ?? null,
+                    "edit" => 1
+                ]);    
+            }else{
+                $distribuicao->update([
+                    'status_coordenador' => $post['status_coordenador'],
+                    "justificativa_coordenador" => $post['justificativa_coordenador'] ?? null,
+                ]);
+            }
 
-            Log::info('Distribuicao de trabalho status e justificativa coordenador updated: '.$distribuicao->id.' | Request: '.json_encode($request->all()));
 
-            // //Enviar e-mail informando ao autor que o status do seu trabalho foi alterado
-            // try {
+            Log::info('Avaliacao Tipo DT | Status e Sustificativa Coordenador updated: '.$distribuicao->id.' | Request: '.json_encode($request->all()));
 
-            //     $dados['status_coordenador'] = $post['status_coordenador'];
+            //Enviar e-mail informando ao autor que o status do seu trabalho foi alterado
+            try {
 
-            //     $dados['justificativa_coordenador'] = $post['justificativa_coordenador'];
+                $dados['status_coordenador'] = $post['status_coordenador'];
 
-            //     if($submissao && $submissao->inscricao && $submissao->inscricao->user){
-            //         $dados['titulo'] = $submissao->titulo;
-            //         $dados['user'] = $submissao->inscricao->user;
-            //         $emails = $submissao->inscricao->user->email;
-            //     }
+                $dados['justificativa_coordenador'] = $post['justificativa_coordenador'];
+
+                if($submissao && $submissao->inscricao && $submissao->inscricao->user){
+                    $dados['titulo'] = $submissao->titulo;
+                    $dados['user'] = $submissao->inscricao->user;
+                    $emails = $submissao->inscricao->user->email;
+                }
     
-            //     Mail::send('email.avaliacao_coordenador', $dados, function ($email) use ($emails) {
-            //         if (App::environment('production')) {
-            //             $email->to($emails);
-            //         } else {
-            //             $email->to('murilo@kirc.com.br');
-            //         }
-            //             $email->subject('Status do trabalho | Intercom');
-            //         Log::info('E-mail Enviado para o autor do trabalho com a informação do status | Email: ' . $emails);
-            //     });
+                Mail::send('email.avaliacao_coordenador', $dados, function ($email) use ($emails) {
+                    if (App::environment('production')) {
+                        $email->to($emails);
+                    } else {
+                        $email->to('murilo@kirc.com.br');
+                    }
+                        $email->subject('Status do trabalho | Intercom');
+                    Log::info('E-mail Enviado para o autor do trabalho com a informação do status | Email: ' . $emails);
+                });
     
-            // } catch (Exception $e) {
-            //     Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
-            // }
+            } catch (Exception $e) {
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+            }
             
             return response()->json(['message' => 'success', 'response' => $distribuicao], 201);
 

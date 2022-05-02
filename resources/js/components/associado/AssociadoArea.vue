@@ -3,7 +3,7 @@
         <h5 class="col-12 d-flex justify-content-between">
             Associados
         </h5>
-        <div class="col-12">
+        <div class="col-12" v-if="anuidade_paga == false">
             <div class="card">
                 <div class="card-body pb-2">
                    
@@ -53,6 +53,11 @@
                 </div>
             </div>
         </div>
+
+        <div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert' v-else>
+            <h4 class='alert-heading'>Parabéns!</h4>
+            <p><b>Sua Anuidade 2022 esta em dia!</b></p>
+        </div>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -72,16 +77,9 @@
             return {
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
+                anuidade_paga: this.user && this.user.anuidade_2022 ? this.user.anuidade_2022 : false,
 
             }
-        },
-        methods: {
-        },
-        async created() {
-      },
-        mounted() {
-        },
-        destroyed () {
         },
     }
 </script>

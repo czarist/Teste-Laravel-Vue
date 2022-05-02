@@ -6,43 +6,43 @@
     
     ?>
     <?php
-    $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
+        $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
+            <h4 class='alert-heading'>Parabéns!</h4>
+            <p><b>O seu pagamento de filiação foi processado com sucesso</b></p>
+            <p><b>Assim que seu pagamento for aprovado será liberar a área de associado</b></p>
+            Você foi direcionado para a página principal.<br/>
+            Caso não tenha recebido o email contendo o status do seu pagamento, verifique sua caixa de spam.
+        </div>";
+        
+        $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
+            <h4 class='alert-heading'>Parabéns!</h4>
+            <p><b>O seu pagamento da sua anuidade foi processado com sucesso</b></p>
+            <p><b>Assim que seu pagamento for aprovado será liberar a área de associado</b></p>
+            Você foi direcionado para a página principal.<br/>
+            Caso não tenha recebido o email contendo o status do seu pagamento, verifique sua caixa de spam.
+        </div>";
+        
+        $div_status2 = "<div class='col-12 alert alert-danger text-center' role='alert'>
+                <h4 class='alert-heading'>Alerta!</h4>
+                <p><b>Seu pagamento teve um erro, acompanhe pela área de pagamentos</b></p>
+            </div>";
+
+        $div_status1 = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
         <h4 class='alert-heading'>Parabéns!</h4>
-        <p><b>O seu pagamento de filiação foi processado com sucesso</b></p>
-        <p><b>Assim que seu pagamento for aprovado será liberar a área de associado</b></p>
+        <p><b>Seu trabalho foi submetido com sucesso</b></p>
         Você foi direcionado para a página principal.<br/>
-        Caso não tenha recebido o email contendo o status do seu pagamento, verifique sua caixa de spam.
-    </div>";
-    
-    $div_status = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
-        <h4 class='alert-heading'>Parabéns!</h4>
-        <p><b>O seu pagamento da sua anuidade foi processado com sucesso</b></p>
-        <p><b>Assim que seu pagamento for aprovado será liberar a área de associado</b></p>
-        Você foi direcionado para a página principal.<br/>
-        Caso não tenha recebido o email contendo o status do seu pagamento, verifique sua caixa de spam.
-    </div>";
-    
-    $div_status2 = "<div class='col-12 alert alert-danger text-center' role='alert'>
-            <h4 class='alert-heading'>Alerta!</h4>
-            <p><b>Seu pagamento teve um erro, acompanhe pela área de pagamentos</b></p>
         </div>";
 
-    $div_status1 = "<div class='col-12 alert alert-success text-center mt-3 mb-3' role='alert'>
-    <h4 class='alert-heading'>Parabéns!</h4>
-    <p><b>Seu trabalho foi submetido com sucesso</b></p>
-    Você foi direcionado para a página principal.<br/>
-    </div>";
-
-    
-    if ($status == 'sucess') {
-        echo $div_status;
-    }
-    if ($status == 'error') {
-        echo $div_status2;
-    }
-    if ($status == 'sucess1') {
-        echo $div_status1;
-    }
+        
+        if ($status == 'sucess') {
+            echo $div_status;
+        }
+        if ($status == 'error') {
+            echo $div_status2;
+        }
+        if ($status == 'sucess1') {
+            echo $div_status1;
+        }
 
     
     ?>
@@ -208,14 +208,34 @@
                                     || Auth::user()->pago_regional_norte_2022
 
                             )                                        
-                                @if (Auth::user()->pago_regional_sul_2022)                                        
+                                @if (Auth::user()->pago_regional_sul_2022)
+                                
+                                    <div class="text-center">
+                                        <h6>Inscrição</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-success m-1" href="{{ route('reginal.sul') }}">
+                                            @if (Auth::user()->regional_sul)
+                                                Alterar Inscrição - Regional Sul
+                                            @endif
+                                            @if (!Auth::user()->regional_sul)
+                                                Criar Inscrição - Regional Sul
+                                            @endif
+
+                                        </a>
+                                    </div>
+                                    <hr>    
+                                    <div class="text-center">
+                                        <h6>Submissão de Trabalho</h6>
+                                    </div>
+
                                     @if (
                                         Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 1                                         
                                         || Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 2 
                                         || Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 10                                        
                                         )
 
-                                            <div class="row">
+                                            <div class="row text-center">
                                                 @if (Auth::user()->is_indicado_expocom_2022)
                                                 <div class="col-6">
                                                     <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.sul') }}">Submissão Expocom Regional Sul</a>                                        
@@ -239,7 +259,7 @@
                                         || Auth::user() && Auth::user()->regional_sul && Auth::user()->regional_sul->categoria_inscricao && Auth::user()->regional_sul->categoria_inscricao == 9
 
                                     )
-                                        <div class="row">
+                                        <div class="row text-center">
                                             <div class="col-6">
                                                 <a class="btn btn-primary m-1" href="{{ route('submissao.regional.sul') }}">Submissão Divisões Temáticas Regional Sul</a>
                                             </div>                                                    
@@ -249,16 +269,40 @@
                                         </div>
 
                                     @endif
+                                    <hr>    
+                                    <hr>    
+
                                 @endif
 
-                                @if (Auth::user()->pago_regional_nordeste_2022)                                           
+                                @if (Auth::user()->pago_regional_nordeste_2022)    
+                                
+                                    <div class="text-center">
+                                        <h6>Inscrição</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-success m-1" href="{{ route('reginal.nordeste') }}">
+                                            @if (Auth::user()->regional_nordeste)
+                                                Alterar Inscrição - Regional Nordeste
+                                            @endif
+                                            @if (!Auth::user()->regional_nordeste)
+                                                Criar Inscrição - Regional Nordeste
+                                            @endif
+
+                                        </a>
+
+                                    </div>
+                                    <hr>    
+                                    <div class="text-center">
+                                        <h6>Submissão de Trabalho</h6>
+                                    </div>
+                               
                                     @if (
                                         Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 1                                         
                                         || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 2 
                                         || Auth::user()->regional_nordeste && Auth::user()->regional_nordeste->categoria_inscricao && Auth::user()->regional_nordeste->categoria_inscricao == 10
                                         )
 
-                                            <div class="row">
+                                            <div class="row text-center">
                                                 @if (Auth::user()->is_indicado_expocom_2022)
                                                 <div class="col-6">
                                                     <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.nordeste') }}">Submissão Expocom Regional Nordeste</a>                                        
@@ -292,16 +336,38 @@
                                         </div>
 
                                     @endif
+                                    <hr>    
+                                    <hr>    
+
                                 @endif
 
-                                @if (Auth::user()->pago_regional_suldeste_2022)                                                
+                                @if (Auth::user()->pago_regional_suldeste_2022)
+                                    <div class="text-center">
+                                        <h6>Inscrição</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-success m-1" href="{{ route('reginal.suldeste') }}">
+                                            @if (Auth::user()->regional_suldeste)
+                                                Alterar Inscrição - Regional Sudeste
+                                            @endif
+                                            @if (!Auth::user()->regional_suldeste)
+                                                Criar Inscrição - Regional Sudeste
+                                            @endif
+                                    
+                                        </a>
+                                    </div>
+                                    <hr>    
+                                    <div class="text-center">
+                                        <h6>Submissão de Trabalho</h6>
+                                    </div>
+                                                                                
                                     @if (
                                         Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 1                                         
                                         || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 2 
                                         || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 10
                                         )
 
-                                            <div class="row">
+                                            <div class="row text-center">
                                                 @if (Auth::user()->is_indicado_expocom_2022)
                                                 <div class="col-6">
                                                     <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.suldeste') }}">Submissão Expocom Regional Sudeste</a>                                        
@@ -324,7 +390,7 @@
                                         || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 8
                                         || Auth::user()->regional_suldeste && Auth::user()->regional_suldeste->categoria_inscricao && Auth::user()->regional_suldeste->categoria_inscricao == 9
                                     )
-                                        <div class="row">
+                                        <div class="row text-center">
                                             <div class="col-6">
                                                 <a class="btn btn-primary m-1" href="{{ route('submissao.regional.suldeste') }}">Submissão Divisões Temáticas Regional Sudeste</a>
                                             </div>                                                    
@@ -333,16 +399,38 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <hr>    
+                                    <hr>    
+
                                 @endif
 
                                 @if (Auth::user()->pago_regional_centrooeste_2022)
+                                    <div class="text-center">
+                                        <h6>Inscrição</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-success m-1" href="{{ route('reginal.centrooeste') }}">
+                                            @if (Auth::user()->regional_centrooeste)
+                                                Alterar Inscrição - Regional Centro Oeste
+                                            @endif
+                                            @if (!Auth::user()->regional_centrooeste)
+                                                Criar Inscrição - Regional Centro Oeste
+                                            @endif
+                                    
+                                        </a>
+                                    </div>
+                                    <hr>    
+                                    <div class="text-center">
+                                        <h6>Submissão de Trabalho</h6>
+                                    </div>
+                                
                                     @if (
                                         Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 1                                         
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 2 
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 10
                                         )
 
-                                            <div class="row">
+                                            <div class="row text-center">
                                                 @if (Auth::user()->is_indicado_expocom_2022)
                                                 <div class="col-6">
                                                     <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.centrooeste') }}">Submissão Expocom Regional Centro-Oeste</a>                                        
@@ -357,7 +445,7 @@
                                     @endif
 
                                     @if (
-                                        Auth::user()->regional_centrooeste->categoria_inscricao == 3                                         
+                                        Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 3
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 4
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 5
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 6
@@ -365,7 +453,7 @@
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 8
                                         || Auth::user()->regional_centrooeste && Auth::user()->regional_centrooeste->categoria_inscricao && Auth::user()->regional_centrooeste->categoria_inscricao == 9
                                     )
-                                        <div class="row">
+                                        <div class="row text-center">
                                             <div class="col-6">
                                                 <a class="btn btn-primary m-1" href="{{ route('submissao.regional.centrooeste') }}">Submissão Divisões Temáticas Regional Centro-Oeste</a>
                                             </div>                                                    
@@ -374,16 +462,39 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <hr>    
+                                    <hr>    
+
                                 @endif
 
                                 @if (Auth::user()->pago_regional_norte_2022)
+
+                                    <div class="text-center">
+                                        <h6>Inscrição</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="btn btn-success m-1" href="{{ route('reginal.norte') }}">
+                                            @if (Auth::user()->regional_norte)
+                                                Alterar Inscrição - Regional Norte
+                                            @endif
+                                            @if (!Auth::user()->regional_norte)
+                                            Criar Inscrição - Regional Norte
+                                        @endif
+                                    
+                                        </a>
+                                    </div>
+                                    <hr>    
+                                    <div class="text-center">
+                                        <h6>Submissão de Trabalho</h6>
+                                    </div>
+                                
                                     @if (
                                         Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 1                                         
                                         || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 2 
                                         || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 10
                                         )
 
-                                            <div class="row">
+                                            <div class="row text-center">
                                                 @if (Auth::user()->is_indicado_expocom_2022)
                                                 <div class="col-6">
                                                     <a class="btn btn-primary m-1" href="{{ route('submissaoexpocom.regional.norte') }}">Submissão Expocom Regional Norte</a>                                        
@@ -406,7 +517,7 @@
                                         || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 8
                                         || Auth::user()->regional_norte && Auth::user()->regional_norte->categoria_inscricao && Auth::user()->regional_norte->categoria_inscricao == 9
                                     )
-                                        <div class="row">
+                                        <div class="row text-center">
                                             <div class="col-6">
                                                 <a class="btn btn-primary m-1" href="{{ route('submissao.regional.norte') }}">Submissão Divisões Temáticas Regional Norte</a>
                                             </div>                                                    
@@ -508,27 +619,33 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="formavaliadorLabel">Escolha o formulário para cadastro</h5>
+                        <h5 class="modal-title" id="formavaliadorLabel">Área do Avaliador</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                     </div>
                     <div class="modal-body">
 
                         @if (Auth::user()->is_avaliador_2022)
-                            <div class="d-grid gap-2">
-                                @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador == 1)
-                                <a class="btn btn-primary m-1" href="{{ route('avaliador-expocom.index') }}">Acesso aos trabalhos designados para a sua avaliação - Expocom</a>
-                            @endif
+                            <div class="d-grid gap-2 text-center">
+                                <h6>Avaliação de Trabalhos</h6>
 
-                            @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador_junior == 1)
-                                <a class="btn btn-primary m-1" href="{{ route('avaliador.index') }}">Acesso aos trabalhos designados para a sua avaliação - DT, IJ e MESA</a>
-                            @endif
-                            </div>
-                        @else
-                            <div class="d-grid gap-2">
-                                <a class="btn btn-primary m-1" href="{{ route('avaliadorjr') }}">Form Avaliador DTs e IJs</a>
-                                <a class="btn btn-primary m-1" href="{{ route('avaliadorexpocom') }}">Form Avaliador Expocom</a>
+                                @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador == 1)
+                                    <a class="btn btn-primary m-1" href="{{ route('avaliador-expocom.index') }}">Acesso aos trabalhos designados para a sua avaliação - Expocom</a>
+                                @endif
+
+                                @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador_junior == 1)
+                                    <a class="btn btn-primary m-1" href="{{ route('avaliador.index') }}">Acesso aos trabalhos designados para a sua avaliação - DT, IJ e MESA</a>
+                                @endif
                             </div>
                         @endif
+                        <hr>
+                        <hr>
+
+
+                            <div class="d-grid gap-2 text-center">
+                                <h6>Alterar Cadastro de Avaliador</h6>
+                                <a class="btn btn-success m-1" href="{{ route('avaliadorjr') }}">Alterar Cadastro Avaliador DTs e IJs</a>
+                                <a class="btn btn-success m-1" href="{{ route('avaliadorexpocom') }}">Alterar Cadastro Avaliador Expocom</a>
+                            </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

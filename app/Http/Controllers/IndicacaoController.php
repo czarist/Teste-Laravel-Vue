@@ -84,7 +84,7 @@ class IndicacaoController extends Controller
                     'bairro' => $post['enderecos']['bairro'],
                     'municipio_id' => $post['enderecos']['municipio']['id'] ?? null,
                     'cep' => $post['enderecos']['cep'],
-                    'pais_id' => $post['enderecos']['pais'],
+                    'pais_id' => $post['enderecos']['pais'] ?? "Brasil",
                     'updated_at' => Carbon::now()
                 ]
             );

@@ -53,8 +53,9 @@
                                             'bi-funnel' : sort!= 'status_coordenador',
                                             'bi-sort-up-alt' : sort== 'status_coordenador' && asc == true,
                                             'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
-                                        }"></i> Status da Avaliação 
+                                        }"></i>STATUS
                                     </th>
+                                    <th class="align-middle text-center" width="5%">VER JUSTIFICATIVA</th>
                                     <th class="align-middle text-center" width="5%">PDF</th>
                                     <th class="align-middle text-center" width="5%">CHAT</th>
                                     <th class="align-middle text-center" width="5%">AÇÂO</th>
@@ -66,6 +67,29 @@
                                     <td class="align-middle text-center" >{{ registro ? registro.titulo : "NI" }}</td>
                                     <td class="align-middle text-center" >{{ find_dt(registro) }}</td>
                                     <td class="align-middle text-center" >{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
+                                    <td class="align-middle text-center" >
+                                        <div 
+                                            v-if="registro && registro.avaliacao && registro.avaliacao.justificativa_coordenador != null"
+                                        >
+                                            <button
+                                                v-tooltip.bottom="{
+                                                content: 'Ver Justificativa',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Ver Justificativa"
+                                                class="btn btn-primary"
+                                                @click="visualizarJustificativa(registro)"
+                                            >
+                                            Justificativa
+                                            </button>
+
+
+                                        </div>
+                                        <div v-else>
+                                            Sem Justificativa
+                                        </div>
+                                    </td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.link_trabalho">
                                             <button
@@ -137,6 +161,7 @@
         </div>
 
         <chat-modal :selectedChat="selectedChat" :user="user" :mensagens="mensagens" :scroll.sync="scroll"></chat-modal>
+        <ver-justificativa-modal :selectedJustificativa="selectedJustificativa"></ver-justificativa-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -145,11 +170,13 @@
     import debounce from 'debounce'
     import GridMixin from '../../mixins/grid-mixin'
     import ChatModal from './ChatModal.vue'
+import VerJustificativaModal from './VerJustificativaModal.vue'
 
     export default {
         mixins: [GridMixin],
         components: {
-            ChatModal:() => import('./ChatModal.vue')
+            ChatModal:() => import('./ChatModal.vue'),
+            VerJustificativaModal:() => import('./VerJustificativaModal.vue'),
         },
         data() {
             return {
@@ -160,6 +187,7 @@
                 loading: true,
                 selectedIndicar: null,
                 selectedCoordenador: null,
+                selectedJustificativa: null,
                 scroll: false,
                 mensagens: [],
                 selectedChat: {
@@ -175,10 +203,8 @@
             }
         },
         methods: {
-            EditTrabalho(regiao, tipo){
-                
+            EditTrabalho(regiao, tipo){                
                 var regiaoName = (regiao == 1) ? 'sul' : (regiao == 2) ? 'nordeste' : (regiao == 3) ? 'suldeste' : (regiao == 4) ? 'centrooeste' : 'norte' 
-
                 if(tipo == 'Divisões Temáticas'){
                     window.location.href = this.baseUrl + `/submissao/regional/${regiaoName}`
                 }
@@ -188,7 +214,6 @@
                 if(tipo == 'Intercom Júnior'){
                     window.location.href = this.baseUrl + `/submissao/regional/${regiaoName}`
                 }
-
             },
             resetModalChat() {
                 this.selectedChat.id = null,
@@ -232,6 +257,16 @@
                 }
                 if(registro.regiao == 5){
                     window.open(this.baseUrl+'/pdf/submissao_regional_norte_2022/'+ registro.link_trabalho, '_blank');
+                }
+
+            },
+            visualizarJustificativa(registro){
+                if(registro){
+                    this.selectedJustificativa = null;
+                    this.selectedJustificativa = registro;
+                    $('#modalVerJustificativa').modal({backdrop: 'static', keyboard: false, show: true})
+                    this.$bvModal.show('modalVerJustificativa')
+
                 }
 
             },

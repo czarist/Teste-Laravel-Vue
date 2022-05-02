@@ -19,6 +19,7 @@ class User extends Authenticatable
         'is_avaliador_2022',
         'is_user', 
         'is_associado', 
+        'is_indicado_expocom_2022',
         'anuidade_2022', 
         'pago_regional_sul_2022',
         'pago_regional_nordeste_2022',

@@ -9,6 +9,7 @@ use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\ChatAvaliacaoController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistribuicaoTipo123Controller;
 use App\Http\Controllers\DistribuicaoTipoExpocomController;
 use App\Http\Controllers\GetController;
@@ -112,6 +113,8 @@ Route::group(['middleware' => 'auth'] , function() {
             Route::resource('indicacao', IndicacaoAdminController::class)->except(['index', 'show', 'create', 'edit']);
             Route::get('indicacao/index', [IndicacaoAdminController::class ,'index'])->name('admin.indicacao.index');
             Route::get('indicacao/get', [IndicacaoAdminController::class ,'get'])->name('admin.indicacao.get');
+            Route::get('indicacao/delete/{id}', [IndicacaoAdminController::class ,'delete'])->name('admin.indicacao.get');
+
         });    
 
 
@@ -259,6 +262,8 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::resource('submissao-expocom', SubmissaoExpocomController::class)->except(['show', 'create', 'edit']);
     Route::get('submissao-expocom/get', [SubmissaoExpocomController::class ,'get'])->name('submissao-expocom.get');
     Route::post('submissao-expocom/edit', [SubmissaoExpocomController::class , 'edit'])->name('submissao-expocom.edit');
+    Route::post('submissao-expocom/envio_video', [SubmissaoExpocomController::class , 'envio_video'])->name('submissao-expocom.envio_video');
+    Route::get('submissao-expocom/carta_aceite/pdf/{regiao}/{id}', [SubmissaoExpocomController::class ,'carta_aceite'])->name('submissao-expocom.carta_aceite');
 
 });
 //END AUTH
@@ -335,3 +340,17 @@ Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPa
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
+Route::prefix('dashboard')->middleware('roles:dashboard')->group(function () {
+
+    Route::get('/index', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::post('inscritos', [DashboardController::class , 'inscritos'])->name('dashboard.inscritos');
+    Route::post('inscritos_pagos', [DashboardController::class , 'inscritos_pagos'])->name('dashboard.inscritos_pagos');
+    Route::post('valor_total', [DashboardController::class , 'valor_total'])->name('dashboard.valor_total');
+    Route::post('inscritos_isentos', [DashboardController::class , 'inscritos_isentos'])->name('dashboard.inscritos_isentos');
+    Route::post('submissao_expocom', [DashboardController::class , 'submissao_expocom'])->name('dashboard.submissao_expocom');
+    Route::post('submissao_dt', [DashboardController::class , 'submissao_dt'])->name('dashboard.submissao_dt');
+    Route::post('submissao_ij', [DashboardController::class , 'submissao_ij'])->name('dashboard.submissao_ij');
+    Route::post('submissao_mesa', [DashboardController::class , 'submissao_mesa'])->name('dashboard.submissao_mesa');
+    Route::post('associados_inscritos', [DashboardController::class , 'associados_inscritos'])->name('dashboard.associados_inscritos');
+
+});

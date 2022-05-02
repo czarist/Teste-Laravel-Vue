@@ -138,7 +138,7 @@
 <script>
   import MixinsGlobal from  '../../mixins/global-mixins'
       export default {
-        props: ['selectedAvaliador', 'id', 'user'],
+        props: ['selectedAvaliador', 'user'],
         mixins: [
             MixinsGlobal
         ],

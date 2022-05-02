@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-12 mt-5">
     <?php
-    $status = $_GET['status'];
+    $status = $_GET['status'] ?? null;
     
     ?>
     <?php

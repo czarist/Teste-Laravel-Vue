@@ -497,6 +497,7 @@
                                 label="sigla"
                                 @input="getMunicipios()"
                                 :name="`estado`"
+                                v-validate="{ required: true }"
                                 >
                                 <template v-slot:no-options="{ search, searching }">
                                     <template v-if="searching">
@@ -527,6 +528,7 @@
                                 v-model="post.enderecos.municipio"
                                 label="nome"
                                 data-vv-as="municipio"
+                                v-validate="{ required: true }"
                                 :class="{ 'v-select-invalid': errors.has(`municipio`) }"
                                 ></v-select>
                                 <span

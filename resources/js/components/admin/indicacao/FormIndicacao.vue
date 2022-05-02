@@ -640,27 +640,33 @@
         watch: {
             selected() {
                 if(this.selected) {
-                    this.post.id = this.selected ? this.selected.id : null
-                    this.post.nome_respo = this.selected ? this.selected.nome_respo : null
-                    this.post.cpf_respo = this.selected ? this.selected.cpf_respo : null
-                    this.post.respo_indicacao = this.selected ? this.selected.respo_indicacao : null
-                    this.post.email_respo = this.selected ? this.selected.email_respo : null
-                    this.post.email_curso = this.selected ? this.selected.email_curso : null
-                    this.post.celular = this.selected ? this.selected.celular : null
-                    this.post.nome_autor = this.selected ? this.selected.nome_autor : null
-                    this.post.cpf_autor = this.selected ? this.selected.cpf_autor : null
-                    this.post.trabalho_produzido = this.selected ? this.selected.trabalho_produzido : null
-                    this.post.orientador = this.selected ? this.selected.orientador : null
-                    this.post.titulo_trabalho = this.selected ? this.selected.titulo_trabalho : null
-                    this.post.categoria = this.selected ? this.selected.categoria : null
-                    this.post.estado_id = this.selected ? this.selected.estado_id : null
-                    this.post.instituicao_id = this.selected ? this.selected.instituicao_id : null
-                    this.post.modalidade = this.selected ? this.selected.modalidade : null
-                    this.post.enderecos = this.selected ? this.selected.enderecos : null
-                    this.post.endereco_id = this.selected ? this.selected.endereco_id: null
-                    this.post.estado_id = this.selected ? this.selected.estado_id : null
-                    this.post.enderecos.estado = this.selected && this.selected.enderecos && this.selected.enderecos.municipio ? this.selected.enderecos.municipio.estado : null
+                    this.post.id = this.selected && this.selected.id ? this.selected.id : null
+                    this.post.nome_respo = this.selected && this.selected.nome_respo? this.selected.nome_respo : null
+                    this.post.cpf_respo = this.selected && this.selected.cpf_respo ? this.selected.cpf_respo : null
+                    this.post.respo_indicacao = this.selected && this.selected.respo_indicacao ? this.selected.respo_indicacao : null
+                    this.post.email_respo = this.selected && this.selected.email_respo ? this.selected.email_respo : null
+                    this.post.email_curso = this.selected && this.selected.email_curso ? this.selected.email_curso : null
+                    this.post.celular = this.selected && this.selected.celular ? this.selected.celular : null
+                    this.post.nome_autor = this.selected && this.selected.nome_autor ? this.selected.nome_autor : null
+                    this.post.cpf_autor = this.selected && this.selected.cpf_autor ? this.selected.cpf_autor : null
+                    this.post.trabalho_produzido = this.selected && this.selected.trabalho_produzido ? this.selected.trabalho_produzido : null
+                    this.post.orientador = this.selected && this.selected.orientador ? this.selected.orientador : null
+                    this.post.titulo_trabalho = this.selected && this.selected.titulo_trabalho ? this.selected.titulo_trabalho : null
+                    this.post.categoria = this.selected && this.selected.categoria ? this.selected.categoria : null
+                    this.post.instituicao_id = this.selected && this.selected.instituicao_id ? this.selected.instituicao_id : null
+                    this.post.modalidade = this.selected && this.selected.modalidade ? this.selected.modalidade : null
+                    this.post.enderecos.id = this.selected && this.selected.enderecos && this.selected.enderecos.id ? this.selected.enderecos.id : null
+                    this.post.enderecos.logradouro = this.selected && this.selected.enderecos && this.selected.enderecos.logradouro ? this.selected.enderecos.logradouro : null
+                    this.post.enderecos.numero = this.selected && this.selected.enderecos && this.selected.enderecos.numero ? this.selected.enderecos.numero : null
+                    this.post.enderecos.complemento = this.selected && this.selected.enderecos && this.selected.enderecos.complemento ? this.selected.enderecos.complemento : null
+                    this.post.enderecos.bairro = this.selected && this.selected.enderecos && this.selected.enderecos.bairro ? this.selected.enderecos.bairro : null
+                    this.post.enderecos.municipio = this.selected && this.selected.enderecos && this.selected.enderecos.municipio ? this.selected.enderecos.municipio : null
+                    this.post.enderecos.estado = this.selected && this.selected.enderecos && this.selected.enderecos.municipio && this.selected.enderecos.municipio.estado ? this.selected.enderecos.municipio.estado : null
+                    this.post.enderecos.pais_id = this.selected && this.selected.enderecos && this.selected.enderecos.pais_id ? this.selected.enderecos.pais_id : null                 
+                    this.post.enderecos.cep = this.selected && this.selected.enderecos && this.selected.enderecos.cep ? this.selected.enderecos.cep : null
                     this.post._method = 'put'
+                    this.post.estado_id = this.selected && this.selected.estado_id ? this.selected.estado_id : null
+                    this.post.endereco_id = this.selected && this.selected.endereco_id ? this.selected.endereco_id : null
                 } else {
                     this.clear()
                 }

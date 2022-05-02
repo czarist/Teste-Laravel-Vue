@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Instituicao;
 use App\Models\Acesso;
-use App\Models\AvaliadorExpocom;
 use App\Models\CategoriaCinemaAudiovisual;
 use App\Models\CategoriaJornalismo;
 use App\Models\CategoriaPublicidadePropaganda;
 use App\Models\CategoriaRadioInternet;
 use App\Models\CategoriaRelacoesPublicas;
 use App\Models\CatProdEditProdTransComunic;
-use App\Models\CoautorOrientadorSubSul;
 use App\Models\Coordenador;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
@@ -21,21 +19,25 @@ use App\Models\Indicacao;
 use App\Models\Municipio;
 use App\Models\PagSeguroTipoStatus;
 use App\Models\Produto;
-use App\Models\ProdutosRegionais;
 use App\Models\Sexo;
 use App\Models\Tipo;
 use App\Models\Titulacao;
 use App\Models\User;
-use Database\Seeders\PagSeguroTipoStatusSeeder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GetController extends Controller
 {
     public function userlogado(User $user)
     {
-        return $user::select('id', 'name', 'email', 'password', 'created_at')
-            ->with('acessos','todos_tipos')->find(Auth::user()->id);
+        if (Auth::user() && Auth::user()->id) {
+            $user_id = Auth::user()->id;
+        } 
+
+        if(!empty($user_id)) {
+            return $user::select('id', 'name', 'email', 'password', 'created_at')
+                ->with('acessos','todos_tipos')
+            ->findOrFail($user_id);
+        }
     }
 
     public function getUsers(User $user)
@@ -168,7 +170,19 @@ class GetController extends Controller
 
     public function getIndicacaoExpocom2022(Indicacao $indicacao){
 
-        return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
+        // return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
+
+        if(Auth::user() && Auth::user()->cpf){
+            return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
+
+            if(!empty($indicacao) && $indicacao->cpf_autor){
+                return $indicacao;
+            }
+            else{
+                return response()->json(['error' => 'Nenhuma indicação encontrada'], 404);
+            }
+        }
+        return response()->json(['error' => 'Sem usuario logado'], 404);
 
     }
 

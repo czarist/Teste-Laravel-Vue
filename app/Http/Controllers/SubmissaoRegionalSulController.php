@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatAvaliacao;
 use App\Models\CoautorOrientadorSubSul;
+use App\Models\Coordenador;
 use App\Models\DistribuicaoTipo123;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Nette\Utils\Random;
 
 class SubmissaoRegionalSulController extends Controller
@@ -78,6 +82,26 @@ class SubmissaoRegionalSulController extends Controller
         try{
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
+
+            //verificar submissão
+            $user_sub = User::with(
+                'regional_sul',
+                'regional_sul.submissaoMesa',
+                'regional_sul.submissaoDt',
+                'regional_sul.submissaoJunior',
+            )
+            ->findOrFail($user->id);
+
+            if($post->id == null && $user_sub && $user_sub->regional_sul && $user_sub->regional_sul->submissaoMesa){
+                $post->id = $user_sub->regional_sul->submissaoMesa->id;
+            } 
+            if($post->id == null && $user_sub && $user_sub->regional_sul && $user_sub->regional_sul->submissaoDt){
+                $post->id = $user_sub->regional_sul->submissaoDt->id;
+            } 
+            if($post->id == null && $user_sub && $user_sub->regional_sul && $user_sub->regional_sul->submissaoJunior){
+                $post->id = $user_sub->regional_sul->submissaoJunior->id;
+            } 
+            
             $submissao = SubmissaoRegionalSul::where('id', $post->id ?? null)->first();
 
             //IDS DOS COAUTORES QUE FORAM ENVIADOS PELO FORMULÁRIO
@@ -197,6 +221,44 @@ class SubmissaoRegionalSulController extends Controller
                     ->whereId($submissao->id)->first();
     
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
+
+                    if(!empty($avaliacao) && $avaliacao->edit == 1){
+                        //Enviar Email para o coordenador que a submissao foi alterada
+                        try{
+                            if($sub->avaliacao){
+                                $coordenador_id = ChatAvaliacao::select('id', 'coordenador_id')
+                                ->whereAvaliacaoId($sub->avaliacao)
+                                ->whereNotNull('coordenador_id')->first();
+        
+                                if($coordenador_id && $coordenador_id->coordenador_id){
+                                    $coordenador = Coordenador::findOrFail($coordenador_id->coordenador_id);
+                                }
+            
+                                $dados['user'] = User::findOrFail($coordenador->user_id);
+                                $emails = $dados['user']->email;
+    
+                                if($submissao){
+                                    $dados['titulo'] = $submissao->titulo;
+                                }
+                
+                                if(!empty($emails)){
+                                    Mail::send('email.submissao_alterada', $dados, function ($email) use ($emails, $dados) {
+                                        if (App::environment('production')) {
+                                            $email->to($emails);
+                                        } else {
+                                            $email->to('murilo@kirc.com.br');
+                                        }
+                                        $email->subject('Nova mensagem recebida | Intercom');
+                
+                                        Log::info('E-mail Enviado para o coordenador informando que tem uma mensagem nova no chat | Dados: ' . json_encode($dados));
+                                    });    
+                                }            
+                            }
+                        } catch (Exception $e) {
+                            Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+                        }
+                    }
+
                     if(!empty($avaliacao)){
                         $avaliacao->update([
                             'edit' => 0,

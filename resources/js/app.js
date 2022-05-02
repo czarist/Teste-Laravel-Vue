@@ -1,3 +1,5 @@
+import VueApexCharts from 'vue-apexcharts'
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import moment from 'moment'
 import { debounce } from "debounce"
@@ -16,6 +18,7 @@ require('./bootstrap');
 
 import Vue from 'vue'
 window.moment = require('moment/moment');
+Vue.use(VueApexCharts);
 Vue.component('v-select', vSelect)
 Vue.use(Notifications)
 Vue.use(Tooltip);
@@ -345,6 +348,8 @@ import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/Avalia
 //GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM
 import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
 
+//DASHBOARD
+import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
 
 
 const app = new Vue({
@@ -420,8 +425,10 @@ const app = new Vue({
         'submissao-grid':AvaliadoGrid,
 
         //GRID AVALIADO EXPOCOM (AUTOR DA SUBMISSAO)
-        'submissao-expocom-grid':AvaliadoExpocomGrid
+        'submissao-expocom-grid':AvaliadoExpocomGrid,
 
+        //DASHBOARD
+        'dashboard-page': DashboardPage
     }
 });
 

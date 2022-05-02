@@ -147,56 +147,49 @@
             },    
             async save() {
                 this.loading = true
-                if(this.post.dt.length > 1){
-                    this.message('Erro', 'Selecione uma divisão temática apenas!', 'error');
-                    this.loading = false
-                    return
+                await this.$validator.validateAll().then((valid) => {
+                    if(valid) {
+                        this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
-                }else{
-                    await this.$validator.validateAll().then((valid) => {
-                        if(valid) {
-                            this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
+                        setTimeout(() => {
+                            axios.post(`${process.env.MIX_BASE_URL}/avaliacao/coordenador/save`, this.post).then( res => {
+                                
+                                this.clear()
+                                if(res.status == 201) {
+                                    this.loading = false
+                                    this.$emit('store', res.data.response)
+                                } else {
+                                    this.loading = false
+                                    this.$emit('update', res.data.response)
+                                }
+                                this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                
+                                this.$bvModal.hide('modalCoordenador')
 
-                            setTimeout(() => {
-                                axios.post(`${process.env.MIX_BASE_URL}/avaliacao/coordenador/save`, this.post).then( res => {
-                                    
-                                    this.clear()
-                                    if(res.status == 201) {
+                            }).catch(error => {
+                                if(error.response.status == 422) {
+                                    if(error.response.data.message == "The given data was invalid.") {
                                         this.loading = false
-                                        this.$emit('store', res.data.response)
-                                    } else {
+                                        return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                                    }
+                                }
+                                if(error.response.status == 500) {
+                                    this.loading = false
+                                    this.message('Erro', 'Por favor tente novamente.', 'error');
+                                }
+                                if(error.response.status == 403) {
+                                    if(error.response.data.message == "This action is unauthorized.") {
                                         this.loading = false
-                                        this.$emit('update', res.data.response)
+                                        this.message('Erro', 'Ação não autorizada.', 'error');
                                     }
-                                    this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
-                                    
-                                    this.$bvModal.hide('modalCoordenador')
-
-                                }).catch(error => {
-                                    if(error.response.status == 422) {
-                                        if(error.response.data.message == "The given data was invalid.") {
-                                            this.loading = false
-                                            return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
-                                        }
-                                    }
-                                    if(error.response.status == 500) {
-                                        this.loading = false
-                                        this.message('Erro', 'Por favor tente novamente.', 'error');
-                                    }
-                                    if(error.response.status == 403) {
-                                        if(error.response.data.message == "This action is unauthorized.") {
-                                            this.loading = false
-                                            this.message('Erro', 'Ação não autorizada.', 'error');
-                                        }
-                                    }
-                                })
-                            },1000)
-                        } else {
-                            this.loading = false
-                            this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
-                        }
-                    })
-                }
+                                }
+                            })
+                        },1000)
+                    } else {
+                        this.loading = false
+                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                    }
+                })
             },
             getDivisoesTematicas(){
                 let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";

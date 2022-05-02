@@ -16,6 +16,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -186,23 +187,16 @@ class DistribuicaoTipoExpocomController extends Controller
                         ->wherehas('inscricao.user.indicacao', function($query) use ($dt){
                             $query->where('categoria', $dt);
                         })
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -215,6 +209,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -225,23 +222,16 @@ class DistribuicaoTipoExpocomController extends Controller
                         ->wherehas('inscricao.user.indicacao', function($query) use ($dt){
                             $query->where('categoria', $dt);
                         })
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -254,6 +244,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -264,23 +257,16 @@ class DistribuicaoTipoExpocomController extends Controller
                         ->wherehas('inscricao.user.indicacao', function($query) use ($dt){
                             $query->where('categoria', $dt);
                         })
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -293,6 +279,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -303,23 +292,16 @@ class DistribuicaoTipoExpocomController extends Controller
                         ->wherehas('inscricao.user.indicacao', function($query) use ($dt){
                             $query->where('categoria', $dt);
                         })
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -332,6 +314,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -342,23 +327,16 @@ class DistribuicaoTipoExpocomController extends Controller
                         ->wherehas('inscricao.user.indicacao', function($query) use ($dt){
                             $query->where('categoria', $dt);
                         })
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -371,6 +349,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -381,23 +362,16 @@ class DistribuicaoTipoExpocomController extends Controller
                 if($request && $request->regiao && $request->regiao == 1){
                                     
                     return $this->submissao_sul()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -410,6 +384,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -417,27 +394,20 @@ class DistribuicaoTipoExpocomController extends Controller
                 if($request && $request->regiao && $request->regiao == 3){
 
                     return $this->submissao_sudeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                    $q->whereHas('user', function ($q) use ($request){
+                                        $q->whereHas('indicacao', function ($q) use ($request){
+                                            $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                        });
+                                    });        
                                 });
                             });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
+                        });
+                    })
+                    ->when($request->categoria, function ($query) use ($request){
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('categoria', '=', $request->categoria);
                             });
@@ -446,6 +416,9 @@ class DistribuicaoTipoExpocomController extends Controller
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
+                        })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                     ->paginate(10);
                 }
@@ -453,19 +426,6 @@ class DistribuicaoTipoExpocomController extends Controller
                 if($request && $request->regiao && $request->regiao == 5){
 
                     return $this->submissao_norte()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
@@ -483,29 +443,27 @@ class DistribuicaoTipoExpocomController extends Controller
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
                         })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
+                        })
                     ->paginate(10);
                 }
 
-                if($request && $request->regiao && $request->regiao == 2){
-
+                if($request && $request->regiao && $request->regiao == 2){                  
                     return $this->submissao_nordeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
                         })
                         ->when($request->search, function ($query) use ($request) {
                             $query->where(function ($query) use ($request) {
                                 $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                                    $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                        $q->whereHas('user', function ($q) use ($request){
+                                            $q->whereHas('indicacao', function ($q) use ($request){
+                                                $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                            });
+                                        });        
+                                    });
                                 });
                             });
                         })
@@ -525,27 +483,20 @@ class DistribuicaoTipoExpocomController extends Controller
                 if($request && $request->regiao && $request->regiao == 4){
 
                     return $this->submissao_centrooeste()
-                        ->when($request->statusAva, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-
-                                $q->where('status_avaliador_1', '=', $request->statusAva)
-                                ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                                ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                            });    
-                        })
-                        ->when($request->statusCoo, function ($query) use ($request) {
-                            $query->wherehas('avaliacao', function($q) use ($request){
-                                $q->where('status_coordenador', '=', $request->statusCoo);
-                            });      
-                        })
-                        ->when($request->search, function ($query) use ($request) {
-                            $query->where(function ($query) use ($request) {
-                                $query->when($request->type == 'titulo', function ($query) use ($request) {
-                                    $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
+                                    $q->whereHas('user', function ($q) use ($request){
+                                        $q->whereHas('indicacao', function ($q) use ($request){
+                                            $q->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                        });
+                                    });        
                                 });
                             });
-                        })
-                        ->when($request->categoria, function ($query) use ($request){
+                        });
+                    })
+                    ->when($request->categoria, function ($query) use ($request){
                             $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
                                 $q->where('categoria', '=', $request->categoria);
                             });
@@ -555,177 +506,11 @@ class DistribuicaoTipoExpocomController extends Controller
                                 $q->where('modalidade', '=', $request->modalidade);
                             });
                         })
+                        ->when($request->sort == 'id', function ($query) {
+                            $query->orderBy('id', 'desc');
+                        })
                     ->paginate(10);
                 }
-
-                    // $submissao_sul = $this->submissao_sul()
-                    //     ->when($request->statusAva, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-
-                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
-                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                    //         });    
-                    //     })
-                    //     ->when($request->statusCoo, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-                    //             $q->where('status_coordenador', '=', $request->statusCoo);
-                    //         });      
-                    //     })
-                    //     ->when($request->search, function ($query) use ($request) {
-                    //         $query->where(function ($query) use ($request) {
-                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
-                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                    //             });
-                    //         });
-                    //     })
-                    //     ->when($request->categoria, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('categoria', '=', $request->categoria);
-                    //         });
-                    //     })
-                    //     ->when($request->modalidade, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('modalidade', '=', $request->modalidade);
-                    //         });
-                    //     })
-                    // ->get();
-
-                    // $submissao_sudeste = $this->submissao_sudeste()
-                    //     ->when($request->statusAva, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-
-                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
-                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                    //         });    
-                    //     })
-                    //     ->when($request->statusCoo, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-                    //             $q->where('status_coordenador', '=', $request->statusCoo);
-                    //         });      
-                    //     })
-                    //     ->when($request->search, function ($query) use ($request) {
-                    //         $query->where(function ($query) use ($request) {
-                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
-                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                    //             });
-                    //         });
-                    //     })
-                    //     ->when($request->categoria, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('categoria', '=', $request->categoria);
-                    //         });
-                    //     })
-                    //     ->when($request->modalidade, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('modalidade', '=', $request->modalidade);
-                    //         });
-                    //     })
-                    // ->get();
-
-                    // $submissao_centrooeste = $this->submissao_centrooeste()
-                    //     ->when($request->statusAva, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-
-                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
-                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                    //         });    
-                    //     })
-                    //     ->when($request->statusCoo, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-                    //             $q->where('status_coordenador', '=', $request->statusCoo);
-                    //         });      
-                    //     })
-                    //     ->when($request->search, function ($query) use ($request) {
-                    //         $query->where(function ($query) use ($request) {
-                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
-                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                    //             });
-                    //         });
-                    //     })
-                    //     ->when($request->categoria, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('categoria', '=', $request->categoria);
-                    //         });
-                    //     })
-                    //     ->when($request->modalidade, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('modalidade', '=', $request->modalidade);
-                    //         });
-                    //     })
-                    // ->get();
-
-                    // $submissao_nordeste = $this->submissao_nordeste()
-                    //     ->when($request->statusAva, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-
-                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
-                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                    //         });    
-                    //     })
-                    //     ->when($request->statusCoo, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-                    //             $q->where('status_coordenador', '=', $request->statusCoo);
-                    //         });      
-                    //     })
-                    //     ->when($request->search, function ($query) use ($request) {
-                    //         $query->where(function ($query) use ($request) {
-                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
-                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                    //             });
-                    //         });
-                    //     })
-                    //     ->when($request->categoria, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('categoria', '=', $request->categoria);
-                    //         });
-                    //     })
-                    //     ->when($request->modalidade, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('modalidade', '=', $request->modalidade);
-                    //         });
-                    //     })
-                    // ->get();
-
-                    // $submissao_norte = $this->submissao_norte()
-                    //     ->when($request->statusAva, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-
-                    //             $q->where('status_avaliador_1', '=', $request->statusAva)
-                    //             ->orWhere('status_avaliador_2', "=", $request->statusAva)
-                    //             ->orWhere('status_avaliador_3', "=", $request->statusAva);
-                    //         });    
-                    //     })
-                    //     ->when($request->statusCoo, function ($query) use ($request) {
-                    //         $query->wherehas('avaliacao', function($q) use ($request){
-                    //             $q->where('status_coordenador', '=', $request->statusCoo);
-                    //         });      
-                    //     })
-                    //     ->when($request->search, function ($query) use ($request) {
-                    //         $query->where(function ($query) use ($request) {
-                    //             $query->when($request->type == 'titulo', function ($query) use ($request) {
-                    //                 $query->where('desc_obj_estudo', 'like', '%' . $request->search . '%');
-                    //             });
-                    //         });
-                    //     })
-                    //     ->when($request->categoria, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('categoria', '=', $request->categoria);
-                    //         });
-                    //     })
-                    //     ->when($request->modalidade, function ($query) use ($request){
-                    //         $query->whereHas('inscricao.user.indicacao', function ($q) use ($request){
-                    //             $q->where('modalidade', '=', $request->modalidade);
-                    //         });
-                    //     })
-                    // ->get();
-
-                    // $data['data'] = $submissao_sul->merge($submissao_centrooeste)->merge($submissao_nordeste)->merge($submissao_norte)->merge($submissao_sudeste);
-
-                    // return response()->json($data);
             }
 
         }
@@ -813,14 +598,14 @@ class DistribuicaoTipoExpocomController extends Controller
                         $dados['avaliador_1']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails). ' | Dados: ' . json_encode($dados));
                     });
 
                 }
@@ -833,14 +618,14 @@ class DistribuicaoTipoExpocomController extends Controller
                         $dados['avaliador_2']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails) . ' | Dados: ' . json_encode($dados));
                     });
 
                 }
@@ -853,14 +638,14 @@ class DistribuicaoTipoExpocomController extends Controller
                         $dados['avaliador_3']->email,
                     ];
     
-                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails) {
+                    Mail::send('email.indicacao_avaliador_expocom', $dados, function ($email) use ($emails, $dados) {
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
                             $email->to('murilo@kirc.com.br');
                         }
                             $email->subject('Indicação de Avaliador | Intercom');
-                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                        Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails). ' | Dados: ' . json_encode($dados));
                     });
 
                 }
@@ -1096,14 +881,14 @@ class DistribuicaoTipoExpocomController extends Controller
                     $emails[] = User::findOrFail($coordenador->user_id)->email;
                 }
     
-                Mail::send('email.avaliacao_avaliador', $dados, function ($email) use ($emails) {
+                Mail::send('email.avaliacao_avaliador', $dados, function ($email) use ($emails, $dados) {
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
                         $email->to('murilo@kirc.com.br');
                     }
                         $email->subject('Indicação de Avaliador | Intercom');
-                    Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails));
+                    Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao' . json_encode($emails). ' | Dados: ' . json_encode($dados));
                 });
     
             } catch (Exception $e) {
@@ -1184,32 +969,32 @@ class DistribuicaoTipoExpocomController extends Controller
 
             Log::info('Distribuicao de trabalho status e justificativa coordenador updated: '.$distribuicao->id.' | Request: '.json_encode($request->all()));
 
-            // //Enviar e-mail informando ao autor que o status do seu trabalho foi alterado
-            // try {
+            //Enviar e-mail informando ao autor que o status do seu trabalho foi alterado
+            try {
 
-            //     $dados['status_coordenador'] = $post['status_coordenador'];
+                $dados['status_coordenador'] = $post['status_coordenador'];
 
-            //     $dados['justificativa_coordenador'] = $post['justificativa_coordenador'];
+                $dados['justificativa_coordenador'] = $post['justificativa_coordenador'];
 
-            //     if($submissao && $submissao->inscricao && $submissao->inscricao->user){
-            //         $dados['user'] = $submissao->inscricao->user;
-            //         $emails = $submissao->inscricao->user->email;
-            //     }
+                if($submissao && $submissao->inscricao && $submissao->inscricao->user){
+                    $dados['user'] = $submissao->inscricao->user;
+                    $emails = $submissao->inscricao->user->email;
+                }
     
-            //     Mail::send('email.avaliacao_coordenador_expocom', $dados, function ($email) use ($emails) {
-            //         if (App::environment('production')) {
-            //             $email->to($emails);
-            //         } else {
-            //             $email->to('murilo@kirc.com.br');
-            //         }
-            //         $email->subject('Status do trabalho | Intercom');
+                Mail::send('email.avaliacao_coordenador_expocom', $dados, function ($email) use ($emails) {
+                    if (App::environment('production')) {
+                        $email->to($emails);
+                    } else {
+                        $email->to('murilo@kirc.com.br');
+                    }
+                    $email->subject('Status do trabalho | Intercom');
 
-            //         Log::info('E-mail Enviado para o autor do trabalho com a informação do status Expocom | Email: ' . $emails);
-            //     });
+                    Log::info('E-mail Enviado para o autor do trabalho com a informação do status Expocom | Email: ' . $emails);
+                });
     
-            // } catch (Exception $e) {
-            //     Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
-            // }
+            } catch (Exception $e) {
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+            }
 
             return response()->json(['message' => 'success', 'response' => $distribuicao], 201);
 

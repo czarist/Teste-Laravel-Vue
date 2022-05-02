@@ -693,9 +693,9 @@
                                         </tr>
                                         <tr >
                                             <td class="align-middle text-center">Sócio da Intercom³</td>
+                                            <td class="align-middle text-center">R$120,00</td>
                                             <td class="align-middle text-center">R$170,00</td>
-                                            <td class="align-middle text-center">R$210,00</td>
-                                            <td class="align-middle text-center">R$265,00</td>
+                                            <td class="align-middle text-center">R$230,00</td>
                                         </tr>
                                         <tr >
                                             <td class="align-middle text-center">Estudante de pós-graduação</td>
@@ -717,7 +717,7 @@
                         <b-col cols="12" sm="12" lg="12" size="lg">
                             <div >
                                 <p> ¹ A inscrição no congresso será aceita até o limite da capacidade de acomodação dos participantes nos locais do congresso. Recomenda-se a inscrição antecipada, sobretudo para os que pretendem apresentar trabalhos.
-                                    ² Na categoria "recém graduado", somente é permitido a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
+                                    ² Na categoria "recém-graduados", somente é permitida a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
                                 </p> <br>
 
                                 <h3 class="text-center">ATENÇÃO</h3>

@@ -270,7 +270,7 @@
                         <b-col cols="12" sm="6" lg="6">
                             <b-form-group label="Titulação" label-class="font-weight-bold">
                                 <b-form-select
-                                    :disabled="loading"
+                                    :disabled="user && user.pago_regional_suldeste_2022 && post && post.titulacao_id != null ? true : loading" 
                                     name="titulacao"
                                     v-validate="{ required: true }"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`titulacao`)}]"
@@ -714,7 +714,7 @@
                         <b-col cols="12" sm="12" lg="12" size="lg">
                             <div >
                                 <p> ¹ A inscrição no congresso será aceita até o limite da capacidade de acomodação dos participantes nos locais do congresso. Recomenda-se a inscrição antecipada, sobretudo para os que pretendem apresentar trabalhos.
-                                    ² Na categoria "recém graduado", somente é permitido a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
+                                    ² Na categoria "recém-graduados", somente é permitida a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
                                     ³ Associados que quitaram a anuidade 2022 estão isentos do pagamento da taxa de inscrição
                                 </p> <br>
 
@@ -741,8 +741,8 @@
 
                             <div v-if="user.anuidade_2022 == false">
                                 <b-button
-                                    v-if="user.pago_regional_norte_2022 == false"
-                                    :disabled="loading" 
+                                    v-if="user.pago_regional_suldeste_2022 == false"
+                                    :disabled="user && user.pago_regional_suldeste_2022 ? true : loading" 
                                     size="md" 
                                     variant="outline-success" 
                                     class="m-1" 
@@ -754,7 +754,7 @@
 
                             <div v-else>
                                 <b-button
-                                    :disabled="loading" 
+                                    :disabled="user && user.pago_regional_suldeste_2022 ? true : loading" 
                                     size="md" 
                                     variant="outline-success" 
                                     class="m-1" 

@@ -131,7 +131,7 @@ class AvaliadorExpocomController extends Controller
                     'bairro' => $request->enderecos['bairro'],
                     'municipio_id' => $request->enderecos['municipio']['id'],
                     'cep' => $request->enderecos['cep'],
-                    'pais_id' => $request->enderecos['pais'],
+                    'pais_id' => $request->enderecos['pais'] ?? 'Brasil',
                     'updated_at' => Carbon::now()
                 ]
             );
@@ -146,7 +146,7 @@ class AvaliadorExpocomController extends Controller
                     'bairro' => $request->enderecos['bairro'],
                     'municipio_id' => $request->enderecos['municipio']['id'],
                     'cep' => $request->enderecos['cep'],
-                    'pais_id' => $request->enderecos['pais'],
+                    'pais_id' => $request->enderecos['pais'] ?? 'Brasil',
                     'updated_at' => Carbon::now()
                 ]
             );

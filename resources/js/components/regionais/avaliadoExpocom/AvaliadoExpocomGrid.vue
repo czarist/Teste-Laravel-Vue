@@ -45,7 +45,9 @@
                                             'bi-sort-down-alt' : sort== 'status_coordenador' && asc == false
                                         }"></i> Status Coordenador 
                                     </th>
+                                    <th class="align-middle text-center" width="5%">VER JUSTIFICATIVA</th>
                                     <th class="align-middle text-center" width="5%">PDF</th>
+                                    <th class="align-middle text-center" width="5%">AÇÂO</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,6 +63,30 @@
                                         </div>
 
                                         </td>
+                                    <td class="align-middle text-center" >
+                                        <div 
+                                            v-if="registro && registro.avaliacao && registro.avaliacao.justificativa_coordenador != null"
+                                        >
+                                            <button
+                                                v-tooltip.bottom="{
+                                                content: 'Ver Justificativa',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Ver Justificativa"
+                                                class="btn btn-primary"
+                                                @click="visualizarJustificativa(registro)"
+                                            >
+                                            Justificativa
+                                            </button>
+
+
+                                        </div>
+                                        <div v-else>
+                                            Sem Justificativa
+                                        </div>
+                                    </td>
+
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.link_trabalho">
                                             <button
@@ -79,6 +105,40 @@
                                             </button>
                                         </div>
                                     </td>
+                                    <td class="align-middle text-center">
+                                        <span
+                                            v-if="
+                                                registro && registro.avaliacao && registro.avaliacao.status_coordenador == 'Aceito'
+                                            "
+                                            v-tooltip.bottom="{
+                                                content: 'Enviar video',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                            }"
+                                            :disabled="loading"
+                                            title="Enviar video"
+                                            class="btn btn-success btn-sm mr-1"
+                                            @click="sendVideo(registro)"
+                                        >
+                                            Enviar Video
+                                        </span>
+
+                                        <a
+                                            v-if="registro && registro.avaliacao && registro.avaliacao.status_coordenador == 'Aceito'"
+                                            v-tooltip.bottom="{
+                                                content: 'Carta de Aceite',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                            }"
+                                            :disabled="loading"
+                                            title="Carta de Aceite"
+                                            class="btn btn-info btn-sm mr-1 text-white"
+                                            target="_blank"
+                                            :href="`${baseUrl}/submissao-expocom/carta_aceite/pdf/${registro.regiao}/${registro.id}`"
+                                        >
+                                            Carta de Aceite
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -95,6 +155,8 @@
             </div>
         </div>
 
+        <ver-justificativa-modal :selectedJustificativa="selectedJustificativa"></ver-justificativa-modal>
+        <enviar-video-modal :selectedVideo="selectedVideo" @save="save($event)"></enviar-video-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -102,9 +164,15 @@
 <script>
     import debounce from 'debounce'
     import GridMixin from '../../mixins/grid-mixin'
+    import VerJustificativaModal from './VerJustificativaModal.vue'
+    import EnviarVideoModal from './EnviarVideoModal.vue'
 
     export default {
         mixins: [GridMixin],
+        components: {
+            VerJustificativaModal:() => import('./VerJustificativaModal.vue'),
+            EnviarVideoModal:() => import('./EnviarVideoModal.vue'),
+        },
         data() {
             return {
                 value: 100,
@@ -114,6 +182,7 @@
                 loading: true,
                 selectedIndicar: null,
                 selectedCoordenador: null,
+                selectedJustificativa: null,
                 scroll: false,
                 mensagens: [],
                 selectedChat: {
@@ -124,11 +193,108 @@
                     coordenador_id: null,
                     mensagem: null
                 },
+                selectedVideo: null,
                 toDelete: null,
                 divisoes_tematicas: [],
             }
         },
         methods: {
+            async save(post) {  
+                this.loading = true         
+                await this.$validator.validateAll().then((valid) => {
+                    if(valid) {                        
+                            this.message('Salvando...' ,'Estamos salvando suas informações','info');
+
+                        setTimeout(() => {
+
+                            let formData = new FormData()
+                            formData.append('post', JSON.stringify(this.selectedVideo));
+                            formData.append('file', post.file)
+                            formData.append('_method', 'post')
+
+                            let urlSave = this.baseUrl+"/submissao-expocom/envio_video";
+
+                            $.ajax({
+                                method: "POST",
+                                url: urlSave,
+                                headers: {
+                                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                                },
+                                data: formData,
+                                dataType: 'json',
+                                contentType: false,
+                                processData: false,
+                                success: (res) => {
+                                    if (res.message == "error") {
+                                    } else {
+                                        this.message(
+                                            "Erro",
+                                            "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                            "error"
+                                            
+                                        );
+                                        this.loading = false;
+                                    }
+                                    this.message(
+                                        "Sucesso",
+                                        "Seus dados foram alterados com sucesso",
+                                        "success",
+                                        
+                                    );
+                                    this.loading = false;
+                                    window.location.reload();
+                                },
+                                error: (error) => {
+                                    console.log(error);
+                                    if (error.status == 422) {
+                                        if (error.response.message == "The given data was invalid.") {
+                                            this.loading = false;
+                                            return this.message(
+                                                "Campos Obrigatórios",
+                                                "Preencha todos os campos obrigatórios",
+                                                "error"
+                                            );
+                                        }
+                                    }
+                                    if (error.status == 500) {
+                                        this.loading = false;
+                                        this.message(
+                                            "Erro",
+                                            "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                            "error",
+                                            -1
+                                        );
+                                    }
+                                    if (error.status == 403) {
+                                        if (
+                                            error.response.message == "This action is unauthorized."
+                                        ) {
+                                            this.loading = false;
+                                            this.message("Erro", "Ação não autorizada.", "error");
+                                        }
+                                    }
+                                    this.loading = false;
+                                    this.message(
+                                        "Erro",
+                                        "Erro ao tentar salvar seus dados, tente novamente dentro de alguns minutos ",
+                                        "error"                                    
+                                    );
+                                },
+                            });
+                        }, 1000);
+                        
+                    } else {
+                        this.loading = false
+                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
+                    }
+                })
+            },
+            sendVideo(registro) {
+                this.selectedVideo = registro
+                $('#modalVideo').modal({backdrop: 'static', keyboard: false, show: true})
+                this.$bvModal.show('modalVideo')
+
+            },
             calc_media(registro) {
                 if (registro && registro.avaliacao) {
                     registro.avaliacao.media_final = (registro.avaliacao.media_1 + registro.avaliacao.media_2 + registro.avaliacao.media_3) / 3
@@ -187,13 +353,23 @@
                     window.open(this.baseUrl+'/pdf/submissao_expocom_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 3){
-                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_sudeste_2022/'+ registro.link_trabalho, '_blank');
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
                 }
-                if(registro.regiao == 4){
+                if(registro.regiao == 4){ 
                     window.open(this.baseUrl+'/pdf/submissao_expocom_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
                 }
                 if(registro.regiao == 5){
                     window.open(this.baseUrl+'/pdf/submissao_expocom_regional_norte_2022/'+ registro.link_trabalho, '_blank');
+                }
+
+            },
+            visualizarJustificativa(registro){
+                if(registro){
+                    this.selectedJustificativa = null;
+                    this.selectedJustificativa = registro;
+                    $('#modalVerJustificativa').modal({backdrop: 'static', keyboard: false, show: true})
+                    this.$bvModal.show('modalVerJustificativa')
+
                 }
 
             },

@@ -22,6 +22,7 @@ class SubmissaoExpocomRegionalSul extends Model
         'termo_autoria',
         'autorizacao',
         'link_trabalho',
+        'link_aceite',
     ];
 
     public function coautorOrientadorSubSuls()

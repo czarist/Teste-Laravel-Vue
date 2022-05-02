@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class IndicacaoAdminController extends Controller
@@ -75,7 +76,7 @@ class IndicacaoAdminController extends Controller
 
             $post = $request->all();
             $indicacao = Indicacao::findOrFail($post['id']);
-            $endereco = EnderecoIndicacao::findOrFail($indicacao->endereco_id);
+            $endereco = EnderecoIndicacao::find($indicacao->endereco_id);
 
             $indicacao->update([
                 "nome_respo" => $post['nome_respo'],
@@ -95,16 +96,34 @@ class IndicacaoAdminController extends Controller
                 "modalidade" => $post['modalidade'],
             ]);
 
-            $endereco->update([
-                'logradouro' => $post['enderecos']['logradouro'],
-                'numero' => $post['enderecos']['numero'],
-                'complemento' => $post['enderecos']['complemento'],
-                'bairro' => $post['enderecos']['bairro'],
-                'municipio_id' => $post['enderecos']['municipio']['id'],
-                'cep' => $post['enderecos']['cep'],
-                'pais_id' => $post['enderecos']['pais_id'],
-                'updated_at' => Carbon::now()
-            ]);
+            if(!empty($endereco)){
+                $endereco->update([
+                    'logradouro' => $post['enderecos']['logradouro'],
+                    'numero' => $post['enderecos']['numero'],
+                    'complemento' => $post['enderecos']['complemento'],
+                    'bairro' => $post['enderecos']['bairro'],
+                    'municipio_id' => $post['enderecos']['municipio']['id'],
+                    'cep' => $post['enderecos']['cep'],
+                    'pais_id' => $post['enderecos']['pais_id'] ?? "Brasil",
+                ]);
+
+            }
+
+            if(empty($endereco)){
+                $endereco_novo = EnderecoIndicacao::create([
+                    'logradouro' => $post['enderecos']['logradouro'],
+                    'numero' => $post['enderecos']['numero'],
+                    'complemento' => $post['enderecos']['complemento'],
+                    'bairro' => $post['enderecos']['bairro'],
+                    'municipio_id' => $post['enderecos']['municipio']['id'],
+                    'cep' => $post['enderecos']['cep'],
+                    'pais_id' => $post['enderecos']['pais_id'] ?? "Brasil",
+                ]);
+
+                $indicacao->update([
+                    "endereco_id" => $endereco_novo['id']
+                ]);
+            }
 
             Log::info('Indicacao Expocom Atualizada: ' . json_encode($request->all()));
 
@@ -114,4 +133,18 @@ class IndicacaoAdminController extends Controller
             return response()->json(['message' => 'error', 'response' => $e->getMessage()], 500);
         }
     }
+
+    public function delete($id){
+        if($id){
+            $indicacao = Indicacao::findOrFail($id);
+
+            if(!empty($indicacao)){
+                $indicacao->delete();
+                Log::info('User ID: ' . Auth::user()->id . ' | DELETOU INDICAO: ' . $id);
+
+                return ['status' => 'true'];
+            }
+        }
+    }
+
 }

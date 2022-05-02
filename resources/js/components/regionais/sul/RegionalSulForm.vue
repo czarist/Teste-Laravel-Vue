@@ -270,7 +270,7 @@
                         <b-col cols="12" sm="6" lg="6">
                             <b-form-group label="Titulação" label-class="font-weight-bold">
                                 <b-form-select
-                                    :disabled="loading"
+                                    :disabled="user && user.pago_regional_sul_2022 && post && post.titulacao_id != null ? true : loading" 
                                     name="titulacao"
                                     v-validate="{ required: true }"
                                     :class="['form-control form-control-sm', {'is-invalid': errors.has(`titulacao`)}]"
@@ -675,9 +675,9 @@
                                     <thead>
                                         <tr>
                                             <th class="align-middle text-center" width="60%">CATEGORIAS</th>
-                                            <th class="align-middle text-center" width="10%">De 14/03 a 11/04/2022</th>
-                                            <th class="align-middle text-center" width="10%">De 12/04 a 29/04/2022</th>
-                                            <th class="align-middle text-center" width="10%">De 30/04 a 10/05/2022</th>
+                                            <th class="align-middle text-center" width="10%">De 14/03 a 02/05/2022</th>
+                                            <th class="align-middle text-center" width="10%">De 03/05 a 20/05/2022</th>
+                                            <th class="align-middle text-center" width="10%">De 21/05 a 31/05/2022</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -702,7 +702,7 @@
                                         <tr >
                                             <td class="align-middle text-center">Professores e pesquisadores</td>
                                             <td class="align-middle text-center">R$220,00</td>
-                                            <td class="align-middle text-center">R$225,00</td>
+                                            <td class="align-middle text-center">R$255,00</td>
                                             <td class="align-middle text-center">R$275,00</td>
                                         </tr>
                                     </tbody>
@@ -713,7 +713,7 @@
                         <b-col cols="12" sm="12" lg="12" size="lg">
                             <div >
                                 <p> ¹ A inscrição no congresso será aceita até o limite da capacidade de acomodação dos participantes nos locais do congresso. Recomenda-se a inscrição antecipada, sobretudo para os que pretendem apresentar trabalhos.
-                                    ² Na categoria "recém graduado", somente é permitido a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
+                                    ² Na categoria "recém-graduados", somente é permitida a submissão de trabalhos para o Expocom (caso seja aluno líder) e para o Intercom Jr.
                                     ³ Associados que quitaram a anuidade 2022 estão isentos do pagamento da taxa de inscrição
                                 </p> <br>
 
@@ -740,8 +740,8 @@
 
                             <div v-if="user.anuidade_2022 == false">
                                 <b-button
-                                    v-if="user.pago_regional_norte_2022 == false"
-                                    :disabled="loading" 
+                                    v-if="user.pago_regional_sul_2022 == false"
+                                    :disabled="user && user.pago_regional_sul_2022 ? true : loading" 
                                     size="md" 
                                     variant="outline-success" 
                                     class="m-1" 
@@ -753,7 +753,7 @@
 
                             <div v-else>
                                 <b-button
-                                    :disabled="loading" 
+                                    :disabled="user && user.pago_regional_sul_2022 ? true : loading" 
                                     size="md" 
                                     variant="outline-success" 
                                     class="m-1" 

@@ -119,6 +119,13 @@
                                             >
                                                 Editar
                                             </span>
+
+                                            <button
+                                                class="btn btn-sm btn-outline-danger mr-1"
+                                                @click="showDeleteModal(registro,index)">
+                                                <i class="fas fa-trash-alt">Delete</i>
+                                            </button>
+
                                         </span>
                                     </td>
                                 </tr>
@@ -137,6 +144,7 @@
             </div>
         </div>
         <form-indicacao @store="store($event)" @update="update($event)" :selected="selected"></form-indicacao>
+        <delete-modal :selectedIndicacao="selectedIndicacao" @indicacaoDelete="indicacaoDelete($event)" ></delete-modal>
         <notifications group="submit" position="center bottom" />
     </div>
 </template>
@@ -146,12 +154,14 @@
     import moment from 'moment'
     import GridMixin from '../../mixins/grid-mixin'
     import FormIndicacao from './FormIndicacao.vue'
+    import DeleteModal from './DeleteModal.vue'
 
 
     export default {
         mixins: [GridMixin],
         components: {
             FormIndicacao: () => import('./FormIndicacao'),
+            DeleteModal: () => import('./DeleteModal')
         },
         data() {
             return {
@@ -162,6 +172,7 @@
                 moment: moment,
                 loading: true,
                 selected: null,
+                selectedIndicacao: null,
                 toDelete: null,
                 categorias: [
                     { descricao: 'Cinema e Audiovisual', value: 'Cinema e Audiovisual'},
@@ -210,7 +221,34 @@
             showForm(registro){
                 this.getIndicacao(registro);
             },
+            showDeleteModal(registro,index) {
+                this.selectedIndicacao = null;
+                this.selectedIndicacao = registro;
+                this.selectedIndicacao.index = index;
+                this.$bvModal.show('deleteModal')
+            },
+            indicacaoDelete() {
+                this.loading = true;
+                this.message('Deletando...', 'Aguarde deletando...', 'error');
+
+                axios.get(`${process.env.MIX_BASE_URL}/admin/indicacao/delete/${this.selectedIndicacao.id}`).then(res => {
+
+                    if(res.data.status){
+                        this.loading = false
+                        this.registros.splice(this.selectedIndicacao.index, 1);
+                        this.selectedIndicacao = null;
+                        this.$bvModal.hide('deleteModal')
+                        this.message('Deletado...', 'Deletado com sucesso...', 'success');
+                    }
+                }).catch( e => {
+                    this.loading = false
+                    this.message('Erro...', 'Entre em contato via Whatsapp...', 'error');
+                })
+            },
             getIndicacao(registro){
+
+                this.selected = null;
+
                 axios.get(`${process.env.MIX_BASE_URL}/get/admin-indicacao-expocom-2022/${registro.id}`).then(res => {
                     this.selected = res.data;
 

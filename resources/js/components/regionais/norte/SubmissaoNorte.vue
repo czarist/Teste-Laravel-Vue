@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.submissao != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-show="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -533,6 +533,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão norte encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -627,7 +631,24 @@
                     this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
 
                 }
+            },
+            submissao(){
+                this.$forceUpdate()
+                this.post._method = "post",
+                this.post.divisoes_tematicas = this.submissao && this.submissao.dt ? [ this.submissao.dt]  : [],
+                this.post.id = this.submissao ? this.submissao.id : null,
+                this.post.titulo = this.submissao ? this.submissao.titulo : null
+                this.post.palavra_chave_1 = this.submissao ? this.submissao.palavra_chave_1 : null
+                this.post.palavra_chave_2 = this.submissao ? this.submissao.palavra_chave_2 : null
+                this.post.palavra_chave_3 = this.submissao ? this.submissao.palavra_chave_3 : null
+                this.post.palavra_chave_4 = this.submissao ? this.submissao.palavra_chave_4 : null
+                this.post.palavra_chave_5 = this.submissao ? this.submissao.palavra_chave_5 : null
+                this.post.file = this.submissao ? this.submissao.link_trabalho : null
+                this.post.autorizacao = this.submissao ? this.submissao.autorizacao : 0
+                this.post.ciente = this.submissao ? this.submissao.ciente : 0
+                this.post.termo_autoria = this.submissao ? this.submissao.termo_autoria : 0
             }
+
         },
         computed: {
             estaCiente() {
@@ -890,15 +911,20 @@
 
             }
 
-            // if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
-                
-            // }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
-            //     window.location.href = this.baseUrl+'/submissao'         
-            // }
-            // else if(this.submissao && this.submissao != null){
-            //     window.location.href = this.baseUrl+'/submissao'               
-            // }
+            let date = moment().format('L')
+            let hours = moment().format('LTS');
 
+            if(date >= '04/26/2022' && hours >= '00:00:00'){
+
+                if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
+                    
+                }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
+                    window.location.href = this.baseUrl+'/submissao'         
+                }
+                else if(this.submissao && this.submissao != null){
+                    window.location.href = this.baseUrl+'/submissao'               
+                }
+            }
         }
     }
 </script>

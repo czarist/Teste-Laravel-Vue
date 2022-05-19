@@ -166,11 +166,11 @@
                                                 class="btn btn-outline-info btn-sm"
                                                 @click="viewSub(registro)"
                                             >
-                                                {{ registro && registro.inscricao && registro.inscricao.user && registro.inscricao.user.indicacao ? registro.inscricao.user.indicacao.titulo_trabalho.substring(50, 0) : "NI" }}
+                                                {{ registro && registro.inscricao && registro.inscricao.user && registro.inscricao.user.indicacao && registro.inscricao.user.indicacao.titulo_trabalho ? registro.inscricao.user.indicacao.titulo_trabalho.substring(50, 0) : "NI" }}
                                             </button>
 
                                     </td>
-                                    <td class="align-middle text-center">{{ registro && registro.inscricao && registro.inscricao.user &&  registro.inscricao.user.indicacao ? registro.inscricao.user.indicacao.modalidade.substring(6, 0) : "NI" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.inscricao && registro.inscricao.user &&  registro.inscricao.user.indicacao && registro.inscricao.user.indicacao.modalidade ? registro.inscricao.user.indicacao.modalidade.substring(6, 0) : "NI" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.avaliacao">
                                             {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1_obj ? registro.avaliacao.avaliador_1_obj.name : "NI" }}<br>

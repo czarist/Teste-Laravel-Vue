@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CoautorOrganizadoresSubNaci;
 use App\Models\SubmissaoNacional;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,48 +74,54 @@ class SubmissaoNacionalController extends Controller
                     }
                 }
             }
-            if(empty($submissao) || $submissao->tipo != $post->tipo->name){
-                $submissao_save = SubmissaoNacional::create([
-                    'inscricao_id' => $user->nacional->id,
-                    'dt' => $post->divisoes_tematicas[0],
-                    'ciente' => $post->ciente,
-                    'tipo' => $post->tipo->name,
-                    'titulo' => $post->titulo,
-                    'lattes' => $post->lattes,
-                    'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao,
-                    'ano' => $post->ano,
-                    'editora' => $post->editora,
-                ]);
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_nacional_2022/" , $name);
-                    $submissao_save->link_trabalho = $name;
-                    $submissao_save->save();
-                }
+            $now = Carbon::now()->format('Y-m-d H:i:s');
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
+            if($now <= '2022-07-12 00:00:00'){
 
-                        $coautor_save = CoautorOrganizadoresSubNaci::findOrFail($coautor->id);
+                if(empty($submissao) || $submissao->tipo != $post->tipo->name){
+                    $submissao_save = SubmissaoNacional::create([
+                        'inscricao_id' => $user->nacional->id,
+                        'dt' => $post->divisoes_tematicas[0],
+                        'ciente' => $post->ciente,
+                        'tipo' => $post->tipo->name,
+                        'titulo' => $post->titulo,
+                        'lattes' => $post->lattes,
+                        'termo_autoria' => $post->termo_autoria,
+                        'autorizacao' => $post->autorizacao,
+                        'ano' => $post->ano,
+                        'editora' => $post->editora,
+                    ]);
 
-                        $coautor_save->update([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
-                        ]);
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_nacional_2022/" , $name);
+                        $submissao_save->link_trabalho = $name;
+                        $submissao_save->save();
                     }
 
-                    if(empty($coautor->id)){
-                        $coautor_save = CoautorOrganizadoresSubNaci::create([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
-                        ]);
+                    foreach($post->coautoresOrientadores as $coautor){
+                        if(!empty($coautor->id)){
+
+                            $coautor_save = CoautorOrganizadoresSubNaci::findOrFail($coautor->id);
+
+                            $coautor_save->update([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria
+                            ]);
+                        }
+
+                        if(empty($coautor->id)){
+                            $coautor_save = CoautorOrganizadoresSubNaci::create([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria
+                            ]);
+                        }
                     }
                 }
             }

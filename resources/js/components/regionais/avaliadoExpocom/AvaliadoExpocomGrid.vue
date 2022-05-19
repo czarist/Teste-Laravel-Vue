@@ -46,7 +46,8 @@
                                         }"></i> Status Coordenador 
                                     </th>
                                     <th class="align-middle text-center" width="5%">VER JUSTIFICATIVA</th>
-                                    <th class="align-middle text-center" width="5%">PDF</th>
+                                    <th class="align-middle text-center" width="5%">PDF TRABALHO</th>
+                                    <th class="align-middle text-center" width="5%">PDF VIDEO</th>
                                     <th class="align-middle text-center" width="5%">AÇÂO</th>
                                 </tr>
                             </thead>
@@ -91,13 +92,31 @@
                                         <div v-if="registro && registro.link_trabalho">
                                             <button
                                                 v-tooltip.bottom="{
-                                                content: 'Visualizar Anexo',
+                                                content: 'Visualizar PDF Trabalho',
                                                 delay: 0,
                                                 class: 'tooltip-custom tooltip-arrow'
                                                 }"
-                                                title="Visualizar Anexo"
+                                                title="Visualizar PDF Trabalho"
                                                 class="btn btn-primary"
                                                 @click="visualizarAnexo(registro)"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>
+                                                </svg>   
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center" >
+                                        <div v-if="registro && registro.link_aceite">
+                                            <button
+                                                v-tooltip.bottom="{
+                                                content: 'Visualizar PDF do Video',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                                }"
+                                                title="Visualizar PDF do Video"
+                                                class="btn btn-primary"
+                                                @click="visualizarAnexoVideo(registro)"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>
@@ -120,7 +139,7 @@
                                             class="btn btn-success btn-sm mr-1"
                                             @click="sendVideo(registro)"
                                         >
-                                            Enviar Video
+                                            {{ registro && registro.link_aceite && registro.link_aceite != null ? "Alterar Video" : "Enviar Video" }}
                                         </span>
 
                                         <a
@@ -362,6 +381,23 @@
                     window.open(this.baseUrl+'/pdf/submissao_expocom_regional_norte_2022/'+ registro.link_trabalho, '_blank');
                 }
 
+            },
+            visualizarAnexoVideo(registro){
+                if(registro.regiao == 1){
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_sul_2022_video/'+ registro.link_aceite, '_blank');
+                }
+                if(registro.regiao == 2){
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_nordeste_2022_video/'+ registro.link_aceite, '_blank');
+                }
+                if(registro.regiao == 3){
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_sudeste_2022_video/'+ registro.link_aceite, '_blank');
+                }
+                if(registro.regiao == 4){ 
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_centrooeste_2022_video/'+ registro.link_aceite, '_blank');
+                }
+                if(registro.regiao == 5){
+                    window.open(this.baseUrl+'/pdf/submissao_expocom_regional_norte_2022_video/'+ registro.link_aceite, '_blank');
+                }
             },
             visualizarJustificativa(registro){
                 if(registro){

@@ -396,6 +396,104 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -940,7 +1038,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: ['selected', 'id'],
   mixins: [_mixins_global_mixins__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       loading: false,
       acessos: [],
       estados: [],
@@ -949,50 +1049,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       usersTypes: [],
       location: null,
       verify: null,
-      instituicoes: [],
       paises: [],
       titulacoes: [],
-      showHidePasswod: false,
-      showPassaword: "password",
-      post: {
+      instituicoes: []
+    }, _defineProperty(_ref, "titulacoes", []), _defineProperty(_ref, "showHidePasswod", false), _defineProperty(_ref, "showPassaword", "password"), _defineProperty(_ref, "post", {
+      id: null,
+      name: null,
+      email: null,
+      password: null,
+      estrangeiro: 0,
+      data_nascimento: null,
+      orgao_expedidor: null,
+      cpf: null,
+      rg: null,
+      telefone: null,
+      celular: null,
+      sexo_id: null,
+      instituicao_id: null,
+      titulacao_id: null,
+      anuidade: null,
+      numero_socio: null,
+      obs_isentamos: null,
+      todos_tipos_id: 3,
+      ativo: 0,
+      acessos: [],
+      enderecos: {
         id: null,
-        name: null,
-        email: null,
-        password: null,
-        estrangeiro: 0,
-        data_nascimento: null,
-        orgao_expedidor: null,
-        cpf: null,
-        rg: null,
-        telefone: null,
-        celular: null,
-        sexo_id: null,
-        anuidade: null,
-        numero_socio: null,
-        obs_isentamos: null,
-        todos_tipos_id: 3,
-        ativo: 0,
-        acessos: [],
-        enderecos: {
-          id: null,
-          cep: null,
-          logradouro: null,
-          numero: null,
-          complemento: null,
-          bairro: null,
-          municipio: null,
-          estado: null
-        },
-        _method: 'post'
+        cep: null,
+        logradouro: null,
+        numero: null,
+        complemento: null,
+        bairro: null,
+        municipio: null,
+        estado: null,
+        pais: null
       },
-      options: [{
-        text: 'Não',
-        value: 0
-      }, {
-        text: 'Sim',
-        value: 1
-      }]
-    };
+      _method: 'post'
+    }), _defineProperty(_ref, "options", [{
+      text: 'Não',
+      value: 0
+    }, {
+      text: 'Sim',
+      value: 1
+    }]), _ref;
   },
   watch: {
     selected: function selected() {
@@ -1015,12 +1114,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.post.anuidade = this.selected.associado.anuidade;
         this.post.numero_socio = this.selected.associado.numero_socio;
         this.post.obs_isentamos = this.selected.associado.obs_isentamos;
+        this.post.instituicao_id = this.selected.associado ? this.selected.associado.instituicao_id : null;
+        this.post.titulacao_id = this.selected.associado ? this.selected.associado.titulacao_id : null;
         this.post.enderecos = {
           id: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].id : null,
           cep: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].cep : null,
           logradouro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].logradouro : null,
           numero: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].numero : null,
           complemento: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].complemento : null,
+          bairro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].bairro : null,
+          pais: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].pais_id : null,
           municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio : null,
           estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio.estado : null
         };
@@ -1191,7 +1294,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                           _this4.loading = false;
 
                           _this4.$emit('store', res.data.response);
-                        } else {
+                        }
+
+                        if (res.status == 200) {
                           _this4.loading = false;
 
                           _this4.$emit('update', res.data.response);
@@ -1238,23 +1343,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     clear: function clear() {
       this.post.id = null;
-      this.post.email = null;
       this.post.name = null;
+      this.post.email = null;
       this.post.todos_tipos_id = 3;
       this.post.ativo = 0;
-      this.post.password = null;
-      this.post.enderecos = [{
-        logradouro: null,
+      this.post.acessos = [], this.post._method = 'post';
+      this.post.data_nascimento = null;
+      this.post.orgao_expedidor = null;
+      this.post.cpf = null;
+      this.post.rg = null;
+      this.post.telefone = null;
+      this.post.celular = null;
+      this.post.sexo_id = null;
+      this.post.anuidade = null;
+      this.post.numero_socio = null;
+      this.post.obs_isentamos = null;
+      this.post.instituicao_id = null;
+      this.post.titulacao_id = null;
+      this.post.enderecos = {
+        id: null,
         cep: null,
+        logradouro: null,
         numero: null,
         complemento: null,
         bairro: null,
         municipio: null,
         estado: null,
-        deleted: false
-      }];
-      this.post.acessos = [], this.post._method = 'post';
-      this.$validator.reset('name');
+        pais: null
+      }, this.$validator.reset('name');
       this.$validator.reset('email');
     }
   },
@@ -3224,6 +3340,198 @@ var render = function () {
           [
             _c(
               "b-col",
+              { attrs: { cols: "12", sm: "6", lg: "6" } },
+              [
+                _c(
+                  "b-form-group",
+                  {
+                    attrs: {
+                      label: "Instituição",
+                      "label-class": "font-weight-bold",
+                    },
+                  },
+                  [
+                    _c(
+                      "b-form-select",
+                      {
+                        directives: [
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: { required: true },
+                            expression: "{ required: true }",
+                          },
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("instituicao") },
+                        ],
+                        attrs: {
+                          disabled: _vm.loading,
+                          name: "instituicao",
+                          size: "sm",
+                          "data-vv-as": "instituição",
+                        },
+                        model: {
+                          value: _vm.post.instituicao_id,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post, "instituicao_id", $$v)
+                          },
+                          expression: "post.instituicao_id",
+                        },
+                      },
+                      [
+                        _c("option", { domProps: { value: null } }, [
+                          _vm._v("Selecione"),
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.instituicoes, function (instituicao) {
+                          return _c(
+                            "option",
+                            {
+                              key: instituicao.id,
+                              domProps: { value: instituicao.id },
+                            },
+                            [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(instituicao.instituicao) +
+                                  "\n                    "
+                              ),
+                            ]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errors.has("instituicao"),
+                            expression: "errors.has(`instituicao`)",
+                          },
+                        ],
+                        staticClass: "invalid-feedback",
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("instituicao")) +
+                            "\n                    "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { attrs: { cols: "12", sm: "6", lg: "6" } },
+              [
+                _c(
+                  "b-form-group",
+                  {
+                    attrs: {
+                      label: "Titulação",
+                      "label-class": "font-weight-bold",
+                    },
+                  },
+                  [
+                    _c(
+                      "b-form-select",
+                      {
+                        directives: [
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: { required: true },
+                            expression: "{ required: true }",
+                          },
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("titulacao") },
+                        ],
+                        attrs: {
+                          disabled: _vm.loading,
+                          name: "titulacao",
+                          size: "sm",
+                          "data-vv-as": "titulação",
+                        },
+                        model: {
+                          value: _vm.post.titulacao_id,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post, "titulacao_id", $$v)
+                          },
+                          expression: "post.titulacao_id",
+                        },
+                      },
+                      [
+                        _c("option", { domProps: { value: null } }, [
+                          _vm._v("Selecione"),
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.titulacoes, function (titulacao) {
+                          return _c(
+                            "option",
+                            {
+                              key: titulacao.id,
+                              domProps: { value: titulacao.id },
+                            },
+                            [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(titulacao.titulacao) +
+                                  "\n                    "
+                              ),
+                            ]
+                          )
+                        }),
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errors.has("titulacao"),
+                            expression: "errors.has(`titulacao`)",
+                          },
+                        ],
+                        staticClass: "invalid-feedback",
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.errors.first("titulacao")) +
+                            "\n                    "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
               { attrs: { cols: "12", sm: "6", lg: "4" } },
               [
                 _c(
@@ -3422,384 +3730,524 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-12" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+            _c(
+              "div",
+              { staticClass: "row" },
+              [
+                _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group " },
+                    [
+                      _c("label", { attrs: { for: "" } }, [_vm._v("CEP")]),
+                      _vm._v(" "),
+                      _c("b-form-input", {
+                        directives: [
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: { min: 9 },
+                            expression: "{ min: 9 }",
+                          },
+                          {
+                            name: "mask",
+                            rawName: "v-mask",
+                            value: "#####-###",
+                            expression: "'#####-###'",
+                          },
+                        ],
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("cep") },
+                        ],
+                        attrs: {
+                          size: "sm",
+                          name: "cep",
+                          placeholder: "Digite aqui",
+                          "data-vv-as": "CEP",
+                          type: "text",
+                          disabled: _vm.loading,
+                        },
+                        on: {
+                          change: function ($event) {
+                            return _vm.getCep()
+                          },
+                        },
+                        model: {
+                          value: _vm.post.enderecos.cep,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post.enderecos, "cep", $$v)
+                          },
+                          expression: "post.enderecos.cep",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errors.has("cep"),
+                              expression: "errors.has(`cep`)",
+                            },
+                          ],
+                          staticClass: "invalid-feedback d-block",
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("cep")) +
+                              "\n                            "
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group " },
+                    [
+                      _c("label", { attrs: { for: "" } }, [
+                        _vm._v("logradouro"),
+                      ]),
+                      _vm._v(" "),
+                      _c("b-form-input", {
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("logradouro") },
+                        ],
+                        attrs: {
+                          size: "sm",
+                          name: "logradouro",
+                          "data-vv-as": "logradouro",
+                          type: "text",
+                          disabled: _vm.loading,
+                        },
+                        model: {
+                          value: _vm.post.enderecos.logradouro,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post.enderecos, "logradouro", $$v)
+                          },
+                          expression: "post.enderecos.logradouro",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errors.has("logradouro"),
+                              expression: "errors.has(`logradouro`)",
+                            },
+                          ],
+                          staticClass: "invalid-feedback d-block",
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("logradouro")) +
+                              "\n                            "
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("label", { staticClass: "font-weight-bold" }, [
+                        _vm._v("Número"),
+                      ]),
+                      _vm._v(" "),
+                      _c("b-form-input", {
+                        directives: [
+                          {
+                            name: "validate",
+                            rawName: "v-validate",
+                            value: { required: true },
+                            expression: "{ required: true }",
+                          },
+                        ],
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("numero") },
+                        ],
+                        attrs: {
+                          size: "sm",
+                          name: "numero",
+                          "data-vv-as": "Número",
+                          type: "number",
+                          disabled: _vm.loading,
+                        },
+                        model: {
+                          value: _vm.post.enderecos.numero,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post.enderecos, "numero", $$v)
+                          },
+                          expression: "post.enderecos.numero",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errors.has("numero"),
+                              expression: "errors.has(`numero`)",
+                            },
+                          ],
+                          staticClass: "invalid-feedback d-block",
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("numero")) +
+                              "\n                            "
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("label", { staticClass: "font-weight-bold" }, [
+                        _vm._v("Complemento"),
+                      ]),
+                      _vm._v(" "),
+                      _c("b-form-input", {
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("complemento") },
+                        ],
+                        attrs: {
+                          size: "sm",
+                          name: "complemento",
+                          "data-vv-as": "Complemento",
+                          type: "text",
+                          disabled: _vm.loading,
+                        },
+                        model: {
+                          value: _vm.post.enderecos.complemento,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post.enderecos, "complemento", $$v)
+                          },
+                          expression: "post.enderecos.complemento",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errors.has("complemento"),
+                              expression: "errors.has(`complemento`)",
+                            },
+                          ],
+                          staticClass: "invalid-feedback d-block",
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("complemento")) +
+                              "\n                            "
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("label", { staticClass: "font-weight-bold" }, [
+                        _vm._v("Bairro"),
+                      ]),
+                      _vm._v(" "),
+                      _c("b-form-input", {
+                        class: [
+                          "form-control form-control-sm",
+                          { "is-invalid": _vm.errors.has("bairro") },
+                        ],
+                        attrs: {
+                          size: "sm",
+                          name: "bairro",
+                          "data-vv-as": "Bairro",
+                          type: "text",
+                          disabled: _vm.loading,
+                        },
+                        model: {
+                          value: _vm.post.enderecos.bairro,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.post.enderecos, "bairro", $$v)
+                          },
+                          expression: "post.enderecos.bairro",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.errors.has("bairro"),
+                              expression: "errors.has(`bairro`)",
+                            },
+                          ],
+                          staticClass: "invalid-feedback d-block",
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.errors.first("bairro")) +
+                              "\n                            "
+                          ),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ]),
+                _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "form-group " },
+                  { staticClass: "form-group col-12 col-md-6 col-lg-6" },
                   [
-                    _c("label", { attrs: { for: "" } }, [_vm._v("CEP")]),
+                    _c("label", [_vm._v("Estado")]),
                     _vm._v(" "),
-                    _c("b-form-input", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: { min: 9 },
-                          expression: "{ min: 9 }",
-                        },
-                        {
-                          name: "mask",
-                          rawName: "v-mask",
-                          value: "#####-###",
-                          expression: "'#####-###'",
-                        },
-                      ],
-                      class: [
-                        "form-control form-control-sm",
-                        { "is-invalid": _vm.errors.has("cep") },
-                      ],
+                    _c("v-select", {
+                      staticClass: "flex-fill",
+                      class: [{ "v-select-invalid": _vm.errors.has("estado") }],
                       attrs: {
-                        size: "sm",
-                        name: "cep",
-                        placeholder: "Digite aqui",
-                        "data-vv-as": "CEP",
-                        type: "text",
+                        options: _vm.estados,
+                        "data-vv-as": "estado",
+                        selectOnTab: true,
                         disabled: _vm.loading,
+                        label: "sigla",
+                        name: "estado",
                       },
                       on: {
-                        change: function ($event) {
-                          return _vm.getCep()
+                        input: function ($event) {
+                          return _vm.getMunicipios()
                         },
                       },
-                      model: {
-                        value: _vm.post.enderecos.cep,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.post.enderecos, "cep", $$v)
-                        },
-                        expression: "post.enderecos.cep",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("cep"),
-                            expression: "errors.has(`cep`)",
-                          },
-                        ],
-                        staticClass: "invalid-feedback d-block",
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.errors.first("cep")) +
-                            "\n                            "
-                        ),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
-                _c(
-                  "div",
-                  { staticClass: "form-group " },
-                  [
-                    _c("label", { attrs: { for: "" } }, [_vm._v("logradouro")]),
-                    _vm._v(" "),
-                    _c("b-form-input", {
-                      class: [
-                        "form-control form-control-sm",
-                        { "is-invalid": _vm.errors.has("logradouro") },
-                      ],
-                      attrs: {
-                        size: "sm",
-                        name: "logradouro",
-                        "data-vv-as": "logradouro",
-                        type: "text",
-                        disabled: _vm.loading,
-                      },
-                      model: {
-                        value: _vm.post.enderecos.logradouro,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.post.enderecos, "logradouro", $$v)
-                        },
-                        expression: "post.enderecos.logradouro",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("logradouro"),
-                            expression: "errors.has(`logradouro`)",
-                          },
-                        ],
-                        staticClass: "invalid-feedback d-block",
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.errors.first("logradouro")) +
-                            "\n                            "
-                        ),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("label", { staticClass: "font-weight-bold" }, [
-                      _vm._v("Número"),
-                    ]),
-                    _vm._v(" "),
-                    _c("b-form-input", {
-                      directives: [
+                      scopedSlots: _vm._u([
                         {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: { required: true },
-                          expression: "{ required: true }",
-                        },
-                      ],
-                      class: [
-                        "form-control form-control-sm",
-                        { "is-invalid": _vm.errors.has("numero") },
-                      ],
-                      attrs: {
-                        size: "sm",
-                        name: "numero",
-                        "data-vv-as": "Número",
-                        type: "number",
-                        disabled: _vm.loading,
-                      },
-                      model: {
-                        value: _vm.post.enderecos.numero,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.post.enderecos, "numero", $$v)
-                        },
-                        expression: "post.enderecos.numero",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("numero"),
-                            expression: "errors.has(`numero`)",
-                          },
-                        ],
-                        staticClass: "invalid-feedback d-block",
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.errors.first("numero")) +
-                            "\n                            "
-                        ),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12 col-md-6 col-lg-6" }, [
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("label", { staticClass: "font-weight-bold" }, [
-                      _vm._v("Complemento"),
-                    ]),
-                    _vm._v(" "),
-                    _c("b-form-input", {
-                      class: [
-                        "form-control form-control-sm",
-                        { "is-invalid": _vm.errors.has("complemento") },
-                      ],
-                      attrs: {
-                        size: "sm",
-                        name: "complemento",
-                        "data-vv-as": "Complemento",
-                        type: "text",
-                        disabled: _vm.loading,
-                      },
-                      model: {
-                        value: _vm.post.enderecos.complemento,
-                        callback: function ($$v) {
-                          _vm.$set(_vm.post.enderecos, "complemento", $$v)
-                        },
-                        expression: "post.enderecos.complemento",
-                      },
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errors.has("complemento"),
-                            expression: "errors.has(`complemento`)",
-                          },
-                        ],
-                        staticClass: "invalid-feedback d-block",
-                      },
-                      [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.errors.first("complemento")) +
-                            "\n                            "
-                        ),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group col-12 col-md-6 col-lg-6" },
-                [
-                  _c("label", [_vm._v("Estado")]),
-                  _vm._v(" "),
-                  _c("v-select", {
-                    staticClass: "flex-fill",
-                    class: [{ "v-select-invalid": _vm.errors.has("estado") }],
-                    attrs: {
-                      options: _vm.estados,
-                      "data-vv-as": "estado",
-                      selectOnTab: true,
-                      disabled: _vm.loading,
-                      label: "sigla",
-                      name: "estado",
-                    },
-                    on: {
-                      input: function ($event) {
-                        return _vm.getMunicipios()
-                      },
-                    },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "no-options",
-                        fn: function (ref) {
-                          var search = ref.search
-                          var searching = ref.searching
-                          return [
-                            searching
-                              ? [
-                                  _vm._v(
-                                    "\n                                    Nada encontrado com "
+                          key: "no-options",
+                          fn: function (ref) {
+                            var search = ref.search
+                            var searching = ref.searching
+                            return [
+                              searching
+                                ? [
+                                    _vm._v(
+                                      "\n                                    Nada encontrado com "
+                                    ),
+                                    _c("em", [_vm._v(_vm._s(search))]),
+                                    _vm._v(
+                                      ".\n                                "
+                                    ),
+                                  ]
+                                : _c(
+                                    "em",
+                                    { staticStyle: { opacity: "0.5" } },
+                                    [_vm._v("Começe a digitar algo.")]
                                   ),
-                                  _c("em", [_vm._v(_vm._s(search))]),
-                                  _vm._v(".\n                                "),
-                                ]
-                              : _c("em", { staticStyle: { opacity: "0.5" } }, [
-                                  _vm._v("Começe a digitar algo."),
-                                ]),
+                            ]
+                          },
+                        },
+                      ]),
+                      model: {
+                        value: _vm.post.enderecos.estado,
+                        callback: function ($$v) {
+                          _vm.$set(_vm.post.enderecos, "estado", $$v)
+                        },
+                        expression: "post.enderecos.estado",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errors.has("estado"),
+                            expression: "errors.has(`estado`)",
+                          },
+                        ],
+                        staticClass: "v-select-invalid-feedback",
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.errors.first("estado")) +
+                            "\n                        "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-group col-12 col-md-6 col-lg-6" },
+                  [
+                    _c("label", [_vm._v("Município")]),
+                    _vm._v(" "),
+                    _c("v-select", {
+                      staticClass: "flex-fill",
+                      class: {
+                        "v-select-invalid": _vm.errors.has("municipio"),
+                      },
+                      attrs: {
+                        name: "municipio",
+                        disabled: _vm.loading,
+                        options: _vm.municipios,
+                        selectOnTab: false,
+                        label: "nome",
+                        "data-vv-as": "municipio",
+                      },
+                      model: {
+                        value: _vm.post.enderecos.municipio,
+                        callback: function ($$v) {
+                          _vm.$set(_vm.post.enderecos, "municipio", $$v)
+                        },
+                        expression: "post.enderecos.municipio",
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errors.has("municipio"),
+                            expression: "errors.has(`municipio`)",
+                          },
+                        ],
+                        staticClass: "v-select-invalid-feedback",
+                      },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.errors.first("municipio")) +
+                            "\n                        "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-col",
+                  { attrs: { cols: "12", sm: "6", lg: "6" } },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "País",
+                          "label-class": "font-weight-bold",
+                        },
+                      },
+                      [
+                        _c("b-form-input", {
+                          directives: [
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: { required: true },
+                              expression: "{ required: true }",
+                            },
+                          ],
+                          class: [
+                            "form-control form-control-sm",
+                            { "is-invalid": _vm.errors.has("pais") },
+                          ],
+                          attrs: {
+                            name: "pais",
+                            size: "sm",
+                            type: "text",
+                            disabled: _vm.loading,
+                            "aria-describedby": "input-1-live-feedback",
+                            "data-vv-as": "País",
+                          },
+                          model: {
+                            value: _vm.post.enderecos.pais,
+                            callback: function ($$v) {
+                              _vm.$set(_vm.post.enderecos, "pais", $$v)
+                            },
+                            expression: "post.enderecos.pais",
+                          },
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.errors.has("pais"),
+                                expression: "errors.has(`pais`)",
+                              },
+                            ],
+                            staticClass: "invalid-feedback",
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.errors.first("pais")) +
+                                "\n                        "
+                            ),
                           ]
-                        },
-                      },
-                    ]),
-                    model: {
-                      value: _vm.post.enderecos.estado,
-                      callback: function ($$v) {
-                        _vm.$set(_vm.post.enderecos, "estado", $$v)
-                      },
-                      expression: "post.enderecos.estado",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.errors.has("estado"),
-                          expression: "errors.has(`estado`)",
-                        },
+                        ),
                       ],
-                      staticClass: "v-select-invalid-feedback",
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.errors.first("estado")) +
-                          "\n                        "
-                      ),
-                    ]
-                  ),
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group col-12 col-md-6 col-lg-6" },
-                [
-                  _c("label", [_vm._v("Município")]),
-                  _vm._v(" "),
-                  _c("v-select", {
-                    staticClass: "flex-fill",
-                    class: { "v-select-invalid": _vm.errors.has("municipio") },
-                    attrs: {
-                      name: "municipio",
-                      disabled: _vm.loading,
-                      options: _vm.municipios,
-                      selectOnTab: false,
-                      label: "nome",
-                      "data-vv-as": "municipio",
-                    },
-                    model: {
-                      value: _vm.post.enderecos.municipio,
-                      callback: function ($$v) {
-                        _vm.$set(_vm.post.enderecos, "municipio", $$v)
-                      },
-                      expression: "post.enderecos.municipio",
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.errors.has("municipio"),
-                          expression: "errors.has(`municipio`)",
-                        },
-                      ],
-                      staticClass: "v-select-invalid-feedback",
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.errors.first("municipio")) +
-                          "\n                        "
-                      ),
-                    ]
-                  ),
-                ],
-                1
-              ),
-            ]),
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ],
+              1
+            ),
           ]),
         ]),
         _vm._v(" "),

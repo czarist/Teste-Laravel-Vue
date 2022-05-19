@@ -83,8 +83,6 @@
                                             >
                                             Justificativa
                                             </button>
-
-
                                         </div>
                                         <div v-else>
                                             Sem Justificativa
@@ -139,10 +137,27 @@
                                             }"
                                             :disabled="loading"
                                             title="Editar Trabalho"
-                                            class="btn btn-success btn-sm mr-1"
+                                            class="btn btn-success btn-sm m-1"
                                             @click="EditTrabalho(registro.regiao, registro.tipo)"
                                         >Editar Trabalho
                                         </span>
+
+                                        <a
+                                            v-if="registro && registro.avaliacao && registro.avaliacao.status_coordenador == 'Aceito'"
+                                            v-tooltip.bottom="{
+                                                content: 'Carta de Aceite',
+                                                delay: 0,
+                                                class: 'tooltip-custom tooltip-arrow'
+                                            }"
+                                            :disabled="loading"
+                                            title="Carta de Aceite"
+                                            class="btn btn-info btn-sm m-1 text-white"
+                                            target="_blank"
+                                            :href="`${baseUrl}/submissao/carta_aceite/pdf/${registro.regiao}/${registro.id}`"
+                                        >
+                                            Carta de Aceite
+                                        </a>
+
                                     </td>
                                 </tr>
                             </tbody>

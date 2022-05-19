@@ -109,7 +109,7 @@
                                     <td class="align-middle text-center">{{ registro ? registro.nome_autor : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro ? registro.cpf_autor : "NI" }}</td>
                                     <td class="align-middle text-center">{{ find_categoria(registro) }}</td>
-                                    <td class="align-middle text-center">{{ registro ? registro.titulo_trabalho.substring(40,0) : "NI" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.titulo_trabalho ? registro.titulo_trabalho.substring(40,0) : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro ? registro.trabalho_produzido : "NI" }}</td>
                                     <td class="align-middle text-center">
                                         <span class="d-flex justify-content-center">

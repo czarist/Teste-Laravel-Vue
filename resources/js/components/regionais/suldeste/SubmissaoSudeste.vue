@@ -929,6 +929,8 @@
             let date = moment().format('L')
             let hours = moment().format('LTS');
 
+            console.log(date)
+
             if(date >= '04/21/2022' && hours >= '00:00:00'){
                 if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
                     

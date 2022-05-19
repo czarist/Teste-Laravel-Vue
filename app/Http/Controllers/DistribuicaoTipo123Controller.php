@@ -167,9 +167,11 @@ class DistribuicaoTipo123Controller extends Controller
                                 $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
                             });
                         })
-                        ->when($request->sort == 'titulo', function ($query) use ($request) {
-                            $query->whereHas('avaliacao', function($q) use ($request) {
-                                $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('titulo', 'like', '%' . $request->search . '%');
+                                });
                             });
                         })
                         ->when($request->modalidade, function ($query) use ($request){
@@ -206,9 +208,11 @@ class DistribuicaoTipo123Controller extends Controller
                                 $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
                             });
                         })
-                        ->when($request->sort == 'titulo', function ($query) use ($request) {
-                            $query->whereHas('avaliacao', function($q) use ($request) {
-                                $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('titulo', 'like', '%' . $request->search . '%');
+                                });
                             });
                         })
                         ->when($request->modalidade, function ($query) use ($request){
@@ -245,9 +249,11 @@ class DistribuicaoTipo123Controller extends Controller
                                 $q->orderBy('dt', $request->asc == 'true' ? 'ASC' : 'DESC');
                             });
                         })
-                        ->when($request->sort == 'titulo', function ($query) use ($request) {
-                            $query->whereHas('avaliacao', function($q) use ($request) {
-                                $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('titulo', 'like', '%' . $request->search . '%');
+                                });
                             });
                         })
                         ->when($request->modalidade, function ($query) use ($request){
@@ -289,6 +295,14 @@ class DistribuicaoTipo123Controller extends Controller
                                 $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
                             });
                         })
+                        ->when($request->search, function ($query) use ($request) {
+                            $query->where(function ($query) use ($request) {
+                                $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                    $query->where('titulo', 'like', '%' . $request->search . '%');
+                                });
+                            });
+                        })
+
                         ->when($request->modalidade, function ($query) use ($request){
                             $query->where('dt', '=', $request->modalidade);
                         })
@@ -362,6 +376,13 @@ class DistribuicaoTipo123Controller extends Controller
                             $q->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
                         });
                     })
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->where('titulo', 'like', '%' . $request->search . '%');
+                            });
+                        });
+                    })
                     ->when($request->modalidade, function ($query) use ($request){
                         $query->where('dt', '=', $request->modalidade);
                     })
@@ -402,6 +423,13 @@ class DistribuicaoTipo123Controller extends Controller
                     ->when($request->modalidade, function ($query) use ($request){
                         $query->where('dt', '=', $request->modalidade);
                     })
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->where('titulo', 'like', '%' . $request->search . '%');
+                            });
+                        });
+                    })
                 ->get();
 
                 $submissoes_nordeste = $this->submissoes_nordeste()
@@ -439,6 +467,13 @@ class DistribuicaoTipo123Controller extends Controller
                     ->when($request->modalidade, function ($query) use ($request){
                         $query->where('dt', '=', $request->modalidade);
                     })
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->where('titulo', 'like', '%' . $request->search . '%');
+                            });
+                        });
+                    })
                 ->get();
 
                 $submissoes_centrooeste = $this->submissoes_centrooeste()
@@ -475,6 +510,13 @@ class DistribuicaoTipo123Controller extends Controller
                     })
                     ->when($request->modalidade, function ($query) use ($request){
                         $query->where('dt', '=', $request->modalidade);
+                    })
+                    ->when($request->search, function ($query) use ($request) {
+                        $query->where(function ($query) use ($request) {
+                            $query->when($request->type == 'titulo', function ($query) use ($request) {
+                                $query->where('titulo', 'like', '%' . $request->search . '%');
+                            });
+                        });
                     })
                 ->get();
                 

@@ -168,16 +168,16 @@
                                     <td class="align-middle text-center">{{ registro && registro.submissao && registro.submissao.inscricao && registro.submissao.inscricao.user &&  registro.submissao.inscricao.user.indicacao ? registro.submissao.inscricao.user.indicacao.modalidade.substring(50, 0) : "NI" }}</td>
                                     <td class="align-middle text-center">
                                         <div>                                    
-                                            {{ registro ? registro.status_avaliador_1 : "NI" }}<br>
-                                            {{ registro ? registro.status_avaliador_2 : "NI" }}<br>
-                                            {{ registro ? registro.status_avaliador_3 : "NI" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_1 == user.id ? registro.status_avaliador_1 : "" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_2 == user.id ? registro.status_avaliador_2 : "" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_3 == user.id ? registro.status_avaliador_3 : "" }}<br>
                                         </div>    
                                     </td>
                                     <td class="align-middle text-center">
                                         <div>                                    
-                                            {{ registro ? registro.media_1 : "NI" }}<br>
-                                            {{ registro ? registro.media_2 : "NI" }}<br>
-                                            {{ registro ? registro.media_3 : "NI" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_1 == user.id  ? registro.media_1 : "" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_2 == user.id ? registro.media_2 : "" }}<br>
+                                            {{ registro && registro.media_1 && registro.avaliador_3 == user.id ? registro.media_3 : "" }}<br>
                                         </div>    
                                     </td>
 

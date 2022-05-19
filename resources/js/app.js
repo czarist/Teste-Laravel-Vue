@@ -292,6 +292,7 @@ import AssociadoArea from './components/associado/AssociadoArea.vue'
 import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
 import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
 import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
+import FormAvaliadorNacional from './components/ficha_avaliador/FormAvaliadorNacional.vue'
 import FormIndicacao from './components/indicacao/FormIndicacao.vue'
 
 //FORM INSCRICOES 
@@ -351,6 +352,11 @@ import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/Avaliado
 //DASHBOARD
 import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
 
+//GRID TRABALHOS ACEITOS EXPOCOM
+import ListaTrabalhosExpocomGrid from './components/lista_trabalhos_aceitos_expocom/ListaTrabalhosExpocomGrid.vue'
+
+//GRID TRABALHOS ACEITOS
+import ListaTrabalhosGrid from './components/lista_trabalhos_aceitos/ListaTrabalhosGrid.vue'
 
 const app = new Vue({
     el: '#app',
@@ -371,6 +377,7 @@ const app = new Vue({
         'pagamento-grid': PagamentoGrid,
         'anuidade-cadastro': AnuidadeCadastro,
         'form-avaliador': FormAvaliador,
+        'form-avaliador-nacional': FormAvaliadorNacional,
         'form-indicacao': FormIndicacao,
 
         //ADMIN PAGAMENTOS
@@ -428,7 +435,14 @@ const app = new Vue({
         'submissao-expocom-grid':AvaliadoExpocomGrid,
 
         //DASHBOARD
-        'dashboard-page': DashboardPage
+        'dashboard-page': DashboardPage,
+
+        //GRID TRABALHOS ACEITOS EXPOCOM
+        'lista-trabalhos-expocom-grid': ListaTrabalhosExpocomGrid,
+
+        //GRID TRABALHOS ACEITOS
+        'lista-trabalhos-grid': ListaTrabalhosGrid
+
     }
 });
 

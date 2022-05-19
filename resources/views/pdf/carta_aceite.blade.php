@@ -56,7 +56,7 @@
                 com antecedência para melhor participar dos debates durante o evento. Estamos providenciando recursos multimídia
                 para a apresentação dos trabalhos, mas recomendamos que você prepare uma versão alternativa de sua exposição,
                 que não dependa de equipamentos, para a eventualidade de não haver tais recursos na sala onde ela ocorrer. Caso
-                você tenha dúvidas a este respeito, contate o coordenador de seu GT. Nós o agradecemos desde já por sua presença e
+                você tenha dúvidas a este respeito, contate o coordenador. Nós o agradecemos desde já por sua presença e
                 contribuição acadêmica ao Congresso.  
             </div><br>  
             <div align="center">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CoauOriExpoSubCentrooeste;
 use App\Models\SubmissaoExpocomRegionalCentrooeste;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,51 +36,56 @@ class SubmissaoExpocomRegionalCentrooesteController extends Controller
                 }
             }
 
-            if(empty($submissao)){
-                $submissao_save = SubmissaoExpocomRegionalCentrooeste::create([
-                    'inscricao_id' => $user->regional_centrooeste->id,
-                    'tipo' => $post->tipo->name,
-                    'ciente' => $post->ciente,
-                    'ano' => $post->ano,
-                    'campus' => $post->campus,
-                    'desc_obj_estudo' => $post->desc_obj_estudo,
-                    'desc_pesquisa' => $post->desc_pesquisa,
-                    'desc_producao' => $post->desc_producao,
-                    'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao,
-                    'regiao' => 4,
-                ]);
+            $now = Carbon::now()->format('Y-m-d H:i:s');
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_centrooeste_2022/" , $name);
-                    $submissao_save->link_trabalho = $name;
-                    $submissao_save->save();
-                }
+            if($now <= '2022-05-02 00:00:00'){
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
+                if(empty($submissao)){
+                    $submissao_save = SubmissaoExpocomRegionalCentrooeste::create([
+                        'inscricao_id' => $user->regional_centrooeste->id,
+                        'tipo' => $post->tipo->name,
+                        'ciente' => $post->ciente,
+                        'ano' => $post->ano,
+                        'campus' => $post->campus,
+                        'desc_obj_estudo' => $post->desc_obj_estudo,
+                        'desc_pesquisa' => $post->desc_pesquisa,
+                        'desc_producao' => $post->desc_producao,
+                        'termo_autoria' => $post->termo_autoria,
+                        'autorizacao' => $post->autorizacao,
+                        'regiao' => 4,
+                    ]);
 
-                        $coautor_save = CoauOriExpoSubCentrooeste::findOrFail($coautor->id);
-
-                        $coautor_save->update([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria,
-                            'curso_coautor' => $coautor->curso_coautor
-                        ]);
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_centrooeste_2022/" , $name);
+                        $submissao_save->link_trabalho = $name;
+                        $submissao_save->save();
                     }
 
-                    if(empty($coautor->id)){
-                        $coautor_save = CoauOriExpoSubCentrooeste::create([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria,
-                            'curso_coautor' => $coautor->curso_coautor
-                        ]);
+                    foreach($post->coautoresOrientadores as $coautor){
+                        if(!empty($coautor->id)){
+
+                            $coautor_save = CoauOriExpoSubCentrooeste::findOrFail($coautor->id);
+
+                            $coautor_save->update([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria,
+                                'curso_coautor' => $coautor->curso_coautor
+                            ]);
+                        }
+
+                        if(empty($coautor->id)){
+                            $coautor_save = CoauOriExpoSubCentrooeste::create([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria,
+                                'curso_coautor' => $coautor->curso_coautor
+                            ]);
+                        }
                     }
                 }
             }

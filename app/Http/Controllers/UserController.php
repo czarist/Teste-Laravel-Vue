@@ -64,7 +64,7 @@ class UserController extends Controller
             $post['password'] = Hash::make($post['password']);
             
             $user = User::create($post);
-            $$todos_tipos = [0 => 4];  
+            $todos_tipos = [0 => 4];  
             $user->todos_tipos()->sync($todos_tipos);
             $user->acessos()->sync($post['acessos']);
 
@@ -85,9 +85,11 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $post = $request->all();
+
         try { 
             $post = $request->all();
-            $user = User::findOrFail($request->id);
+            $user = User::findOrFail($post['id']);
             $endereco = Endereco::whereUserId($user->id)->first();
             $associado = Associado::whereUserId($user->id)->first();   
 
@@ -101,94 +103,81 @@ class UserController extends Controller
 
             if(!empty($user))
             {
-                if($user->rg == $post['rg']) {
-                    $user->update([
-                        'name' => $post['name'] ?? null,
-                        'email' => $post['email'] ?? null,
-                        'password' => $post['password'] ?? null,
-                        'telefone' => $post['telefone'] ?? null,
-                        'celular' => $post['celular'] ?? null,
-                        'data_nascimento' => $post['data_nascimento'] ?? null,
-                        'sexo_id' => $post['sexo_id'] ?? null,
-                        'rg' => $post['rg'] ?? null,
-                        'orgao_expedidor' => $post['orgao_expedidor'] ?? null,
-
-                        'updated_at' => Carbon::now()
-                    ]);
-                }else{
-
-                    $user->update([
-                        'name' => $post['name'] ?? null,
-                        'email' => $post['email'] ?? null,
-                        'password' => $post['password'] ?? null,
-                        'telefone' => $post['telefone'] ?? null,
-                        'celular' => $post['celular'] ?? null,
-                        'data_nascimento' => $post['data_nascimento'] ?? null,
-                        'rg' => $post['rg'] ?? null,
-                        'orgao_expedidor' => $post['orgao_expedidor'] ?? null,
-                        'sexo_id' => $post['sexo_id'] ?? null,
-                        'updated_at' => Carbon::now()
-                    ]);
-                }
+                $user->update([
+                    'name' => $post['name'],
+                    'email' => $post['email'],
+                    'password' => $post['password'],
+                    'estrangeiro' => $post['estrangeiro'],
+                    // 'passaporte' => $post['passaporte'],
+                    'telefone' => $post['telefone'],
+                    'celular' => $post['celular'],
+                    'data_nascimento' => $post['data_nascimento'],
+                    'rg' => $post['rg'],
+                    'orgao_expedidor' => $post['orgao_expedidor'],
+                    'sexo_id' => $post['sexo_id'],
+                    'ativo' => $post['ativo']
+                ]);
             }
 
             unset($post['password']);
     
             if(empty($endereco))
             {
-                $endereco = Endereco::create(
-                    [
-                        'user_id' => $user->id,
-                        'logradouro' => $request->enderecos['logradouro'] ?? null,
-                        'numero' => $request->enderecos['numero'] ?? null,
-                        'complemento' => $request->enderecos['complemento'] ?? null,
-                        'bairro' => $request->enderecos['bairro'] ?? null,
-                        'municipio_id' => $request->enderecos['municipio']['id'] ?? null,
-                        'cep' => $request->enderecos['cep'] ?? null,
-                        'pais_id' => $request['pais'] ?? null,
-                        'updated_at' => Carbon::now()
-                    ]
-                );
+                $endereco = Endereco::create([
+                    'user_id' => $user->id,
+                    'logradouro' => $post['enderecos']['logradouro'],
+                    'numero' => $post['enderecos']['numero'],
+                    'complemento' => $post['enderecos']['complemento'],
+                    'bairro' => $post['enderecos']['bairro'],
+                    'municipio_id' => $post['enderecos']['municipio']['id'],
+                    'cep' => $post['enderecos']['cep'],
+                    'pais_id' => $post['enderecos']['pais'],
+                ]);
         
             }else {
-                $endereco->update(
-                    [
-                        'user_id' => $user->id,
-                        'logradouro' => $request->enderecos['logradouro'] ?? null,
-                        'numero' => $request->enderecos['numero'] ?? null,
-                        'complemento' => $request->enderecos['complemento'] ?? null,
-                        'bairro' => $request->enderecos['bairro'] ?? null,
-                        'municipio_id' => $request->enderecos['municipio']['id'] ?? null,
-                        'cep' => $request->enderecos['cep'] ?? null,
-                        'pais_id' => $request['pais'] ?? null,
-                        'updated_at' => Carbon::now()
-                    ]
-                );
+                $endereco->update([
+                    'logradouro' => $post['enderecos']['logradouro'],
+                    'numero' => $post['enderecos']['numero'],
+                    'complemento' => $post['enderecos']['complemento'],
+                    'bairro' => $post['enderecos']['bairro'],
+                    'municipio_id' => $post['enderecos']['municipio']['id'],
+                    'cep' => $post['enderecos']['cep'],
+                    'pais_id' => $post['enderecos']['pais'],
+                ]);
             }
 
             if(empty($associado))
             {
-                $associado = Associado::create(
-                    [
-                        'user_id' => $user->id,
-                        'instituicao_id' => $request->instituicao_id ?? null,
-                        'titulacao_id' => $request->titulacao_id ?? null,
-                    ]
-                );
-
+                $associado = Associado::create([
+                    'user_id' => $user->id,
+                    'instituicao_id' => $post['instituicao_id'],
+                    'titulacao_id' => $post['titulacao_id'],
+                    'anuidade' => $post['anuidade'],
+                    'numero_socio' => $post['numero_socio'],
+                    'obs_isentamos' => $post['obs_isentamos']
+                ]);
             }else
             {
-                $associado->update(
-                    [
+                $associado->update([
                         'user_id' => $user->id,
-                        'instituicao_id' => $request->instituicao_id ?? null,
-                        'titulacao_id' => $request->titulacao_id ?? null,
-                    ]
-                );    
+                        'instituicao_id' => $post['instituicao_id'],
+                        'titulacao_id' => $post['titulacao_id'],
+                        'anuidade' => $post['anuidade'],
+                        'numero_socio' => $post['numero_socio'],
+                        'obs_isentamos' => $post['obs_isentamos']
+                ]);    
             }
 
             $user->todos_tipos()->sync($post['todos_tipos_id']);
             $user->acessos()->sync($post['acessos']);
+
+            $user->load('acessos:id,pagina,link',
+            'todos_tipos:id,descricao',
+            'enderecos',
+            'enderecos.municipio',
+            'enderecos.municipio.estado',
+            'associado',                
+            );
 
             Log::info('User UPDATE: ' . json_encode($post));
             return response()->json(['message' => 'success', 'response' => $user], 200);

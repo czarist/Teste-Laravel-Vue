@@ -1,6 +1,6 @@
 <template>
 
-<div class="">
+<div v-if="now == false">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -772,6 +772,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para inscrição encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -789,6 +793,7 @@
             return {
                 loading: false,
                 baseUrl: process.env.MIX_BASE_URL,
+                now: moment().format('L') >= '06/01/2022' ? true : false,
                 selectedPagar: null,
                 script_pagseguro: null,
                 sessions_pagseguro: null,

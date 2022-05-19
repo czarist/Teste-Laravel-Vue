@@ -30,6 +30,12 @@ class SubmissaoExpocomRegionalNorte extends Model
         return $this->hasMany(CoauOriExpoSubNorte::class,  'submissao_id', 'id');
     }
 
+    public function coautorOrientadorSubNorte()
+    {
+        return $this->hasMany(CoauOriExpoSubNorte::class,  'submissao_id', 'id');
+    }
+
+
     public function avaliacao(){
         return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
     }

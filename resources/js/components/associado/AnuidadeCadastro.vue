@@ -303,205 +303,205 @@
                         </div>
                         <div class="col-12">
                             <div class="row">
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                <label class="font-weight-bold">CEP</label>
-                                <b-form-input
-                                    size="sm"
-                                    v-validate="{ min: 9, required: true }"
-                                    :name="`cep`"
-                                    @change="getCep()"
-                                    v-mask="'#####-###'"
-                                    placeholder="Digite aqui"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`cep`) },
-                                    ]"
-                                    data-vv-as="CEP"
-                                    v-model="post.enderecos.cep"
-                                    type="text"
-                                    :disabled="loading"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`cep`)"
-                                    class="invalid-feedback d-block"
-                                >
-                                    {{ errors.first(`cep`) }}
-                                </span>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                <label class="font-weight-bold">logradouro</label>
-                                <b-form-input
-                                    size="sm"
-                                    :name="`logradouro`"
-                                    v-validate="{ required: true }"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`logradouro`) },
-                                    ]"
-                                    data-vv-as="logradouro"
-                                    v-model="post.enderecos.logradouro"
-                                    type="text"
-                                    :disabled="loading"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`logradouro`)"
-                                    class="invalid-feedback d-block"
-                                >
-                                    {{ errors.first(`logradouro`) }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                <label class="font-weight-bold">Número</label>
-                                <b-form-input
-                                    size="sm"
-                                    :name="`numero`"
-                                    v-validate="{ required: true }"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`numero`) },
-                                    ]"
-                                    data-vv-as="Número"
-                                    v-model="post.enderecos.numero"
-                                    type="number"
-                                    :disabled="loading"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`numero`)"
-                                    class="invalid-feedback d-block"
-                                >
-                                    {{ errors.first(`numero`) }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                <label class="font-weight-bold">Complemento</label>
-                                <b-form-input
-                                    size="sm"
-                                    :name="`complemento`"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`complemento`) },
-                                    ]"
-                                    data-vv-as="Complemento"
-                                    v-model="post.enderecos.complemento"
-                                    type="text"
-                                    :disabled="loading"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`complemento`)"
-                                    class="invalid-feedback d-block"
-                                >
-                                    {{ errors.first(`complemento`) }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                <label class="font-weight-bold">Bairro</label>
-                                <b-form-input
-                                    size="sm"
-                                    :name="`bairro`"
-                                    v-validate="{ required: true }"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`bairro`) },
-                                    ]"
-                                    data-vv-as="Bairro"
-                                    v-model="post.enderecos.bairro"
-                                    type="text"
-                                    :disabled="loading"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`bairro`)"
-                                    class="invalid-feedback d-block"
-                                >
-                                    {{ errors.first(`bairro`) }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-12 col-md-6 col-lg-6">
-                                <label class="font-weight-bold">Estado</label>
-                                <v-select
-                                class="flex-fill"
-                                :options="estados"
-                                data-vv-as="estado"
-                                :selectOnTab="true"
-                                v-model="post.enderecos.estado"
-                                v-validate="{ required: true }"
-                                :disabled="loading"
-                                :class="[{ 'v-select-invalid': errors.has(`estado`) }]"
-                                label="sigla"
-                                @input="getMunicipios()"
-                                :name="`estado`"
-                                >
-                                <template v-slot:no-options="{ search, searching }">
-                                    <template v-if="searching">
-                                    Nada encontrado com <em>{{ search }}</em
-                                    >.
-                                    </template>
-                                    <em style="opacity: 0.5" v-else
-                                    >Começe a digitar algo.</em
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                    <label class="font-weight-bold">CEP</label>
+                                    <b-form-input
+                                        size="sm"
+                                        v-validate="{ min: 9, required: true }"
+                                        :name="`cep`"
+                                        @change="getCep()"
+                                        v-mask="'#####-###'"
+                                        placeholder="Digite aqui"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`cep`) },
+                                        ]"
+                                        data-vv-as="CEP"
+                                        v-model="post.enderecos.cep"
+                                        type="text"
+                                        :disabled="loading"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`cep`)"
+                                        class="invalid-feedback d-block"
                                     >
-                                </template>
-                                </v-select>
-                                <span v-show="errors.has(`estado`)" class="invalid-feedback d-block">
-                                {{ errors.first(`estado`) }}
-                                </span>
-                            </div>
+                                        {{ errors.first(`cep`) }}
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                    <label class="font-weight-bold">logradouro</label>
+                                    <b-form-input
+                                        size="sm"
+                                        :name="`logradouro`"
+                                        v-validate="{ required: true }"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`logradouro`) },
+                                        ]"
+                                        data-vv-as="logradouro"
+                                        v-model="post.enderecos.logradouro"
+                                        type="text"
+                                        :disabled="loading"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`logradouro`)"
+                                        class="invalid-feedback d-block"
+                                    >
+                                        {{ errors.first(`logradouro`) }}
+                                    </span>
+                                    </div>
+                                </div>
 
-                            <div class="form-group col-12 col-md-6 col-lg-6">
-                                <label class="font-weight-bold">Município</label>
-                                <v-select
-                                class="flex-fill"
-                                :name="`municipio`"
-                                :disabled="loading"
-                                :options="municipios"
-                                :selectOnTab="false"
-                                v-validate="{ required: true }"
-                                v-model="post.enderecos.municipio"
-                                label="nome"
-                                data-vv-as="municipio"
-                                :class="{ 'v-select-invalid': errors.has(`municipio`) }"
-                                ></v-select>
-                                <span v-show="errors.has(`municipio`)" class="invalid-feedback d-block">
-                                {{ errors.first(`municipio`) }}
-                                </span>
-                            </div>
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                    <label class="font-weight-bold">Número</label>
+                                    <b-form-input
+                                        size="sm"
+                                        :name="`numero`"
+                                        v-validate="{ required: true }"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`numero`) },
+                                        ]"
+                                        data-vv-as="Número"
+                                        v-model="post.enderecos.numero"
+                                        type="number"
+                                        :disabled="loading"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`numero`)"
+                                        class="invalid-feedback d-block"
+                                    >
+                                        {{ errors.first(`numero`) }}
+                                    </span>
+                                    </div>
+                                </div>
 
-                            <b-col cols="12" sm="6" lg="6">
-                                <b-form-group label="País" label-class="font-weight-bold">
-                                <b-form-input
-                                    name="pais"
-                                    size="sm"
-                                    v-model="post.pais"
-                                    type="text"
-                                    :disabled="loading"
-                                    :class="[
-                                    'form-control form-control-sm',
-                                    { 'is-invalid': errors.has(`pais`) },
-                                    ]"
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                    <label class="font-weight-bold">Complemento</label>
+                                    <b-form-input
+                                        size="sm"
+                                        :name="`complemento`"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`complemento`) },
+                                        ]"
+                                        data-vv-as="Complemento"
+                                        v-model="post.enderecos.complemento"
+                                        type="text"
+                                        :disabled="loading"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`complemento`)"
+                                        class="invalid-feedback d-block"
+                                    >
+                                        {{ errors.first(`complemento`) }}
+                                    </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                    <label class="font-weight-bold">Bairro</label>
+                                    <b-form-input
+                                        size="sm"
+                                        :name="`bairro`"
+                                        v-validate="{ required: true }"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`bairro`) },
+                                        ]"
+                                        data-vv-as="Bairro"
+                                        v-model="post.enderecos.bairro"
+                                        type="text"
+                                        :disabled="loading"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`bairro`)"
+                                        class="invalid-feedback d-block"
+                                    >
+                                        {{ errors.first(`bairro`) }}
+                                    </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 col-lg-6">
+                                    <label class="font-weight-bold">Estado</label>
+                                    <v-select
+                                    class="flex-fill"
+                                    :options="estados"
+                                    data-vv-as="estado"
+                                    :selectOnTab="true"
+                                    v-model="post.enderecos.estado"
                                     v-validate="{ required: true }"
-                                    aria-describedby="input-1-live-feedback"
-                                    data-vv-as="País"
-                                ></b-form-input>
-                                <span
-                                    v-show="errors.has(`pais`)"
-                                    class="invalid-feedback"
-                                >
-                                    {{ errors.first(`pais`) }}
-                                </span>
-                                </b-form-group>
-                            </b-col>
+                                    :disabled="loading"
+                                    :class="[{ 'v-select-invalid': errors.has(`estado`) }]"
+                                    label="sigla"
+                                    @input="getMunicipios()"
+                                    :name="`estado`"
+                                    >
+                                    <template v-slot:no-options="{ search, searching }">
+                                        <template v-if="searching">
+                                        Nada encontrado com <em>{{ search }}</em
+                                        >.
+                                        </template>
+                                        <em style="opacity: 0.5" v-else
+                                        >Começe a digitar algo.</em
+                                        >
+                                    </template>
+                                    </v-select>
+                                    <span v-show="errors.has(`estado`)" class="invalid-feedback d-block">
+                                    {{ errors.first(`estado`) }}
+                                    </span>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 col-lg-6">
+                                    <label class="font-weight-bold">Município</label>
+                                    <v-select
+                                    class="flex-fill"
+                                    :name="`municipio`"
+                                    :disabled="loading"
+                                    :options="municipios"
+                                    :selectOnTab="false"
+                                    v-validate="{ required: true }"
+                                    v-model="post.enderecos.municipio"
+                                    label="nome"
+                                    data-vv-as="municipio"
+                                    :class="{ 'v-select-invalid': errors.has(`municipio`) }"
+                                    ></v-select>
+                                    <span v-show="errors.has(`municipio`)" class="invalid-feedback d-block">
+                                    {{ errors.first(`municipio`) }}
+                                    </span>
+                                </div>
+
+                                <b-col cols="12" sm="6" lg="6">
+                                    <b-form-group label="País" label-class="font-weight-bold">
+                                    <b-form-input
+                                        name="pais"
+                                        size="sm"
+                                        v-model="post.pais"
+                                        type="text"
+                                        :disabled="loading"
+                                        :class="[
+                                        'form-control form-control-sm',
+                                        { 'is-invalid': errors.has(`pais`) },
+                                        ]"
+                                        v-validate="{ required: true }"
+                                        aria-describedby="input-1-live-feedback"
+                                        data-vv-as="País"
+                                    ></b-form-input>
+                                    <span
+                                        v-show="errors.has(`pais`)"
+                                        class="invalid-feedback"
+                                    >
+                                        {{ errors.first(`pais`) }}
+                                    </span>
+                                    </b-form-group>
+                                </b-col>
                             </div>
                         </div>
                     </b-row> 

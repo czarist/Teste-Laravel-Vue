@@ -12,7 +12,10 @@ class AvaliadorExpocom extends Model
     protected $fillable = [
         'user_id',
         'avaliador',
-        'avaliador_junior'
+        'avaliador_junior',
+        'nacional_gp',
+        'nacional_ij',
+        'nacional_publicom'
     ];
 
     public function user(){

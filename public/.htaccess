@@ -7,8 +7,8 @@
 
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-    RewriteCond %{HTTP_HOST} ^homolog.intercom.org.br [NC]
-    RewriteRule ^(.*)$ https://www.homolog.intercom.org.br/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^sistemas.intercom.org.br [NC]
+    RewriteRule ^(.*)$ https://www.sistemas.intercom.org.br/$1 [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -23,5 +23,26 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-
 </IfModule>
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+</IfModule>
+
+<FilesMatch "\.(css|flv|gif|htm|html|ico|jpe|jpeg|jpg|js|mp3|mp4|png|pdf|swf|txt)$">
+    <IfModule mod_expires.c>
+        ExpiresActive Off
+    </IfModule>
+    <IfModule mod_headers.c>
+        FileETag None
+        Header unset ETag
+        Header unset Pragma
+        Header unset Cache-Control
+        Header unset Last-Modified
+        Header set Pragma "no-cache"
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+        Header set Expires "qui, 1 Jan 1970 00:00:00 GMT"
+    </IfModule>
+</FilesMatch>

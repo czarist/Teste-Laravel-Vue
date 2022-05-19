@@ -2314,146 +2314,142 @@ var render = function () {
                       1
                     ),
                     _vm._v(" "),
-                    _vm.selectedPagar && _vm.selectedPagar.regiao != 2
-                      ? _c(
-                          "b-tab",
-                          { attrs: { title: "Boleto" } },
-                          [
-                            _c("b-card-text", [
+                    _c(
+                      "b-tab",
+                      { attrs: { title: "Boleto" } },
+                      [
+                        _c("b-card-text", [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_ok1" },
+                            },
+                            [
                               _c(
                                 "div",
                                 {
-                                  staticClass: "container hidden",
-                                  attrs: { id: "retorno_ok1" },
+                                  staticClass:
+                                    "section-head style-3 text-center z mb-3 alert alert-success",
+                                  attrs: { role: "alert" },
                                 },
                                 [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "section-head style-3 text-center z mb-3 alert alert-success",
-                                      attrs: { role: "alert" },
-                                    },
-                                    [
-                                      _c("h2", {
-                                        staticClass: "title",
-                                        attrs: { id: "retorno_titulo_ok" },
-                                      }),
-                                      _vm._v(" "),
-                                      _c("p", {
-                                        attrs: { id: "retorno_texto_ok1" },
-                                      }),
-                                    ]
-                                  ),
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo_ok" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", {
+                                    attrs: { id: "retorno_texto_ok1" },
+                                  }),
                                 ]
                               ),
-                              _vm._v(" "),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "container hidden",
+                              attrs: { id: "retorno_erro1" },
+                            },
+                            [
                               _c(
                                 "div",
                                 {
-                                  staticClass: "container hidden",
-                                  attrs: { id: "retorno_erro1" },
+                                  staticClass:
+                                    "section-head style-3 text-center z mb-3 alert alert-danger ",
+                                  attrs: { role: "alert" },
                                 },
                                 [
+                                  _c("h2", {
+                                    staticClass: "title",
+                                    attrs: { id: "retorno_titulo1" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("p", { attrs: { id: "retorno_texto1" } }),
+                                  _vm._v(" "),
                                   _c(
                                     "div",
-                                    {
-                                      staticClass:
-                                        "section-head style-3 text-center z mb-3 alert alert-danger ",
-                                      attrs: { role: "alert" },
-                                    },
                                     [
-                                      _c("h2", {
-                                        staticClass: "title",
-                                        attrs: { id: "retorno_titulo1" },
-                                      }),
-                                      _vm._v(" "),
-                                      _c("p", {
-                                        attrs: { id: "retorno_texto1" },
-                                      }),
-                                      _vm._v(" "),
                                       _c(
-                                        "div",
-                                        [
-                                          _c(
-                                            "b-button",
-                                            {
-                                              attrs: {
-                                                size: "xl",
-                                                variant: "outline-danger",
-                                              },
-                                              on: {
-                                                click: function ($event) {
-                                                  return _vm.recarregar()
-                                                },
-                                              },
+                                        "b-button",
+                                        {
+                                          attrs: {
+                                            size: "xl",
+                                            variant: "outline-danger",
+                                          },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.recarregar()
                                             },
-                                            [
-                                              _vm._v(
-                                                "\n                      Voltar\n                    "
-                                              ),
-                                            ]
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                      Voltar\n                    "
                                           ),
-                                        ],
-                                        1
+                                        ]
                                       ),
-                                    ]
+                                    ],
+                                    1
                                   ),
                                 ]
                               ),
-                              _vm._v(" "),
-                              _c(
-                                "form",
-                                {
-                                  staticClass: "form-horizontal",
-                                  attrs: {
-                                    action: "",
-                                    method: "post",
-                                    "accept-charset": "utf-8",
-                                    name: "formPagamentoBoleto",
-                                    id: "formPagamentoBoleto",
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "form",
+                            {
+                              staticClass: "form-horizontal",
+                              attrs: {
+                                action: "",
+                                method: "post",
+                                "accept-charset": "utf-8",
+                                name: "formPagamentoBoleto",
+                                id: "formPagamentoBoleto",
+                              },
+                            },
+                            [
+                              _c("fieldset", [
+                                _c("div", {
+                                  staticClass: "meio-pag-boleto",
+                                  staticStyle: { "padding-bottom": "20px" },
+                                  attrs: { align: "center" },
+                                }),
+                              ]),
+                            ]
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "text-center" },
+                          [
+                            _c(
+                              "b-button",
+                              {
+                                attrs: {
+                                  disabled: _vm.loading,
+                                  size: "md",
+                                  id: "submit_button_boleto",
+                                  variant: "btn btn-success",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.pagarBoleto()
                                   },
                                 },
-                                [
-                                  _c("fieldset", [
-                                    _c("div", {
-                                      staticClass: "meio-pag-boleto",
-                                      staticStyle: { "padding-bottom": "20px" },
-                                      attrs: { align: "center" },
-                                    }),
-                                  ]),
-                                ]
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "text-center" },
-                              [
-                                _c(
-                                  "b-button",
-                                  {
-                                    attrs: {
-                                      disabled: _vm.loading,
-                                      size: "md",
-                                      id: "submit_button_boleto",
-                                      variant: "btn btn-success",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.pagarBoleto()
-                                      },
-                                    },
-                                  },
-                                  [_vm._v("Gerar Boleto\n              ")]
-                                ),
-                              ],
-                              1
+                              },
+                              [_vm._v("Gerar Boleto\n              ")]
                             ),
                           ],
                           1
-                        )
-                      : _vm._e(),
+                        ),
+                      ],
+                      1
+                    ),
                   ],
                   1
                 ),

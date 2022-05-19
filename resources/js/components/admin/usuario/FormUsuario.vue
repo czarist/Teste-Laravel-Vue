@@ -266,6 +266,53 @@
             </b-row>
             <hr/>
             <b-row>
+
+                <b-col cols="12" sm="6" lg="6">
+                    <b-form-group label="Instituição" label-class="font-weight-bold">
+                        <b-form-select
+                            :disabled="loading"
+                            name="instituicao"
+                            v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`instituicao`)}]"
+                            size="sm"
+                            data-vv-as="instituição"
+                            class="form-control form-control-sm"
+                            v-model="post.instituicao_id"
+                        >
+                        <option :value="null">Selecione</option>
+                        <option v-for="instituicao in instituicoes" :value="instituicao.id" :key="instituicao.id">
+                            {{ instituicao.instituicao }}
+                        </option>
+                        </b-form-select>
+                        <span v-show="errors.has(`instituicao`)" class="invalid-feedback">
+                            {{ errors.first(`instituicao`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
+                <b-col cols="12" sm="6" lg="6">
+                    <b-form-group label="Titulação" label-class="font-weight-bold">
+                        <b-form-select
+                            :disabled="loading"
+                            name="titulacao"
+                            v-validate="{ required: true }"
+                            :class="['form-control form-control-sm', {'is-invalid': errors.has(`titulacao`)}]"
+                            size="sm"
+                            data-vv-as="titulação"
+                            class="form-control form-control-sm"
+                            v-model="post.titulacao_id"
+                        >
+                        <option :value="null">Selecione</option>
+                        <option v-for="titulacao in titulacoes" :value="titulacao.id" :key="titulacao.id">
+                            {{ titulacao.titulacao }}
+                        </option>
+                        </b-form-select>
+                        <span v-show="errors.has(`titulacao`)" class="invalid-feedback">
+                            {{ errors.first(`titulacao`) }}
+                        </span>
+                    </b-form-group>
+                </b-col>
+
                 <b-col cols="12" sm="6" lg="4">
                     <b-form-group label="Anuidade" label-class="font-weight-bold">
                         <b-form-input
@@ -414,7 +461,30 @@
                                 </span>
                             </div>
                         </div>
-         
+
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Bairro</label>
+                                <b-form-input
+                                    size="sm"
+                                    :name="`bairro`"
+                                    :class="[
+                                    'form-control form-control-sm',
+                                    { 'is-invalid': errors.has(`bairro`) },
+                                    ]"
+                                    data-vv-as="Bairro"
+                                    v-model="post.enderecos.bairro"
+                                    type="text"
+                                    :disabled="loading"
+                                ></b-form-input>
+                                <span
+                                    v-show="errors.has(`bairro`)"
+                                    class="invalid-feedback d-block"
+                                >
+                                    {{ errors.first(`bairro`) }}
+                                </span>
+                            </div>
+                        </div>
 
                         <div class="form-group col-12 col-md-6 col-lg-6">
                             <label>Estado</label>
@@ -459,6 +529,32 @@
                                 {{ errors.first(`municipio`) }}
                             </span>
                         </div>
+
+                        <b-col cols="12" sm="6" lg="6">
+                            <b-form-group label="País" label-class="font-weight-bold">
+                            <b-form-input
+                                name="pais"
+                                size="sm"
+                                v-model="post.enderecos.pais"
+                                type="text"
+                                :disabled="loading"
+                                :class="[
+                                'form-control form-control-sm',
+                                { 'is-invalid': errors.has(`pais`) },
+                                ]"
+                                v-validate="{ required: true }"
+                                aria-describedby="input-1-live-feedback"
+                                data-vv-as="País"
+                            ></b-form-input>
+                            <span
+                                v-show="errors.has(`pais`)"
+                                class="invalid-feedback"
+                            >
+                                {{ errors.first(`pais`) }}
+                            </span>
+                            </b-form-group>
+                        </b-col>
+
                     </div>
                 </div>
             </div>
@@ -554,8 +650,9 @@
                 usersTypes: [],
                 location: null,
                 verify: null,
-                instituicoes: [],
                 paises: [],
+                titulacoes: [],
+                instituicoes: [],
                 titulacoes: [],
                 showHidePasswod: false,
                 showPassaword: "password",
@@ -572,6 +669,8 @@
                     telefone: null,
                     celular: null,
                     sexo_id: null,
+                    instituicao_id: null,    
+                    titulacao_id: null,            
                     anuidade: null,
                     numero_socio: null,
                     obs_isentamos: null,
@@ -587,6 +686,7 @@
                         bairro: null, 
                         municipio: null,
                         estado: null,
+                        pais: null
                     },
                     _method: 'post'
                 },
@@ -617,6 +717,8 @@
                     this.post.anuidade = this.selected.associado.anuidade
                     this.post.numero_socio = this.selected.associado.numero_socio
                     this.post.obs_isentamos = this.selected.associado.obs_isentamos
+                    this.post.instituicao_id = this.selected.associado ? this.selected.associado.instituicao_id : null
+                    this.post.titulacao_id = this.selected.associado ? this.selected.associado.titulacao_id : null
 
 
                     this.post.enderecos = {
@@ -625,6 +727,8 @@
                         logradouro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].logradouro : null,
                         numero: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].numero : null,
                         complemento: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].complemento : null,
+                        bairro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].bairro : null,
+                        pais: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].pais_id : null,
                         municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio : null,
                         estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio.estado: null,
                     }
@@ -707,10 +811,8 @@
                     await this.getMunicipios()
                         this.post.enderecos.municipio = this.municipios.find(municipio => municipio.nome == this.location)
                         this.$forceUpdate()                
-
                 }
             },
-    
             async save() {
                 this.loading = true
                 await this.$validator.validateAll().then((valid) => {
@@ -723,7 +825,9 @@
                                 if(res.status == 201) {
                                     this.loading = false
                                     this.$emit('store', res.data.response)
-                                } else {
+                                }
+                                
+                                if (res.status == 200) {
                                     this.loading = false
                                     this.$emit('update', res.data.response)
                                 }
@@ -754,27 +858,37 @@
                     }
                 })
             },
-
             clear() {
                 this.post.id = null
-                this.post.email = null
                 this.post.name = null
+                this.post.email = null
                 this.post.todos_tipos_id = 3
                 this.post.ativo = 0
-                this.post.password = null
-                this.post.enderecos = [{
-                    logradouro: null, 
-                    cep: null, 
-                    numero: null,
-                    complemento: null,
-                    bairro: null,
-                    municipio: null,
-                    estado: null,
-                    deleted: false
-                }]
-                
                 this.post.acessos = [],
                 this.post._method = 'post'
+                this.post.data_nascimento = null
+                this.post.orgao_expedidor = null
+                this.post.cpf = null
+                this.post.rg = null
+                this.post.telefone = null
+                this.post.celular = null
+                this.post.sexo_id = null
+                this.post.anuidade = null
+                this.post.numero_socio = null
+                this.post.obs_isentamos = null
+                this.post.instituicao_id = null
+                this.post.titulacao_id = null
+                this.post.enderecos = {
+                    id: null,
+                    cep: null,
+                    logradouro: null,
+                    numero : null,
+                    complemento: null,
+                    bairro: null, 
+                    municipio: null,
+                    estado: null,
+                    pais: null
+                },
                 this.$validator.reset('name')
                 this.$validator.reset('email')
             }
@@ -803,7 +917,7 @@
             })
           
             this.getEstados()
-        },
+            },
 
     }
 </script>

@@ -2,7 +2,7 @@
 
 @section('content')
     <?php
-    $status = $_GET['status'] ?? '';
+        $status = $_GET['status'] ?? '';
     
     ?>
     <?php
@@ -46,6 +46,7 @@
 
     
     ?>
+
     <div class="row">
         <!--  BEGIN CONTENT AREA  -->
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
@@ -209,22 +210,24 @@
 
                             )                                        
                                 @if (Auth::user()->pago_regional_sul_2022)
-                                
-                                    <div class="text-center">
-                                        <h6>Inscrição</h6>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn btn-success m-1" href="{{ route('reginal.sul') }}">
-                                            @if (Auth::user()->regional_sul)
-                                                Alterar Inscrição - Regional Sul
-                                            @endif
-                                            @if (!Auth::user()->regional_sul)
-                                                Criar Inscrição - Regional Sul
-                                            @endif
 
-                                        </a>
-                                    </div>
-                                    <hr>    
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-06-01 00:00:00')                                    
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('reginal.sul') }}">
+                                                @if (Auth::user()->regional_sul)
+                                                    Alterar Inscrição - Regional Sul
+                                                @endif
+                                                @if (!Auth::user()->regional_sul)
+                                                    Inscrição - Regional Sul
+                                                @endif
+                                            </a>
+                                        </div>
+                                        <hr>   
+                                    @endif 
+
                                     <div class="text-center">
                                         <h6>Submissão de Trabalho</h6>
                                     </div>
@@ -274,24 +277,24 @@
 
                                 @endif
 
-                                @if (Auth::user()->pago_regional_nordeste_2022)    
-                                
-                                    <div class="text-center">
-                                        <h6>Inscrição</h6>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn btn-success m-1" href="{{ route('reginal.nordeste') }}">
-                                            @if (Auth::user()->regional_nordeste)
-                                                Alterar Inscrição - Regional Nordeste
-                                            @endif
-                                            @if (!Auth::user()->regional_nordeste)
-                                                Criar Inscrição - Regional Nordeste
-                                            @endif
+                                @if (Auth::user()->pago_regional_nordeste_2022) 
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-04 00:00:00')                                    
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('reginal.nordeste') }}">
+                                                @if (Auth::user()->regional_nordeste)
+                                                    Alterar Inscrição - Regional Nordeste
+                                                @endif
+                                                @if (!Auth::user()->regional_nordeste)
+                                                    Inscrição - Regional Nordeste
+                                                @endif
+                                            </a>
+                                        </div>
+                                        <hr>    
+                                    @endif
 
-                                        </a>
-
-                                    </div>
-                                    <hr>    
                                     <div class="text-center">
                                         <h6>Submissão de Trabalho</h6>
                                     </div>
@@ -342,21 +345,24 @@
                                 @endif
 
                                 @if (Auth::user()->pago_regional_suldeste_2022)
-                                    <div class="text-center">
-                                        <h6>Inscrição</h6>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn btn-success m-1" href="{{ route('reginal.suldeste') }}">
-                                            @if (Auth::user()->regional_suldeste)
-                                                Alterar Inscrição - Regional Sudeste
-                                            @endif
-                                            @if (!Auth::user()->regional_suldeste)
-                                                Criar Inscrição - Regional Sudeste
-                                            @endif
-                                    
-                                        </a>
-                                    </div>
-                                    <hr>    
+
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-11 00:00:00')                                    
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('reginal.suldeste') }}">
+                                                @if (Auth::user()->regional_suldeste)
+                                                    Alterar Inscrição - Regional Sudeste
+                                                @endif
+                                                @if (!Auth::user()->regional_suldeste)
+                                                    Inscrição - Regional Sudeste
+                                                @endif                                        
+                                            </a>
+                                        </div>
+                                        <hr>
+                                    @endif
+
                                     <div class="text-center">
                                         <h6>Submissão de Trabalho</h6>
                                     </div>
@@ -405,21 +411,25 @@
                                 @endif
 
                                 @if (Auth::user()->pago_regional_centrooeste_2022)
-                                    <div class="text-center">
-                                        <h6>Inscrição</h6>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn btn-success m-1" href="{{ route('reginal.centrooeste') }}">
-                                            @if (Auth::user()->regional_centrooeste)
-                                                Alterar Inscrição - Regional Centro Oeste
-                                            @endif
-                                            @if (!Auth::user()->regional_centrooeste)
-                                                Criar Inscrição - Regional Centro Oeste
-                                            @endif
-                                    
-                                        </a>
-                                    </div>
-                                    <hr>    
+
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-25 00:00:00')                                    
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('reginal.centrooeste') }}">
+                                                @if (Auth::user()->regional_centrooeste)
+                                                    Alterar Inscrição - Regional Centro Oeste
+                                                @endif
+                                                @if (!Auth::user()->regional_centrooeste)
+                                                    Inscrição - Regional Centro Oeste
+                                                @endif
+                                        
+                                            </a>
+                                        </div>
+                                        <hr>  
+                                    @endif
+                                      
                                     <div class="text-center">
                                         <h6>Submissão de Trabalho</h6>
                                     </div>
@@ -469,21 +479,25 @@
 
                                 @if (Auth::user()->pago_regional_norte_2022)
 
-                                    <div class="text-center">
-                                        <h6>Inscrição</h6>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn btn-success m-1" href="{{ route('reginal.norte') }}">
-                                            @if (Auth::user()->regional_norte)
-                                                Alterar Inscrição - Regional Norte
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-18 00:00:00')                                    
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('reginal.norte') }}">
+                                                @if (Auth::user()->regional_norte)
+                                                    Alterar Inscrição - Regional Norte
+                                                @endif
+                                                @if (!Auth::user()->regional_norte)
+                                                Inscrição - Regional Norte
                                             @endif
-                                            @if (!Auth::user()->regional_norte)
-                                            Criar Inscrição - Regional Norte
-                                        @endif
-                                    
-                                        </a>
-                                    </div>
-                                    <hr>    
+                                        
+                                            </a>
+                                        </div>
+                                        <hr>
+
+                                    @endif
+
                                     <div class="text-center">
                                         <h6>Submissão de Trabalho</h6>
                                     </div>
@@ -570,7 +584,6 @@
                         <div class="row">
                             
                             @if (Auth::user()->pago_nacional_2022)
-
                                 @if (                                    
                                     Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 3
                                     || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 4
@@ -595,7 +608,7 @@
                                     || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 2
                                     || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 10
                                 )
-                                    <div class="col-12 text-center">
+                                    <div class="col-12 text-center">Alterar Cadastro Avaliador DTs e IJs
                                         <a class="btn btn-primary m-1" href="{{ route('submissao.nacional.junior') }}">Submissão Intercom Júnior - Nacional</a>
                                     </div>                                    
                                 @endif
@@ -639,13 +652,34 @@
                         @endif
                         <hr>
                         <hr>
+                        <div class="d-grid gap-2 text-center">
+                            <h6>
+                                {{ Auth::user()->is_avaliador_2022 ? "Alterar Cadastro de Avaliador Regional" : "Inscrição de Avaliador Regional" }}
+                            </h6>
 
+                            <a class="btn btn-success m-1" href="{{ route('avaliadorjr') }}">
+                                {{ Auth::user() && Auth::user()->is_avaliador_2022  ?  "Alterar Cadastro Avaliador Regional DTs e IJs" :   "Cadastro de Avaliador Regional DTs e IJs" }}
+                            </a>
 
-                            <div class="d-grid gap-2 text-center">
-                                <h6>Alterar Cadastro de Avaliador</h6>
-                                <a class="btn btn-success m-1" href="{{ route('avaliadorjr') }}">Alterar Cadastro Avaliador DTs e IJs</a>
-                                <a class="btn btn-success m-1" href="{{ route('avaliadorexpocom') }}">Alterar Cadastro Avaliador Expocom</a>
-                            </div>
+                            <a class="btn btn-success m-1" href="{{ route('avaliadorexpocom') }}">
+                                {{ Auth::user() && Auth::user()->is_avaliador_2022  ?  "Alterar Cadastro Avaliador Regional Expocom" :   "Cadastro de Avaliador Regional Expocom" }}
+                            </a>
+
+                            <hr>
+
+                            <h6>
+                                {{ Auth::user()->is_avaliador_nacional_2022 ? "Alterar Cadastro de Avaliador Nacional" : "Inscrição de Avaliador Nacional" }}
+                            </h6>
+
+                            <a class="btn btn-success m-1" href="{{ route('avaliador.nacional.jr') }}">
+                                {{ Auth::user() && Auth::user()->is_avaliador_nacional_2022  ?  "Alterar Cadastro Avaliador Nacional IJ" :   "Cadastro de Avaliador Nacional IJ" }}
+                            </a>
+
+                            <a class="btn btn-success m-1" href="{{ route('avaliador.nacional.gp') }}">
+                                {{ Auth::user() && Auth::user()->is_avaliador_nacional_2022  ?  "Alterar Cadastro Avaliador Nacional GP" :   "Cadastro de Avaliador Nacional GP" }}
+                            </a>
+
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

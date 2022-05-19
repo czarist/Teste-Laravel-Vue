@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.user.regional_centrooeste.submissao_expocom != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-if="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -651,6 +651,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão Centro-Oeste encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -1269,36 +1273,36 @@
 
             }
 
-            // let now = moment().format('L')
+            let now = moment().format('L')
 
-            // if(now >= '04/26/2022'){
+            if(now >= '05/02/2022'){
 
-            //     if(
-            //         this.user 
-            //         && this.user.regional_centrooeste 
-            //         && this.user.regional_centrooeste.submissao_expocom
-            //         && this.user.regional_centrooeste.submissao_expocom.avaliacao
-            //         && this.user.regional_centrooeste.submissao_expocom.avaliacao.edit == 1
-            //     ){
-            //         console.log('habilitado edição')
+                if(
+                    this.user 
+                    && this.user.regional_centrooeste 
+                    && this.user.regional_centrooeste.submissao_expocom
+                    && this.user.regional_centrooeste.submissao_expocom.avaliacao
+                    && this.user.regional_centrooeste.submissao_expocom.avaliacao.edit == 1
+                ){
+                    console.log('habilitado edição')
 
-            //     }else if(
-            //         this.user 
-            //         && this.user.regional_centrooeste 
-            //         && this.user.regional_centrooeste.submissao_expocom
-            //         && this.user.regional_centrooeste.submissao_expocom.avaliacao
-            //         && this.user.regional_centrooeste.submissao_expocom.avaliacao.edit == 0
-            //     ){
-            //         window.location.href = this.baseUrl+'/submissao-expocom'         
-            //     }
-            //     else if(
-            //         this.user 
-            //         && this.user.regional_centrooeste 
-            //         && this.user.regional_centrooeste.submissao_expocom != null
-            //     ){
-            //         window.location.href = this.baseUrl+'/submissao-expocom'        
-            //     }
-            // }
+                }else if(
+                    this.user 
+                    && this.user.regional_centrooeste 
+                    && this.user.regional_centrooeste.submissao_expocom
+                    && this.user.regional_centrooeste.submissao_expocom.avaliacao
+                    && this.user.regional_centrooeste.submissao_expocom.avaliacao.edit == 0
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'         
+                }
+                else if(
+                    this.user 
+                    && this.user.regional_centrooeste 
+                    && this.user.regional_centrooeste.submissao_expocom != null
+                ){
+                    window.location.href = this.baseUrl+'/submissao-expocom'        
+                }
+            }
         }
     }
 </script>

@@ -24,6 +24,7 @@ class AvaliadorExpocomController extends Controller
                 'todos_publicidade_propaganda:id,descricao',
                 'todos_relacoes_publicas:id,descricao',
                 'todos_producao_editorial:id,descricao',
+                'todos_gps',
                 'todos_radio_internet:id,descricao',
                 'enderecos',
                 'enderecos.municipio',
@@ -51,8 +52,28 @@ class AvaliadorExpocomController extends Controller
         return view('ficha.avaliador.form_jr', compact('user', 'form_jr'));
     }
 
-    public function store(Request $request)
-    {
+    public function form_avaliador_nacional_gp(){
+        $user = $this->usuario();
+        $tipo = 1;
+
+        return view('ficha.avaliador_nacional.form', compact('user', 'tipo'));
+    }
+
+    public function form_avaliador_nacional_jr(){
+        $user = $this->usuario();
+        $tipo = 2;
+
+        return view('ficha.avaliador_nacional.form', compact('user', 'tipo'));
+    }
+
+    public function form_avaliador_nacional_publicom(){
+        $user = $this->usuario();
+        $tipo = 3;
+
+        return view('ficha.avaliador_nacional.form', compact('user', 'tipo'));
+    }
+
+    public function store(Request $request){
         $post = $request->all();
         $user = User::findOrFail($post['id']);
         if($post['junior'] == 1){
@@ -92,7 +113,6 @@ class AvaliadorExpocomController extends Controller
             $user->update([
                 'telefone' => $post['telefone'],
                 'celular' => $post['celular'],
-                'updated_at' => Carbon::now()
             ]);
         }
 
@@ -111,7 +131,6 @@ class AvaliadorExpocomController extends Controller
         }else{
             $associado->update(
                 [
-                    'user_id' => $user->id,
                     'instituicao_id' => $request->instituicao_id,
                     'titulacao_id' => $request->titulacao_id,
                 ]
@@ -139,7 +158,6 @@ class AvaliadorExpocomController extends Controller
         }else {
             $endereco->update(
                 [
-                    'user_id' => $user->id,
                     'logradouro' => $request->enderecos['logradouro'],
                     'numero' => $request->enderecos['numero'],
                     'complemento' => $request->enderecos['complemento'],
@@ -147,7 +165,6 @@ class AvaliadorExpocomController extends Controller
                     'municipio_id' => $request->enderecos['municipio']['id'],
                     'cep' => $request->enderecos['cep'],
                     'pais_id' => $request->enderecos['pais'] ?? 'Brasil',
-                    'updated_at' => Carbon::now()
                 ]
             );
         }
@@ -158,4 +175,72 @@ class AvaliadorExpocomController extends Controller
 
     }
 
+    public function store_avaliador_nacional(Request $request){
+        $post = $request->all();
+
+        if($post && $post['id']){
+            $user = User::findOrFail($post['id']);
+        }
+
+        if($user && $user->id){
+            $avaliador = AvaliadorExpocom::whereUserId($user->id)->first();
+        }
+
+        if(empty($avaliador)){
+            if($request && $request->tipo == 1){
+                $avaliador = AvaliadorExpocom::create([
+                    'nacional_gp' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }            
+            if($request && $request->tipo == 2){
+                $avaliador = AvaliadorExpocom::create([
+                    'nacional_ij' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }
+            if($request && $request->tipo == 3){
+                $avaliador = AvaliadorExpocom::create([
+                    'nacional_publicom' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }
+
+        }else{
+            if($request && $request->tipo == 1){
+                $avaliador->update([
+                    'nacional_gp' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }  
+            if($request && $request->tipo == 2){
+                $avaliador->update([
+                    'nacional_ij' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }   
+            if($request && $request->tipo == 3){
+                $avaliador->update([
+                    'nacional_publicom' => 1,
+                    'user_id' => Auth::user()->id
+                ]);
+            }
+        }
+
+        if(!empty($user) && $request && $request->divisoes_tematicas){
+            $user->todos_divisoes_tematicas()->sync($request->divisoes_tematicas);
+        }
+
+        if(!empty($user) && $request && $request->divisoes_tematicas_jr){
+            $user->todos_divisoes_tematicas_jr()->sync($request->divisoes_tematicas_jr);
+        }
+
+        if(!empty($user) && $request && $request->gps){
+            $user->todos_gps()->sync($request->gps);
+        }
+
+        Log::info('Avaliador Nacional Atualizada: ' . json_encode($request->all()));
+
+        return response()->json(['message' => 'success', 'response' => $user], 201);
+    }
 }

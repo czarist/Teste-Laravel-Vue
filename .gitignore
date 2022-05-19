@@ -1,17 +1,22 @@
 /node_modules
 /public/hot
 /public/storage
+/public/pdf
+/public/pdf2
+/public/images
+/public/img
 /storage/*.key
 /vendor
 .env
 .env.backup
 .env.production
 .env.local
+.env.homolog
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/.idea
+    /.idea
 /.vscode

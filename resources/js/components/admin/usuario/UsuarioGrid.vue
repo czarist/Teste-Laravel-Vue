@@ -139,11 +139,13 @@
                 this.registros.splice(0, 0, $event)
                 this.$bvModal.hide('usuarioModal')
                 this.total++
+                this.selected = null
             },
             update($event) {
                 let index = this.registros.findIndex(registro => registro.id == this.selected.id)
                 this.registros.splice(index, 1, $event)
                 this.$bvModal.hide('usuarioModal')
+                this.selected = null
             },
             async destroy() {
                 await axios.delete(`${process.env.MIX_BASE_URL}/${this.page}/${this.toDelete.id}`).then(res => {

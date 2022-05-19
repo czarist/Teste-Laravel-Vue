@@ -11,6 +11,7 @@ use App\Models\SubmissaoExpocomRegionalSudeste;
 use App\Models\SubmissaoRegionalSudeste;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -122,51 +123,56 @@ class SubmissaoRegionalSudesteController extends Controller
                 }
             }
 
-            if(empty($submissao) || $submissao->tipo != $post->tipo->name){
-                $submissao_save = SubmissaoRegionalSudeste::create([
-                    'inscricao_id' => $user->regional_suldeste->id,
-                    'dt' => $post->divisoes_tematicas[0],
-                    'ciente' => $post->ciente,
-                    'tipo' => $post->tipo->name,
-                    'titulo' => $post->titulo,
-                    'palavra_chave_1' => $post->palavra_chave_1,
-                    'palavra_chave_2' => $post->palavra_chave_2,
-                    'palavra_chave_3' => $post->palavra_chave_3,
-                    'palavra_chave_4' => $post->palavra_chave_4,
-                    'palavra_chave_5' => $post->palavra_chave_5,
-                    'termo_autoria' => $post->termo_autoria,
-                    'autorizacao' => $post->autorizacao,
-                    'regiao' => 3
-                ]);
+            $now = Carbon::now()->format('Y-m-d H:i:s');
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_regional_suldeste_2022/" , $name);
-                    $submissao_save->link_trabalho = $name;
-                    $submissao_save->save();
-                }
+            if($now <= '2022-05-07 00:00:00'){
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
+                if(empty($submissao) || $submissao->tipo != $post->tipo->name){
+                    $submissao_save = SubmissaoRegionalSudeste::create([
+                        'inscricao_id' => $user->regional_suldeste->id,
+                        'dt' => $post->divisoes_tematicas[0],
+                        'ciente' => $post->ciente,
+                        'tipo' => $post->tipo->name,
+                        'titulo' => $post->titulo,
+                        'palavra_chave_1' => $post->palavra_chave_1,
+                        'palavra_chave_2' => $post->palavra_chave_2,
+                        'palavra_chave_3' => $post->palavra_chave_3,
+                        'palavra_chave_4' => $post->palavra_chave_4,
+                        'palavra_chave_5' => $post->palavra_chave_5,
+                        'termo_autoria' => $post->termo_autoria,
+                        'autorizacao' => $post->autorizacao,
+                        'regiao' => 3
+                    ]);
 
-                        $coautor_save = CoautorOrientadorSubSudeste::findOrFail($coautor->id);
-
-                        $coautor_save->update([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
-                        ]);
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_regional_suldeste_2022/" , $name);
+                        $submissao_save->link_trabalho = $name;
+                        $submissao_save->save();
                     }
 
-                    if(empty($coautor->id)){
-                        $coautor_save = CoautorOrientadorSubSudeste::create([
-                            'submissao_id' => $submissao_save->id,
-                            'nome_completo' => $coautor->nome_completo,
-                            'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
-                        ]);
+                    foreach($post->coautoresOrientadores as $coautor){
+                        if(!empty($coautor->id)){
+
+                            $coautor_save = CoautorOrientadorSubSudeste::findOrFail($coautor->id);
+
+                            $coautor_save->update([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria
+                            ]);
+                        }
+
+                        if(empty($coautor->id)){
+                            $coautor_save = CoautorOrientadorSubSudeste::create([
+                                'submissao_id' => $submissao_save->id,
+                                'nome_completo' => $coautor->nome_completo,
+                                'cpf' => $coautor->cpf,
+                                'categoria' => $coautor->categoria
+                            ]);
+                        }
                     }
                 }
             }

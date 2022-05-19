@@ -25,16 +25,17 @@
 
     @yield('styles')
 
-    <link 
-        rel="stylesheet" 
-        href="{{ asset('assets/css/whatsapp-button.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/whatsapp-button.css') }}"> 
+
+    @if (\Carbon\Carbon::now()->format('H') >= 18 || \Carbon\Carbon::now()->format('H') <=8)
         <a 
             id="robbu-whatsapp-button" 
             target="_blank" 
             href="https://api.whatsapp.com/send?phone=5511963651888&text=Ol%C3%A1%20preciso%20de%20ajuda." 
-            >
+        >
             <img src="{{ asset('images/whatsapp-icon.svg') }}"> 
         </a> 
+    @endif
     
     <style>
         .layout-px-spacing {

@@ -177,19 +177,7 @@ class NacionalController extends Controller
                     'updated_at' => Carbon::now()
                 ]);
             }
-
-            if(Auth::user()->anuidade_2022 && Auth::user()->is_associado){
-        
-                if(Auth::user()->pago_regional_nordeste_2022 == false){
-
-                    $todos_tipos = [0 => 7];
-                    $user->todos_tipos()->attach($todos_tipos);
-                
-                    Log::info('Usuário '.$user->id.' liberado inscrição nacional '.date('Y').'');
-                }
-            }
-
-            Log::info('User: '. Auth::user()->id . ' | Se inscreveu ou atualizou a inscrição no nacinal: ' . json_encode($post));
+            Log::info('User: '. Auth::user()->id . ' | Se inscreveu ou atualizou a inscrição no nacional: ' . json_encode($post));
 
             //Enviar e-mail informando que se inscreveu no nacional
             try {

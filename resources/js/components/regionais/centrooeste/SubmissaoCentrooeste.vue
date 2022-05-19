@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div v-if="this.submissao != null">
     <div class="row justify-content-center" v-on="this.tipos()" v-show="this.edit">
         <div class="col-md-12">
             <div class="card">
@@ -533,6 +533,10 @@
     <notifications group="submit" position="center bottom" width="700px" />
 </div>
 
+<div v-else class="text-center">
+    <h1>Prazo para submissão Centro-Oeste encerrado</h1>
+</div>
+
 </template>
 
 <script>
@@ -715,7 +719,7 @@
                                         this.message( "Sucesso", "Seus dados foram alterados com sucesso", "success");
                                         this.loading = false;
 
-                                        window.location.href = "/home?status=sucess1";
+                                        // window.location.href = "/home?status=sucess1";
 
                                     },
                                     error: (error) => {
@@ -905,19 +909,19 @@
 
             }
 
-            // let now = moment().format('L')
+            let now = moment().format('L')
 
-            // if(now >= '04/26/2022'){
+            if(now >= '05/02/2022'){
 
-            //     if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
+                if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 1){
                     
-            //     }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
-            //         window.location.href = this.baseUrl+'/submissao'         
-            //     }
-            //     else if(this.submissao && this.submissao != null){
-            //         window.location.href = this.baseUrl+'/submissao'               
-            //     }
-            // }
+                }else if(this.submissao && this.submissao.avaliacao && this.submissao.avaliacao.edit && this.submissao.avaliacao.edit == 0){
+                    window.location.href = this.baseUrl+'/submissao'         
+                }
+                else if(this.submissao && this.submissao != null){
+                    window.location.href = this.baseUrl+'/submissao'               
+                }
+            }
 
         }
     }

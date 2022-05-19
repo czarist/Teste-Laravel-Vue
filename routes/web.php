@@ -12,11 +12,14 @@ use App\Http\Controllers\CronController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistribuicaoTipo123Controller;
 use App\Http\Controllers\DistribuicaoTipoExpocomController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndicacaoAdminController;
 use App\Http\Controllers\IndicacaoController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\ListaTrabalhosController;
+use App\Http\Controllers\ListaTrabalhosExpocomController;
 use App\Http\Controllers\NacionalController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PagamentosAdminController;
@@ -148,6 +151,12 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('/avaliadorjr', [AvaliadorExpocomController::class, 'formavaliadorjr'])->name('avaliadorjr');
     Route::get('/avaliadorexpocom', [AvaliadorExpocomController::class, 'formavaliadorexpocom'])->name('avaliadorexpocom');
     Route::post('avaliador/save', [AvaliadorExpocomController::class , 'store'])->name('avaliador.save');
+    Route::post('/avaliador/nacional/save', [AvaliadorExpocomController::class, 'store_avaliador_nacional'])->name('avaliador.nacional.save');
+    Route::get('/avaliador_nacional_jr', [AvaliadorExpocomController::class, 'form_avaliador_nacional_jr'])->name('avaliador.nacional.jr');
+    Route::get('/avaliador_nacional_gp', [AvaliadorExpocomController::class, 'form_avaliador_nacional_gp'])->name('avaliador.nacional.gp');
+    // Route::get('/avaliador_nacional_publicom', [AvaliadorExpocomController::class, 'form_avaliador_nacional_publicom'])->name('avaliador.nacional.publicom');
+
+
 
     //NACIONAL 
     Route::get('nacional', [NacionalController::class ,'index'])->name('nacional');
@@ -257,6 +266,7 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::resource('submissao', SubmissaoController::class)->except(['show', 'create', 'edit']);
     Route::get('submissao/get', [SubmissaoController::class ,'get'])->name('submissao.get');
     Route::post('submissao/edit', [SubmissaoController::class , 'edit'])->name('submissao.edit');
+    Route::get('submissao/carta_aceite/pdf/{regiao}/{id}', [SubmissaoController::class ,'carta_aceite'])->name('submissao.carta_aceite');
 
     //GRID AUTOR (AVALIADO EXPOCOM)
     Route::resource('submissao-expocom', SubmissaoExpocomController::class)->except(['show', 'create', 'edit']);
@@ -305,7 +315,17 @@ Route::prefix('get')->group(function () {
 
 });
 
-Route::get('cronjob', [CronController::class, 'verificar_pagos'])->name('cronjob');
+//GRID TRABALHOS ACEITOS EXPOCOM 
+//Route::resource('lista-trabalhos-expocom', ListaTrabalhosExpocomController::class)->except(['show', 'create', 'edit']);
+//Route::get('lista-trabalhos-expocom/view/{regiao}', [ListaTrabalhosExpocomController::class ,'view'])->name('lista-trabalhos.view');
+//Route::get('lista-trabalhos-expocom/get', [ListaTrabalhosExpocomController::class ,'get'])->name('lista-trabalhos.get');
+
+//GRID TRABALHOS ACEITOS 
+Route::resource('lista-trabalhos', ListaTrabalhosController::class)->except(['show', 'create', 'edit']);
+Route::get('lista-trabalhos/view/{regiao}', [ListaTrabalhosController::class ,'view'])->name('lista-trabalhos.view');
+Route::get('lista-trabalhos/get', [ListaTrabalhosController::class ,'get'])->name('lista-trabalhos.get');
+
+Route::get('cronjob/atualizar_valores', [CronController::class, 'atualizar_valores'])->name('cronjob.atualizar_valores');
 
 Route::prefix('indicacao')->group(function(){
     Route::get('/', [IndicacaoController::class, 'index'])->name('indicacao.index');
@@ -354,3 +374,5 @@ Route::prefix('dashboard')->middleware('roles:dashboard')->group(function () {
     Route::post('associados_inscritos', [DashboardController::class , 'associados_inscritos'])->name('dashboard.associados_inscritos');
 
 });
+
+Route::get('excelll', [ExcelController::class, 'export'])->name('excelll');

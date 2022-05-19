@@ -32,6 +32,12 @@ class SubmissaoRegionalNorte extends Model
         return $this->hasMany(CoautorOrientadorSubNorte::class,  'submissao_id', 'id');
     }
 
+    public function coautorOrientadorSubNorte()
+    {
+        return $this->hasMany(CoautorOrientadorSubNorte::class,  'submissao_id', 'id');
+    }
+
+
     public function avaliacao(){
         return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }

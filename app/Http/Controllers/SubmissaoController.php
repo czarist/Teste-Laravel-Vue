@@ -13,12 +13,12 @@ use App\Models\SubmissaoRegionalNordestes;
 use App\Models\SubmissaoRegionalNorte;
 use App\Models\SubmissaoRegionalSudeste;
 use App\Models\SubmissaoRegionalSul;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use stdClass;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 class SubmissaoController extends Controller
 {
@@ -95,5 +95,129 @@ class SubmissaoController extends Controller
         Log::info('User: '.Auth::user()->id.' | Avaliação editada | ID: '.json_encode($request->all()));
 
         return response()->json(['success' => true, $avaliacao]);
+    }
+
+    public function carta_aceite($regiao,$id){
+
+        $trabalho['coautores'] = [];
+        if($regiao == 1){
+            $submissao = SubmissaoRegionalSul::with(
+                'inscricao',
+                'inscricao.user',
+                'coautorOrientadorSubSuls'
+            )->find($id);
+            
+            if(!empty($submissao) && $submissao->coautorOrientadorSubSuls){
+                foreach ($submissao->coautorOrientadorSubSuls as $coautor){
+                    array_push($trabalho['coautores'],$coautor->nome_completo);
+                }
+            }
+        }
+
+        if($regiao == 2){
+            $submissao = SubmissaoRegionalNordestes::with(
+                'inscricao',
+                'inscricao.user',
+                'coautorOrientadorSubNordeste'
+            )->find($id);
+
+            if(!empty($submissao) && $submissao->coautorOrientadorSubNordeste){
+                foreach ($submissao->coautorOrientadorSubNordeste as $coautor){
+                    array_push($trabalho['coautores'],$coautor->nome_completo);
+                }
+            }
+
+        }
+
+        if($regiao == 3){
+            $submissao = SubmissaoRegionalSudeste::with(
+                'inscricao',
+                'inscricao.user',
+                'coautorOrientadorSubSudeste'
+            )->find($id);
+
+            if(!empty($submissao) && $submissao->coautorOrientadorSubSudeste){
+                foreach ($submissao->coautorOrientadorSubSudeste as $coautor){
+                    array_push($trabalho['coautores'],$coautor->nome_completo);
+                }
+            }
+        }
+
+        if($regiao == 4){
+            $submissao = SubmissaoRegionalCentrooeste::with(
+                'inscricao',
+                'inscricao.user',
+                'coautorOrientadorSubCentrooeste'
+            )->find($id);
+
+            if(!empty($submissao) && $submissao->coautorOrientadorSubCentrooeste){
+                foreach ($submissao->coautorOrientadorSubCentrooeste as $coautor){
+                    array_push($trabalho['coautores'],$coautor->nome_completo);
+                }
+            }
+        }
+
+        if($regiao == 5){
+            $submissao = SubmissaoRegionalNorte::with(
+                'inscricao',
+                'inscricao.user',
+                'coautorOrientadorSubNorte'
+            )->find($id);
+
+            if(!empty($submissao) && $submissao->coautorOrientadorSubNorte){
+                foreach ($submissao->coautorOrientadorSubNorte as $coautor){
+                    array_push($trabalho['coautores'],$coautor->nome_completo);
+                }
+            }
+        }
+
+        if(!empty($submissao)){
+            $trabalho['titulo'] = $submissao->titulo;
+        }
+        if(!empty($submissao) && $submissao->inscricao && $submissao->inscricao->user){
+            $trabalho['autor'] = $submissao->inscricao->user->name;
+        }
+
+        $trabalho['data'] = date('Y');
+
+        switch ($regiao) {
+            case 1:
+                $trabalho['regiao'] = 'Sul';
+                break;
+            case 2:
+                $trabalho['regiao'] = 'Nordeste';
+                break;
+            case 3:
+                $trabalho['regiao'] = 'Sudeste';
+                break;
+            case 4:
+                $trabalho['regiao'] = 'Centro Oeste';
+                break;
+            case 5:
+                $trabalho['regiao'] = 'Norte';
+                break;
+        }
+
+        if(Auth::user()->id == $submissao->inscricao->user->id){
+            $data = view('pdf.carta_aceite', compact('trabalho'));
+            $options = new Options();
+            $options->set('isRemoteEnabled', TRUE);
+            $options->set("isPhpEnabled", true);
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($data);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $fontMetrics = $dompdf->getFontMetrics();
+            $canvas = $dompdf->get_canvas();
+            $font = $fontMetrics->getFont('Courier');
+            $canvas->page_text(538, 818, "", $font, 8, array(0, 0, 0));
+
+            if (empty($output) || $output == null) {
+                $result = $dompdf->stream("carta_aceite_{$regiao}_{$id} R.pdf", array("Attachment" => false));
+            } else {
+                $result = $dompdf->output();
+            }
+            return $result;
+        }
     }
 }

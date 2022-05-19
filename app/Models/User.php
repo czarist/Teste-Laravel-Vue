@@ -17,6 +17,7 @@ class User extends Authenticatable
         'is_admin', 
         'is_coordenador_2022',
         'is_avaliador_2022',
+        'is_avaliador_nacional_2022',
         'is_user', 
         'is_associado', 
         'is_indicado_expocom_2022',
@@ -87,9 +88,7 @@ class User extends Authenticatable
 
     public function getIsRootAttribute()
     {
-
         if(Auth::user()){
-
             foreach (Auth::user()->todos_tipos as $tipo) {
                 if ($tipo->id == 1) {
                     return true;
@@ -154,7 +153,6 @@ class User extends Authenticatable
     public function getPagoRegionalSul2022Attribute()
     {
         if(Auth::user()){
-
             foreach (Auth::user()->todos_tipos as $tipo) {
                 if ($tipo->id == 6) {
                     return true;
@@ -279,6 +277,20 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getIsAvaliadorNacional2022Attribute(){
+        if(Auth::user()){
+            $avaliador = AvaliadorExpocom::where('user_id', Auth::user()->id)
+                ->where('nacional_gp', true)
+                ->orWhere('nacional_ij', true)
+                ->orWhere('nacional_publicom', true)
+                ->first();
+
+            if(!empty($avaliador) || $avaliador != null){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function acessos()
     {
@@ -341,6 +353,9 @@ class User extends Authenticatable
         return $this->hasOne(Indicacao::class, 'cpf_autor', 'cpf');
     }
 
+    public function sexo(){
+        return $this->belongsTo(Sexo::class, 'sexo_id', 'id');
+    }
 
     public function todos_divisoes_tematicas()
     {
@@ -380,6 +395,10 @@ class User extends Authenticatable
     public function todos_radio_internet()
     {
         return $this->belongsToMany(CategoriaRadioInternet::class, 'todos_categoria_radio_internets' , 'user_id',  'categoria_id');
+    }
+
+    public function todos_gps(){
+        return $this->belongsToMany(GrupoPesquisa::class, "todos_categoria_gps", "user_id", "categoria_id");
     }
 
 }

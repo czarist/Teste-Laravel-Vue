@@ -269,7 +269,7 @@
               </b-card-text>
             </b-tab>
 
-            <b-tab title="Boleto" v-if="selectedPagar && selectedPagar.regiao != 2">
+            <b-tab title="Boleto">
               <b-card-text>
                 <div class="container hidden" id="retorno_ok1">
                   <div class="section-head style-3 text-center z mb-3 alert alert-success" role="alert">

@@ -12,6 +12,8 @@ class SubmissaoNacional extends Model
     protected $fillable = [
         'inscricao_id',
         'avaliacao',
+        'apresentacao',
+        'vencedor',
         'ciente',
         'dt',
         'tipo',

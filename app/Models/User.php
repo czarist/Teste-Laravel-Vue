@@ -21,13 +21,16 @@ class User extends Authenticatable
         'is_user', 
         'is_associado', 
         'is_indicado_expocom_2022',
+        'is_coautor_nordeste_expo_2022',
+        'is_coautor_nordeste_expo_vencedor_2022',
+        'avaliou_trabalho_expo_2022',
+        'avaliou_trabalho_dt_2022',
         'anuidade_2022', 
         'pago_regional_sul_2022',
         'pago_regional_nordeste_2022',
         'pago_regional_suldeste_2022',
         'pago_regional_centrooeste_2022',
         'pago_regional_norte_2022'
-
     ];
 
     protected $fillable = [
@@ -292,6 +295,101 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getIsCoautorNordesteExpo2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubNordeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalNordeste::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorNordesteExpoVencedor2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubNordeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalNordeste::select('id','apresentacao', 'vencedor')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getAvaliouTrabalhoExpo2022Attribute(){
+        if(Auth::user()){
+            $avaliador = AvaliadorExpocom::select('id', 'user_id', 'avaliador')
+            ->where('user_id', Auth::user()->id)
+            ->first();
+            if(isset($avaliador) && !empty($avaliador) && $avaliador->avaliador == 1){
+                $avaliacoes = DistribuicaoTipoExpocom::select('id', 'avaliador_1', 'status_avaliador_1', 'avaliador_2', 'status_avaliador_2', 'avaliador_3', 'status_avaliador_3')
+                ->where('avaliador_1', $avaliador->user_id)
+                ->orWhere('avaliador_2', $avaliador->user_id)
+                ->orWhere('avaliador_3', $avaliador->user_id)
+                ->get();
+
+                if(isset($avaliacoes) && !empty($avaliacoes) && $avaliacoes->count() > 0){
+                    foreach ($avaliacoes as $avaliacao) {
+                        if($avaliacao->avaliador_1 == $avaliador->user_id && $avaliacao->status_avaliador_1 == "Avaliado" || $avaliacao->status_avaliador_1 == "Recusado"){
+                            return true;
+                        }
+                        if($avaliacao->avaliador_2 == $avaliador->user_id && $avaliacao->status_avaliador_2 == "Avaliado" || $avaliacao->status_avaliador_2 == "Recusado"){
+                            return true;
+                        }
+                        if($avaliacao->avaliador_3 == $avaliador->user_id && $avaliacao->status_avaliador_3 == "Avaliado" || $avaliacao->status_avaliador_3 == "Recusado"){
+                            return true;
+                        }
+                    }
+                }                 
+            }
+        }
+        return false;
+    }
+
+    public function getAvaliouTrabalhoDt2022Attribute(){
+        if(Auth::user()){
+            $avaliador = AvaliadorExpocom::select('id', 'user_id', 'avaliador_junior')
+            ->where('user_id', Auth::user()->id)
+            ->first();
+            if(isset($avaliador) && !empty($avaliador) && $avaliador->avaliador_junior == 1){
+                $avaliacoes = DistribuicaoTipo123::select('id', 'avaliador_1', 'status_avaliador_1', 'avaliador_2', 'status_avaliador_2', 'avaliador_3', 'status_avaliador_3')
+                ->where('avaliador_1', $avaliador->user_id)
+                ->orWhere('avaliador_2', $avaliador->user_id)
+                ->orWhere('avaliador_3', $avaliador->user_id)
+                ->get();
+
+                if(isset($avaliacoes) && !empty($avaliacoes) && $avaliacoes->count() > 0){
+                    foreach ($avaliacoes as $avaliacao) {
+                        if($avaliacao->avaliador_1 == $avaliador->user_id && $avaliacao->status_avaliador_1 == "Aceito" || $avaliacao->status_avaliador_1 == "Recusado"){
+                            return true;
+                        }
+                        if($avaliacao->avaliador_2 == $avaliador->user_id && $avaliacao->status_avaliador_2 == "Aceito" || $avaliacao->status_avaliador_2 == "Recusado"){
+                            return true;
+                        }
+                        if($avaliacao->avaliador_3 == $avaliador->user_id && $avaliacao->status_avaliador_3 == "Aceito" || $avaliacao->status_avaliador_3 == "Recusado"){
+                            return true;
+                        }
+                    }
+                }                 
+            }
+        }
+        return false;
+    }
+
+
     public function acessos()
     {
         return $this->belongsToMany(Acesso::class);
@@ -350,7 +448,7 @@ class User extends Authenticatable
 
     public function indicacao()
     {
-        return $this->hasOne(Indicacao::class, 'cpf_autor', 'cpf');
+        return $this->belongsTo(Indicacao::class, 'cpf', 'cpf_autor');
     }
 
     public function sexo(){

@@ -15,51 +15,51 @@ class CronController extends Controller
         Carbon::setLocale('pt_BR');
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
-        //VALORES SUL
-        if($now >= "2022-05-03 00:00:00"){
-            $produto_graduado = Produto::find(3);
-            $produto_pos = Produto::find(5);
-            $produto_professor = Produto::find(6);
-            $produto_graduado->update(['valor' => '50.00']);
-            $produto_pos->update(['valor' => '145.00']);
-            $produto_professor->update(['valor' => '255.00']);
+        // //VALORES SUL
+        // if($now >= "2022-05-03 00:00:00"){
+        //     $produto_graduado = Produto::find(3);
+        //     $produto_pos = Produto::find(5);
+        //     $produto_professor = Produto::find(6);
+        //     $produto_graduado->update(['valor' => '50.00']);
+        //     $produto_pos->update(['valor' => '145.00']);
+        //     $produto_professor->update(['valor' => '255.00']);
 
-            Log::info('Atualizou valores Regional Sul - ' . $now);
-        }
-        if($now >= "2022-05-21 00:00:00"){
-            $produto_graduado = Produto::find(3);
-            $produto_pos = Produto::find(5);
-            $produto_professor = Produto::find(6);
-            $produto_graduado->update(['valor' => '65.00']);
-            $produto_pos->update(['valor' => '165.00']);
-            $produto_professor->update(['valor' => '275.00']);
+        //     Log::info('Atualizou valores Regional Sul - ' . $now);
+        // }
+        // if($now >= "2022-05-21 00:00:00"){
+        //     $produto_graduado = Produto::find(3);
+        //     $produto_pos = Produto::find(5);
+        //     $produto_professor = Produto::find(6);
+        //     $produto_graduado->update(['valor' => '65.00']);
+        //     $produto_pos->update(['valor' => '165.00']);
+        //     $produto_professor->update(['valor' => '275.00']);
 
-            Log::info('Atualizou valores Regional Sul - '. $now );
-        }
+        //     Log::info('Atualizou valores Regional Sul - '. $now );
+        // }
 
-        //VALORES NORTE 
-        if($now >= "2022-05-07 00:00:00"){
-            $produto_graduado = Produto::find(23);
-            $produto_pos = Produto::find(25);
-            $produto_professor = Produto::find(26);
-            $produto_graduado->update(['valor' => '65.00']);
-            $produto_pos->update(['valor' => '165.00']);
-            $produto_professor->update(['valor' => '275.00']);
+        // //VALORES NORTE 
+        // if($now >= "2022-05-07 00:00:00"){
+        //     $produto_graduado = Produto::find(23);
+        //     $produto_pos = Produto::find(25);
+        //     $produto_professor = Produto::find(26);
+        //     $produto_graduado->update(['valor' => '65.00']);
+        //     $produto_pos->update(['valor' => '165.00']);
+        //     $produto_professor->update(['valor' => '275.00']);
 
-            Log::info('Atualizou valores Regional Norte - ' . $now);
-        }
+        //     Log::info('Atualizou valores Regional Norte - ' . $now);
+        // }
 
-        //VALORES CENTRO OESTE
-        if($now >= "2022-05-14 00:00:00"){
-            $produto_graduado = Produto::find(18);
-            $produto_pos = Produto::find(20);
-            $produto_professor = Produto::find(21);
-            $produto_graduado->update(['valor' => '65.00']);
-            $produto_pos->update(['valor' => '165.00']);
-            $produto_professor->update(['valor' => '275.00']);
+        // //VALORES CENTRO OESTE
+        // if($now >= "2022-05-14 00:00:00"){
+        //     $produto_graduado = Produto::find(18);
+        //     $produto_pos = Produto::find(20);
+        //     $produto_professor = Produto::find(21);
+        //     $produto_graduado->update(['valor' => '65.00']);
+        //     $produto_pos->update(['valor' => '165.00']);
+        //     $produto_professor->update(['valor' => '275.00']);
 
-            Log::info('Atualizou valores Regional Centro Oeste - ' . $now);
-        }
+        //     Log::info('Atualizou valores Regional Centro Oeste - ' . $now);
+        // }
 
         //VALORES NACIONAL
         if($now >= "2022-06-06 00:00:00"){
@@ -94,33 +94,30 @@ class CronController extends Controller
         Log::info('Cron Job Valores iniciada: '.$now );
     }
 
+    public function deletar_pag_recusado(){
+        Carbon::setLocale('pt_BR');
+        $now = Carbon::now()->format('Y-m-d H:i:s');
 
-    // public function verificar_pagos(){
+        $pgtos = PagSeguroPgto::select('id', 'venda_id', 'status_id', 'created_at', 'updated_at', 'deleted_at')
+        ->with('vendas', 'vendas.vendas_item')
+        ->where('status_id', 7)
+        ->where('updated_at', '<', Carbon::now()->subDays(7))
+        ->get()
+        ->each(function ($pgtos) {
+            if($pgtos && $pgtos->vendas && $pgtos->vendas->vendas_item){
+                $pgtos->vendas->vendas_item->delete();
+            }
+            if($pgtos && $pgtos->vendas){
+                $pgtos->vendas->delete();
+            }
+            if($pgtos){
+                $pgtos->delete();
+            }
+        });
 
-    //     // $pagamentos = PagSeguroPgto::select('id', 'status_id', 'user_id', 'produto_id')
-    //     //     ->whereIn('status_id', [3,4])
-    //     //     ->get();
-        
-    //     $pagamentos = Venda::select('id', 'user_id', 'created_at')
-    //         ->with(
-    //                 'pagamento',
-    //                 'pagamento.tipo_pgto_detalhe',
-    //                 'pagamento.status',
-    //                 'pagamento.tipo_pgto',
-    //                 'vendas_item', 
-    //                 'vendas_item.produto',
-    //                 'user:id,name,cpf,email'
-                    
-    //                 )
-    //         ->wherehas('pagamento')
-    //         ->wherehas('pagamento' , function ($query){
-    //             $query->whereIn('status_id', [3,4]);
-    //         })
+        Log::info('Cron Job PagSeguro | pagamentos +7 dias deletado: '.count($pgtos).' | Data:'.$now );
 
+        return;
 
-    //         // ->whereIn('status_id', [3,4])
-    //         ->get();
-
-    //     dd($pagamentos[0]);
-    // }
+    }
 }

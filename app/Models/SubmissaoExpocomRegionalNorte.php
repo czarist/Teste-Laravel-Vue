@@ -12,6 +12,8 @@ class SubmissaoExpocomRegionalNorte extends Model
     protected $fillable = [
         'inscricao_id',
         'avaliacao',
+        'apresentacao',
+        'vencedor',
         'regiao',
         'ciente',
         'ano',

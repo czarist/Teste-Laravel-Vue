@@ -12,6 +12,8 @@ class SubmissaoRegionalNorte extends Model
     protected $fillable = [
         'inscricao_id',
         'avaliacao',
+        'apresentacao',
+        'vencedor',
         'regiao',
         'ciente',
         'dt',
@@ -46,5 +48,12 @@ class SubmissaoRegionalNorte extends Model
         return $this->belongsTo(RegionalNorte::class, 'inscricao_id', 'id');
     }
 
+    public function divisao_tematica(){
+        return $this->belongsTo(DivisoesTematicas::class, 'dt', 'id');
+    }
+
+    public function divisao_tematica_jr(){
+        return $this->belongsTo(DivisoesTematicasJr::class, 'dt', 'id');
+    }
 
 }

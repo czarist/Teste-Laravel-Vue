@@ -227,7 +227,7 @@ import VerJustificativaModal from './VerJustificativaModal.vue'
                     window.location.href = this.baseUrl + `/submissaomesa/regional/${regiaoName}`
                 }
                 if(tipo == 'Intercom Júnior'){
-                    window.location.href = this.baseUrl + `/submissao/regional/${regiaoName}`
+                    window.location.href = this.baseUrl + `/submissaojunior/regional/${regiaoName}`
                 }
             },
             resetModalChat() {

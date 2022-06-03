@@ -53,11 +53,11 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(registro, index) in registros" :key="index">
-                                    <td class="align-middle text-center" >{{ registro ? registro.id : "NI" }}</td>
-                                    <td class="align-middle text-center" >{{ registro ? registro.desc_obj_estudo.substring(15, 0) : "NI" }}</td>
+                                    <td class="align-middle text-center" >{{ registro ? registro.id : "Sem Informação" }}</td>
+                                    <td class="align-middle text-center" >{{ registro ? registro.desc_obj_estudo.substring(15, 0) : "Sem Informação" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.avaliacao">                                    
-                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}
+                                            {{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "Sem Informação" }}
                                         </div>
                                         <div v-else>
                                             Sem Coordenador
@@ -412,7 +412,7 @@
             find_dt(registro){
                 if(registro && registro.dt){
                     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
+                    return selectedDt ? selectedDt.descricao : "Sem Informação"
                 }
             },
             showForm(registro) {

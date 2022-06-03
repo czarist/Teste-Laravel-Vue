@@ -12,6 +12,7 @@ class RegionalCentrooeste extends Model
     protected $fillable = [
         'user_id',
         'regiao',
+        'presenca',
         'categoria_inscricao',
         'numero_matricula',
         'ano',

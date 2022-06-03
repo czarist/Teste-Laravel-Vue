@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet"/>
 
@@ -27,16 +29,32 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/whatsapp-button.css') }}"> 
 
-    @if (\Carbon\Carbon::now()->format('H') >= 18 || \Carbon\Carbon::now()->format('H') <=8)
-        <a 
-            id="robbu-whatsapp-button" 
-            target="_blank" 
-            href="https://api.whatsapp.com/send?phone=5511963651888&text=Ol%C3%A1%20preciso%20de%20ajuda." 
-        >
-            <img src="{{ asset('images/whatsapp-icon.svg') }}"> 
-        </a> 
-    @endif
-    
+    @php
+        $dias_map = [
+            0 => 'DOMINGO',
+            1 => 'SEGUNDA',
+            2 => 'TERÇA',
+            3 => 'QUARTA',
+            4 => 'QUINTA',
+            5 => 'SEXTA',
+            6 => 'SABADO',
+        ];
+        $dia_da_semana = \Carbon\Carbon::now()->dayOfWeek;
+        $dia_util = $dias_map[$dia_da_semana];
+
+    @endphp
+        @if ($dia_util != 'SABADO' && $dia_util != 'DOMINGO'))            
+            @if (\Carbon\Carbon::now()->format('H') >= 8 && \Carbon\Carbon::now()->format('H') <= 18)
+                <a 
+                    id="robbu-whatsapp-button" 
+                    target="_blank" 
+                    href="https://api.whatsapp.com/send?phone=5511963651888&text=Ol%C3%A1%20preciso%20de%20ajuda." 
+                >
+                    <img src="{{ asset('images/whatsapp-icon.svg') }}"> 
+                </a> 
+            @endif
+        @endif
+
     <style>
         .layout-px-spacing {
             min-height: calc(100vh - 140px)!important;
@@ -94,6 +112,7 @@
     <script src="{{ url('/js/app.js') }}"></script>
     <script src="{{ asset('/js/common.min.js') }}" ></script>
     @yield('scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
     <script>
         $(document).ready(function() {
             App.init();

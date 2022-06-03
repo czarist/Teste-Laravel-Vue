@@ -15,6 +15,7 @@ import VueMask from 'v-mask'
 import Editor from '@tinymce/tinymce-vue'
 
 require('./bootstrap');
+require('datatables.net-bs4')
 
 import Vue from 'vue'
 window.moment = require('moment/moment');
@@ -285,6 +286,9 @@ import FormPerfil from './components/perfil/FormPerfil.vue'
 import FormCadastro from './components/cadastro/FormCadastro.vue'
 import PagamentosGrid from './components/admin/pagamentos/PagamentosGrid.vue'
 import IndicacaoExpocomGrid from "./components/admin/indicacao/IndicacaoExpocomGrid.vue"
+import ValidarPresencaGrid from "./components/admin/validar-presenca/ValidarPresencaGrid.vue"
+import ValidarApresentacaoExpocomGrid from "./components/admin/validar-apresentacao-expocom/ValidarApresentacaoExpocomGrid.vue"
+import ValidarApresentacaoGrid from "./components/admin/validar-apresentacao/ValidarApresentacaoGrid.vue"
 
 // import PagarModal from './components/cadastro/PagarModal.vue'
 import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
@@ -353,10 +357,13 @@ import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/Avaliado
 import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
 
 //GRID TRABALHOS ACEITOS EXPOCOM
-import ListaTrabalhosExpocomGrid from './components/lista_trabalhos_aceitos_expocom/ListaTrabalhosExpocomGrid.vue'
+import ListaTrabalhosExpocomGrid from './components/admin/lista_trabalhos_aceitos_expocom/ListaTrabalhosExpocomGrid.vue'
 
 //GRID TRABALHOS ACEITOS
 import ListaTrabalhosGrid from './components/lista_trabalhos_aceitos/ListaTrabalhosGrid.vue'
+
+//GRID CERTIFICADOS
+import CertificadosGrid from './components/certificados/CertificadosGrid.vue'
 
 const app = new Vue({
     el: '#app',
@@ -368,6 +375,10 @@ const app = new Vue({
         'associado-grid': AssociadoGrid,
         'usuario-grid': UsuarioGrid,
         'form-cadastro': FormCadastro,
+        'validar-presenca-grid': ValidarPresencaGrid,
+        'validar-apresentacao-expocom-grid': ValidarApresentacaoExpocomGrid,
+        'validar-apresentacao-grid': ValidarApresentacaoGrid,
+
 
         // 'pagar-modal': PagarModal,
         'filiese-cadastro': FilieseCadastro,
@@ -385,6 +396,9 @@ const app = new Vue({
 
         //ADMIN INDICACAO
         'indicacao_expocom-grid': IndicacaoExpocomGrid,
+        
+        //USER CERTIFICADO
+        'certificados-grid': CertificadosGrid,
 
         //INSCRICOES
         'regional-sulform': RegionalSulForm,

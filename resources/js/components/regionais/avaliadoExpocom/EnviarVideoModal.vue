@@ -17,6 +17,11 @@
                             Envio somente de PDF
                         </div>
 
+                        <div class="alert alert-warning">
+                            Envio somente de PDF <br>
+                        </div>
+
+
                         <b-col cols="12" sm="12" lg="12" class="m-3">
                             <label class="font-weight-bold">Envio de arquivo:</label>
                             <input 

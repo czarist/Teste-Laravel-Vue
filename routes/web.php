@@ -6,6 +6,7 @@ use App\Http\Controllers\AvaliacaoAvaliadorController;
 use App\Http\Controllers\AvaliacaoAvaliadorExpocomController;
 use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
+use App\Http\Controllers\CertificadosController;
 use App\Http\Controllers\ChatAvaliacaoController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\CronController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\RegionalNordesteController;
 use App\Http\Controllers\RegionalNorteController;
 use App\Http\Controllers\RegionalSulController;
 use App\Http\Controllers\RegionalSuldesteController;
+use App\Http\Controllers\RelatoriosController;
 use App\Http\Controllers\SexoController;
 use App\Http\Controllers\SubmissaoController;
 use App\Http\Controllers\SubmissaoExpocomController;
@@ -46,6 +48,9 @@ use App\Http\Controllers\SubmissaoRegionalSudesteController;
 use App\Http\Controllers\SubmissaoRegionalSulController;
 use App\Http\Controllers\TitulacaoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ValidarApresentacaoController;
+use App\Http\Controllers\ValidarApresentacaoExpocomController;
+use App\Http\Controllers\ValidarPresencaController;
 use App\Models\SubmissaoNacional;
 use Illuminate\Support\Facades\Route;
 
@@ -117,10 +122,29 @@ Route::group(['middleware' => 'auth'] , function() {
             Route::get('indicacao/index', [IndicacaoAdminController::class ,'index'])->name('admin.indicacao.index');
             Route::get('indicacao/get', [IndicacaoAdminController::class ,'get'])->name('admin.indicacao.get');
             Route::get('indicacao/delete/{id}', [IndicacaoAdminController::class ,'delete'])->name('admin.indicacao.get');
-
         });    
 
+        Route::middleware(['roles:admin/validar-presenca'])->group(function () {
+            Route::resource('validar-presenca', ValidarPresencaController::class)->except(['index', 'show', 'create', 'edit']);
+            Route::get('validar-presenca/index', [ValidarPresencaController::class ,'index'])->name('admin.validar-presenca.index');
+            Route::get('validar-presenca/get', [ValidarPresencaController::class ,'get'])->name('admin.validar-presenca.get');
+            Route::get('validar-presenca/delete/{id}', [ValidarPresencaController::class ,'delete'])->name('admin.validar-presenca.delete');
+            Route::post('validar-presenca/confirmar', [ValidarPresencaController::class ,'confirmar'])->name('admin.validar-presenca.confirmar');
+        });  
+        
+        Route::middleware(['roles:admin/lista-trabalho-expocom'])->group(function () {
+            Route::resource('lista-trabalho-expocom', ListaTrabalhosExpocomController::class)->except(['index', 'show', 'create', 'edit']);
+            Route::get('lista-trabalho-expocom/index', [ListaTrabalhosExpocomController::class ,'index'])->name('admin.lista-trabalho-expocom.index');
+            Route::get('lista-trabalho-expocom/get', [ListaTrabalhosExpocomController::class ,'get'])->name('lista-trabalho-expocom.get');
+        });    
+    });
 
+    Route::prefix('financeiro')->group(function () {
+        Route::middleware(['roles:financeiro/relatorios'])->group(function () {
+            Route::get('relatorios/index', [RelatoriosController::class ,'index'])->name('financeiro.relatorios.index');
+            Route::get('relatorios/get', [RelatoriosController::class ,'get'])->name('financeiro.relatorios.get');
+            Route::post('relatorios/excel', [RelatoriosController::class ,'excel'])->name('financeiro.relatorios.excel');
+        });    
     });
 
     //PAGSEGURO
@@ -137,7 +161,6 @@ Route::group(['middleware' => 'auth'] , function() {
     //PAGSEGURO NACIONAL
     Route::post('pagseguro/nacional/credito', [PagSeguroController::class , 'nacionalcredito'])->name('pagseguro.nacional.credito');
     Route::post('pagseguro/nacional/boleto', [PagSeguroController::class , 'nacionalboleto'])->name('pagseguro.nacional.boleto');
-    
 
     //Associado
     Route::get('associado/area', [AssociadoController::class ,'area'])->name('associado.area');
@@ -147,6 +170,17 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::resource('pagamento', PagamentoController::class)->except(['show', 'create', 'edit']);
     Route::get('pagamento/get', [PagamentoController::class ,'get'])->name('pagamento.get');
 
+    //AREA DE CERTIFICADOS
+    Route::resource('certificados', CertificadosController::class)->except(['show', 'create', 'edit']);
+    Route::get('certificados/certificado_presenca/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_presenca'])->name('certificados.presenca');
+    Route::get('certificados/certificado_apresentacao_expocom/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao_expocom'])->name('certificados.apresentacao.expocom');
+    Route::get('certificados/certificado_vencedor_expocom/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_vencedor_expocom'])->name('certificados.vencedor.expocom');
+    Route::get('certificados/certificado_apresentacao_expocom_coautor/{user_id}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_expocom_coautor'])->name('certificados.certificado_apresentacao_expocom_coautor');
+    Route::get('certificados/certificado_vencedor_expocom_coautor/{user_id}/{regiao}', [CertificadosController::class ,'certificado_vencedor_expocom_coautor'])->name('certificados.certificado_vencedor_expocom_coautor');
+    Route::get('certificados/certificado_apresentacao/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao'])->name('certificados.apresentacao');
+    Route::get('certificados/certificado_parecerista_expocom/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista_expocom'])->name('certificados.parecerista.expocom');
+    Route::get('certificados/certificado_parecerista/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista'])->name('certificados.parecerista');
+
     //FORM AVALIADOR EXPOCOM
     Route::get('/avaliadorjr', [AvaliadorExpocomController::class, 'formavaliadorjr'])->name('avaliadorjr');
     Route::get('/avaliadorexpocom', [AvaliadorExpocomController::class, 'formavaliadorexpocom'])->name('avaliadorexpocom');
@@ -155,8 +189,6 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('/avaliador_nacional_jr', [AvaliadorExpocomController::class, 'form_avaliador_nacional_jr'])->name('avaliador.nacional.jr');
     Route::get('/avaliador_nacional_gp', [AvaliadorExpocomController::class, 'form_avaliador_nacional_gp'])->name('avaliador.nacional.gp');
     // Route::get('/avaliador_nacional_publicom', [AvaliadorExpocomController::class, 'form_avaliador_nacional_publicom'])->name('avaliador.nacional.publicom');
-
-
 
     //NACIONAL 
     Route::get('nacional', [NacionalController::class ,'index'])->name('nacional');
@@ -169,23 +201,23 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('submissao/nacional/save', [SubmissaoNacionalController::class , 'store'])->name('submissao.nacional.save');
     
     //REGIONAL SUL
-    Route::get('regional/sul', [RegionalSulController::class ,'formregionalsul'])->name('reginal.sul');
+    Route::get('regional/sul', [RegionalSulController::class ,'formregionalsul'])->name('regional.sul');
     Route::post('regional/sul/save', [RegionalSulController::class , 'store'])->name('regional.sul.save');
 
     //REGIONAL NORDESTE
-    Route::get('regional/nordeste', [RegionalNordesteController::class ,'formregionalnordeste'])->name('reginal.nordeste');
+    Route::get('regional/nordeste', [RegionalNordesteController::class ,'formregionalnordeste'])->name('regional.nordeste');
     Route::post('regional/nordeste/save', [RegionalNordesteController::class , 'store'])->name('regional.nordeste.save');
 
     //REGIONAL NORTE
-    Route::get('regional/norte', [RegionalNorteController::class ,'formregionalnorte'])->name('reginal.norte');
+    Route::get('regional/norte', [RegionalNorteController::class ,'formregionalnorte'])->name('regional.norte');
     Route::post('regional/norte/save', [RegionalNorteController::class , 'store'])->name('regional.norte.save');
 
     //REGIONAL CENTRO-OESTE
-    Route::get('regional/centrooeste', [RegionalCentrooesteController::class ,'formregionalcentrooeste'])->name('reginal.centrooeste');
+    Route::get('regional/centrooeste', [RegionalCentrooesteController::class ,'formregionalcentrooeste'])->name('regional.centrooeste');
     Route::post('regional/centrooeste/save', [RegionalCentrooesteController::class , 'store'])->name('regional.centrooeste.save');
 
     //REGIONAL SULDESTE
-    Route::get('regional/suldeste', [RegionalSuldesteController::class ,'formregionalsuldeste'])->name('reginal.suldeste');
+    Route::get('regional/suldeste', [RegionalSuldesteController::class ,'formregionalsuldeste'])->name('regional.suldeste');
     Route::post('regional/suldeste/save', [RegionalSuldesteController::class , 'store'])->name('regional.suldeste.save');
 
 
@@ -275,6 +307,29 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('submissao-expocom/envio_video', [SubmissaoExpocomController::class , 'envio_video'])->name('submissao-expocom.envio_video');
     Route::get('submissao-expocom/carta_aceite/pdf/{regiao}/{id}', [SubmissaoExpocomController::class ,'carta_aceite'])->name('submissao-expocom.carta_aceite');
 
+    //VALIDAÇÃO DE APRESENTAÇÃO DE TRABALHO EXPOCOM E VENCEDOR
+    Route::resource('validar-apresentacao-expocom', ValidarApresentacaoExpocomController::class)->except(['index', 'show', 'create', 'edit']);
+    Route::get('validar-apresentacao-expocom/index', [ValidarApresentacaoExpocomController::class ,'index'])->name('validar-apresentacao-expocom.index');
+    Route::get('validar-apresentacao-expocom/get', [ValidarApresentacaoExpocomController::class ,'get'])->name('validar-apresentacao-expocom.get');
+    Route::get('validar-apresentacao-expocom/delete/{id}', [ValidarApresentacaoExpocomController::class ,'delete'])->name('validar-apresentacao-expocom.delete');
+    Route::post('validar-apresentacao-expocom/confirmar_apresentacao', [ValidarApresentacaoExpocomController::class ,'confirmar_apresentacao'])->name('validar-apresentacao-expocom.confirmar_apresentacao');
+    Route::post('validar-apresentacao-expocom/confirmar_vencedor', [ValidarApresentacaoExpocomController::class ,'confirmar_vencedor'])->name('validar-apresentacao-expocom.confirmar_vencedor');
+
+    //VALIDAÇÃO DE APRESENTAÇÃO DE TRABALHO DT,IJ E MESA E VENCEDOR
+    Route::resource('validar-apresentacao', ValidarApresentacaoController::class)->except(['index', 'show', 'create', 'edit']);
+    Route::get('validar-apresentacao/index', [ValidarApresentacaoController::class ,'index'])->name('validar-apresentacao.index');
+    Route::get('validar-apresentacao/get', [ValidarApresentacaoController::class ,'get'])->name('validar-apresentacao.get');
+    Route::get('validar-apresentacao/delete/{id}', [ValidarApresentacaoController::class ,'delete'])->name('validar-apresentacao.delete');
+    Route::post('validar-apresentacao/confirmar_apresentacao', [ValidarApresentacaoController::class ,'confirmar_apresentacao'])->name('validar-apresentacao.confirmar_apresentacao');
+    Route::post('validar-apresentacao/confirmar_vencedor', [ValidarApresentacaoController::class ,'confirmar_vencedor'])->name('validar-apresentacao.confirmar_vencedor');
+    
+    
+    //Lista de trabalhos aceitos expocom com link do video
+    Route::resource('lista-trabalho-expocom', ListaTrabalhosExpocomController::class)->except(['index', 'show', 'create', 'edit']);
+    Route::get('lista-trabalho-expocom/view/{regiao_id}', [ListaTrabalhosExpocomController::class ,'view'])->name('lista-trabalho-expocom.view');
+    Route::get('lista-trabalho-expocom/get', [ListaTrabalhosExpocomController::class ,'get'])->name('lista-trabalho-expocom.get');
+
+
 });
 //END AUTH
 
@@ -326,6 +381,7 @@ Route::get('lista-trabalhos/view/{regiao}', [ListaTrabalhosController::class ,'v
 Route::get('lista-trabalhos/get', [ListaTrabalhosController::class ,'get'])->name('lista-trabalhos.get');
 
 Route::get('cronjob/atualizar_valores', [CronController::class, 'atualizar_valores'])->name('cronjob.atualizar_valores');
+Route::get('cronjob/deletar_pag_recusado', [CronController::class, 'deletar_pag_recusado'])->name('cronjob.deletar_pag_recusado');
 
 Route::prefix('indicacao')->group(function(){
     Route::get('/', [IndicacaoController::class, 'index'])->name('indicacao.index');

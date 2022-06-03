@@ -12,6 +12,8 @@ class SubmissaoRegionalSul extends Model
     protected $fillable = [
         'inscricao_id',
         'avaliacao',
+        'apresentacao',
+        'vencedor',
         'regiao',
         'ciente',
         'dt',
@@ -38,6 +40,14 @@ class SubmissaoRegionalSul extends Model
 
     public function inscricao(){
         return $this->belongsTo(RegionalSul::class, 'inscricao_id', 'id');
+    }
+
+    public function divisao_tematica(){
+        return $this->belongsTo(DivisoesTematicas::class, 'dt', 'id');
+    }
+
+    public function divisao_tematica_jr(){
+        return $this->belongsTo(DivisoesTematicasJr::class, 'dt', 'id');
     }
 
 }

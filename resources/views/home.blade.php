@@ -201,6 +201,19 @@
                     <div class="modal-body">
                         <div class="d-grid gap-2">
 
+                            <div class="text-center">
+                                <h6>Minhas Submissões </h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-success m-1" href="{{ route('submissao.index') }}">Ver minhas submissões</a>    
+                                </div>
+                            </div>
+
+                            <hr>
+
+
                             @if (
                                     Auth::user()->pago_regional_sul_2022 
                                     || Auth::user()->pago_regional_nordeste_2022 
@@ -216,7 +229,7 @@
                                             <h6>Inscrição</h6>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-success m-1" href="{{ route('reginal.sul') }}">
+                                            <a class="btn btn-success m-1" href="{{ route('regional.sul') }}">
                                                 @if (Auth::user()->regional_sul)
                                                     Alterar Inscrição - Regional Sul
                                                 @endif
@@ -283,7 +296,7 @@
                                             <h6>Inscrição</h6>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-success m-1" href="{{ route('reginal.nordeste') }}">
+                                            <a class="btn btn-success m-1" href="{{ route('regional.nordeste') }}">
                                                 @if (Auth::user()->regional_nordeste)
                                                     Alterar Inscrição - Regional Nordeste
                                                 @endif
@@ -351,7 +364,7 @@
                                             <h6>Inscrição</h6>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-success m-1" href="{{ route('reginal.suldeste') }}">
+                                            <a class="btn btn-success m-1" href="{{ route('regional.suldeste') }}">
                                                 @if (Auth::user()->regional_suldeste)
                                                     Alterar Inscrição - Regional Sudeste
                                                 @endif
@@ -417,7 +430,7 @@
                                             <h6>Inscrição</h6>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-success m-1" href="{{ route('reginal.centrooeste') }}">
+                                            <a class="btn btn-success m-1" href="{{ route('regional.centrooeste') }}">
                                                 @if (Auth::user()->regional_centrooeste)
                                                     Alterar Inscrição - Regional Centro Oeste
                                                 @endif
@@ -472,6 +485,12 @@
                                             </div>
                                         </div>
                                     @endif
+                                    
+                                    <hr>
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('lista-trabalho-expocom.view', ['regiao_id' => 4]) }}">Lista de Trabalhos - Centro-Oeste</a>
+                                    </div>                                                    
+    
                                     <hr>    
                                     <hr>    
 
@@ -484,18 +503,16 @@
                                             <h6>Inscrição</h6>
                                         </div>
                                         <div class="text-center">
-                                            <a class="btn btn-success m-1" href="{{ route('reginal.norte') }}">
+                                            <a class="btn btn-success m-1" href="{{ route('regional.norte') }}">
                                                 @if (Auth::user()->regional_norte)
                                                     Alterar Inscrição - Regional Norte
                                                 @endif
                                                 @if (!Auth::user()->regional_norte)
                                                 Inscrição - Regional Norte
-                                            @endif
-                                        
+                                            @endif                                        
                                             </a>
                                         </div>
                                         <hr>
-
                                     @endif
 
                                     <div class="text-center">
@@ -540,27 +557,46 @@
                                             </div>
                                         </div>
                                     @endif
+
+                                    <hr>
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('lista-trabalho-expocom.view', ['regiao_id' => 5]) }}">Lista de Trabalhos - Norte</a>
+                                    </div>                                                    
+
                                 @endif
                             @else
 
                                 <div class="row">
-                                    <div class="col-6">
-                                        <a class="btn btn-primary m-1" href="{{ route('reginal.sul') }}">Regional Sul</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="btn btn-primary m-1" href="{{ route('reginal.norte') }}">Regional Norte</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="btn btn-primary m-1" href="{{ route('reginal.suldeste') }}">Regional Sudeste</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="btn btn-primary m-1" href="{{ route('reginal.centrooeste') }}">Regional Centro Oeste</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="btn btn-primary m-1" href="{{ route('reginal.nordeste') }}">Regional Nordeste</a>
-                                    </div>
-                                </div>
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-06-01 00:00:00')                                    
+                                        <div class="col-6">
+                                            <a class="btn btn-primary m-1" href="{{ route('regional.sul') }}">Regional Sul</a>
+                                        </div>
+                                    @endif
 
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-18 00:00:00')                                    
+                                        <div class="col-6">
+                                            <a class="btn btn-primary m-1" href="{{ route('regional.norte') }}">Regional Norte</a>
+                                        </div>
+                                    @endif
+
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-11 00:00:00')                                    
+                                        <div class="col-6">
+                                            <a class="btn btn-primary m-1" href="{{ route('regional.suldeste') }}">Regional Sudeste</a>
+                                        </div>
+                                    @endif
+
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-25 00:00:00')                                    
+                                        <div class="col-6">
+                                            <a class="btn btn-primary m-1" href="{{ route('regional.centrooeste') }}">Regional Centro Oeste</a>
+                                        </div>
+                                    @endif
+
+                                    @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-05-04 00:00:00')                                    
+                                        <div class="col-6">
+                                            <a class="btn btn-primary m-1" href="{{ route('regional.nordeste') }}">Regional Nordeste</a>
+                                        </div>
+                                    @endif
+                                </div>
                             @endif
 
                         </div>
@@ -584,6 +620,26 @@
                         <div class="row">
                             
                             @if (Auth::user()->pago_nacional_2022)
+                                @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-08-12 00:00:00') 
+                                    <div class="col-12 text-center">
+                                        
+                                        <div class="text-center">
+                                            <h6>Inscrição</h6>
+                                        </div>
+                                        <div class="text-center">
+                                            <a class="btn btn-success m-1" href="{{ route('nacional') }}">
+                                                @if (Auth::user()->nacional)
+                                                    Alterar Inscrição - Nacional
+                                                @endif
+                                                @if (!Auth::user()->nacional)
+                                                    Inscrição - Nacional
+                                                @endif                                        
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                @endif
+
                                 @if (                                    
                                     Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 3
                                     || Auth::user() && Auth::user()->nacional && Auth::user()->nacional->categoria_inscricao && Auth::user()->nacional->categoria_inscricao == 4
@@ -614,9 +670,11 @@
                                 @endif
 
                             @else
-                                <div class="col-12 text-center">
-                                    <a class="btn btn-primary m-1" href="{{ route('nacional') }}">Inscricão Nacional</a>
-                                </div>
+                                @if (\Carbon\Carbon::now()->format('Y-m-d H:i:s') <= '2022-08-12 00:00:00')                                    
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-primary m-1" href="{{ route('nacional') }}">Inscricão Nacional</a>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -698,7 +756,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="d-grid gap-2">
+                        <div class="d-grid gap-2 text-center">
 
                             @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo == "Expocom")
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',1) }}">Distribuição de trabalhos para avaliadores - Expocom - Sul</a>   
@@ -709,12 +767,17 @@
 
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',4) }}">Distribuição de trabalhos para avaliadores - Expocom - Centro-Oeste</a>                                
 
-                                <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',5) }}">Distribuição de trabalhos para avaliadores - Expocom - Norte</a>                                
+                                <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',5) }}">Distribuição de trabalhos para avaliadores - Expocom - Norte</a> 
+                                
+                                <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao-expocom.index') }}">Validar Apresentação de Trabalhos e Vencedor Expocom</a> 
 
                             @endif
 
                             @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo != "Expocom")
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacao.index') }}">Distribuição de trabalhos para avaliadores - DT, IJ e MESA</a>
+
+                                <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao.index') }}">Validar Apresentação de Trabalhos e Vencedor</a> 
+
                             @endif
                         </div>
                     </div>

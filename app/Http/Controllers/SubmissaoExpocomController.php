@@ -110,75 +110,80 @@ class SubmissaoExpocomController extends Controller
 
     public function envio_video(Request $request){
         try{
-            $post = json_decode($request->post);
+            if($request->file->getClientMimeType() == "application/pdf"){
+                $post = json_decode($request->post);
 
-            if($post && $post->regiao == 1){
-                $submissao = SubmissaoExpocomRegionalSul::find($post->id);
+                if($post && $post->regiao == 1){
+                    $submissao = SubmissaoExpocomRegionalSul::find($post->id);
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022_video/" , $name);
-                    $submissao->link_aceite = $name;
-                    $submissao->save();
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022_video/" , $name);
+                        $submissao->link_aceite = $name;
+                        $submissao->save();
+                    }
+                    Log::info('User: '. Auth::user()->id . ' | Regional Sul 2022 | Enviou o link video: ' . json_encode($post));
                 }
-                Log::info('User: '. Auth::user()->id . ' | Regional Sul 2022 | Enviou o link video: ' . json_encode($post));
-            }
 
-            if($post && $post->regiao == 2){
-                $submissao = SubmissaoExpocomRegionalNordeste::find($post->id);
+                if($post && $post->regiao == 2){
+                    $submissao = SubmissaoExpocomRegionalNordeste::find($post->id);
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_nordeste_2022_video/" , $name);
-                    $submissao->link_aceite = $name;
-                    $submissao->save();
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_nordeste_2022_video/" , $name);
+                        $submissao->link_aceite = $name;
+                        $submissao->save();
+                    }
+                    Log::info('User: '. Auth::user()->id . ' | Regional Nordeste 2022 | Enviou o link video: ' . json_encode($post));
                 }
-                Log::info('User: '. Auth::user()->id . ' | Regional Nordeste 2022 | Enviou o link video: ' . json_encode($post));
-            }
 
-            if($post && $post->regiao == 3){
-                $submissao = SubmissaoExpocomRegionalSudeste::find($post->id);
+                if($post && $post->regiao == 3){
+                    $submissao = SubmissaoExpocomRegionalSudeste::find($post->id);
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_sudeste_2022_video/" , $name);
-                    $submissao->link_aceite = $name;
-                    $submissao->save();
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_sudeste_2022_video/" , $name);
+                        $submissao->link_aceite = $name;
+                        $submissao->save();
+                    }
+                    Log::info('User: '. Auth::user()->id . ' | Regional Sudeste 2022 | Enviou o link video: ' . json_encode($post));
                 }
-                Log::info('User: '. Auth::user()->id . ' | Regional Sudeste 2022 | Enviou o link video: ' . json_encode($post));
-            }
 
-            if($post && $post->regiao == 4){
-                $submissao = SubmissaoExpocomRegionalCentrooeste::find($post->id);
+                if($post && $post->regiao == 4){
+                    $submissao = SubmissaoExpocomRegionalCentrooeste::find($post->id);
 
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_centrooeste_2022_video/" , $name);
-                    $submissao->link_aceite = $name;
-                    $submissao->save();
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_centrooeste_2022_video/" , $name);
+                        $submissao->link_aceite = $name;
+                        $submissao->save();
+                    }
+                    Log::info('User: '. Auth::user()->id . ' | Regional Centro Oeste 2022 | Enviou o link video: ' . json_encode($post));
+
                 }
-                Log::info('User: '. Auth::user()->id . ' | Regional Centro Oeste 2022 | Enviou o link video: ' . json_encode($post));
 
-            }
+                if($post && $post->regiao == 5){
+                    $submissao = SubmissaoExpocomRegionalNorte::find($post->id);
 
-            if($post && $post->regiao == 5){
-                $submissao = SubmissaoExpocomRegionalNorte::find($post->id);
-
-                if($request->hasFile('file')){
-                    $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_norte_2022_video/" , $name);
-                    $submissao->link_aceite = $name;
-                    $submissao->save();
+                    if($request->hasFile('file')){
+                        $file = $request->file('file');
+                        $name = date('mdYHis') . uniqid();
+                        $file->move(public_path()."/pdf/submissao_expocom_regional_norte_2022_video/" , $name);
+                        $submissao->link_aceite = $name;
+                        $submissao->save();
+                    }
+                    Log::info('User: '. Auth::user()->id . ' | Regional Norte 2022 | Enviou o link video: ' . json_encode($post));
                 }
-                Log::info('User: '. Auth::user()->id . ' | Regional Norte 2022 | Enviou o link video: ' . json_encode($post));
+        
+                return response()->json(['message' => 'success', 'response' => $submissao], 201);
+
+            }else{
+                return response()->json(['message' => 'Server Error'], 500);
             }
-    
-            return response()->json(['message' => 'success', 'response' => $submissao], 201);
 
         } catch (Exception $exception) {
             $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';

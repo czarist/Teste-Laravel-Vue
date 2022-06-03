@@ -847,7 +847,7 @@ class DashboardController extends Controller
                 )
                 ->whereHas('user', function ($query) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->whereIn('tipo_id', [5,6]);
+                        $query->where('tipo_id', 5);
                     });
                 })
                 ->whereHas('user', function ($query) {
@@ -873,7 +873,7 @@ class DashboardController extends Controller
                 )
                 ->whereHas('user', function ($query) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->whereIn('tipo_id', [5,6]);
+                        $query->where('tipo_id', 5);
                     });
                 })
                 ->whereHas('user', function ($query) {
@@ -898,7 +898,7 @@ class DashboardController extends Controller
                 )
                 ->whereHas('user', function ($query) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->whereIn('tipo_id', [5,6]);
+                        $query->where('tipo_id', 5);
                     });
                 })
                 ->whereHas('user', function ($query) {
@@ -924,7 +924,7 @@ class DashboardController extends Controller
                 )
                 ->whereHas('user', function ($query) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->whereIn('tipo_id', [5,6]);
+                        $query->where('tipo_id', 5);
                     });
                 })
                 ->whereHas('user', function ($query) {
@@ -949,7 +949,7 @@ class DashboardController extends Controller
                 )
                 ->whereHas('user', function ($query) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->whereIn('tipo_id', [5,6]);
+                        $query->where('tipo_id', 5);
                     });
                 })
                 ->whereHas('user', function ($query) {

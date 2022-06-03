@@ -25,8 +25,20 @@
                     </div>
                 </a>
             </li>
-                {{-- @dd(Auth::user()->roles()) --}}
-            @if (Auth::user()->is_root || array_intersect(['admin/coordenador' ,'admin/usuarios', 'admin/associado', 'admin/instituicao', 'admin/titulacao', 'admin/sexo', 'admin/pagamento', 'admin/indicacao', 'admin/dashboard'], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
+            @if (Auth::user()->is_root || array_intersect([
+                'admin/coordenador' ,
+                'admin/usuarios', 
+                'admin/associado', 
+                'admin/instituicao', 
+                'admin/titulacao', 
+                'admin/sexo', 
+                'admin/pagamento', 
+                'admin/indicacao', 
+                'admin/dashboard', 
+                'admin/validar-presenca',
+                'admin/validar-apresentacao-expocom',
+                'admin/lista-trabalho-expocom',
+                ], Auth::user()->roles()) || in_array('admin', Auth::user()->roles()))
                 <li class="menu">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -61,6 +73,14 @@
                             <li> <a href="{{ route('admin.indicacao.index') }}"> Indicacão Expocom </a> </li>
                         @endif
 
+                        @if (Auth::user()->is_root || in_array('admin/validar-presenca', Auth::user()->roles()))
+                            <li> <a href="{{ route('admin.validar-presenca.index') }}"> Validar Presença </a> </li>
+                        @endif
+
+                        @if (Auth::user()->is_root || in_array('admin/lista-trabalho-expocom', Auth::user()->roles()))
+                            <li> <a href="{{ route('admin.lista-trabalho-expocom.index') }}">Trabalhos Expocom</a> </li>
+                        @endif
+
                         @if (Auth::user()->is_root || in_array('admin/dashboard', Auth::user()->roles()))
                             <li> <a href="{{ route('dashboard.index') }}"> Dashboard </a> </li>
                         @endif
@@ -85,6 +105,38 @@
                 </li>
             @endif
 
+            @if (Auth::user()->is_root || array_intersect([
+                'financeiro/relatorio' ,
+                ], Auth::user()->roles()) || in_array('financeiro', Auth::user()->roles()))
+                <li class="menu">
+                    <a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-airplay">
+                                <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1">
+                                </path>
+                                <polygon points="12 15 17 21 7 21 12 15"></polygon>
+                            </svg>
+                            <span> Financeiro</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="submenu3" data-parent="#accordionExample">
+                        @if (Auth::user()->is_root || in_array('financeiro/relatorios', Auth::user()->roles()))
+                            <li> <a href="{{ route('financeiro.relatorios.index') }}"> Relatórios </a> </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+
             <li class="menu">
                 <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -96,6 +148,9 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
+                    <li>
+                        <a href="{{ route('certificados.index') }}" > Certificados</a>
+                    </li>
                     <li>
                         <a href="{{ route('pagamento.index') }}" > Meus Pagamentos</a>
                     </li>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubmissaoRegionalNordestes;
+use App\Models\SubmissaoRegionalSudeste;
 use Illuminate\Http\Request;
 
 class ListaTrabalhosController extends Controller
@@ -27,7 +28,18 @@ class ListaTrabalhosController extends Controller
             'inscricao.user',
             'coautorOrientadorSubNordeste'
         );
-}
+    }
+
+    public function submissao_sudeste(){
+        return SubmissaoRegionalSudeste::select('id', 'inscricao_id', 'avaliacao', 'regiao', 'dt', 'titulo', 'link_trabalho', 'tipo')
+        ->with(
+            'avaliacao',
+            'inscricao',
+            'inscricao.user',
+            'coautorOrientadorSubSudeste'
+        );
+    }
+
 
     public function get(Request $request){
 
@@ -55,6 +67,32 @@ class ListaTrabalhosController extends Controller
             })
         ->paginate(20);
         }
+
+        if($request && $request->regiao && $request->regiao == 3){
+
+            return $this->submissao_sudeste()
+            ->when($request->sort == 'id', function ($query) use ($request) {
+                $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
+            })
+            ->when($request->sort == 'titulo', function ($query) use ($request) {
+                $query->orderBy('titulo', $request->asc == 'true' ? 'ASC' : 'DESC');
+            })
+            ->when($request->modalidade, function ($query) use ($request){
+                $query->where('dt', '=', $request->modalidade);
+            })
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->when($request->type == 'titulo', function ($query) use ($request) {
+                        $query->where('titulo', 'like', '%' . $request->search . '%');
+                    });
+                });
+            })
+            ->whereHas('avaliacao', function ($q){
+                $q->where('status_coordenador', '=', 'Aceito');
+            })
+        ->paginate(20);
+        }
+
     }
 
 }

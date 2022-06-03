@@ -12,6 +12,7 @@ class Nacional extends Model
 
     protected $fillable = [
         'user_id',
+        'presenca',
         'categoria_inscricao',
         'numero_matricula',
         'ano',

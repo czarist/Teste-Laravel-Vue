@@ -85,5 +85,50 @@ class AcessoSeeder extends Seeder
                 'link' => 'admin/indicacao'
             ]
         );
+
+        Acesso::updateOrCreate(
+            ['id' => 9],
+            [
+                'id'  => 9,
+                'pagina' => 'Dashboard',
+                'link' => 'admin/dashboard'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 10],
+            [
+                'id'  => 10,
+                'pagina' => 'Validar Presenca Regional',
+                'link' => 'admin/validar-presenca'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 11],
+            [
+                'id'  => 11,
+                'pagina' => 'Validar Apresentação Expocom',
+                'link' => 'admin/validar-apresentacao-expocom'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 12],
+            [
+                'id'  => 12,
+                'pagina' => 'Lista de Trabalho Expocom',
+                'link' => 'admin/lista-trabalho-expocom'
+            ]
+        );
+
+        Acesso::updateOrCreate(
+            ['id' => 13],
+            [
+                'id'  => 13,
+                'pagina' => 'Relatórios',
+                'link' => 'financeiro/relatorios'
+            ]
+        );
     }
 }

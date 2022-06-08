@@ -89,5 +89,12 @@ class TipoSeeder extends Seeder
             ]
         );
 
+        Tipo::updateOrCreate(
+            ['id'=>11],
+            ['id'=>11,
+                'nome' => 'Nacional',
+                'descricao' => 'Nacional 2022',
+            ]
+        );
     }
 }

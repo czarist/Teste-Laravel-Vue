@@ -115,7 +115,7 @@
         },
         data() {
             return {
-                searchType: { link: 'cpf', text: 'CPF' },
+                searchType: { link: 'name', text: 'Nome' },
                 value: 100,
                 max: 100,
                 page: 'admin/usuarios',

@@ -208,7 +208,13 @@
                                         </div>
                                     </td>
                                     <td class="align-middle text-center" style="font-size: 11px !important;">
-                                        <span>
+                                        <span
+                                            v-if="regiao_search == 'Centro-Oeste' && registro && registro.regional_centrooeste && registro.regional_centrooeste != null
+                                            || regiao_search == 'Norte' && registro && registro.regional_norte && registro.regional_norte != null
+                                            || regiao_search == 'Nordeste' && registro && registro.regional_nordeste && registro.regional_nordeste != null
+                                            || regiao_search == 'Sul' && registro && registro.regional_sul && registro.regional_sul != null
+                                            || regiao_search == 'Sudeste' && registro && registro.regional_suldeste && registro.regional_suldeste != null"
+                                        >
                                             <a href="#" class="botaoazul p-1 m-1"
                                                 v-tooltip.bottom="{
                                                 content: 'Confirmar Apresentação de Trabalho',
@@ -220,6 +226,13 @@
                                             >Confirmar Apresentação                                                                                        
                                             </a>
                                         </span>
+
+                                        <span v-else>
+                                            <a href="#" class="botaored p-1 m-1"
+                                            >Usuário sem incrição criada                                                                                        
+                                            </a>
+                                        </span>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -286,7 +299,7 @@
                     { id: "Sul" , descricao: "Sul"},
                     { id: "Centro-Oeste" , descricao: "Centro-Oeste"}
                 ],
-                searchType: { link: 'cpf', text: 'CPF' },
+                searchType: { link: 'name', text: 'Nome' },
                 selected: [],
             }
         },

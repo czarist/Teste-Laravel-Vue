@@ -245,3 +245,26 @@
   position:relative;
   top:1px;
 }
+
+.botaored {
+  background-color:#e21b1b;
+  border-radius:3px;
+  border:1px solid #c07777;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-size:10px;
+  padding:6px 8x;
+  text-decoration:none;
+}
+.botaored:hover {
+  background-color:#e21b1b;
+}
+.botaored:active {
+  position:relative;
+  top:1px;
+}
+
+.table-responsive{
+  overflow-x: hidden !important;
+}

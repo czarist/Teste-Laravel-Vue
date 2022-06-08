@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExcelExport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\Excelss;
 
 class ExcelController extends Controller
 {

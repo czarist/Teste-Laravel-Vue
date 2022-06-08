@@ -32,17 +32,33 @@
                                 <tr v-for="(registro, index) in registros" :key="index">
                                     <td class="align-middle text-center">{{ registro && registro.user ? registro.user.name : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro.created_at | momentDate }}</td>
-                                    <td class="align-middle text-center">{{ registro.vendas_item.valor_total | formatPrice }}</td>
+                                    <td class="align-middle text-center" v-if="registro && registro.vendas_item">
+                                        {{ registro.vendas_item.valor_total | formatPrice }}
+                                    </td>
+                                    <td class="align-middle text-center" v-else>
+                                        Sem Informação
+                                    </td>
                                     <td class="align-middle text-center">{{ registro && registro.pagamento && registro.pagamento.status  ? registro.pagamento.status.nome : "NI" }}</td>
                                     <td class="align-middle text-center">{{ registro && registro.pagamento && registro.pagamento.tipo_pgto  ? registro.pagamento.tipo_pgto.nome : "NI" }}</td>
                                     <td class="align-middle text-center">
-                                        <span class="d-flex justify-content-center">
+                                        <span class="d-flex justify-content-center" v-if="registro && registro.pagamento">
                                             <span
-                                                class="btn btn-outline-primary btn-sm mr-1"
+                                                class="btn btn-outline-primary btn-sm m-1"
                                                 @click="showVisualizar(registro)"
-                                            ><i class="fa-solid fa-eye"> Visualizar</i>
+                                            >Visualizar
                                             </span>
                                         </span>
+
+                                        <span class="d-flex justify-content-center" 
+                                            v-if="registro && registro.pagamento && registro.pagamento.status_id == 3
+                                            || registro && registro.pagamento && registro.pagamento.status_id == 4">
+                                            <span
+                                                class="btn btn-outline-success btn-sm m-1"
+                                                @click="baixarRecibo(registro)"
+                                            >Recibo de Pagamento
+                                            </span>
+                                        </span>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -93,7 +109,55 @@
                 $('#form').modal({backdrop: 'static', keyboard: false, show: true})
                 this.$bvModal.show('visualizarModal')
             },
+            baixarRecibo(registro){
+                this.message('Aguarde...', 'Estamos buscando o seu recibo', 'info', -1);
 
+                if(registro && registro.pagamento && registro.pagamento.status_id == 3
+                || registro && registro.pagamento && registro.pagamento.status_id == 4){
+                    let post = {
+                        nome: registro && registro.user && registro.user.name ? registro.user.name : "",
+                        cpf: registro && registro.user && registro.user.cpf ? registro.user.cpf : "",
+                        valor: registro && registro.pagamento && registro.pagamento && registro.pagamento.valor_total ? registro.pagamento.valor_total : "",
+                        produto_id: registro && registro.vendas_item && registro.vendas_item.produto_id ? registro.vendas_item.produto_id : "",
+                        data_pagamento: registro && registro.pagamento && registro.pagamento.created_at ? registro.pagamento.created_at : "",
+                        tipo_pagamento: registro && registro.pagamento && registro.pagamento.tipo_pgto && registro.pagamento.tipo_pgto.nome ? registro.pagamento.tipo_pgto.nome : "",
+                        autenticacao: registro && registro.pagamento && registro.pagamento && registro.pagamento.transacao ? registro.pagamento.transacao : "",
+                    }
+
+                    axios.post(`${process.env.MIX_BASE_URL}/pagamento/recibo_pagamento`, post, {responseType: 'blob'}).then( res => {
+                        if(res.data){
+                            var newBlob = new Blob([res.data], {type: "application/pdf"})
+                            const data = window.URL.createObjectURL(newBlob);
+                            var link = document.createElement('a');
+                            link.href = data;
+                            link.download="recibo_pagamento.pdf";
+                            link.click();
+                            setTimeout(function(){
+                                window.URL.revokeObjectURL(data);
+                            }, 100);
+                            this.message('Sucesso', 'Recibo baixado', 'success');
+
+                        }else{
+                            return this.message('Erro', 'Por favor tente novamente.', 'error');
+                        }                            
+                        
+                    }).catch(error => {
+                        if(error.response.status == 422) {
+                            if(error.response.data.message == "The given data was invalid.") {
+                                return this.message('Erro', 'Por favor tente novamente.', 'error');
+                            }
+                        }
+                        if(error.response.status == 500) {
+                            this.message('Erro', 'Por favor tente novamente.', 'error');
+                        }
+                        if(error.response.status == 403) {
+                            if(error.response.data.message == "This action is unauthorized.") {
+                                this.message('Erro', 'Ação não autorizada.', 'error');
+                            }
+                        }
+                    })
+                }
+            }
         },
         async created() {
             await this.getLoggedUser().then(() => this.get())

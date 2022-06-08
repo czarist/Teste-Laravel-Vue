@@ -216,7 +216,6 @@
                     data: []
                 }]
                 await axios.post(url, this.filters).then(res => {
-                    console.log(res.data)
                     res.data.data.forEach(value => {
                         this.series[0].data.push(value.contagem)
                     })

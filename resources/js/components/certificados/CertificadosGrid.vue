@@ -662,7 +662,7 @@
                                         <div class="account-box">
                                             <div class="info">
                                                 <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor</h4>
+                                                    <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor</h4>
                                                 </div>
                                                 <div class="inv-balance-info">
                                                 </div>
@@ -1235,7 +1235,7 @@
             },
             certificado_apresentacao_expocom_coautor(user_id, regiao, regional_id){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_expocom_coautor/pdf/${user_id}/${regiao}/${regional_id}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_expocom_coautor/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);

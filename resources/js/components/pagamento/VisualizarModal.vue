@@ -8,7 +8,13 @@
                 <b-card-text ><b>Data: {{ selected ? moment(selected.created_at).format('YYYY-MM-DD HH:mm') : "NI" }}</b></b-card-text>
                 <b-card-text><b>Status: {{ selected && selected.pagamento ? selected.pagamento.status.nome : "NI" }}</b></b-card-text>
                 <b-card-text><b>Transação: {{ selected && selected.pagamento? selected.pagamento.transacao : "NI" }}</b></b-card-text> 
-                <b-card-text><b>Valor: {{ selected.vendas_item.valor_total | formatPrice }}</b></b-card-text>
+                <b-card-text v-if="selected && selected.vendas_item">
+                    <b>Valor: {{ selected.vendas_item.valor_total | formatPrice }}</b>
+                </b-card-text>
+                <b-card-text v-else>
+                    <b>Valor: R$0,00</b>
+                </b-card-text>
+
                 <b-card-text><b>Forma de Pagamento: {{ selected && selected.pagamento && selected.pagamento.tipo_pgto  ? selected.pagamento.tipo_pgto.nome : "NI" }}</b></b-card-text>    
                 <b-card-text><b>Detalhe: {{ selected && selected.pagamento && selected.pagamento.tipo_pgto_detalhe  ? selected.pagamento.tipo_pgto_detalhe.nome : "NI" }}</b></b-card-text>
             </b-card>

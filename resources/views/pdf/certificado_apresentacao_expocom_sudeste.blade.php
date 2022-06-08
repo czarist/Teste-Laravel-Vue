@@ -19,8 +19,8 @@
         width: 850px;
         /* height: 700px; */
         text-align: center;
-        padding-left: 120px;
-        padding-top: 230px;
+        padding-left: 170px;
+        padding-top: 170px;
     }
 
     p{
@@ -34,15 +34,15 @@
 </head>
 <body style="margin: 0; {{$certificado['image']}}">
     <div class="main">
-        <div align="center" style="font-weight: bold;">Certificamos que</div>
+        <div align="center" style="">Certificamos que</div>
         <div align="center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; ">{{  $certificado['user']['name'] }}</div>
 
         @if (isset($certificado['coautores']) && count($certificado['coautores']) >= 5)
-            <div align="center" style="font-weight: bold; font-size: 10px;">
+            <div align="center" style=" font-size: 10px;">
         @endif
 
         @if (isset($certificado['coautores']) && count($certificado['coautores']) < 5)
-            <div align="center" style="font-weight: bold; font-size: 12px;">
+            <div align="center" style=" font-size: 15px;">
         @endif
 
             participou do XXII Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da 
@@ -54,16 +54,15 @@
             de autoria de
             @if (isset($certificado['coautores']) && count($certificado['coautores']))
                 @foreach ($certificado['coautores'] as $coautor)
-                    @if(!$loop->last)
+                    @if(!$loop->even)
                         {{ $coautor }},
                     @endif
 
                     @if($loop->last)
-                        {{ $coautor }}
+                        {{ $coautor }}.
                     @endif
                 @endforeach
             @endif
-            .
         </div>
     </div>
 </body>

@@ -195,7 +195,7 @@
                 modalidade: {
                     modalidade_search: null
                 },
-                searchType: { link: 'cpf', text: 'CPF' },
+                searchType: { link: 'name', text: 'Nome' },
 
             }
         },

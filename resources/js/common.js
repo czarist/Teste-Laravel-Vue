@@ -7,8 +7,9 @@ $(document).on('click', '[data-toggle="lightbox"]', function (event) {
 
 $(document).ready(function () {
     $('#tableData').dataTable({
-        pageLength: 50,
+        pageLength: 20,
         paging:   true,
+        scrollX: false,
         "iDisplayLength": 30,
         "ordering": false,
         "retrieve": true,

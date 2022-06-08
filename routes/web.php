@@ -169,14 +169,15 @@ Route::group(['middleware' => 'auth'] , function() {
     //AREA DE PAGAMENTO
     Route::resource('pagamento', PagamentoController::class)->except(['show', 'create', 'edit']);
     Route::get('pagamento/get', [PagamentoController::class ,'get'])->name('pagamento.get');
+    Route::post('pagamento/recibo_pagamento', [PagamentoController::class ,'recibo_pagamento'])->name('pagamento.recibo_pagamento');
 
     //AREA DE CERTIFICADOS
     Route::resource('certificados', CertificadosController::class)->except(['show', 'create', 'edit']);
     Route::get('certificados/certificado_presenca/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_presenca'])->name('certificados.presenca');
     Route::get('certificados/certificado_apresentacao_expocom/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao_expocom'])->name('certificados.apresentacao.expocom');
     Route::get('certificados/certificado_vencedor_expocom/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_vencedor_expocom'])->name('certificados.vencedor.expocom');
-    Route::get('certificados/certificado_apresentacao_expocom_coautor/{user_id}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_expocom_coautor'])->name('certificados.certificado_apresentacao_expocom_coautor');
-    Route::get('certificados/certificado_vencedor_expocom_coautor/{user_id}/{regiao}', [CertificadosController::class ,'certificado_vencedor_expocom_coautor'])->name('certificados.certificado_vencedor_expocom_coautor');
+    Route::get('certificados/certificado_apresentacao_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_expocom_coautor'])->name('certificados.certificado_apresentacao_expocom_coautor');
+    Route::get('certificados/certificado_vencedor_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_vencedor_expocom_coautor'])->name('certificados.certificado_vencedor_expocom_coautor');
     Route::get('certificados/certificado_apresentacao/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao'])->name('certificados.apresentacao');
     Route::get('certificados/certificado_parecerista_expocom/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista_expocom'])->name('certificados.parecerista.expocom');
     Route::get('certificados/certificado_parecerista/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista'])->name('certificados.parecerista');
@@ -382,6 +383,14 @@ Route::get('lista-trabalhos/get', [ListaTrabalhosController::class ,'get'])->nam
 
 Route::get('cronjob/atualizar_valores', [CronController::class, 'atualizar_valores'])->name('cronjob.atualizar_valores');
 Route::get('cronjob/deletar_pag_recusado', [CronController::class, 'deletar_pag_recusado'])->name('cronjob.deletar_pag_recusado');
+Route::get('cronjob/verificar_pagamentos', [CronController::class, 'verificar_pagamentos'])->name('cronjob.verificar_pagamentos');
+Route::get('cronjob/verificar_tipos_pagamentos_sul', [CronController::class, 'verificar_tipos_pagamentos_sul'])->name('cronjob.verificar_tipos_pagamentos_sul');
+Route::get('cronjob/verificar_tipos_pagamentos_sudeste', [CronController::class, 'verificar_tipos_pagamentos_sudeste'])->name('cronjob.verificar_tipos_pagamentos_sudeste');
+Route::get('cronjob/verificar_tipos_pagamentos_norte', [CronController::class, 'verificar_tipos_pagamentos_norte'])->name('cronjob.verificar_tipos_pagamentos_norte');
+Route::get('cronjob/verificar_tipos_pagamentos_nordeste', [CronController::class, 'verificar_tipos_pagamentos_nordeste'])->name('cronjob.verificar_tipos_pagamentos_nordeste');
+Route::get('cronjob/verificar_tipos_pagamentos_centro_oeste', [CronController::class, 'verificar_tipos_pagamentos_centro_oeste'])->name('cronjob.verificar_tipos_pagamentos_centro_oeste');
+Route::get('cronjob/verificar_tipos_pagamentos_nacional', [CronController::class, 'verificar_tipos_pagamentos_nacional'])->name('cronjob.verificar_tipos_pagamentos_nacional');
+
 
 Route::prefix('indicacao')->group(function(){
     Route::get('/', [IndicacaoController::class, 'index'])->name('indicacao.index');

@@ -97,8 +97,7 @@ class CertificadosController extends Controller
         if(!empty($regional)){
             $certificado['regional'] = $regional->toArray();
         }
-
-        if(isset($regional) && !empty($regional) && $regional->presenca == 1 && $regional->submissaoExpocom->apresentacao == 1){
+        if(isset($regional) && !empty($regional) && $regional->presenca == 1){
 
             if(Auth::user()->id == $user->id && Auth::user()->id == $regional->user->id){
                 if($regiao == 'nordeste'){
@@ -145,9 +144,10 @@ class CertificadosController extends Controller
 
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
-            $certificado['categoria'] = $user->indicacao->categoria;
-            $certificado['modalidade'] = $user->indicacao->modalidade;
-            $certificado['titulo'] = $user->indicacao->titulo_trabalho;            
+            $certificado['categoria'] = $user->indicacao->categoria  ?? "Sem categoria";
+            $certificado['modalidade'] = $user->indicacao->modalidade  ?? "Sem modalidade";
+            $certificado['titulo'] = $user->indicacao->titulo_trabalho;   
+            $certificado['coautores'][] = $user->name;         
         }
 
         if($regiao == 'centrooeste'){
@@ -258,9 +258,11 @@ class CertificadosController extends Controller
 
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
-            $certificado['categoria'] = $user->indicacao->categoria;
-            $certificado['modalidade'] = $user->indicacao->modalidade;
-            $certificado['titulo'] = $user->indicacao->titulo_trabalho;            
+            $certificado['categoria'] = $user->indicacao->categoria  ?? "Sem categoria";
+            $certificado['modalidade'] = $user->indicacao->modalidade  ?? "Sem modalidade";
+            $certificado['titulo'] = $user->indicacao->titulo_trabalho;
+            $certificado['coautores'][] = $user->name;         
+            
         }
         
         if($regiao == 'centrooeste'){
@@ -475,6 +477,8 @@ class CertificadosController extends Controller
 
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
+            $certificado['coautores'][] = $user->name;         
+
         }
 
         if(isset($regiao) && $regiao == "nordeste"){
@@ -496,8 +500,8 @@ class CertificadosController extends Controller
 
                                     if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
                                         if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria;
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade;
+                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                             $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
                                             $certificado['coautores'][] = $submissao->inscricao->user->name;    
                                         }
@@ -541,8 +545,8 @@ class CertificadosController extends Controller
 
                                     if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
                                         if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria;
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade;
+                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                             $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
                                             $certificado['coautores'][] = $submissao->inscricao->user->name;    
                                         }
@@ -631,6 +635,8 @@ class CertificadosController extends Controller
 
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
+            $certificado['coautores'][] = $user->name;         
+
         }
 
         if(isset($regiao) && $regiao == "nordeste"){
@@ -652,8 +658,8 @@ class CertificadosController extends Controller
 
                                     if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
                                         if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria;
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade;
+                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                             $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
                                             $certificado['coautores'][] = $submissao->inscricao->user->name;    
                                         }
@@ -698,8 +704,8 @@ class CertificadosController extends Controller
 
                                     if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
                                         if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria;
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade;
+                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                             $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
                                             $certificado['coautores'][] = $submissao->inscricao->user->name;    
                                         }
@@ -768,6 +774,8 @@ class CertificadosController extends Controller
 
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
+            $certificado['coautores'][] = $user->name;         
+
         }
 
         if($regiao == 'centrooeste'){
@@ -935,29 +943,29 @@ class CertificadosController extends Controller
                             $avaliacao->avaliador_1 == $avaliador->user_id && $avaliacao->status_avaliador_1 == "Avaliado" 
                             || $avaliacao->avaliador_1 == $avaliador->user_id && $avaliacao->status_avaliador_1 == "Recusado"){
                             if($avaliacao->submissaoExpocomNordeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Nordeste';
 
                             }
                             elseif($avaliacao->submissaoExpocomNorte){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Norte';
                             }
                             elseif($avaliacao->submissaoExpocomSul){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sul';
                             }
                             elseif($avaliacao->submissaoExpocomSudeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sudeste';
                             }
                             elseif($avaliacao->submissaoExpocomCentroOeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Centro-Oeste';
                             }
                         }
@@ -965,28 +973,28 @@ class CertificadosController extends Controller
                             $avaliacao->avaliador_2 == $avaliador->user_id && $avaliacao->status_avaliador_2 == "Avaliado" 
                             || $avaliacao->avaliador_2 == $avaliador->user_id && $avaliacao->status_avaliador_2 == "Recusado"){
                             if($avaliacao->submissaoExpocomNordeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Nordeste';
                             }
                             elseif($avaliacao->submissaoExpocomNorte){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Norte';
                             }
                             elseif($avaliacao->submissaoExpocomSul){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sul';
                             }
                             elseif($avaliacao->submissaoExpocomSudeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sudeste';
                             }
                             elseif($avaliacao->submissaoExpocomCentroOeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Centro-Oeste';
                             }
                         }
@@ -994,28 +1002,28 @@ class CertificadosController extends Controller
                             $avaliacao->avaliador_3 == $avaliador->user_id && $avaliacao->status_avaliador_3 == "Avaliado" 
                             || $avaliacao->avaliador_3 == $avaliador->user_id && $avaliacao->status_avaliador_3 == "Recusado"){
                             if($avaliacao->submissaoExpocomNordeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNordeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Nordeste';
                             }
                             elseif($avaliacao->submissaoExpocomNorte){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomNorte->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Norte';
                             }
                             elseif($avaliacao->submissaoExpocomSul){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSul->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sul';
                             }
                             elseif($avaliacao->submissaoExpocomSudeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomSudeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Sudeste';
                             }
                             elseif($avaliacao->submissaoExpocomCentroOeste){
-                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria;
-                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade;
+                                $certificado['categoria'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                $certificado['modalidade'] = $avaliacao->submissaoExpocomCentroOeste->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
                                 $certificado['regiao'] = 'Centro-Oeste';
                             }
                         }

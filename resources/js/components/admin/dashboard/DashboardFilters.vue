@@ -1,8 +1,8 @@
 <template>
-    <div class="col-12 mb-2">
+    <div class="col-md-12 col-xl-6 col-6 mb-2 text-center">
         <div class="row">
-            <b-col cols="12" sm="6" lg="6">
-                <b-form-group label="Pesquisar por tipo" label-class="font-weight-bold" >
+            <b-col cols="12" sm="12" lg="12">
+                <b-form-group label="Pesquisar por Região" label-class="font-weight-bold" >
                     <b-form-select
                         name="tipo"
                         :class="['form-control form-control-sm']"
@@ -70,7 +70,7 @@
                         this.$notify({
                             group: "submit",
                             title: "Erro!",
-                            text: "Periodo deve ser menor do que 3 meses.",
+                            text: "",
                             type: "error"
                         })
                         return false
@@ -81,7 +81,7 @@
                     this.$notify({
                         group: "submit",
                         title: "Erro!",
-                        text: "Selecione um periodo.",
+                        text: "",
                         type: "error"
                     })
                 }

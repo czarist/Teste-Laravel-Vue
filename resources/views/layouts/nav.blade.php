@@ -106,7 +106,7 @@
             @endif
 
             @if (Auth::user()->is_root || array_intersect([
-                'financeiro/relatorio' ,
+                'financeiro/relatorios' ,
                 ], Auth::user()->roles()) || in_array('financeiro', Auth::user()->roles()))
                 <li class="menu">
                     <a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">

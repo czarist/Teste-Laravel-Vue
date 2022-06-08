@@ -21,6 +21,7 @@ use App\Models\SubmissaoRegionalNorte;
 use App\Models\SubmissaoRegionalSudeste;
 use App\Models\SubmissaoRegionalSul;
 use App\Models\TodosTiposUsers;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -93,9 +94,6 @@ class DashboardController extends Controller
                     $query->whereHas('vendas_item', function ($query) {
                         $query->whereIn('produto_id', [3,4,5,6]);
                     });
-                    // $query->whereHas('pagamento', function ($query) {
-                    //     $query->whereIn('status_id', [3,4]);
-                    // });
                 })
                 ->whereIn('status_id', [3,4])
                 ->sum('valor_total');
@@ -184,277 +182,121 @@ class DashboardController extends Controller
             $descricao = collect(['descricao' => "Valor total pago Nacional"]);
         }
 
-        // if($request->tipo == null){
-        //     $anuidade = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-        //         ->with(
-        //             'vendas',
-        //             'vendas.vendas_item'
-        //             )
-        //         ->whereHas('vendas', function ($query) {
-        //             $query->whereHas('vendas_item', function ($query) {
-        //                 $query->whereIn('produto_id', [1,2]);
-        //             });
-        //             // $query->whereHas('pagamento', function ($query) {
-        //             //     $query->whereIn('status_id', [3,4]);
-        //             // });
-        //         })
-        //         ->whereIn('status_id', [3,4])
-        //         ->sum('valor_total');
-                
-        //     $valor_total = $anuidade;
-        //     $descricao = collect(['descricao' => "Valor total pago Sul"]);
-        // }
-
         if($request->tipo == null){
             $descricao = collect(['descricao' => "Total de inscritos pagos"]);
             $vlr_total_inscritos = collect(['vlr_total_inscritos' => $valor_total_sul + $valor_total_norte + $valor_total_nordeste + $valor_total_centro_oeste + $valor_total_sudeste + $valor_total_nacional]);
-            // $vlr_total_inscritos = collect(['vlr_total_inscritos' => $anuidade]);
 
             $data['data'][0] = $descricao->merge($vlr_total_inscritos);
             return response()->json($data);
         }else{
-            $data['data'][0] = $descricao->merge($valor_total);
+
+            $descricao = collect(['descricao' => "Total de inscritos pagos"]);
+            $vlr_total_inscritos = collect(['vlr_total_inscritos' => $valor_total]);
+
+            $data['data'][0] = $descricao->merge($vlr_total_inscritos);
             return response()->json($data);
         }
     }
 
     public function inscritos_pagos(Request $request){
 
-        if($request->tipo == null || $request->tipo == "sul"){
-            $inscritos_sul_pago = RegionalSul::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id,valor_total',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [3,4,5,6]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                })
-            ->count();
+        $users = User::select('id', 'name', 'cpf', 'email')
+        ->with(
+            'todos_tipos',
+            'todos_tipos_pagamentos'
+        )
+        ->when($request->tipo, function ($query) use ($request){
+            if($request->tipo == 0 || $request->tipo == null){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->whereIn('tipo_id', [6,7,8,9,10,11]);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->whereIn('tipo_pagamento_id', [1,4,7,10,13,16]);
+                });
+            }
+            if($request->tipo == "sul"){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 6);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 1);
+                });
+            }
 
-            $valor_total_sul = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [3,4,5,6]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-                ->sum('valor_total');
-                
-            $inscricoes = $inscritos_sul_pago;
-            $valor_total = $valor_total_sul;
-            $descricao = collect(['descricao' => "Regional Sul Inscritos Pagos"]);
-        }
+            if($request->tipo == 'nordeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 7);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 4);
+                });
+            }
 
-        if($request->tipo == null || $request->tipo == "norte"){
-            $inscritos_norte_pago = RegionalNorte::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [23,24,25,26]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
+            if($request->tipo == 'sudeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 8);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 7);
+                });
+            }
 
-                    });
-                })
-            ->count();
+            if($request->tipo == 'centro_oeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 9);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 10);
+                });
+            }
 
-            $valor_total_norte = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [23,24,25,26]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-                ->sum('valor_total');
+            if($request->tipo == 'norte'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 10);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 13);
+                });
+            }
 
-            $inscricoes = $inscritos_norte_pago;
-            $valor_total = $valor_total_norte;
-            $descricao = collect(['descricao' => "Regional Norte Inscritos Pagos"]);
-        }
+            if($request->tipo == 'nacional'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 11);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 16);
+                });
+            }
 
-        if($request->tipo == null || $request->tipo == "nordeste"){
-            $inscritos_nordeste_pago = RegionalNordeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [8,9,10,11]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
+        })
+        ->count();
 
-                    });
-                })
-            ->count();
-
-            $valor_total_nordeste = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [8,9,10,11]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-                ->sum('valor_total');
-
-
-            $inscricoes = $inscritos_nordeste_pago;
-            $valor_total = $valor_total_nordeste;
-            $descricao = collect(['descricao' => "Regional Nordeste Inscritos Pagos"]);
-        }
-
-        if($request->tipo == null || $request->tipo == "centro_oeste"){
-            $inscritos_centro_oeste_pago = RegionalCentrooeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [18,19,20,21]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-
-                    });
-                })
-            ->count();
-
-            $valor_total_centro_oeste = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [18,19,20,21]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-                ->sum('valor_total');
-
-            $inscricoes = $inscritos_centro_oeste_pago;
-            $valor_total = $valor_total_centro_oeste;
-            $descricao = collect(['descricao' => "Regional Centro Oeste Inscritos Pagos"]);
-        }
-
-        if($request->tipo == null || $request->tipo == "sudeste"){
-            $inscritos_sudeste_pago = RegionalSuldeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [13,14,15,16]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-
-                    });
-                })
-            ->count();
-
-            $valor_total_sudeste = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [13,14,15,16]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-                ->sum('valor_total');
-
-            $inscricoes = $inscritos_sudeste_pago;
-            $valor_total = $valor_total_sudeste;
-            $descricao = collect(['descricao' => "Regional Sudeste Inscritos Pagos"]);
-        }
-
-        if($request->tipo == null || $request->tipo == "nacional"){
-            $inscritos_nacional_pago = Nacional::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [27,28,29,30]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-
-                    });
-                })
-            ->count();
-
-            $valor_total_nacional = PagSeguroPgto::select('id','valor_total', 'status_id', 'venda_id')
-                ->whereHas('vendas', function ($query) {
-                    $query->whereHas('vendas_item', function ($query) {
-                        $query->whereIn('produto_id', [27,28,29,30]);
-                    });
-                    $query->whereHas('pagamento', function ($query) {
-                        $query->whereIn('status_id', [3,4]);
-                    });
-                })
-            ->sum('valor_total');
-
-            $inscricoes = $inscritos_nacional_pago;
-            $valor_total = $valor_total_nacional;
-            $descricao = collect(['descricao' => "Nacional Inscritos Pagos"]);
-        }
+        $count = collect(['contagem' => $users]);
 
         if($request->tipo == null){
-            $count = collect(['contagem' => $inscritos_sul_pago + $inscritos_norte_pago + $inscritos_nordeste_pago + $inscritos_centro_oeste_pago + $inscritos_sudeste_pago + $inscritos_nacional_pago]);
             $descricao = collect(['descricao' => "Total de inscritos pagos"]);
-            $vlr_total_inscritos = collect(['vlr_total_inscritos' => $valor_total_sul + $valor_total_norte + $valor_total_nordeste + $valor_total_centro_oeste + $valor_total_sudeste + $valor_total_nacional]);
-            $data['data'][0] = $count->merge($descricao)->merge($vlr_total_inscritos);
-            return response()->json($data);
-        }else{
-            $count = collect(['contagem' => $inscricoes]);
-            $data['data'][0] = $count->merge($descricao)->merge($valor_total);
-            return response()->json($data);
+        }
+        if($request->tipo == 'sul'){
+            $descricao = collect(['descricao' => "Sul - inscritos pagos"]);
+        }
+        if($request->tipo == 'sudeste'){
+            $descricao = collect(['descricao' => "Sudeste - inscritos pagos"]);
+        }
+        if($request->tipo == 'nordeste'){
+            $descricao = collect(['descricao' => "Nordeste - inscritos pagos"]);
+        }
+        if($request->tipo == 'norte'){
+            $descricao = collect(['descricao' => "Norte - inscritos pagos"]);
+        }
+        if($request->tipo == 'centro_oeste'){
+            $descricao = collect(['descricao' => "Centro-Oeste - inscritos pagos"]);
+        }
+        if($request->tipo == 'nacional'){
+            $descricao = collect(['descricao' => "Nacional - inscritos pagos"]);
         }
 
-
+        $data['data'][0] = $count->merge($descricao);
+        return response()->json($data);
     }
 
     public function submissao_expocom(Request $request){
@@ -669,310 +511,202 @@ class DashboardController extends Controller
     }
 
     public function inscritos_isentos(Request $request){
-        if($request->tipo == "sul"){
-            $inscritos_sul_pago = RegionalSul::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [3,4,5,6]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 6);
-                    });
-                })
-            ->count();
+        $users = User::select('id', 'name', 'cpf', 'email')
+        ->with(
+            'todos_tipos',
+            'todos_tipos_pagamentos'
+        )
+        ->when($request->tipo, function ($query) use ($request){
+            if($request->tipo == 0 || $request->tipo == null){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->whereIn('tipo_id', [6,7,8,9,10,11]);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->whereIn('tipo_pagamento_id', [2,5,8,11,14,17]);
+                });
+            }
+            if($request->tipo == "sul"){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 6);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 2);
+                });
+            }
 
-            $todos_tipos_sul = TodosTiposUsers::where('tipo_id', 6)->count();
-            $isentos = $todos_tipos_sul - $inscritos_sul_pago;
-            $descricao = collect(['descricao' => "Regional Sul Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+            if($request->tipo == 'nordeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 7);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 5);
+                });
+            }
 
-        if($request->tipo == "norte"){
-            $inscritos_norte_pago = RegionalNorte::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [23,24,25,26]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 10);
-                    });
-                })
-            ->count();
+            if($request->tipo == 'sudeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 8);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 8);
+                });
+            }
 
-            $todos_tipos_norte = TodosTiposUsers::where('tipo_id', 10)->count();
-            $isentos = $todos_tipos_norte - $inscritos_norte_pago;
-            $descricao = collect(['descricao' => "Regional Norte Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+            if($request->tipo == 'centro_oeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 9);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 11);
+                });
+            }
 
-        if($request->tipo == "nordeste"){
-            $inscritos_nordeste_pago = RegionalNordeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [8,9,10,11]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 7);
-                    });
-                })
-            ->count();
+            if($request->tipo == 'norte'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 10);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 14);
+                });
+            }
 
-            $todos_tipos_nordeste = TodosTiposUsers::where('tipo_id', 7)->count();
-            $isentos = $todos_tipos_nordeste - $inscritos_nordeste_pago;
-            $descricao = collect(['descricao' => "Regional Nordeste Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+            if($request->tipo == 'nacional'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 11);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 17);
+                });
+            }
 
-        if($request->tipo == "centro_oeste"){
-            $inscritos_centro_oeste_pago = RegionalCentroOeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [18,19,20,21]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 9);
-                    });
-                })
-            ->count();
+        })
+        ->count();
 
-            $todos_tipos_centro_oeste = TodosTiposUsers::where('tipo_id', 9)->count();
-            $isentos = $todos_tipos_centro_oeste - $inscritos_centro_oeste_pago;
-            $descricao = collect(['descricao' => "Regional Centro-Oeste Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
-
-        if($request->tipo == "sudeste"){
-            $inscritos_sudeste_pago = RegionalSuldeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.vendas:user_id,id',
-                    'user.vendas.vendas_item:id,venda_id,produto_id',
-                    'user.vendas.pagamento:id,user_id,venda_id,status_id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('vendas', function ($query) {
-                        $query->whereHas('vendas_item', function ($query) {
-                            $query->whereIn('produto_id', [13,14,15,19]);
-                        });
-                        $query->whereHas('pagamento', function ($query) {
-                            $query->whereIn('status_id', [3,4]);
-                        });
-                    });
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 8);
-                    });
-                })
-            ->count();
-
-            $todos_tipos_sudeste = TodosTiposUsers::where('tipo_id', 8)->count();
-            $isentos = $todos_tipos_sudeste - $inscritos_sudeste_pago;
-            $descricao = collect(['descricao' => "Regional Sudeste Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+        $count = collect(['contagem' => $users]);
 
         if($request->tipo == null){
-            $descricao = collect(['descricao' => "Selecione uma Região"]);
-            $count = collect(['contagem' => 0]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-
+            $descricao = collect(['descricao' => "Total de inscritos isentos"]);
         }
+        if($request->tipo == 'sul'){
+            $descricao = collect(['descricao' => "Sul - inscritos isentos"]);
+        }
+        if($request->tipo == 'sudeste'){
+            $descricao = collect(['descricao' => "Sudeste - inscritos isentos"]);
+        }
+        if($request->tipo == 'nordeste'){
+            $descricao = collect(['descricao' => "Nordeste - inscritos isentos"]);
+        }
+        if($request->tipo == 'norte'){
+            $descricao = collect(['descricao' => "Norte - inscritos isentos"]);
+        }
+        if($request->tipo == 'centro_oeste'){
+            $descricao = collect(['descricao' => "Centro-Oeste - inscritos isentos"]);
+        }
+        if($request->tipo == 'nacional'){
+            $descricao = collect(['descricao' => "Nacional - inscritos isentos"]);
+        }
+
+        $data['data'][0] = $count->merge($descricao);
+        return response()->json($data);
     }
 
     public function associados_inscritos(Request $request){
-        if($request->tipo == "sul"){
-            $associados_isentos = RegionalSul::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 5);
-                    });
-                })
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 6);
-                    });
-                })
+        $users = User::select('id', 'name', 'cpf', 'email')
+        ->with(
+            'todos_tipos',
+            'todos_tipos_pagamentos'
+        )
+        ->when($request->tipo, function ($query) use ($request){
+            if($request->tipo == 0 || $request->tipo == null){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->whereIn('tipo_id', [6,7,8,9,10,11]);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->whereIn('tipo_pagamento_id', [3,6,9,12,15,18]);
+                });
+            }
+            if($request->tipo == "sul"){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 6);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 3);
+                });
+            }
 
-            ->count();
+            if($request->tipo == 'nordeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 7);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 6);
+                });
+            }
 
-            $isentos = $associados_isentos;
-            $descricao = collect(['descricao' => "Associados Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+            if($request->tipo == 'sudeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 8);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 9);
+                });
+            }
 
-        if($request->tipo == "nordeste"){
-            $associados_isentos = RegionalNordeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 5);
-                    });
-                })
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 7);
-                    });
-                })
-            ->count();
+            if($request->tipo == 'centro_oeste'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 9);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 12);
+                });
+            }
 
-            $isentos = $associados_isentos;
-            $descricao = collect(['descricao' => "Associados Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
+            if($request->tipo == 'norte'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 10);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 15);
+                });
+            }
 
-        if($request->tipo == "centro_oeste"){
-            $associados_isentos = RegionalCentroOeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 5);
-                    });
-                })
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 9);
-                    });
-                })
-                
-            ->count();
+            if($request->tipo == 'nacional'){
+                $query->whereHas('todos_tipos', function ($query) {
+                    $query->where('tipo_id', "=", 11);
+                });
+                $query->whereHas('todos_tipos_pagamentos', function ($query) {
+                    $query->where('tipo_pagamento_id', "=", 18);
+                });
+            }
 
-            $isentos = $associados_isentos;
-            $descricao = collect(['descricao' => "Associados Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
-        
-        if($request->tipo == "norte"){
-            $associados_isentos = RegionalNorte::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 5);
-                    });
-                })
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 10);
-                    });
-                })
-            ->count();
+        })
+        ->count();
 
-            $isentos = $associados_isentos;
-            $descricao = collect(['descricao' => "Associados Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
-
-        if($request->tipo == "sudeste"){
-            $associados_isentos = RegionalSuldeste::select('id', 'user_id')
-                ->with(
-                    'user:id',
-                    'user.todos_tipos'
-                )
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 5);
-                    });
-                })
-                ->whereHas('user', function ($query) {
-                    $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', 8);
-                    });
-                })
-            ->count();
-
-            $isentos = $associados_isentos;
-            $descricao = collect(['descricao' => "Associados Inscritos Isentos"]);
-            $count = collect(['contagem' => $isentos]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
-        }
-
+        $count = collect(['contagem' => $users]);
 
         if($request->tipo == null){
-            $descricao = collect(['descricao' => "Selecione uma Região"]);
-            $count = collect(['contagem' => 0]);
-            $data['data'][0] = $count->merge($descricao);
-            return response()->json($data);
+            $descricao = collect(['descricao' => "Total de associados isentos"]);
+        }
+        if($request->tipo == 'sul'){
+            $descricao = collect(['descricao' => "Sul - associados isentos"]);
+        }
+        if($request->tipo == 'sudeste'){
+            $descricao = collect(['descricao' => "Sudeste - associados isentos"]);
+        }
+        if($request->tipo == 'nordeste'){
+            $descricao = collect(['descricao' => "Nordeste - associados isentos"]);
+        }
+        if($request->tipo == 'norte'){
+            $descricao = collect(['descricao' => "Norte - associados isentos"]);
+        }
+        if($request->tipo == 'centro_oeste'){
+            $descricao = collect(['descricao' => "Centro-Oeste - associados isentos"]);
+        }
+        if($request->tipo == 'nacional'){
+            $descricao = collect(['descricao' => "Sem informação"]);
         }
 
+        $data['data'][0] = $count->merge($descricao);
+        return response()->json($data);
     }
 }

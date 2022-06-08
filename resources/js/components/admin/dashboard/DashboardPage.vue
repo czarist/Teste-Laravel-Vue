@@ -5,15 +5,21 @@
                 Dashboard Intercom
             </h5>
         </div>
-        <dashboard-filters
-            @filter="filters = $event"
-            :filters="filters"
-        ></dashboard-filters>
-        <!-- <div class="col-12">
-            <dashboard-cards
+
+        <div class="row">
+            <dashboard-filters
+                @filter="filters = $event"
                 :filters="filters"
-            ></dashboard-cards>
-        </div> -->
+            ></dashboard-filters>
+            <div class="col-md-6 col-xl-6 col-12 mb-2 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <span><b>Valor total pago</b></span>
+                        <h5 class="mt-2"> {{ vlr_total_inscritos | formatPrice }} </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-12">
             <div class="form-row">
 
@@ -88,16 +94,6 @@
                     :filters="filters"
                     @clickChart="filters.submissao_mesa = $event.split(' (')[0]"
                 ></quantitativo-por-grupo>
-
-                <div class="col-md-6 col-xl-3 col-12 mb-2 text-center">
-                    <div class="card">
-                        <div class="card-body">
-                            <span><b>Valor total pago</b></span>
-                            <h5 class="mt-2"> {{ vlr_total_inscritos }} </h5>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
         <notifications group="submit" position="center bottom" />
@@ -124,6 +120,14 @@ export default {
                 tipo: null
             },
             vlr_total_inscritos: 0,
+        }
+    },
+    watch: {
+        filters: {
+            deep: true,
+            handler() {
+                this.getValorTotal()
+            }
         }
     },
     methods:{

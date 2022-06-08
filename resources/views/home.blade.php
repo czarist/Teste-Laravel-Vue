@@ -206,8 +206,11 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-12 text-center">
-                                    <a class="btn btn-success m-1" href="{{ route('submissao.index') }}">Ver minhas submissões</a>    
+                                <div class="col-6 text-center">
+                                    <a class="btn btn-success m-1" href="{{ route('submissao.index') }}">Ver minhas submissões - DT, IJ e MESA</a>    
+                                </div>
+                                <div class="col-6 text-center">
+                                    <a class="btn btn-success m-1" href="{{ route('submissao-expocom.index') }}">Ver minhas submissões - Expocom</a>    
                                 </div>
                             </div>
 

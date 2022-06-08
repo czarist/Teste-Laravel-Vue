@@ -400,6 +400,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Tipo::class, 'todos_tipos_users');
     }
 
+    public function todos_tipos_pagamentos()
+    {
+        return $this->belongsToMany(TipoPagamento::class, 'todos_tipos_pagamentos');
+    }
+
     public function enderecos()
     {
         return $this->hasMany(Endereco::class);

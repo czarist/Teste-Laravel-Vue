@@ -5,7 +5,7 @@ namespace App\Exports;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class Excelss implements FromCollection
+class Excel implements FromCollection
 {
     /**
     * @return \Illuminate\Support\Collection

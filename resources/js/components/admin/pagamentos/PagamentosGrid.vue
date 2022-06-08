@@ -190,7 +190,7 @@
                     { id: 7, categoria: 'Regional Norte'},
                     { id: 8, categoria: 'Nacional'}
                 ],
-                searchType: { link: 'cpf', text: 'CPF' },
+                searchType: { link: 'name', text: 'Nome' },
                 produto:{
                     produto_search: null,
                 },

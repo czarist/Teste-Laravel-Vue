@@ -179,6 +179,8 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('certificados/certificado_apresentacao_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_expocom_coautor'])->name('certificados.certificado_apresentacao_expocom_coautor');
     Route::get('certificados/certificado_vencedor_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_vencedor_expocom_coautor'])->name('certificados.certificado_vencedor_expocom_coautor');
     Route::get('certificados/certificado_apresentacao/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao'])->name('certificados.apresentacao');
+    Route::get('certificados/certificado_apresentacao_coautor/pdf/{user}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_coautor'])->name('certificados.apresentacao.coautor');
+
     Route::get('certificados/certificado_parecerista_expocom/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista_expocom'])->name('certificados.parecerista.expocom');
     Route::get('certificados/certificado_parecerista/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista'])->name('certificados.parecerista');
 

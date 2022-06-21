@@ -75,7 +75,7 @@ class PagamentoController extends Controller
                 }
 
                 if(Auth::user()->id){
-                    $data = view('pdf.recibo_pagamento_anuidade', compact('recibo'));
+                    $data = view('pdf.recibo.recibo_pagamento_anuidade', compact('recibo'));
                     $options = new Options();
                     $options->set('isRemoteEnabled', TRUE);
                     $options->set("isPhpEnabled", true);
@@ -180,7 +180,7 @@ class PagamentoController extends Controller
             }
             
             if(Auth::user()->id == $regional->user_id){
-                $data = view('pdf.recibo_pagamento', compact('recibo'));
+                $data = view('pdf.recibo.recibo_pagamento', compact('recibo'));
                 $options = new Options();
                 $options->set('isRemoteEnabled', TRUE);
                 $options->set("isPhpEnabled", true);

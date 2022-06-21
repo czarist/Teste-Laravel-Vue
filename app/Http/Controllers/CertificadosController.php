@@ -3,19 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\AvaliadorExpocom;
+
 use App\Models\CoauOriExpoSubCentrooeste;
 use App\Models\CoauOriExpoSubNordeste;
+use App\Models\CoauOriExpoSubNorte;
 use App\Models\CoauOriExpoSubSudeste;
+use App\Models\CoauOriExpoSubSul;
+
+use App\Models\CoautorOrientadorSubNordeste;
+use App\Models\CoautorOrientadorSubNorte;
+use App\Models\CoautorOrientadorSubSudeste;
+use App\Models\CoautorOrientadorSubSul;
+use App\Models\CoautorOrientadorSubCentrooeste;
+
 use App\Models\DistribuicaoTipo123;
 use App\Models\DistribuicaoTipoExpocom;
+
 use App\Models\RegionalCentrooeste;
 use App\Models\RegionalNordeste;
 use App\Models\RegionalNorte;
 use App\Models\RegionalSul;
 use App\Models\RegionalSuldeste;
+
 use App\Models\SubmissaoExpocomRegionalCentrooeste;
 use App\Models\SubmissaoExpocomRegionalNordeste;
+use App\Models\SubmissaoExpocomRegionalNorte;
 use App\Models\SubmissaoExpocomRegionalSudeste;
+use App\Models\SubmissaoExpocomRegionalSul;
+
+use App\Models\SubmissaoRegionalNordestes;
+use App\Models\SubmissaoRegionalNorte;
+use App\Models\SubmissaoRegionalSudeste;
+use App\Models\SubmissaoRegionalSul;
+use App\Models\SubmissaoRegionalCentrooeste;
+
 use App\Models\User;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -71,7 +92,7 @@ class CertificadosController extends Controller
         if($regiao == 'centrooeste'){
             $regional = RegionalCentrooeste::select('id', 'user_id', 'presenca')->findOrFail($id);
             $certificado['regiao'] = 'Centro-Oeste';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
         }
         elseif($regiao == 'nordeste'){
             $regional = RegionalNordeste::select('id', 'user_id', 'presenca')->findOrFail($id);
@@ -81,12 +102,12 @@ class CertificadosController extends Controller
         elseif($regiao == 'norte'){
             $regional = RegionalNorte::select('id', 'user_id', 'presenca')->findOrFail($id);
             $certificado['regiao'] = 'Norte';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
         }
         elseif($regiao == 'sul'){
             $regional = RegionalSul::select('id', 'user_id', 'presenca')->findOrFail($id);
             $certificado['regiao'] = 'Sul';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
         }
         elseif($regiao == 'suldeste'){
             $regional = RegionalSuldeste::select('id', 'user_id', 'presenca')->findOrFail($id);
@@ -101,11 +122,21 @@ class CertificadosController extends Controller
 
             if(Auth::user()->id == $user->id && Auth::user()->id == $regional->user->id){
                 if($regiao == 'nordeste'){
-                    $data = view('pdf.certificado_presenca_nordeste', compact('certificado'));                    
+                    $data = view('pdf.certificados.certificado_presenca_nordeste', compact('certificado'));                    
                 }
                 if($regiao == 'suldeste'){
-                    $data = view('pdf.certificado_presenca_sudeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_presenca_sudeste', compact('certificado'));
                 }
+                if($regiao == 'norte'){
+                    $data = view('pdf.certificados.certificado_presenca_norte', compact('certificado'));
+                }
+                if($regiao == 'sul'){
+                    $data = view('pdf.certificados.certificado_presenca_sul', compact('certificado'));
+                }
+                if($regiao == 'centrooeste'){
+                    $data = view('pdf.certificados.certificado_presenca_centrooeste', compact('certificado'));
+                }
+
                 $options = new Options();
                 $options->set('isRemoteEnabled', TRUE);
                 $options->set("isPhpEnabled", true);
@@ -161,7 +192,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Centro-Oeste';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
         }
         elseif($regiao == 'nordeste'){
             $regional = RegionalNordeste::select('id', 'user_id', 'presenca')
@@ -187,7 +218,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Norte';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
         }
         elseif($regiao == 'sul'){
             $regional = RegionalSul::select('id', 'user_id', 'presenca')
@@ -200,7 +231,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Sul';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
         }
         elseif($regiao == 'suldeste'){
             $regional = RegionalSuldeste::select('id', 'user_id', 'presenca')
@@ -220,10 +251,19 @@ class CertificadosController extends Controller
             if(Auth::user()->id == $user->id && Auth::user()->id == $regional->user->id){
 
                 if($regiao == 'nordeste'){
-                    $data = view('pdf.certificado_apresentacao_expocom_nordeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_apresentacao_expocom_nordeste', compact('certificado'));
                 }
                 if($regiao == 'suldeste'){
-                    $data = view('pdf.certificado_apresentacao_expocom_sudeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_apresentacao_expocom_sudeste', compact('certificado'));
+                }
+                if($regiao == 'norte'){
+                    $data = view('pdf.certificados.certificado_apresentacao_expocom_norte', compact('certificado'));
+                }
+                if($regiao == 'sul'){
+                    $data = view('pdf.certificados.certificado_apresentacao_expocom_sul', compact('certificado'));
+                }
+                if($regiao == 'centrooeste'){
+                    $data = view('pdf.certificados.certificado_apresentacao_expocom_centrooeste', compact('certificado'));
                 }
 
                 $options = new Options();
@@ -261,8 +301,7 @@ class CertificadosController extends Controller
             $certificado['categoria'] = $user->indicacao->categoria  ?? "Sem categoria";
             $certificado['modalidade'] = $user->indicacao->modalidade  ?? "Sem modalidade";
             $certificado['titulo'] = $user->indicacao->titulo_trabalho;
-            $certificado['coautores'][] = $user->name;         
-            
+            $certificado['coautores'][] = $user->name;                     
         }
         
         if($regiao == 'centrooeste'){
@@ -276,7 +315,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Centro-Oeste';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
         }
         elseif($regiao == 'nordeste'){
             $regional = RegionalNordeste::select('id', 'user_id', 'presenca')
@@ -302,7 +341,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Norte';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
         }
         elseif($regiao == 'sul'){
             $regional = RegionalSul::select('id', 'user_id', 'presenca')
@@ -315,7 +354,7 @@ class CertificadosController extends Controller
                 }
             }
             $certificado['regiao'] = 'Sul';
-            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
         }
         elseif($regiao == 'suldeste'){
             $regional = RegionalSuldeste::select('id', 'user_id', 'presenca')
@@ -335,11 +374,21 @@ class CertificadosController extends Controller
 
             if(Auth::user()->id == $user->id && Auth::user()->id == $regional->user->id){
                 if($regiao == 'nordeste'){
-                    $data = view('pdf.certificado_vencedor_expocom_nordeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_vencedor_expocom_nordeste', compact('certificado'));
                 }
                 if($regiao == 'suldeste'){
-                    $data = view('pdf.certificado_vencedor_expocom_sudeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_vencedor_expocom_sudeste', compact('certificado'));
                 }
+                if($regiao == 'norte'){
+                    $data = view('pdf.certificados.certificado_vencedor_expocom_norte', compact('certificado'));
+                }
+                if($regiao == 'centrooeste'){
+                    $data = view('pdf.certificados.certificado_vencedor_expocom_centrooeste', compact('certificado'));
+                }
+                if($regiao == 'sul'){
+                    $data = view('pdf.certificados.certificado_vencedor_expocom_sul', compact('certificado'));
+                }
+
                 $options = new Options();
                 $options->set('isRemoteEnabled', TRUE);
                 $options->set("isPhpEnabled", true);
@@ -358,91 +407,6 @@ class CertificadosController extends Controller
                     $result = $dompdf->output();
                 }
                 return $result;
-            }
-        }
-
-    }
-
-    public function verificar_pago($regiao, $cpf){
-        $user = User::select('id', 'cpf')
-                    ->with(
-                        'todos_tipos',
-                        'regional_sul',
-                        'regional_norte',
-                        'regional_nordeste',
-                        'regional_centrooeste',
-                        'regional_suldeste',
-                        )
-                    ->where('cpf', $cpf)
-        ->first();
-        //centrooeste
-        if($regiao == 4){
-            if(isset($user) && !empty($user) && !empty($user->regional_centrooeste)){
-                if($user->regional_centrooeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 9) {
-                            return true;
-                        }
-                    }
-                    return false;    
-                }
-                return false;
-            }
-        }
-
-        if($regiao == 2){
-            if(isset($user) && !empty($user) && !empty($user->regional_nordeste)){
-                if($user->regional_nordeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 7) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                return false;
-            }
-        }
-
-        if($regiao == 5){
-            if(isset($user) && !empty($user) && !empty($user->regional_norte)){
-                if($user->regional_norte->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 10) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                return false;
-            }
-        }
-
-        if($regiao == 3){
-            if(isset($user) && !empty($user) && !empty($user->regional_suldeste)){
-                if($user->regional_suldeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 8) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                return false;
-            }
-        }
-
-        if($regiao == 1){
-            if(isset($user) && !empty($user) && !empty($user->regional_sul)){
-                if($user->regional_sul->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 6) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                return false;
             }
         }
     }
@@ -482,42 +446,40 @@ class CertificadosController extends Controller
         }
 
         if(isset($regiao) && $regiao == "nordeste"){
-            if(isset($user) && !empty($user) && !empty($user->regional_nordeste)){
-                if($user->regional_nordeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 7) { 
-                            $coautores = CoauOriExpoSubNordeste::where('cpf', $user->cpf)->get();
-                            foreach ($coautores as $coautor) {
-                                if($coautor->cpf == $user->cpf){
-                                    $submissao = SubmissaoExpocomRegionalNordeste::with(
-                                        'coautorOrientadorSubNordeste',
-                                        'inscricao',
-                                        'inscricao.user',
-                                        'inscricao.user.indicacao',
-                                        )
-                                        ->where('id', $coautor->submissao_id)
-                                    ->first();
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 7) { 
+                        $coautores = CoauOriExpoSubNordeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalNordeste::with(
+                                    'coautorOrientadorSubNordeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
 
-                                    if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
-                                        if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
-                                            $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
-                                            $certificado['coautores'][] = $submissao->inscricao->user->name;    
-                                        }
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
 
-                                        if(isset($submissao) && $submissao->coautorOrientadorSubNordeste){
-                                            foreach($submissao->coautorOrientadorSubNordeste as $coautor){
-                                                if($coautor->cpf != $user->cpf){
-                                                    $certificado['coautores'][] = $coautor->nome_completo;
-                                                }
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubNordeste){
+                                        foreach($submissao->coautorOrientadorSubNordeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
                                             }
                                         }
-                                        
-                                        $regiao = 'nordeste';
-                                        $certificado['regiao'] = 'Nordeste';
-                                        $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
                                     }
+                                    
+                                    $regiao = 'nordeste';
+                                    $certificado['regiao'] = 'Nordeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
                                 }
                             }
                         }
@@ -527,42 +489,40 @@ class CertificadosController extends Controller
         }
 
         if(isset($regiao) && $regiao == "suldeste"){
-            if(isset($user) && !empty($user) && !empty($user->regional_suldeste)){
-                if($user->regional_suldeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 8) { 
-                            $coautores = CoauOriExpoSubSudeste::where('cpf', $user->cpf)->get();
-                            foreach ($coautores as $coautor) {
-                                if($coautor->cpf == $user->cpf){
-                                    $submissao = SubmissaoExpocomRegionalSudeste::with(
-                                        'coautorOrientadorSubSudeste',
-                                        'inscricao',
-                                        'inscricao.user',
-                                        'inscricao.user.indicacao',
-                                        )
-                                        ->where('id', $coautor->submissao_id)
-                                    ->first();
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 8) { 
+                        $coautores = CoauOriExpoSubSudeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalSudeste::with(
+                                    'coautorOrientadorSubSudeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
 
-                                    if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
-                                        if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
-                                            $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
-                                            $certificado['coautores'][] = $submissao->inscricao->user->name;    
-                                        }
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
 
-                                        if(isset($submissao) && $submissao->coautorOrientadorSubSudeste){
-                                            foreach($submissao->coautorOrientadorSubSudeste as $coautor){
-                                                if($coautor->cpf != $user->cpf){
-                                                    $certificado['coautores'][] = $coautor->nome_completo;
-                                                }
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubSudeste){
+                                        foreach($submissao->coautorOrientadorSubSudeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
                                             }
                                         }
-                                        
-                                        $regiao = 'sudeste';
-                                        $certificado['regiao'] = 'Sudeste';
-                                        $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sudeste.jpg');";
                                     }
+                                    
+                                    $regiao = 'suldeste';
+                                    $certificado['regiao'] = 'Sudeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sudeste.jpg');";
                                 }
                             }
                         }
@@ -571,6 +531,134 @@ class CertificadosController extends Controller
             }
         }
 
+        if(isset($regiao) && $regiao == "norte"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 10) { 
+                        $coautores = CoauOriExpoSubNorte::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalNorte::with(
+                                    'coautorOrientadorSubNortes',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubNortes){
+                                        foreach($submissao->coautorOrientadorSubNortes as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    
+                                    $regiao = 'norte';
+                                    $certificado['regiao'] = 'Norte';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "sul"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 6) { 
+                        $coautores = CoauOriExpoSubSul::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalSul::with(
+                                    'coautorOrientadorSubSuls',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubSuls){
+                                        foreach($submissao->coautorOrientadorSubSuls as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    
+                                    $regiao = 'norte';
+                                    $certificado['regiao'] = 'Norte';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "centrooeste"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 9) { 
+                        $coautores = CoauOriExpoSubCentrooeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalCentrooeste::with(
+                                    'coautorOrientadorSubCentrooeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubCentrooeste){
+                                        foreach($submissao->coautorOrientadorSubCentrooeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    
+                                    $regiao = 'centrooeste';
+                                    $certificado['regiao'] = 'Centro-Oeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if(in_array("", $certificado)){
             return false;
@@ -578,11 +666,21 @@ class CertificadosController extends Controller
 
         if(Auth::user()->id == $user_id){
             if($regiao == 'nordeste'){
-                $data = view('pdf.certificado_apresentacao_expocom_nordeste', compact('certificado'));
+                $data = view('pdf.certificados.certificado_apresentacao_expocom_nordeste', compact('certificado'));
             }
             if($regiao == 'suldeste'){
-                $data = view('pdf.certificado_apresentacao_expocom_sudeste', compact('certificado'));
+                $data = view('pdf.certificados.certificado_apresentacao_expocom_sudeste', compact('certificado'));
             }
+            if($regiao == 'norte'){
+                $data = view('pdf.certificados.certificado_apresentacao_expocom_norte', compact('certificado'));
+            }
+            if($regiao == 'sul'){
+                $data = view('pdf.certificados.certificado_apresentacao_expocom_sul', compact('certificado'));
+            }
+            if($regiao == 'centrooeste'){
+                $data = view('pdf.certificados.certificado_apresentacao_expocom_centrooeste', compact('certificado'));
+            }
+
 
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
@@ -636,47 +734,44 @@ class CertificadosController extends Controller
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
             $certificado['coautores'][] = $user->name;         
-
         }
 
         if(isset($regiao) && $regiao == "nordeste"){
-            if(isset($user) && !empty($user) && !empty($user->regional_nordeste)){
-                if($user->regional_nordeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 7) { 
-                            $coautores = CoauOriExpoSubNordeste::where('cpf', $user->cpf)->get();
-                            foreach ($coautores as $coautor) {
-                                if($coautor->cpf == $user->cpf){
-                                    $submissao = SubmissaoExpocomRegionalNordeste::with(
-                                        'coautorOrientadorSubNordeste',
-                                        'inscricao',
-                                        'inscricao.user',
-                                        'inscricao.user.indicacao',
-                                        )
-                                        ->where('id', $coautor->submissao_id)
-                                    ->first();
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 7) { 
+                        $coautores = CoauOriExpoSubNordeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalNordeste::with(
+                                    'coautorOrientadorSubNordeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
 
-                                    if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
-                                        if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
-                                            $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
-                                            $certificado['coautores'][] = $submissao->inscricao->user->name;    
-                                        }
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
 
 
-                                        if(isset($submissao) && $submissao->coautorOrientadorSubNordeste){
-                                            foreach($submissao->coautorOrientadorSubNordeste as $coautor){
-                                                if($coautor->cpf != $user->cpf){
-                                                    $certificado['coautores'][] = $coautor->nome_completo;
-                                                }
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubNordeste){
+                                        foreach($submissao->coautorOrientadorSubNordeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
                                             }
                                         }
-                                        $regiao = 'nordeste';
-                                        $certificado['regiao'] = 'Nordeste';
-                                        $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
-
                                     }
+                                    $regiao = 'nordeste';
+                                    $certificado['regiao'] = 'Nordeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+
                                 }
                             }
                         }
@@ -686,43 +781,41 @@ class CertificadosController extends Controller
         }
 
         if(isset($regiao) && $regiao == "suldeste"){
-            if(isset($user) && !empty($user) && !empty($user->regional_suldeste)){
-                if($user->regional_suldeste->presenca == 1){
-                    foreach ($user->todos_tipos as $tipo) {
-                        if ($tipo->id == 8) { 
-                            $coautores = CoauOriExpoSubSudeste::where('cpf', $user->cpf)->get();
-                            foreach ($coautores as $coautor) {
-                                if($coautor->cpf == $user->cpf){
-                                    $submissao = SubmissaoExpocomRegionalSudeste::with(
-                                        'coautorOrientadorSubSudeste',
-                                        'inscricao',
-                                        'inscricao.user',
-                                        'inscricao.user.indicacao',
-                                        )
-                                        ->where('id', $coautor->submissao_id)
-                                    ->first();
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 8) { 
+                        $coautores = CoauOriExpoSubSudeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalSudeste::with(
+                                    'coautorOrientadorSubSudeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
 
-                                    if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
-                                        if(isset($submissao) &&  $submissao->inscricao){
-                                            $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
-                                            $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
-                                            $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
-                                            $certificado['coautores'][] = $submissao->inscricao->user->name;    
-                                        }
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
 
 
-                                        if(isset($submissao) && $submissao->coautorOrientadorSubSudeste){
-                                            foreach($submissao->coautorOrientadorSubSudeste as $coautor){
-                                                if($coautor->cpf != $user->cpf){
-                                                    $certificado['coautores'][] = $coautor->nome_completo;
-                                                }
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubSudeste){
+                                        foreach($submissao->coautorOrientadorSubSudeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
                                             }
                                         }
-                                        $regiao = 'sudeste';
-                                        $certificado['regiao'] = 'Sudeste';
-                                        $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sudeste.jpg');";
-
                                     }
+                                    $regiao = 'suldeste';
+                                    $certificado['regiao'] = 'Sudeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sudeste.jpg');";
+
                                 }
                             }
                         }
@@ -731,6 +824,137 @@ class CertificadosController extends Controller
             }
         }
 
+        if(isset($regiao) && $regiao == "norte"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 10) { 
+                        $coautores = CoauOriExpoSubNorte::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalNorte::with(
+                                    'coautorOrientadorSubNortes',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubNortes){
+                                        foreach($submissao->coautorOrientadorSubNortes as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    $regiao = 'norte';
+                                    $certificado['regiao'] = 'Norte';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "sul"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 6) { 
+                        $coautores = CoauOriExpoSubSul::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalSul::with(
+                                    'coautorOrientadorSubSuls',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubSuls){
+                                        foreach($submissao->coautorOrientadorSubSuls as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    $regiao = 'sul';
+                                    $certificado['regiao'] = 'Sul';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "centrooeste"){
+            if(isset($user) && !empty($user)){
+                foreach ($user->todos_tipos as $tipo) {
+                    if ($tipo->id == 9) { 
+                        $coautores = CoauOriExpoSubCentrooeste::where('cpf', $user->cpf)->get();
+                        foreach ($coautores as $coautor) {
+                            if($coautor->cpf == $user->cpf){
+                                $submissao = SubmissaoExpocomRegionalCentrooeste::with(
+                                    'coautorOrientadorSubCentrooeste',
+                                    'inscricao',
+                                    'inscricao.user',
+                                    'inscricao.user.indicacao',
+                                    )
+                                    ->where('id', $coautor->submissao_id)
+                                ->first();
+
+                                if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                                    if(isset($submissao) &&  $submissao->inscricao){
+                                        $certificado['categoria'] = $submissao->inscricao->user->indicacao->categoria  ?? "Sem categoria";
+                                        $certificado['modalidade'] = $submissao->inscricao->user->indicacao->modalidade  ?? "Sem modalidade";
+                                        $certificado['titulo'] = $submissao->inscricao->user->indicacao->titulo_trabalho;  
+                                        $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                    }
+
+
+                                    if(isset($submissao) && $submissao->coautorOrientadorSubCentrooeste){
+                                        foreach($submissao->coautorOrientadorSubCentrooeste as $coautor){
+                                            if($coautor->cpf != $user->cpf){
+                                                $certificado['coautores'][] = $coautor->nome_completo;
+                                            }
+                                        }
+                                    }
+                                    $regiao = 'centrooeste';
+                                    $certificado['regiao'] = 'Centro-Oeste';
+                                    $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if(in_array("", $certificado)){
             return false;
@@ -738,11 +962,21 @@ class CertificadosController extends Controller
 
         if(Auth::user()->id == $user_id){
             if($regiao == 'nordeste'){
-                $data = view('pdf.certificado_vencedor_expocom_nordeste', compact('certificado'));
+                $data = view('pdf.certificados.certificado_vencedor_expocom_nordeste', compact('certificado'));
             }
             if($regiao == 'suldeste'){
-                $data = view('pdf.certificado_vencedor_expocom_sudeste', compact('certificado'));
+                $data = view('pdf.certificados.certificado_vencedor_expocom_sudeste', compact('certificado'));
             }
+            if($regiao == 'norte'){
+                $data = view('pdf.certificados.certificado_vencedor_expocom_norte', compact('certificado'));
+            }
+            if($regiao == 'sul'){
+                $data = view('pdf.certificados.certificado_vencedor_expocom_sul', compact('certificado'));
+            }
+            if($regiao == 'centrooeste'){
+                $data = view('pdf.certificados.certificado_vencedor_expocom_centrooeste', compact('certificado'));
+            }
+
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $options->set("isPhpEnabled", true);
@@ -775,10 +1009,54 @@ class CertificadosController extends Controller
         if(!empty($user)){
             $certificado['user'] = $user->toArray();
             $certificado['coautores'][] = $user->name;         
-
         }
 
         if($regiao == 'centrooeste'){
+            $regional = RegionalCentrooeste::select('id', 'user_id', 'presenca')
+            ->with(
+                'submissaoMesa',
+                'submissaoDt',
+                'submissaoJunior',
+                'submissaoMesa.divisao_tematica',
+                'submissaoDt.divisao_tematica',
+                'submissaoJunior.divisao_tematica',
+                'submissaoMesa.coautorOrientadorSubCentrooeste',
+                'submissaoDt.coautorOrientadorSubCentrooeste',
+                'submissaoJunior.coautorOrientadorSubCentrooeste',
+            )
+            ->findOrFail($id);
+
+            if(isset($regional) && !empty($regional) && $regional->submissaoMesa && $regional->submissaoMesa->coautorOrientadorSubCentrooeste){
+                $certificado['titulo'] = $regional->submissaoMesa->titulo;                        
+                $certificado['categoria'] = $regional->submissaoMesa->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoMesa->tipo;
+
+                foreach($regional->submissaoMesa->coautorOrientadorSubCentrooeste as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoDt && $regional->submissaoDt->coautorOrientadorSubCentrooeste){
+                $certificado['titulo'] = $regional->submissaoDt->titulo;                        
+                $certificado['categoria'] = $regional->submissaoDt->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoDt->tipo;
+
+                foreach($regional->submissaoDt->coautorOrientadorSubCentrooeste as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoJunior && $regional->submissaoJunior->coautorOrientadorSubCentrooeste){
+                $certificado['titulo'] = $regional->submissaoJunior->titulo;                        
+                $certificado['categoria'] = $regional->submissaoJunior->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoJunior->tipo;
+
+                foreach($regional->submissaoJunior->coautorOrientadorSubCentrooeste as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+
+            $certificado['regiao'] = 'Nordeste';
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
+
         }
         elseif($regiao == 'nordeste'){
             $regional = RegionalNordeste::select('id', 'user_id', 'presenca')
@@ -827,8 +1105,98 @@ class CertificadosController extends Controller
             $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
         }
         elseif($regiao == 'norte'){
+            $regional = RegionalNorte::select('id', 'user_id', 'presenca')
+            ->with(
+                'submissaoMesa',
+                'submissaoDt',
+                'submissaoJunior',
+                'submissaoMesa.divisao_tematica',
+                'submissaoDt.divisao_tematica',
+                'submissaoJunior.divisao_tematica',
+                'submissaoMesa.coautorOrientadorSubNortes',
+                'submissaoDt.coautorOrientadorSubNortes',
+                'submissaoJunior.coautorOrientadorSubNortes',
+            )
+            ->findOrFail($id);
+
+            if(isset($regional) && !empty($regional) && $regional->submissaoMesa && $regional->submissaoMesa->coautorOrientadorSubNortes){
+                $certificado['titulo'] = $regional->submissaoMesa->titulo;                        
+                $certificado['categoria'] = $regional->submissaoMesa->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoMesa->tipo;
+
+                foreach($regional->submissaoMesa->coautorOrientadorSubNortes as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoDt && $regional->submissaoDt->coautorOrientadorSubNortes){
+                $certificado['titulo'] = $regional->submissaoDt->titulo;                        
+                $certificado['categoria'] = $regional->submissaoDt->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoDt->tipo;
+
+                foreach($regional->submissaoDt->coautorOrientadorSubNortes as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoJunior && $regional->submissaoJunior->coautorOrientadorSubNortes){
+                $certificado['titulo'] = $regional->submissaoJunior->titulo;                        
+                $certificado['categoria'] = $regional->submissaoJunior->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoJunior->tipo;
+
+                foreach($regional->submissaoJunior->coautorOrientadorSubNortes as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+
+            $certificado['regiao'] = 'Norte';
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
+
         }
         elseif($regiao == 'sul'){
+            $regional = RegionalSul::select('id', 'user_id', 'presenca')
+            ->with(
+                'submissaoMesa',
+                'submissaoDt',
+                'submissaoJunior',
+                'submissaoMesa.divisao_tematica',
+                'submissaoDt.divisao_tematica',
+                'submissaoJunior.divisao_tematica',
+                'submissaoMesa.coautorOrientadorSubSuls',
+                'submissaoDt.coautorOrientadorSubSuls',
+                'submissaoJunior.coautorOrientadorSubSuls',
+            )
+            ->findOrFail($id);
+
+            if(isset($regional) && !empty($regional) && $regional->submissaoMesa && $regional->submissaoMesa->coautorOrientadorSubSuls){
+                $certificado['titulo'] = $regional->submissaoMesa->titulo;                        
+                $certificado['categoria'] = $regional->submissaoMesa->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoMesa->tipo;
+
+                foreach($regional->submissaoMesa->coautorOrientadorSubSuls as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoDt && $regional->submissaoDt->coautorOrientadorSubSuls){
+                $certificado['titulo'] = $regional->submissaoDt->titulo;                        
+                $certificado['categoria'] = $regional->submissaoDt->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoDt->tipo;
+
+                foreach($regional->submissaoDt->coautorOrientadorSubSuls as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+            elseif(isset($regional) && !empty($regional) && $regional->submissaoJunior && $regional->submissaoJunior->coautorOrientadorSubSuls){
+                $certificado['titulo'] = $regional->submissaoJunior->titulo;                        
+                $certificado['categoria'] = $regional->submissaoJunior->divisao_tematica->descricao;
+                $certificado['tipo'] = $regional->submissaoJunior->tipo;
+
+                foreach($regional->submissaoJunior->coautorOrientadorSubSuls as $coautor){
+                    $certificado['coautores'][] = $coautor->nome_completo;
+                }
+            }
+
+            $certificado['regiao'] = 'Nordeste';
+            $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
+
         }
         elseif($regiao == 'suldeste'){
             $regional = RegionalSuldeste::select('id', 'user_id', 'presenca')
@@ -885,11 +1253,21 @@ class CertificadosController extends Controller
         ){
             if(Auth::user()->id == $user->id && Auth::user()->id == $regional->user->id){
                 if($regiao == 'nordeste'){
-                    $data = view('pdf.certificado_apresentacao_nordeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_apresentacao_nordeste', compact('certificado'));
                 }
                 if($regiao == 'suldeste'){
-                    $data = view('pdf.certificado_apresentacao_sudeste', compact('certificado'));
+                    $data = view('pdf.certificados.certificado_apresentacao_sudeste', compact('certificado'));
                 }
+                if($regiao == 'norte'){
+                    $data = view('pdf.certificados.certificado_apresentacao_norte', compact('certificado'));
+                }
+                if($regiao == 'sul'){
+                    $data = view('pdf.certificados.certificado_apresentacao_sul', compact('certificado'));
+                }
+                if($regiao == 'centrooeste'){
+                    $data = view('pdf.certificados.certificado_apresentacao_centrooeste', compact('certificado'));
+                }
+
                 $options = new Options();
                 $options->set('isRemoteEnabled', TRUE);
                 $options->set("isPhpEnabled", true);
@@ -910,6 +1288,311 @@ class CertificadosController extends Controller
                 return $result;
             }
         }        
+    }
+
+    public function certificado_apresentacao_coautor($user_id, $regiao){
+        $user = User::select('id', 'cpf', 'name')
+            ->with(
+                'todos_tipos',
+                'regional_sul',
+                'regional_sul.submissaoMesa.coautorOrientadorSubSuls',
+                'regional_sul.submissaoDt.coautorOrientadorSubSuls',
+                'regional_sul.submissaoJunior.coautorOrientadorSubSuls',
+                'regional_sul.submissaoMesa.divisao_tematica',
+                'regional_sul.submissaoDt.divisao_tematica',
+                'regional_sul.submissaoJunior.divisao_tematica',
+
+                'regional_norte',
+                'regional_norte.submissaoMesa.coautorOrientadorSubNortes',
+                'regional_norte.submissaoDt.coautorOrientadorSubNortes',
+                'regional_norte.submissaoJunior.coautorOrientadorSubNortes',
+                'regional_norte.submissaoMesa.divisao_tematica',
+                'regional_norte.submissaoDt.divisao_tematica',
+                'regional_norte.submissaoJunior.divisao_tematica',
+
+                'regional_centrooeste',
+                'regional_centrooeste.submissaoMesa.coautorOrientadorSubCentrooeste',
+                'regional_centrooeste.submissaoDt.coautorOrientadorSubCentrooeste',
+                'regional_centrooeste.submissaoJunior.coautorOrientadorSubCentrooeste',
+                'regional_centrooeste.submissaoMesa.divisao_tematica',
+                'regional_centrooeste.submissaoDt.divisao_tematica',
+                'regional_centrooeste.submissaoJunior.divisao_tematica',
+
+                'regional_suldeste',
+                'regional_suldeste.submissaoMesa.coautorOrientadorSubSudeste',
+                'regional_suldeste.submissaoDt.coautorOrientadorSubSudeste',
+                'regional_suldeste.submissaoJunior.coautorOrientadorSubSudeste',
+                'regional_suldeste.submissaoMesa.divisao_tematica',
+                'regional_suldeste.submissaoDt.divisao_tematica',
+                'regional_suldeste.submissaoJunior.divisao_tematica',
+
+                'regional_nordeste',
+                'regional_nordeste.submissaoMesa',
+                'regional_nordeste.submissaoDt',
+                'regional_nordeste.submissaoJunior',
+                'regional_nordeste.submissaoMesa.coautorOrientadorSubNordeste',
+                'regional_nordeste.submissaoDt.coautorOrientadorSubNordeste',
+                'regional_nordeste.submissaoJunior.coautorOrientadorSubNordeste',
+                'regional_nordeste.submissaoMesa.divisao_tematica',
+                'regional_nordeste.submissaoDt.divisao_tematica',
+                'regional_nordeste.submissaoJunior.divisao_tematica',
+                )
+            ->where('id', $user_id)
+        ->first();
+
+        if(!empty($user)){
+            $certificado['user'] = $user->toArray();
+            $certificado['coautores'][] = $user->name;         
+        }
+
+        if(isset($regiao) && $regiao == "nordeste"){
+            foreach ($user->todos_tipos as $tipo) {
+                if ($tipo->id == 7) { 
+                    $coautores = CoautorOrientadorSubNordeste::where('cpf', $user->cpf)->get();
+                    foreach ($coautores as $coautor) {
+                        if($coautor->cpf == $user->cpf){
+                            $submissao = SubmissaoRegionalNordestes::with(
+                                'coautorOrientadorSubNordeste',
+                                'divisao_tematica',
+                                )
+                                ->where('id', $coautor->submissao_id)
+                            ->first();
+
+                            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                if(isset($submissao) &&  $submissao->inscricao){
+
+                                    $certificado['titulo'] = $submissao->titulo;                        
+                                    $certificado['categoria'] = $submissao->divisao_tematica->descricao;
+                                    $certificado['tipo'] = $submissao->tipo;
+                    
+                                    $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                }
+
+                                if(isset($submissao) && $submissao->coautorOrientadorSubNordeste){
+                                    foreach($submissao->coautorOrientadorSubNordeste as $coautor){
+                                        if($coautor->cpf != $user->cpf){
+                                            $certificado['coautores'][] = $coautor->nome_completo;
+                                        }
+                                    }
+                                }
+                                
+                                $regiao = 'nordeste';
+                                $certificado['regiao'] = 'Nordeste';
+                                $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-nordeste.jpg');";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "norte"){
+            foreach ($user->todos_tipos as $tipo) {
+                if ($tipo->id == 10) { 
+                    $coautores = CoautorOrientadorSubNorte::where('cpf', $user->cpf)->get();
+                    foreach ($coautores as $coautor) {
+                        if($coautor->cpf == $user->cpf){
+                            $submissao = SubmissaoRegionalNorte::with(
+                                'coautorOrientadorSubNortes',
+                                'divisao_tematica',
+                                )
+                            ->where('id', $coautor->submissao_id)
+                            ->first();
+
+                            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                if(isset($submissao) &&  $submissao->inscricao){
+
+                                    $certificado['titulo'] = $submissao->titulo;                        
+                                    $certificado['categoria'] = $submissao->divisao_tematica->descricao;
+                                    $certificado['tipo'] = $submissao->tipo;
+                    
+                                    $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                }
+
+                                if(isset($submissao) && $submissao->coautorOrientadorSubNortes){
+                                    foreach($submissao->coautorOrientadorSubNortes as $coautor){
+                                        if($coautor->cpf != $user->cpf){
+                                            $certificado['coautores'][] = $coautor->nome_completo;
+                                        }
+                                    }
+                                }
+                                
+                                $regiao = 'norte';
+                                $certificado['regiao'] = 'Norte';
+                                $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-norte.jpg');";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "suldeste"){
+            foreach ($user->todos_tipos as $tipo) {
+                if ($tipo->id == 8) { 
+                    $coautores = CoautorOrientadorSubSudeste::where('cpf', $user->cpf)->get();
+                    foreach ($coautores as $coautor) {
+                        if($coautor->cpf == $user->cpf){
+                            $submissao = SubmissaoRegionalSudeste::with(
+                                'coautorOrientadorSubSudeste',
+                                'divisao_tematica',
+                                )
+                            ->where('id', $coautor->submissao_id)
+                            ->first();
+
+                            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                if(isset($submissao) &&  $submissao->inscricao){
+
+                                    $certificado['titulo'] = $submissao->titulo;                        
+                                    $certificado['categoria'] = $submissao->divisao_tematica->descricao;
+                                    $certificado['tipo'] = $submissao->tipo;
+                    
+                                    $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                }
+
+                                if(isset($submissao) && $submissao->coautorOrientadorSubSudeste){
+                                    foreach($submissao->coautorOrientadorSubSudeste as $coautor){
+                                        if($coautor->cpf != $user->cpf){
+                                            $certificado['coautores'][] = $coautor->nome_completo;
+                                        }
+                                    }
+                                }
+                                
+                                $regiao = 'suldeste';
+                                $certificado['regiao'] = 'Sudeste';
+                                $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sudeste.jpg');";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "sul"){
+            foreach ($user->todos_tipos as $tipo) {
+                if ($tipo->id == 6) { 
+                    $coautores = CoautorOrientadorSubSul::where('cpf', $user->cpf)->get();
+                    foreach ($coautores as $coautor) {
+                        if($coautor->cpf == $user->cpf){
+                            $submissao = SubmissaoRegionalSul::with(
+                                'coautorOrientadorSubSuls',
+                                'divisao_tematica',
+                                )
+                            ->where('id', $coautor->submissao_id)
+                            ->first();
+
+                            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                if(isset($submissao) &&  $submissao->inscricao){
+
+                                    $certificado['titulo'] = $submissao->titulo;                        
+                                    $certificado['categoria'] = $submissao->divisao_tematica->descricao;
+                                    $certificado['tipo'] = $submissao->tipo;
+                    
+                                    $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                }
+
+                                if(isset($submissao) && $submissao->coautorOrientadorSubSuls){
+                                    foreach($submissao->coautorOrientadorSubSuls as $coautor){
+                                        if($coautor->cpf != $user->cpf){
+                                            $certificado['coautores'][] = $coautor->nome_completo;
+                                        }
+                                    }
+                                }
+                                
+                                $regiao = 'sul';
+                                $certificado['regiao'] = 'Sul';
+                                $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-sul.jpg');";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($regiao) && $regiao == "centrooeste"){
+            foreach ($user->todos_tipos as $tipo) {
+                if ($tipo->id == 9) { 
+                    $coautores = CoautorOrientadorSubCentrooeste::where('cpf', $user->cpf)->get();
+                    foreach ($coautores as $coautor) {
+                        if($coautor->cpf == $user->cpf){
+                            $submissao = SubmissaoRegionalCentrooeste::with(
+                                'coautorOrientadorSubCentrooeste',
+                                'divisao_tematica',
+                                )
+                            ->where('id', $coautor->submissao_id)
+                            ->first();
+
+                            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                                if(isset($submissao) &&  $submissao->inscricao){
+
+                                    $certificado['titulo'] = $submissao->titulo;                        
+                                    $certificado['categoria'] = $submissao->divisao_tematica->descricao;
+                                    $certificado['tipo'] = $submissao->tipo;
+                    
+                                    $certificado['coautores'][] = $submissao->inscricao->user->name;    
+                                }
+
+                                if(isset($submissao) && $submissao->coautorOrientadorSubCentrooeste){
+                                    foreach($submissao->coautorOrientadorSubCentrooeste as $coautor){
+                                        if($coautor->cpf != $user->cpf){
+                                            $certificado['coautores'][] = $coautor->nome_completo;
+                                        }
+                                    }
+                                }
+                                
+                                $regiao = 'centrooeste';
+                                $certificado['regiao'] = 'Centro-Oeste';
+                                $certificado['image'] = "background-image: url('https://www.sistemas.intercom.org.br/images/certificados/certificado-congressista-centrooeste.jpg');";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(in_array("", $certificado)){
+            return false;
+        }
+
+        if(Auth::user()->id == $user_id){
+            if($regiao == 'nordeste'){
+                $data = view('pdf.certificados.certificado_apresentacao_nordeste', compact('certificado'));
+            }
+            if($regiao == 'suldeste'){
+                $data = view('pdf.certificados.certificado_apresentacao_sudeste', compact('certificado'));
+            }
+
+            if($regiao == 'norte'){
+                $data = view('pdf.certificados.certificado_apresentacao_norte', compact('certificado'));
+            }
+
+            if($regiao == 'sul'){
+                $data = view('pdf.certificados.certificado_apresentacao_sul', compact('certificado'));
+            }
+
+            if($regiao == 'centrooeste'){
+                $data = view('pdf.certificados.certificado_apresentacao_centrooeste', compact('certificado'));
+            }
+
+            $options = new Options();
+            $options->set('isRemoteEnabled', TRUE);
+            $options->set("isPhpEnabled", true);
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($data);
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->render();
+            $fontMetrics = $dompdf->getFontMetrics();
+            $canvas = $dompdf->get_canvas();
+            $font = $fontMetrics->getFont('Courier');
+            $canvas->page_text(538, 818, "", $font, 8, array(0, 0, 0));
+
+            if (empty($output) || $output == null) {
+                $result = $dompdf->stream("certificado_apresentacao_expocom_{$user_id}_{$regiao}_R.pdf", array("Attachment" => false));
+            } else {
+                $result = $dompdf->output();
+            }
+            return $result;
+        }
     }
 
     public function certificado_parecerista_expocom($user_id){
@@ -1037,7 +1720,7 @@ class CertificadosController extends Controller
         }
 
         if(Auth::user()->id == $user_id){
-            $data = view('pdf.certificado_parecerista_expocom', compact('certificado'));
+            $data = view('pdf.certificados.certificado_parecerista_expocom', compact('certificado'));
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $options->set("isPhpEnabled", true);
@@ -1188,7 +1871,7 @@ class CertificadosController extends Controller
         }
 
         if(Auth::user()->id == $user_id){
-            $data = view('pdf.certificado_parecerista', compact('certificado'));
+            $data = view('pdf.certificados.certificado_parecerista', compact('certificado'));
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $options->set("isPhpEnabled", true);

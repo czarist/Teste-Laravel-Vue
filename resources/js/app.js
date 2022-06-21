@@ -353,6 +353,9 @@ import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/Avalia
 //GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM
 import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
 
+//GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM SEM VIDEO
+import AvaliadoExpocomSemVideoGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomSemVideoGrid.vue'
+
 //DASHBOARD
 import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
 
@@ -447,6 +450,9 @@ const app = new Vue({
 
         //GRID AVALIADO EXPOCOM (AUTOR DA SUBMISSAO)
         'submissao-expocom-grid':AvaliadoExpocomGrid,
+
+        //GRID AVALIADO EXPOCOM SEM VIDEO
+        'submissao-expocom-sem-video-grid':AvaliadoExpocomSemVideoGrid,
 
         //DASHBOARD
         'dashboard-page': DashboardPage,

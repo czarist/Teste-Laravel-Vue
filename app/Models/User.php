@@ -21,8 +21,25 @@ class User extends Authenticatable
         'is_user', 
         'is_associado', 
         'is_indicado_expocom_2022',
+
+        'is_coautor_nordeste_2022',
+        'is_coautor_norte_2022',
+        'is_coautor_sudeste_2022',
+        'is_coautor_sul_2022',
+        'is_coautor_centrooeste_2022',
+
         'is_coautor_nordeste_expo_2022',
+        'is_coautor_norte_expo_2022',
+        'is_coautor_sudeste_expo_2022',
+        'is_coautor_sul_expo_2022',
+        'is_coautor_centrooeste_expo_2022',
+
         'is_coautor_nordeste_expo_vencedor_2022',
+        'is_coautor_norte_expo_vencedor_2022',
+        'is_coautor_sudeste_expo_vencedor_2022',
+        'is_coautor_sul_expo_vencedor_2022',
+        'is_coautor_centrooeste_expo_vencedor_2022',
+
         'avaliou_trabalho_expo_2022',
         'avaliou_trabalho_dt_2022',
         'anuidade_2022', 
@@ -47,7 +64,6 @@ class User extends Authenticatable
         'celular',
         'sexo_id',
         'ativo',
-
     ];
 
     protected $hidden = [
@@ -295,6 +311,90 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getIsCoautorNordeste2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoautorOrientadorSubNordeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoRegionalNordestes::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorSudeste2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoautorOrientadorSubSudeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoRegionalSudeste::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorNorte2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoautorOrientadorSubNorte::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoRegionalNorte::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorSul2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoautorOrientadorSubSul::where('cpf', Auth::user()->cpf)->first();
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoRegionalSul::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorCentrooeste2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoautorOrientadorSubCentrooeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoRegionalCentrooeste::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getIsCoautorNordesteExpo2022Attribute(){
         if(Auth::user()){
             $coautor = CoauOriExpoSubNordeste::where('cpf', Auth::user()->cpf)->first();
@@ -312,12 +412,148 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getIsCoautorSudesteExpo2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubSudeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalSudeste::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorNorteExpo2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubNorte::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalNorte::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorSulExpo2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubSul::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalSul::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorCentrooesteExpo2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubCentrooeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalCentrooeste::select('id','apresentacao')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getIsCoautorNordesteExpoVencedor2022Attribute(){
         if(Auth::user()){
             $coautor = CoauOriExpoSubNordeste::where('cpf', Auth::user()->cpf)->first();
 
             if(isset($coautor) && !empty($coautor)){
                 $submissao = SubmissaoExpocomRegionalNordeste::select('id','apresentacao', 'vencedor')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorSudesteExpoVencedor2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubSudeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalSudeste::select('id','apresentacao', 'vencedor')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorNorteExpoVencedor2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubNorte::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalNorte::select('id','apresentacao', 'vencedor')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorSulExpoVencedor2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubSul::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalSul::select('id','apresentacao', 'vencedor')
+                    ->where('id', $coautor->submissao_id)
+                ->first();
+            }
+
+            if(isset($submissao) && !empty($submissao) && $submissao->apresentacao == 1 && $submissao->vencedor == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getIsCoautorCentrooesteExpoVencedor2022Attribute(){
+        if(Auth::user()){
+            $coautor = CoauOriExpoSubCentrooeste::where('cpf', Auth::user()->cpf)->first();
+
+            if(isset($coautor) && !empty($coautor)){
+                $submissao = SubmissaoExpocomRegionalCentrooeste::select('id','apresentacao', 'vencedor')
                     ->where('id', $coautor->submissao_id)
                 ->first();
             }

@@ -490,22 +490,22 @@ class ValidarApresentacaoController extends Controller
                     $regional->update(['presenca' => 1]);
                     Log::info('Regional Sul: '.$request->inscricao .' confirmado presença');
                 }
-                $submissao = SubmissaoRegionalSudeste::where('id', $request->submissao)->first();
+                $submissao = SubmissaoRegionalSul::where('id', $request->submissao)->first();
                 if($submissao && $submissao->apresentacao == 0){
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Sudeste: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Sul: '.$request->submissao .' confirmado apresentacao de trabalho');
                 }
 
                 $user = User::select('id', 'name', 'email', 'cpf')
                 ->with(
                     'todos_tipos:id,descricao',
-                    'regional_suldeste:id,user_id,regiao,ano,presenca',
-                    'regional_suldeste.submissaoMesa',
-                    'regional_suldeste.submissaoDt',
-                    'regional_suldeste.submissaoJunior',
-                    'regional_suldeste.submissaoMesa.avaliacao',
-                    'regional_suldeste.submissaoDt.avaliacao',
-                    'regional_suldeste.submissaoJunior.avaliacao',
+                    'regional_sul:id,user_id,regiao,ano,presenca',
+                    'regional_sul.submissaoMesa',
+                    'regional_sul.submissaoDt',
+                    'regional_sul.submissaoJunior',
+                    'regional_sul.submissaoMesa.avaliacao',
+                    'regional_sul.submissaoDt.avaliacao',
+                    'regional_sul.submissaoJunior.avaliacao',
                 )
                 ->whereId($request->user_id)
                 ->first();

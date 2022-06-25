@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class SubmissaoRegionalCentrooeste extends Model
+{
+    use SoftDeletes;
+
+    protected $fillable = [
+        'inscricao_id',
+        'avaliacao',
+        'apresentacao',
+        'vencedor',
+        'regiao',
+        'ciente',
+        'dt',
+        'tipo',
+        'titulo',
+        'palavra_chave_1',
+        'palavra_chave_2',
+        'palavra_chave_3',
+        'palavra_chave_4',
+        'palavra_chave_5',
+        'termo_autoria',
+        'autorizacao',
+        'link_trabalho'
+    ];
+
+    public function coautorOrientadorSubCentrooeste()
+    {
+        return $this->hasMany(CoautorOrientadorSubCentrooeste::class,  'submissao_id', 'id');
+    }
+    
+    public function avaliacao(){
+        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
+    }
+
+    public function inscricao(){
+        return $this->belongsTo(RegionalCentrooeste::class, 'inscricao_id', 'id');
+    }
+
+    public function divisao_tematica(){
+        return $this->belongsTo(DivisoesTematicas::class, 'dt', 'id');
+    }
+
+    public function divisao_tematica_jr(){
+        return $this->belongsTo(DivisoesTematicasJr::class, 'dt', 'id');
+    }
+
+}

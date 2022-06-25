@@ -130,5 +130,15 @@ class AcessoSeeder extends Seeder
                 'link' => 'financeiro/relatorios'
             ]
         );
+
+        Acesso::updateOrCreate(
+            ['id' => 14],
+            [
+                'id'  => 14,
+                'pagina' => 'Coordenador Nacional',
+                'link' => 'admin/coordenador/nacional'
+            ]
+        );
+
     }
 }

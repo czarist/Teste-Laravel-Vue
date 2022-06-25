@@ -28,6 +28,7 @@ class NacionalController extends Controller
                 'todos_relacoes_publicas:id,descricao',
                 'todos_producao_editorial:id,descricao',
                 'todos_radio_internet:id,descricao',
+                'todos_gps:id,descricao',
                 'enderecos',
                 'enderecos.municipio',
                 'enderecos.municipio.estado',
@@ -106,6 +107,7 @@ class NacionalController extends Controller
                     [
                         'user_id' => $user->id,
                         'instituicao_id' => $post['instituicao_id'],
+                        'titulacao_id' => $post['titulacao_id'],
                     ]
                 );
 
@@ -114,6 +116,7 @@ class NacionalController extends Controller
                     [
                         'user_id' => $user->id,
                         'instituicao_id' => $post['instituicao_id'],
+                        'titulacao_id' => $post['titulacao_id'],
                     ]
                 );    
             }
@@ -167,7 +170,6 @@ class NacionalController extends Controller
                 ]);
             }else{
                 $regional->update([
-                    'regiao' => 'nordeste',
                     'categoria_inscricao' => $post['titulacao_id'],
                     'ano' => date('Y'),
                     'guardador_sabado' => $post['guard_sab'],

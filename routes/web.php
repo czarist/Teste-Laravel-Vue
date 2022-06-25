@@ -4,11 +4,13 @@ use App\Http\Controllers\AssociadoController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\AvaliacaoAvaliadorController;
 use App\Http\Controllers\AvaliacaoAvaliadorExpocomController;
+use App\Http\Controllers\AvaliacaoNacionalController;
 use App\Http\Controllers\AvaliadorExpocomController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\CertificadosController;
 use App\Http\Controllers\ChatAvaliacaoController;
 use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\CoordenadorNacionalController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistribuicaoTipo123Controller;
@@ -51,6 +53,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidarApresentacaoController;
 use App\Http\Controllers\ValidarApresentacaoExpocomController;
 use App\Http\Controllers\ValidarPresencaController;
+use App\Models\AvaliacaoNacional;
+use App\Models\CoordenadorNacional;
 use App\Models\SubmissaoNacional;
 use Illuminate\Support\Facades\Route;
 
@@ -83,7 +87,13 @@ Route::group(['middleware' => 'auth'] , function() {
         Route::middleware(['roles:admin/coordenador'])->group(function () {
             Route::resource('coordenador', CoordenadorController::class)->except(['show', 'create', 'edit']);
             Route::get('coordenador/get', [CoordenadorController::class ,'get'])->name('coordenador.get');
+        });
+        
+        Route::middleware(['roles:admin/coordenador/nacional'])->group(function () {
+            Route::resource('coordenador_nacional', CoordenadorNacionalController::class)->except(['show', 'create', 'edit']);
+            Route::get('coordenador_nacional/get', [CoordenadorNacionalController::class ,'get'])->name('coordenador_nacional.get');
         });    
+
 
         Route::middleware(['roles:admin/titulacao'])->group(function () {
             Route::resource('titulacao', TitulacaoController::class)->except(['show', 'create', 'edit']);
@@ -179,6 +189,8 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::get('certificados/certificado_apresentacao_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_expocom_coautor'])->name('certificados.certificado_apresentacao_expocom_coautor');
     Route::get('certificados/certificado_vencedor_expocom_coautor/pdf/{user_id}/{regiao}', [CertificadosController::class ,'certificado_vencedor_expocom_coautor'])->name('certificados.certificado_vencedor_expocom_coautor');
     Route::get('certificados/certificado_apresentacao/pdf/{user}/{regiao}/{id}', [CertificadosController::class ,'certificado_apresentacao'])->name('certificados.apresentacao');
+    Route::get('certificados/certificado_apresentacao_coautor/pdf/{user}/{regiao}', [CertificadosController::class ,'certificado_apresentacao_coautor'])->name('certificados.apresentacao.coautor');
+
     Route::get('certificados/certificado_parecerista_expocom/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista_expocom'])->name('certificados.parecerista.expocom');
     Route::get('certificados/certificado_parecerista/pdf/{user_id}', [CertificadosController::class ,'certificado_parecerista'])->name('certificados.parecerista');
 
@@ -275,6 +287,13 @@ Route::group(['middleware' => 'auth'] , function() {
     Route::post('avaliacaoexpocom/avaliador/save', [DistribuicaoTipoExpocomController::class , 'avaliadorSave'])->name('avaliacaoexpocom.avaliador.save');
     Route::post('avaliacaoexpocom/coordenador/save', [DistribuicaoTipoExpocomController::class , 'coordenadorSave'])->name('avaliacaoexpocom.coordenador.save');
 
+    //AVALIACAO NACIONAL
+    Route::resource('avaliacao_nacional', AvaliacaoNacionalController::class)->except(['show', 'create', 'edit']);
+    Route::get('avaliacao_nacional/get', [AvaliacaoNacionalController::class ,'get'])->name('avaliacao_nacional.get');
+    Route::post('avaliacao_nacional/avaliador/save', [AvaliacaoNacionalController::class , 'avaliadorSave'])->name('avaliacao_nacional.avaliador.save');
+    Route::post('avaliacao_nacional/coordenador/save', [AvaliacaoNacionalController::class , 'coordenadorSave'])->name('avaliacao_nacional.coordenador.save');
+
+
     //GRID AVALIADOR TIPO 1,2,3
     Route::resource('avaliador', AvaliacaoAvaliadorController::class)->except(['show', 'create', 'edit']);
     Route::get('avaliador/get', [AvaliacaoAvaliadorController::class ,'get'])->name('avaliador.get');
@@ -339,6 +358,7 @@ Route::prefix('get')->group(function () {
     Route::get('userlogado', [GetController::class, 'userlogado'])->name('get.logado.user');
     Route::get('users', [GetController::class, 'getUsers'])->name('get.user');
     Route::get('tiposusuarios', [GetController::class, 'tiposUsuarios'])->name('get.tiposUsuarios');
+    Route::get('tipo_isencao', [GetController::class, 'tipo_isencao'])->name('get.tipo_isencao');
     Route::get('acessos', [GetController::class, 'acessos'])->name('get.acessos');
     Route::get('estados', [GetController::class, 'getEstados'] )->name('get.estados');
     Route::get('municipios/{estado_id}', [GetController::class, 'getMunicipios'])->name('get.municipios');
@@ -390,6 +410,7 @@ Route::get('cronjob/verificar_tipos_pagamentos_norte', [CronController::class, '
 Route::get('cronjob/verificar_tipos_pagamentos_nordeste', [CronController::class, 'verificar_tipos_pagamentos_nordeste'])->name('cronjob.verificar_tipos_pagamentos_nordeste');
 Route::get('cronjob/verificar_tipos_pagamentos_centro_oeste', [CronController::class, 'verificar_tipos_pagamentos_centro_oeste'])->name('cronjob.verificar_tipos_pagamentos_centro_oeste');
 Route::get('cronjob/verificar_tipos_pagamentos_nacional', [CronController::class, 'verificar_tipos_pagamentos_nacional'])->name('cronjob.verificar_tipos_pagamentos_nacional');
+Route::get('cronjob/teste', [CronController::class, 'teste'])->name('cronjob.teste');
 
 
 Route::prefix('indicacao')->group(function(){

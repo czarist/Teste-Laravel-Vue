@@ -19,6 +19,7 @@ class UserController extends Controller
         return User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
                         ->with('acessos:id,pagina,link',
                                 'todos_tipos:id,descricao',
+                                'todos_tipos_isencao:id,descricao',
                                 'enderecos',
                                 'enderecos.municipio',
                                 'enderecos.municipio.estado',
@@ -88,9 +89,54 @@ class UserController extends Controller
         $post = $request->all();
 
         try { 
-            $post = $request->all();
-            $user = User::findOrFail($post['id']);
+
+            $user = User::with(
+                'todos_tipos:id,descricao',
+                'todos_tipos_isencao:id,descricao',    
+                'associado', 
+                'nacional', 
+                'regional_sul', 
+                'regional_centrooeste', 
+                'regional_nordeste', 
+                'regional_norte', 
+                'regional_suldeste'
+            )
+            ->findOrFail($post['id']);
+
+            if($user && $user->associado != null){
+                if($user && $user->nacional && $user->nacional->categoria_inscricao && $user->nacional->categoria_inscricao != null){
+                    $user->nacional->categoria_inscricao = $post['titulacao_id'];
+                    $user->nacional->save();
+                }
+
+                if($user && $user->regional_sul && $user->regional_sul->categoria_inscricao && $user->regional_sul->categoria_inscricao != null){
+                    $user->regional_sul->categoria_inscricao  = $post['titulacao_id'];
+                    $user->regional_sul->save();
+                }
+
+                if($user && $user->regional_centrooeste && $user->regional_centrooeste->categoria_inscricao && $user->regional_centrooeste->categoria_inscricao != null){
+                    $user->regional_centrooeste->categoria_inscricao  = $post['titulacao_id'];
+                    $user->regional_centrooeste->save();
+                }
+
+                if($user && $user->regional_nordeste && $user->regional_nordeste->categoria_inscricao && $user->regional_nordeste->categoria_inscricao != null){
+                    $user->regional_nordeste->categoria_inscricao = $post['titulacao_id'];
+                    $user->regional_nordeste->save();
+                }
+
+                if($user && $user->regional_norte && $user->regional_norte->categoria_inscricao && $user->regional_norte->categoria_inscricao != null){
+                    $user->regional_norte->categoria_inscricao = $post['titulacao_id'];
+                    $user->regional_norte->save();
+                }
+
+                if($user && $user->regional_suldeste && $user->regional_suldeste->categoria_inscricao && $user->regional_suldeste->categoria_inscricao != null){
+                    $user->regional_suldeste->categoria_inscricao = $post['titulacao_id'];
+                    $user->regional_suldeste->save();
+                }
+            }
+
             $endereco = Endereco::whereUserId($user->id)->first();
+
             $associado = Associado::whereUserId($user->id)->first();   
 
             if(isset($post['password']) && !empty($post['password'])) {
@@ -125,24 +171,24 @@ class UserController extends Controller
             {
                 $endereco = Endereco::create([
                     'user_id' => $user->id,
-                    'logradouro' => $post['enderecos']['logradouro'],
-                    'numero' => $post['enderecos']['numero'],
-                    'complemento' => $post['enderecos']['complemento'],
-                    'bairro' => $post['enderecos']['bairro'],
-                    'municipio_id' => $post['enderecos']['municipio']['id'],
-                    'cep' => $post['enderecos']['cep'],
-                    'pais_id' => $post['enderecos']['pais'],
+                    'logradouro' => $post['enderecos']['logradouro'] ?? null,
+                    'numero' => $post['enderecos']['numero'] ?? null,
+                    'complemento' => $post['enderecos']['complemento'] ?? null,
+                    'bairro' => $post['enderecos']['bairro'] ?? null,
+                    'municipio_id' => $post['enderecos']['municipio']['id'] ?? null,
+                    'cep' => $post['enderecos']['cep'] ?? null,
+                    'pais_id' => $post['enderecos']['pais'] ?? null,
                 ]);
         
             }else {
                 $endereco->update([
-                    'logradouro' => $post['enderecos']['logradouro'],
-                    'numero' => $post['enderecos']['numero'],
-                    'complemento' => $post['enderecos']['complemento'],
-                    'bairro' => $post['enderecos']['bairro'],
-                    'municipio_id' => $post['enderecos']['municipio']['id'],
-                    'cep' => $post['enderecos']['cep'],
-                    'pais_id' => $post['enderecos']['pais'],
+                    'logradouro' => $post['enderecos']['logradouro'] ?? null,
+                    'numero' => $post['enderecos']['numero'] ?? null,
+                    'complemento' => $post['enderecos']['complemento'] ?? null,
+                    'bairro' => $post['enderecos']['bairro'] ?? null,
+                    'municipio_id' => $post['enderecos']['municipio']['id'] ?? null,
+                    'cep' => $post['enderecos']['cep'] ?? null,
+                    'pais_id' => $post['enderecos']['pais'] ?? null,
                 ]);
             }
 
@@ -168,11 +214,17 @@ class UserController extends Controller
                 ]);    
             }
 
+            if($post['todos_isencoes_id'] != null && $user && $user->todos_tipos && !in_array(7, $user->todos_tipos->toArray())){
+                $post['todos_tipos_id'][] = 11;
+            }
+
             $user->todos_tipos()->sync($post['todos_tipos_id']);
+            $user->todos_tipos_isencao()->sync($post['todos_isencoes_id']);
             $user->acessos()->sync($post['acessos']);
 
             $user->load('acessos:id,pagina,link',
             'todos_tipos:id,descricao',
+            'todos_tipos_isencao:id,descricao',
             'enderecos',
             'enderecos.municipio',
             'enderecos.municipio.estado',

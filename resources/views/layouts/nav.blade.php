@@ -27,6 +27,7 @@
             </li>
             @if (Auth::user()->is_root || array_intersect([
                 'admin/coordenador' ,
+                'admin/coordenador/nacional',
                 'admin/usuarios', 
                 'admin/associado', 
                 'admin/instituicao', 
@@ -86,8 +87,13 @@
                         @endif
 
                         @if (Auth::user()->is_root || in_array('admin/coordenador', Auth::user()->roles()))
-                            <li> <a href="{{ route('coordenador.index') }}"> Cadastro Coordenador </a> </li>
+                            <li> <a href="{{ route('coordenador.index') }}"> Coordenador Regional</a> </li>
                         @endif
+
+                        @if (Auth::user()->is_root || in_array('admin/coordenador/nacional', Auth::user()->roles()))
+                            <li> <a href="{{ route('coordenador_nacional.index') }}"> Coordenador Nacional </a> </li>
+                        @endif
+
 
                         @if (Auth::user()->is_root || in_array('admin/sexo', Auth::user()->roles()))
                             <li> <a href="{{ route('sexo.index') }}"> Gêneros </a> </li>

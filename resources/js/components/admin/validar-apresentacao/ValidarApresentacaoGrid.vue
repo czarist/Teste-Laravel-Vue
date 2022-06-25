@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
         <h5 class="col-12 d-flex justify-content-between">
-            Validar Apresetação de Trabalho 
+            Validar Apresetação de Trabalho - DT, IJ e MESA
         </h5>
         <div class="col-12">
             <div class="card">

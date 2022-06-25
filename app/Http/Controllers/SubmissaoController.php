@@ -199,7 +199,7 @@ class SubmissaoController extends Controller
         }
 
         if(Auth::user()->id == $submissao->inscricao->user->id){
-            $data = view('pdf.carta_aceite', compact('trabalho'));
+            $data = view('pdf.carta_aceite.carta_aceite', compact('trabalho'));
             $options = new Options();
             $options->set('isRemoteEnabled', TRUE);
             $options->set("isPhpEnabled", true);

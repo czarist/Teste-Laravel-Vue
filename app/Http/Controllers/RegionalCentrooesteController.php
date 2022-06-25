@@ -94,6 +94,7 @@ class RegionalCentrooesteController extends Controller
                         [
                             'user_id' => $user->id,
                             'instituicao_id' => $post['instituicao_id'],
+                            'titulacao_id' => $post['titulacao_id'],
                         ]
                     );
 
@@ -102,6 +103,7 @@ class RegionalCentrooesteController extends Controller
                         [
                             'user_id' => $user->id,
                             'instituicao_id' => $post['instituicao_id'],
+                            'titulacao_id' => $post['titulacao_id'],
                         ]
                     );    
                 }

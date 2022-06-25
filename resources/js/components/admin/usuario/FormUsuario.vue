@@ -272,7 +272,6 @@
                         <b-form-select
                             :disabled="loading"
                             name="instituicao"
-                            v-validate="{ required: true }"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`instituicao`)}]"
                             size="sm"
                             data-vv-as="instituição"
@@ -295,7 +294,6 @@
                         <b-form-select
                             :disabled="loading"
                             name="titulacao"
-                            v-validate="{ required: true }"
                             :class="['form-control form-control-sm', {'is-invalid': errors.has(`titulacao`)}]"
                             size="sm"
                             data-vv-as="titulação"
@@ -419,7 +417,6 @@
                                 <b-form-input
                                     size="sm"
                                     :name="`numero`"
-                                    v-validate="{ required: true }"
                                     :class="[
                                     'form-control form-control-sm',
                                     { 'is-invalid': errors.has(`numero`) },
@@ -542,7 +539,6 @@
                                 'form-control form-control-sm',
                                 { 'is-invalid': errors.has(`pais`) },
                                 ]"
-                                v-validate="{ required: true }"
                                 aria-describedby="input-1-live-feedback"
                                 data-vv-as="País"
                             ></b-form-input>
@@ -562,26 +558,42 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <label for="todos_isencoes_id">Tipo de Isenção Nacional:</label><br />
+                        <div class="btn-group" style="margin-bottom:-10px;">
+                            <div class="switch-field" >
+                                <span v-for="(isencao_tipo, index) in tipos_isencoes" :key="index">
+                                    <input
+                                        :disabled="loading"
+                                        :id="`todos_isencoes_${index}`"
+                                        class="form-control radio-inline radio_lista radio"
+                                        name="tipos_isencoes[]"
+                                        type="checkbox"
+                                        :value="isencao_tipo.id"
+                                        v-model="post.todos_isencoes_id"
+                                    ><label :key="`label_${index}`" :for="`todos_isencoes_${index}`" class="mr-2">{{ isencao_tipo.descricao }}</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
                         <label for="todos_tipos_id">Tipo de Acesso:</label><br />
                         <div class="btn-group" style="margin-bottom:-10px;">
                             <div class="switch-field" >
-                                <v-select
-                                    :disabled="loading"
-                                    style="background:#fff;"
-                                    class="flex-fill"
-                                    :class="{'v-select-invalid': errors.has('todos_tipos_id')}"
-                                    :options="usersTypes"
-                                    :reduce="userType => userType.id"
-                                    :selectOnTab="true"
-                                    v-model="post.todos_tipos_id"
-                                    label="descricao"
-                                    :name="`todos_tipos_id`"
-                                    data-vv-as="Tipo de Acesso"
-                                    multiple
-                                >
-                                </v-select>
-                                <span v-if="errors.has(`todos_tipos_id`)" class="v-select-invalid-feedback ml-3">
-                                    {{ errors.first(`todos_tipos_id`) }}
+                                <span v-for="(userType, index) in usersTypes" :key="index">
+                                    <input
+                                        :disabled="loading"
+                                        :id="`todos_tipos_${index}`"
+                                        class="form-control radio-inline radio_lista radio"
+                                        name="usersTypes[]"
+                                        type="checkbox"
+                                        :value="userType.id"
+                                        v-model="post.todos_tipos_id"
+                                    ><label :key="`label_${index}`" :for="`todos_tipos_${index}`" class="mr-2">{{ userType.descricao }}</label>
                                 </span>
                             </div>
                         </div>
@@ -593,23 +605,16 @@
                 <div class="col-12">
                     <label for="ativo">Telas Liberadas:</label><br />
                     <div class="switch-field-one" >
-                        <v-select
-                            :disabled="loading"
-                            style="background:#fff;"
-                            class="flex-fill"
-                            :class="{'v-select-invalid': errors.has('acessos')}"
-                            :options="acessos"
-                            :reduce="acesso => acesso.id"
-                            :selectOnTab="true"
-                            v-model="post.acessos"
-                            label="pagina"
-                            :name="`acessos[]`"
-                            data-vv-as="Acessos Permitidos"
-                            multiple
-                        >
-                        </v-select>
-                        <span v-if="errors.has(`acessos`)" class="v-select-invalid-feedback ml-3">
-                            {{ errors.first(`acessos`) }}
+                        <span v-for="(acesso, index) in acessos" :key="index">
+                            <input
+                                :disabled="loading"
+                                :id="`ace_${index}`"
+                                class="form-control radio-inline radio_lista radio"
+                                name="acessos[]"
+                                type="checkbox"
+                                :value="acesso.id"
+                                v-model="post.acessos"
+                            ><label :key="`label_${index}`" :for="`ace_${index}`" class="mr-2">{{ acesso.pagina }}</label>
                         </span>
                     </div>
                 </div>
@@ -648,6 +653,7 @@
                 municipios: [],
                 generos: [],
                 usersTypes: [],
+                tipos_isencoes: [],
                 location: null,
                 verify: null,
                 paises: [],
@@ -675,6 +681,7 @@
                     numero_socio: null,
                     obs_isentamos: null,
                     todos_tipos_id: 3,
+                    todos_isencoes_id: null,
                     ativo: 0,
                     acessos: [],
                     enderecos: {
@@ -700,26 +707,26 @@
             selected() {
                 if(this.selected) {
                     this.$forceUpdate()
-                    this.post.id = this.selected.id
-                    this.post.name = this.selected.name
-                    this.post.email = this.selected.email
+                    this.post.id = this.selected && this.selected.id
+                    this.post.name = this.selected && this.selected.name
+                    this.post.email = this.selected && this.selected.email
                     this.post.todos_tipos_id = this.filterTipoUser
-                    this.post.ativo = this.selected.ativo
+                    this.post.todos_isencoes_id = this.filterTipoIsencao
+                    this.post.ativo = this.selected && this.selected.ativo
                     this.post.acessos = this.access
                     this.post._method = 'put'
-                    this.post.data_nascimento = this.selected.data_nascimento
-                    this.post.orgao_expedidor = this.selected.orgao_expedidor
-                    this.post.cpf = this.selected.cpf
-                    this.post.rg = this.selected.rg
-                    this.post.telefone = this.selected.telefone
-                    this.post.celular = this.selected.celular
-                    this.post.sexo_id = this.selected.sexo_id
-                    this.post.anuidade = this.selected.associado.anuidade
-                    this.post.numero_socio = this.selected.associado.numero_socio
-                    this.post.obs_isentamos = this.selected.associado.obs_isentamos
+                    this.post.data_nascimento = this.selected && this.selected.data_nascimento
+                    this.post.orgao_expedidor = this.selected && this.selected.orgao_expedidor
+                    this.post.cpf = this.selected && this.selected.cpf
+                    this.post.rg = this.selected && this.selected.rg
+                    this.post.telefone = this.selected && this.selected.telefone
+                    this.post.celular = this.selected && this.selected.celular
+                    this.post.sexo_id = this.selected && this.selected.sexo_id
+                    this.post.anuidade = this.selected && this.selected.associado ? this.selected.associado.anuidade : null
+                    this.post.numero_socio = this.selected && this.selected.associado ? this.selected.associado.numero_socio : null
+                    this.post.obs_isentamos = this.selected && this.selected.associado ? this.selected.associado.obs_isentamos : null
                     this.post.instituicao_id = this.selected.associado ? this.selected.associado.instituicao_id : null
                     this.post.titulacao_id = this.selected.associado ? this.selected.associado.titulacao_id : null
-
 
                     this.post.enderecos = {
                         id: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].id : null,
@@ -729,8 +736,8 @@
                         complemento: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].complemento : null,
                         bairro: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].bairro : null,
                         pais: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].pais_id : null,
-                        municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio : null,
-                        estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] ? this.selected.enderecos[0].municipio.estado: null,
+                        municipio: this.selected && this.selected.enderecos && this.selected.enderecos[0] && this.selected.enderecos[0].municipio ? this.selected.enderecos[0].municipio : null,
+                        estado: this.selected && this.selected.enderecos && this.selected.enderecos[0] && this.selected.enderecos[0].municipio ? this.selected.enderecos[0].municipio.estado: null,
                     }
                 } else {
                     this.clear()
@@ -751,7 +758,11 @@
                     ? this.selected.todos_tipos.map(res => res.id) 
                     : []
             },
-
+            filterTipoIsencao() {
+                return this.selected && this.selected.todos_tipos_isencao 
+                    ? this.selected.todos_tipos_isencao.map(res => res.id) 
+                    : []
+            },
             passRequired() {
                 return this.post && this.post.id ? false : true
             },
@@ -863,6 +874,7 @@
                 this.post.name = null
                 this.post.email = null
                 this.post.todos_tipos_id = 3
+                this.post.todos_isencoes_id = null
                 this.post.ativo = 0
                 this.post.acessos = [],
                 this.post._method = 'post'
@@ -897,6 +909,11 @@
             axios.get(process.env.MIX_BASE_URL+'/get/tiposusuarios').then(res => {
                 this.usersTypes = res.data
             })
+
+            axios.get(process.env.MIX_BASE_URL+'/get/tipo_isencao').then(res => {
+                this.tipos_isencoes = res.data
+            })
+
 
             axios.get(process.env.MIX_BASE_URL+'/get/acessos').then(res => {
                

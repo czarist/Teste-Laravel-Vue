@@ -1211,6 +1211,7 @@ class CronController extends Controller
     }
 
     public function verificar_tipos_pagamentos_nacional(){
+
         $users = User::select('id')
             ->with('todos_tipos', 'todos_tipos_pagamentos', 'vendas', 'vendas.vendas_item', 'vendas.pagamento')
             ->get()
@@ -1232,7 +1233,7 @@ class CronController extends Controller
                                                 $todos_tipos_pagamentos_3 = $load_user_3->todos_tipos_pagamentos->toArray();
                                                 $verificar_tipo_3_0 = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos_3, 'nome'));
                                                 $verificar_tipo_3_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos_3, 'nome'));
-                                                $verificar_tipo_3_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos_3, 'nome'));
+                                                $verificar_tipo_3_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos_3, 'nome'));
                                                 if($verificar_tipo_3_0 === false ){
                                                     if($verificar_tipo_3_1 === false){
                                                         if($verificar_tipo_3_2 === false){
@@ -1265,7 +1266,7 @@ class CronController extends Controller
                                                         $todos_tipos_pagamentos = $load_user->todos_tipos_pagamentos->toArray();
                                                         $verificar_tipo = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
                                                         $verificar_tipo_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
-                                                        $verificar_tipo_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
+                                                        $verificar_tipo_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
                     
                                                         if($verificar_tipo === false ){
                                                             if($verificar_tipo_1 === false){
@@ -1297,7 +1298,7 @@ class CronController extends Controller
                                 $todos_tipos_pagamentos_2 = $load_user_2->todos_tipos_pagamentos->toArray();
                                 $verificar_tipo_2_0 = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
                                 $verificar_tipo_2_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
-                                $verificar_tipo_2_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
+                                $verificar_tipo_2_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
 
                                 if($verificar_tipo_2_0 === false){
                                     if($verificar_tipo_2_1 === false){
@@ -1320,7 +1321,7 @@ class CronController extends Controller
                                         $todos_tipos_pagamentos = $load_user->todos_tipos_pagamentos->toArray();
                                         $verificar_tipo = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
                                         $verificar_tipo_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
-                                        $verificar_tipo_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
+                                        $verificar_tipo_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
 
                                         if($verificar_tipo === false ){
                                             if($verificar_tipo_1 === false){
@@ -1354,7 +1355,7 @@ class CronController extends Controller
                                                 $todos_tipos_pagamentos = $load_user->todos_tipos_pagamentos->toArray();
                                                 $verificar_tipo = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
                                                 $verificar_tipo_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
-                                                $verificar_tipo_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos, 'nome'));
+                                                $verificar_tipo_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos, 'nome'));
             
                                                 if($verificar_tipo === false ){
                                                     if($verificar_tipo_1 === false){
@@ -1384,7 +1385,7 @@ class CronController extends Controller
                                 $todos_tipos_pagamentos_2 = $load_user_2->todos_tipos_pagamentos->toArray();
                                 $verificar_tipo_2 = array_search("nacional_pago_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
                                 $verificar_tipo_2_1 = array_search("nacional_usuario_isento_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
-                                $verificar_tipo_2_2 = array_search("nacional_associado_isento_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
+                                $verificar_tipo_2_2 = array_search("nacional_associado_pago_2022", array_column($todos_tipos_pagamentos_2, 'nome'));
 
                                 if($verificar_tipo_2 === false ){
                                     if($verificar_tipo_2_1 === false){
@@ -1403,4 +1404,51 @@ class CronController extends Controller
             });
     }
 
+    public function teste(){
+        $users = User::with(
+            'associado', 
+            'nacional', 
+            'regional_sul', 
+            'regional_centrooeste', 
+            'regional_nordeste', 
+            'regional_norte', 
+            'regional_suldeste'
+        )
+        ->get();
+
+        foreach($users as $user){
+            if($user && $user->associado != null){
+                if($user && $user->nacional && $user->nacional->categoria_inscricao && $user->nacional->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->nacional->categoria_inscricao;
+                    $user->associado->save();
+                }
+
+                if($user && $user->regional_sul && $user->regional_sul->categoria_inscricao && $user->regional_sul->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->regional_sul->categoria_inscricao;
+                    $user->associado->save();
+                }
+
+                if($user && $user->regional_centrooeste && $user->regional_centrooeste->categoria_inscricao && $user->regional_centrooeste->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->regional_centrooeste->categoria_inscricao;
+                    $user->associado->save();
+                }
+
+                if($user && $user->regional_nordeste && $user->regional_nordeste->categoria_inscricao && $user->regional_nordeste->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->regional_nordeste->categoria_inscricao;
+                    $user->associado->save();
+                }
+
+                if($user && $user->regional_norte && $user->regional_norte->categoria_inscricao && $user->regional_norte->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->regional_norte->categoria_inscricao;
+                    $user->associado->save();
+                }
+
+                if($user && $user->regional_suldeste && $user->regional_suldeste->categoria_inscricao && $user->regional_suldeste->categoria_inscricao != null){
+                    $user->associado->titulacao_id = $user->regional_suldeste->categoria_inscricao;
+                    $user->associado->save();
+                }
+            }
+        }
+
+    }
 }

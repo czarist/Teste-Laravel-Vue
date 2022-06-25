@@ -333,8 +333,14 @@ import SubmissaoExpocomCentrooeste from './components/regionais/centrooeste/Subm
 //CADASTRO COORDENADOR 
 import CoordenadorGrid from './components/admin/coordenador/CoordenadorGrid.vue'
 
+//CADASTRO COORDENADOR 
+import CoordenadorNacionalGrid from './components/admin/coordenador_nacional/CoordenadorNacionalGrid.vue'
+
 //AVALIACAO DE TRABALHOS
 import AvaliacaoGrid from './components/regionais/avaliacao/AvaliacaoGrid.vue'
+
+//AVALIACAO NACIONAL
+import AvalicaoNacionalGrid from './components/nacional/avaliacao/AvaliacaoNacionalGrid.vue'
 
 //AREA DO AVALIADOR
 import AvaliadorGrid from './components/regionais/avaliador/AvaliadorGrid.vue'
@@ -352,6 +358,9 @@ import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/Avalia
 
 //GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM
 import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
+
+//GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM SEM VIDEO
+import AvaliadoExpocomSemVideoGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomSemVideoGrid.vue'
 
 //DASHBOARD
 import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
@@ -434,6 +443,9 @@ const app = new Vue({
         //CADASTRO COORDENADOR 
         'coordenador-grid': CoordenadorGrid,
 
+        //CADASTRO COORDENADOR NACIONAL
+        'coordenador-nacional-grid': CoordenadorNacionalGrid,
+
         //AVALIACAO DE TRABALHOS
         'avaliacao-grid':AvaliacaoGrid,
         'avaliador-grid':AvaliadorGrid,
@@ -442,11 +454,17 @@ const app = new Vue({
         'avaliacao-expocom-grid':AvaliacaoExpocomGrid,
         'avaliador-expocom-grid':AvaliadorExpocomGrid,        
 
+        //AVALIACAO NACIONAL
+        'avaliacao-nacional-grid':AvalicaoNacionalGrid,
+
         //GRID AVALIADO (AUTOR DA SUBMISSAO)
         'submissao-grid':AvaliadoGrid,
 
         //GRID AVALIADO EXPOCOM (AUTOR DA SUBMISSAO)
         'submissao-expocom-grid':AvaliadoExpocomGrid,
+
+        //GRID AVALIADO EXPOCOM SEM VIDEO
+        'submissao-expocom-sem-video-grid':AvaliadoExpocomSemVideoGrid,
 
         //DASHBOARD
         'dashboard-page': DashboardPage,

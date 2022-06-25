@@ -7,62 +7,76 @@ use Illuminate\Database\Seeder;
 
 class TitulacaoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Titulacao::updateOrCreate(
             ['id'=>1],
             ['id'=>1,
-                'titulacao' => 'Mestrando',
+                'titulacao' => 'Estudante de Graduação',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>2],
             ['id'=>2,
-                'titulacao' => 'PosDoutor',
+                'titulacao' => 'Bacharel',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>3],
             ['id'=>3,
-                'titulacao' => 'Doutorando',
+                'titulacao' => 'Livre Docente',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>4],
             ['id'=>4,
-                'titulacao' => 'Doutor',
+                'titulacao' => 'Mestrando',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>5],
             ['id'=>5,
-                'titulacao' => 'Bacharel',
+                'titulacao' => 'Doutorando',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>6],
             ['id'=>6,
-                'titulacao' => 'Especialista',
+                'titulacao' => 'Mestre',
             ]
         );
 
         Titulacao::updateOrCreate(
             ['id'=>7],
             ['id'=>7,
-                'titulacao' => 'Mestre',
+                'titulacao' => 'Doutor',
             ]
         );
 
+        Titulacao::updateOrCreate(
+            ['id'=>8],
+            ['id'=>8,
+                'titulacao' => 'Cursando Especialização',
+            ]
+        );
 
+        Titulacao::updateOrCreate(
+            ['id'=>9],
+            ['id'=>9,
+                'titulacao' => 'Especialista',
+            ]
+        );
+
+        Titulacao::updateOrCreate(
+            ['id'=>10],
+            ['id'=>10,
+                'titulacao' => 'Licenciado',
+            ]
+        );
     }
 }

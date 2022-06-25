@@ -21,6 +21,7 @@ use App\Models\PagSeguroTipoStatus;
 use App\Models\Produto;
 use App\Models\Sexo;
 use App\Models\Tipo;
+use App\Models\TipoIsencao;
 use App\Models\Titulacao;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -54,12 +55,17 @@ class GetController extends Controller
     {
         return $user->select('id','instituicao', 'sigla_instituicao')->orderBy('instituicao')->get();
     }
-
     
     public function tiposUsuarios(Tipo $tipoUser)
     {
         return $tipoUser->select('descricao', 'id')->orderBy('descricao')->get();
     }
+
+    public function tipo_isencao(TipoIsencao $tipo_isencao)
+    {
+        return $tipo_isencao->select('descricao', 'id')->orderBy('descricao')->get();
+    }
+
 
     public function acessos(Acesso $acesso)
     {

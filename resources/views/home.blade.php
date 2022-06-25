@@ -762,6 +762,9 @@
                         <div class="d-grid gap-2 text-center">
 
                             @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo == "Expocom")
+
+                                <h5 class="text-center">Regional - Expocom</h5>
+
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',1) }}">Distribuição de trabalhos para avaliadores - Expocom - Sul</a>   
                                 
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacaoexpocom.view',2) }}">Distribuição de trabalhos para avaliadores - Expocom - Nordeste</a>                                
@@ -777,11 +780,17 @@
                             @endif
 
                             @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo != "Expocom")
+                                <h5 class="text-center">Regional - DT, IJ e MESA</h5>
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacao.index') }}">Distribuição de trabalhos para avaliadores - DT, IJ e MESA</a>
-
                                 <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao.index') }}">Validar Apresentação de Trabalhos e Vencedor</a> 
-
                             @endif
+
+                            @if (Auth::user()->nacional && Auth::user()->nacional->tipo = 2)
+                                <h5 class="text-center">Nacional Intercom Júnior</h5>
+                                <a class="btn btn-primary m-1" href="{{ route('avaliacao_nacional.index') }}">Avaliação de trabalho - Nacional</a>
+                                <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao-nacional.index') }}">Validar Apresentação de Trabalhos e Vencedor</a> 
+                            @endif
+
                         </div>
                     </div>
                     <div class="modal-footer">

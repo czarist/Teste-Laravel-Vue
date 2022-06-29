@@ -14,6 +14,10 @@ class CoauOriExpoSubSul extends Model
         'nome_completo',
         'cpf',
         'categoria',
-        'curso_coautor'
+        'curso_coautor',
     ];
+
+    public function submissao(){
+        return $this->hasOne(SubmissaoExpocomRegionalSul::class, 'id', 'submissao_id');
+    }
 }

@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Categoria;
-use App\Models\DivisoesTematicasJr;
-use App\Models\PagSeguroTipoFrete;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -38,6 +35,5 @@ class DatabaseSeeder extends Seeder
         // $this->call(CategoriaRadioInternetSeeder::class);
         // $this->call(CategoriaRelacoesPublicasSeeder::class);
         // $this->call(ProdutosRegionaisSeeder::class);
-        
     }
 }

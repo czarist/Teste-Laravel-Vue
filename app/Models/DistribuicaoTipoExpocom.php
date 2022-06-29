@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DistribuicaoTipoExpocom extends Model
 {
@@ -34,59 +34,71 @@ class DistribuicaoTipoExpocom extends Model
         'status_coordenador',
         'justificativa_coordenador',
         'edit',
-        'media_final'
+        'media_final',
     ];
 
-    public function avaliador_1_obj(){
+    public function avaliador_1_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_1');
     }
 
-    public function avaliador_2_obj(){
+    public function avaliador_2_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_2');
     }
 
-    public function avaliador_3_obj(){
+    public function avaliador_3_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_3');
     }
 
-    public function submissaoNordeste(){
+    public function submissaoNordeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalNordeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoSul(){
+    public function submissaoSul()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalSul::class, 'avaliacao', 'id');
     }
 
-    public function submissaoSudeste(){
+    public function submissaoSudeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalSudeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoCentroOeste(){
+    public function submissaoCentroOeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalCentrooeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoNorte(){
+    public function submissaoNorte()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalNorte::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomNordeste(){
+    public function submissaoExpocomNordeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalNordeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomSul(){
+    public function submissaoExpocomSul()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalSul::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomSudeste(){
+    public function submissaoExpocomSudeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalSudeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomCentrooeste(){
+    public function submissaoExpocomCentrooeste()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalCentrooeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoExpocomNorte(){
+    public function submissaoExpocomNorte()
+    {
         return $this->hasOne(SubmissaoExpocomRegionalNorte::class, 'avaliacao', 'id');
     }
-
 }

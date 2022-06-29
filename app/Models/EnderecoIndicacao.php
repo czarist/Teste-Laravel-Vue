@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\User;
 
 class EnderecoIndicacao extends Model
 {
@@ -26,5 +25,4 @@ class EnderecoIndicacao extends Model
     {
         return $this->belongsTo(Municipio::class);
     }
-
 }

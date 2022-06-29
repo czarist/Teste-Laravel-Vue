@@ -124,22 +124,21 @@
                                     <td class="align-middle text-center " style="font-size: 11px !important;">{{ find_dt(registro) }}</td>
                                     <td class="align-middle text-center " style="font-size: 11px !important;">
                                         <div v-if="registro && registro.avaliacao">                       
-
-                                            {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1_obj ? registro.avaliacao.avaliador_1_obj.name : "NI" }}<br>
-                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_2_obj ? registro.avaliacao.avaliador_2_obj.name : "NI" }}<br>
-                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_3_obj ? registro.avaliacao.avaliador_3_obj.name : "NI" }}
+                                            {{  registro && registro.avaliacao && registro.avaliacao.avaliador_1 ? registro.avaliacao.avaliador_1.name : "NI" }}<br>
+                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_2 ? registro.avaliacao.avaliador_2.name : "NI" }}<br>
+                                            {{ registro && registro.avaliacao && registro.avaliacao.avaliador_3 ? registro.avaliacao.avaliador_3.name : "NI" }}
                                         </div>
+                                        <div v-else>Sem  Avaliador</div>
                                     </td>
                                     <td class="align-middle text-center" style="font-size: 11px !important;">
-                                        <div>                                    
+                                        <div v-if="registro && registro.avaliacao">                       
                                             {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_1 : "NI" }}<br>
                                             {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_2 : "NI" }}<br>
                                             {{ registro && registro.avaliacao ? registro.avaliacao.status_avaliador_3 : "NI" }}<br>
                                         </div>    
-
-
+                                        <div v-else>Sem  Status</div>
                                     </td>
-                                    <td class="align-middle text-center" style="font-size: 11px !important;">{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "NI" }}</td>
+                                    <td class="align-middle text-center" style="font-size: 11px !important;">{{ registro && registro.avaliacao ? registro.avaliacao.status_coordenador : "Sem Coordenador" }}</td>
                                     <td class="align-middle text-center" >
                                         <div v-if="registro && registro.link_trabalho">
                                                 <svg 
@@ -225,6 +224,7 @@
                                                 class: 'tooltip-custom tooltip-arrow'
                                                 }"
                                                 title="Indicar Avaliadores"
+                                                :disabled="loading"
                                                 @click="Indicar(registro)"
                                             >Indicar Avaliadores                                                                                        
                                             </a>
@@ -238,6 +238,7 @@
                                                 }"
                                                 title="Status Coordenador"
                                                 @click="StatusCoordenador(registro)"
+                                                :disabled="loading"
                                             >Status Coordenador                                                                                        
                                             </a>
 
@@ -251,6 +252,7 @@
                                                 :title="registro && registro.avaliacao && !registro.avaliacao.edit ? `Habilitar Edição do Trabalho` : `Desabilitar Edição do Trabalho`"
                                                 :class="registro && registro.avaliacao && !registro.avaliacao.edit ? `btn btn-danger btn-sm mr-1` : `btn btn-success btn-sm mr-1`"
                                                 @click="EditTrabalho(registro, index)"
+                                                :disabled="loading"
                                             >
                                                 {{ registro && registro.avaliacao && !registro.avaliacao.edit ? "Edição de trabalho desabilitada" : "Edição de trabalho habilitada"}}                                            
                                             </a>
@@ -272,7 +274,13 @@
             </div>
         </div>
 
-        <indicar-modal :selectedIndicar="selectedIndicar"></indicar-modal>
+        <indicar-modal 
+            :selectedIndicar="selectedIndicar" 
+            :avaliadores_all="avaliadores_all" 
+            :divisoes_tematicas="divisoes_tematicas"
+            :divisoes_tematicas_jr="divisoes_tematicas_jr"
+            :gps="gps"
+        ></indicar-modal>
         <status-coordenador-modal :selectedCoordenador="selectedCoordenador" :coordenador="coordenador"></status-coordenador-modal>
         <chat-modal :selectedChat="selectedChat" :user="user" :mensagens="mensagens" :scroll.sync="scroll"></chat-modal>
         <escolha-chat-modal :chooseChat="chooseChat" :user="user"></escolha-chat-modal>
@@ -304,6 +312,7 @@
                 baseUrl: process.env.MIX_BASE_URL,
                 loading: true,
                 selectedIndicar: null,
+                avaliadores_all: [],
                 selectedCoordenador: null,
                 scroll: false,
                 mensagens: [],
@@ -325,6 +334,7 @@
                 toDelete: null,
                 divisoes_tematicas: [],
                 divisoes_tematicas_jr: [],
+                gps: [],
                 modalidade: {
                     modalidade_search : null,
                 },
@@ -375,12 +385,12 @@
             },
             async getChat(id) {
                 if(id){
-                    await axios.get(`${this.baseUrl}/coordenador/get/chat/${id}`)
+                    await axios.get(`${this.baseUrl}/coordenador/nacional/get/chat/${id}`)
                     .then(res =>{
                         if(res.data.length > 0){
                             this.mensagens = res.data ;
                             this.selectedChat.avaliacao_id = res.data && res.data[0] ? res.data[0].avaliacao_id : null;
-                            this.selectedChat.coordenador_id = this.coordenador && this.coordenador.id ? this.coordenador.id : null
+                            this.selectedChat.coordenador_id = this.users && this.coordenador.id ? this.coordenador.id : null
                             this.selectedChat.coordenador = this.coordenador && this.coordenador ? this.coordenador : null
                             this.selectedChat.mensagem = null;
                             this.$validator.reset('mensagens');
@@ -424,43 +434,36 @@
                 this.$bvModal.show('modalCoordenador')
             },
             visualizarAnexo(registro){
-                if(registro.regiao == 1){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_sul_2022/'+ registro.link_trabalho, '_blank');
+                if(registro && registro.link_trabalho){
+                    window.open(this.baseUrl+'/pdf/submissao_nacional_2022/'+ registro.link_trabalho, '_blank');
                 }
-                if(registro.regiao == 2){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_nordeste_2022/'+ registro.link_trabalho, '_blank');
-                }
-                if(registro.regiao == 3){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_suldeste_2022/'+ registro.link_trabalho, '_blank');
-                }
-                if(registro.regiao == 4){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_centrooeste_2022/'+ registro.link_trabalho, '_blank');
-                }
-                if(registro.regiao == 5){
-                    window.open(this.baseUrl+'/pdf/submissao_regional_norte_2022/'+ registro.link_trabalho, '_blank');
-                }
-
             },
             find_dt(registro){
                 if(registro && registro.dt){
 
-                    if(registro && registro.tipo == "Mesa" || registro.tipo == "Divisões Temáticas"){
-                        let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
-                        let dt = selectedDt ? selectedDt.dt : ''
+                    if(registro && registro.tipo == "Grupo de Pesquisa"){
+                        let selectedDt =  this.gps.find(gp => gp.id === registro.dt)
+                        let dt = selectedDt ? selectedDt.gp : ''
                         let dt_descricao = selectedDt ? selectedDt.descricao : ''
-                        let returno = dt
+                        let returno = dt+' - '+dt_descricao
                         return returno ? returno : "NI"
-
                     }
 
                     if(registro && registro.tipo == "Intercom Júnior"){
                         let selectedDt =  this.divisoes_tematicas_jr.find(dt => dt.id === registro.dt)
                         let dt = selectedDt ? selectedDt.dt : ''
                         let dt_descricao = selectedDt ? selectedDt.descricao : ''
-                        let returno = dt
+                        let returno = dt+' - '+dt_descricao
                         return returno ? returno : "NI"
                     }
 
+                    if(registro && registro.tipo == "Publicom"){
+                        let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === registro.dt)
+                        let dt = selectedDt ? selectedDt.dt : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+                    }
                 }
             },
             showForm(registro) {
@@ -482,51 +485,6 @@
                 this.registros.splice(index, 1, $event)
                 this.$bvModal.hide('coordenadorModal')
             },
-            async destroy() {
-                await axios.delete(`${process.env.MIX_BASE_URL}/${this.page}/${this.toDelete.id}`).then(res => {
-                    if(res.status == 200) {
-                        let index = this.registros.findIndex(registro => registro.id == this.toDelete.id)
-                        this.registros.splice(index, 1)
-                        this.total--
-                        axios.get(this.url.concat(`&page=${this.currentPage}`)).then(res => {
-                            const toFilter = [...this.registros, ...res.data.data]
-                            const filtered = toFilter.reduce((items, current) => {
-                                const x = items.find(item => item.id === current.id);
-                                return !x ? items.concat([current]) : items
-                            }, []);
-                            this.registros = filtered
-                            this.currentPage = res.data.current_page
-                        })
-                        this.$notify({
-                            group: "submit",
-                            title: "Sucesso!",
-                            text: "registro removido.",
-                            type: "success"
-                        })
-                    }
-                }).catch(error => {
-                    if(error.response.status == 422) {
-                        if(error.response.data.message == "The given registro was invalid.") {
-                            this.$notify({
-                                group: "submit",
-                                title: "Erro no cadastro",
-                                text: "Campos obrigatórios não preenchidos.",
-                                type: "error"
-                            })
-                        }
-                    }
-                    if(error.response.status == 403) {
-                        if(error.response.data.message == "This action is unauthorized.") {
-                            this.$notify({
-                                group: "submit",
-                                title: "Erro!",
-                                text: "Ação não autorizada.",
-                                type: "error"
-                            })
-                        }
-                    }
-                })
-            },
             getDivisoesTematicas(){
                 let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
 
@@ -545,15 +503,54 @@
                 }); 
             },
             getDivisoesTematicasJr(){
-                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas-jr";
+                let urlgetDivisoesTematicasJr = this.baseUrl+"/get/divisoes-tematicas-jr";
 
                 $.ajax({
                     method: "GET",
-                    url: urlgetDivisoesTematicas,
+                    url: urlgetDivisoesTematicasJr,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     dataType: 'json',
                     success: (res) => {
                         this.divisoes_tematicas_jr = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },  
+            getGp(){
+                let urlgetgp = this.baseUrl+"/get/gp";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetgp,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.gps = res
+                    },
+                    error: (res) => {
+                        console.log(res)
+                        
+                    }
+                }); 
+            },
+            getAvaliadores(){
+                this.loading = true
+                this.message('Aguarde...', 'Estamos buscando avaliadores', 'info', -1);
+
+                let urlgetavaliadores = this.baseUrl+"/get/avaliadores-nacional";
+
+                $.ajax({
+                    method: "GET",
+                    url: urlgetavaliadores,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    success: (res) => {
+                        this.avaliadores_all = res
+                        this.loading = false
+                        this.message('Sucesso', 'Avaliadores encontrados.', 'success');
                     },
                     error: (res) => {
                         console.log(res)
@@ -578,15 +575,16 @@
                     }
                 }); 
             }
+
         },
         async created() {
             await this.getLoggedUser().then(() => this.get())
             this.get = debounce(this.get, 500)
-
+            this.getCoordenador(),
             this.getDivisoesTematicas(),
-            this.getDivisoesTematicasJr(),            
-            this.getCoordenador()
-
+            this.getDivisoesTematicasJr(),
+            this.getGp(),
+            this.getAvaliadores()
         },
         mounted() {
             this.$refs['scroll'].addEventListener('scroll', debounce(this.handleScroll, 500))
@@ -596,3 +594,9 @@
         },
     }
 </script>
+
+<style scoped>
+    ::v-deep .vue-notification {
+        font-size: 18px;
+    }
+</style>

@@ -55,16 +55,10 @@
                 @if (isset($certificado['coautores']) && count($certificado['coautores']))
              
                     @foreach ($certificado['coautores'] as $coautor)
-                        @if(!$loop->first)
-                            {{ $coautor }},
-                        @endif
-
-                        @if(!$loop->even)
-                            {{ $coautor }},
-                        @endif
-
                         @if($loop->last)
                             {{ $coautor }}.
+                        @else
+                            {{ $coautor }},
                         @endif
                     @endforeach
                 @endif

@@ -18,7 +18,6 @@ class CreateSexosTable extends Migration
             $table->string('tipo_sexo');
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

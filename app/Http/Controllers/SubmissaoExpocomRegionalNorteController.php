@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class SubmissaoExpocomRegionalNorteController extends Controller
 {
-    public function store(Request $request){
-
-        try{
+    public function store(Request $request)
+    {
+        try {
             $post = json_decode($request->post);
 
             $user = User::findOrFail(Auth::user()->id);
@@ -25,12 +25,11 @@ class SubmissaoExpocomRegionalNorteController extends Controller
             $coautor_ids = array_map(function ($res) {
                 return $res->id ?? null;
             }, $post->coautoresOrientadores);
-    
-            if(!empty($submissao)){
 
+            if (! empty($submissao)) {
                 $coautores = CoauOriExpoSubNorte::where('submissao_id', $submissao->id)->get();
-                foreach($coautores as $coautor){
-                    if(!in_array($coautor->id, $coautor_ids)){
+                foreach ($coautores as $coautor) {
+                    if (! in_array($coautor->id, $coautor_ids)) {
                         $coautor->delete();
                     }
                 }
@@ -38,8 +37,8 @@ class SubmissaoExpocomRegionalNorteController extends Controller
 
             $now = Carbon::now()->format('Y-m-d H:i:s');
 
-            if($now <= '2022-04-25 00:00:00'){
-                if(empty($submissao)){
+            if ($now <= '2022-04-25 00:00:00') {
+                if (empty($submissao)) {
                     $submissao_save = SubmissaoExpocomRegionalNorte::create([
                         'inscricao_id' => $user->regional_norte->id,
                         'tipo' => $post->tipo->name,
@@ -54,17 +53,16 @@ class SubmissaoExpocomRegionalNorteController extends Controller
                         'regiao' => 5,
                     ]);
 
-                    if($request->hasFile('file')){
+                    if ($request->hasFile('file')) {
                         $file = $request->file('file');
-                        $name = date('mdYHis') . uniqid();
-                        $file->move(public_path()."/pdf/submissao_expocom_regional_norte_2022/" , $name);
+                        $name = date('mdYHis').uniqid();
+                        $file->move(public_path().'/pdf/submissao_expocom_regional_norte_2022/', $name);
                         $submissao_save->link_trabalho = $name;
                         $submissao_save->save();
                     }
 
-                    foreach($post->coautoresOrientadores as $coautor){
-                        if(!empty($coautor->id)){
-
+                    foreach ($post->coautoresOrientadores as $coautor) {
+                        if (! empty($coautor->id)) {
                             $coautor_save = CoauOriExpoSubNorte::findOrFail($coautor->id);
 
                             $coautor_save->update([
@@ -72,24 +70,24 @@ class SubmissaoExpocomRegionalNorteController extends Controller
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
                                 'categoria' => $coautor->categoria,
-                                'curso_coautor' => $coautor->curso_coautor
+                                'curso_coautor' => $coautor->curso_coautor,
                             ]);
                         }
 
-                        if(empty($coautor->id)){
+                        if (empty($coautor->id)) {
                             $coautor_save = CoauOriExpoSubNorte::create([
                                 'submissao_id' => $submissao_save->id,
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
                                 'categoria' => $coautor->categoria,
-                                'curso_coautor' => $coautor->curso_coautor
+                                'curso_coautor' => $coautor->curso_coautor,
                             ]);
                         }
                     }
                 }
             }
 
-            if(!empty($submissao)){
+            if (! empty($submissao)) {
                 $submissao->update([
                     'tipo' => $post->tipo->name,
                     'ciente' => $post->ciente,
@@ -100,20 +98,19 @@ class SubmissaoExpocomRegionalNorteController extends Controller
                     'desc_producao' => $post->desc_producao,
                     'termo_autoria' => $post->termo_autoria,
                     'autorizacao' => $post->autorizacao,
-                    'regiao' => 5
+                    'regiao' => 5,
                 ]);
 
-                if($request->hasFile('file')){
+                if ($request->hasFile('file')) {
                     $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_norte_2022/" , $name);
+                    $name = date('mdYHis').uniqid();
+                    $file->move(public_path().'/pdf/submissao_expocom_regional_norte_2022/', $name);
                     $submissao->link_trabalho = $name;
                     $submissao->save();
                 }
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
-
+                foreach ($post->coautoresOrientadores as $coautor) {
+                    if (! empty($coautor->id)) {
                         $coautor_save = CoauOriExpoSubNorte::findOrFail($coautor->id);
 
                         $coautor_save->update([
@@ -125,28 +122,25 @@ class SubmissaoExpocomRegionalNorteController extends Controller
                         ]);
                     }
 
-                    if(empty($coautor->id)){
+                    if (empty($coautor->id)) {
                         $coautor_save = CoauOriExpoSubNorte::create([
                             'submissao_id' => $submissao->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
                             'categoria' => $coautor->categoria,
-                            'curso_coautor' => $coautor->curso_coautor
+                            'curso_coautor' => $coautor->curso_coautor,
                         ]);
                     }
                 }
-                
             }
 
-            Log::info('User: '. Auth::user()->id . ' | Regional Norte 2022 | Submeteu seu trabalho: ' . json_encode($post));
-    
+            Log::info('User: '.Auth::user()->id.' | Regional Norte 2022 | Submeteu seu trabalho: '.json_encode($post));
+
             return response()->json(['message' => 'success', 'response' => $submissao], 201);
-
-
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }

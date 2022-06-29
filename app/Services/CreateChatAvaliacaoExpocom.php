@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\ChatAvaliacaoExpocom;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CreateChatAvaliacaoExpocom
 {
@@ -16,12 +16,12 @@ class CreateChatAvaliacaoExpocom
             'avaliador_id' => $avaliador_id ?? null,
             'coordenador_id' => $coordenador_id ?? null,
             'mensagem' => $mensagem,
-            'send_avaliador' => $send_avaliador
+            'send_avaliador' => $send_avaliador,
         ]);
 
-        if(Auth::user()->id){
-            Log::info('User: '.Auth::user(). ' | Create conversa, avaliaçao ID: '. $avaliacao_id .' | Avaliador: '. $avaliador_id ?? null
-            . ' | Coordenador: '. $coordenador_id ?? null . ' | Mensagem: '. $mensagem ?? null . ' | Send_avaliador: '. $send_avaliador ?? null);
+        if (Auth::user()->id) {
+            Log::info('User: '.Auth::user().' | Create conversa, avaliaçao ID: '.$avaliacao_id.' | Avaliador: '.$avaliador_id ?? null
+            .' | Coordenador: '.$coordenador_id ?? null.' | Mensagem: '.$mensagem ?? null.' | Send_avaliador: '.$send_avaliador ?? null);
         }
     }
 

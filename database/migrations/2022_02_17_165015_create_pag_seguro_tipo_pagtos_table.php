@@ -17,7 +17,7 @@ class CreatePagSeguroTipoPagtosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

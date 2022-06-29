@@ -9,13 +9,12 @@ class Acesso extends Model
 {
     use SoftDeletes;
 
-    protected $fillable =[
-        'pagina', 'link'
+    protected $fillable = [
+        'pagina', 'link',
     ];
 
     public function users()
     {
         return $this->belongsToMany(User::class);
     }
-
 }

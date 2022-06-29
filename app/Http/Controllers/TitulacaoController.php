@@ -17,10 +17,10 @@ class TitulacaoController extends Controller
 
     public function get(Request $request)
     {
-        $titulacooes = Titulacao::select('id','titulacao')
+        $titulacooes = Titulacao::select('id', 'titulacao')
                         ->when($request->search, function ($query) use ($request) {
-                            $query->where(function($q) use ($request) {
-                                $q->where('titulacao', 'like', '%'. $request->search . '%');
+                            $query->where(function ($q) use ($request) {
+                                $q->where('titulacao', 'like', '%'.$request->search.'%');
                             });
                         })
                         ->when($request->sort == 'id', function ($query) {
@@ -30,7 +30,8 @@ class TitulacaoController extends Controller
                             $query->orderBy('titulacao', $request->asc == 'true' ? 'ASC' : 'DESC');
                         })
                         ->paginate(20);
-        return response()->json($titulacooes,201);
+
+        return response()->json($titulacooes, 201);
     }
 
     public function store(Request $request)
@@ -38,26 +39,30 @@ class TitulacaoController extends Controller
         try {
             $data = $request->all();
             $titulacao = Titulacao::create($data);
-            Log::info('User: ' . Auth::user() . ' | Create titulacao | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' => $titulacao],201);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Create titulacao | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' => $titulacao], 201);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Create titulacao | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Create titulacao | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         try {
             $data = $request->all();
             $titulacao = Titulacao::findOrFail($id);
             $titulacao->update($data);
-            Log::info('User: ' . Auth::user() . ' | Update titulacao | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' =>$titulacao],200);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Update titulacao | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' =>$titulacao], 200);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Update titulacao | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Update titulacao | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
@@ -67,9 +72,10 @@ class TitulacaoController extends Controller
         try {
             $titulacao = Titulacao::select('id')->findOrFail($id);
             $titulacao->delete();
-            Log::info('Usuário ' .Auth::user() . ' Deletou a titulacao | '  . __METHOD__ . ' |' .json_encode($titulacao));
-        }catch(Exception $exception) {
+            Log::info('Usuário '.Auth::user().' Deletou a titulacao | '.__METHOD__.' |'.json_encode($titulacao));
+        } catch (Exception $exception) {
             Log::error($exception);
+
             return response()->json(['message' => $exception->getMessage()], 400);
         }
     }

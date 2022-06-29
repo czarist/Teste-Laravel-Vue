@@ -14,7 +14,6 @@ class DivisoesTematicasSeeder extends Seeder
      */
     public function run()
     {
-
         DivisoesTematicas::updateOrCreate(
             ['id' => 1],
             [

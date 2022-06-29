@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DistribuicaoTipo123;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AvaliacaoAvaliadorController extends Controller
 {
@@ -28,10 +27,11 @@ class AvaliacaoAvaliadorController extends Controller
             'status_avaliador_3',
             'justificativa_avaliador_3',
             'status_coordenador',
-            'justificativa_coordenador')
+            'justificativa_coordenador'
+        )
         ->with(
-            'avaliador_1_obj', 
-            'avaliador_2_obj', 
+            'avaliador_1_obj',
+            'avaliador_2_obj',
             'avaliador_3_obj',
             'submissaoNordeste:id,avaliacao,dt,inscricao_id,link_trabalho,regiao,tipo,titulo',
             'submissaoSul:id,avaliacao,dt,inscricao_id,link_trabalho,regiao,tipo,titulo',
@@ -41,9 +41,10 @@ class AvaliacaoAvaliadorController extends Controller
         );
     }
 
-    public function get(Request $request){
+    public function get(Request $request)
+    {
         $user_id = Auth::user()->id;
-        
+
         return  $this->avaliacoes()
             ->when($request->sort == 'id', function ($query) use ($request) {
                 $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
@@ -62,7 +63,6 @@ class AvaliacaoAvaliadorController extends Controller
                             ->orWhere('distribuicao_tipo123s.avaliador_2', $user_id)
                             ->orWhere('distribuicao_tipo123s.avaliador_3', $user_id);
                     });
-    
                 })
                 ->orWherehas('submissaoSul', function ($query) use ($request, $user_id) {
                     $query->where('dt', '=', $request->modalidade)
@@ -71,7 +71,6 @@ class AvaliacaoAvaliadorController extends Controller
                             ->orWhere('distribuicao_tipo123s.avaliador_2', $user_id)
                             ->orWhere('distribuicao_tipo123s.avaliador_3', $user_id);
                     });
-    
                 })
                 ->orWherehas('submissaoSudeste', function ($query) use ($request, $user_id) {
                     $query->where('dt', '=', $request->modalidade)
@@ -80,7 +79,6 @@ class AvaliacaoAvaliadorController extends Controller
                             ->orWhere('distribuicao_tipo123s.avaliador_2', $user_id)
                             ->orWhere('distribuicao_tipo123s.avaliador_3', $user_id);
                     });
-    
                 })
                 ->orWherehas('submissaoCentroOeste', function ($query) use ($request, $user_id) {
                     $query->where('dt', '=', $request->modalidade)
@@ -105,6 +103,5 @@ class AvaliacaoAvaliadorController extends Controller
                     ->orWhere('distribuicao_tipo123s.avaliador_3', $user_id);
             })
         ->paginate(20);
-
     }
 }

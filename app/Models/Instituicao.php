@@ -11,7 +11,6 @@ class Instituicao extends Model
 
     protected $fillable = [
         'instituicao',
-        'sigla_instituicao'
+        'sigla_instituicao',
     ];
-
 }

@@ -10,7 +10,6 @@ class AddColumnDtInSubmissaoExpocomRegionalCentrooeste extends Migration
     {
         Schema::table('submissao_expocom_regional_centrooestes', function (Blueprint $table) {
             $table->boolean('ciente')->after('inscricao_id')->nullable();
-
         });
     }
 

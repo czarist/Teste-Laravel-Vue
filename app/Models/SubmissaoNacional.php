@@ -23,20 +23,21 @@ class SubmissaoNacional extends Model
         'link_trabalho',
         'ano',
         'editora',
-        'lattes'
+        'lattes',
     ];
 
     public function CoautorOrganizadoresSubNaci()
     {
-        return $this->hasMany(CoautorOrganizadoresSubNaci::class,  'submissao_id', 'id');
-    }
-    
-    public function avaliacao(){
-        return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
+        return $this->hasMany(CoautorOrganizadoresSubNaci::class, 'submissao_id', 'id');
     }
 
-    public function inscricao(){
-        return $this->belongsTo(RegionalCentrooeste::class, 'inscricao_id', 'id');
+    public function avaliacao()
+    {
+        return $this->hasOne(AvaliacaoNacional::class, 'id', 'avaliacao');
     }
 
+    public function inscricao()
+    {
+        return $this->belongsTo(Nacional::class, 'inscricao_id', 'id');
+    }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\PagSeguroTipoFrete;
 use Illuminate\Database\Seeder;
-use PDO;
 
 class PagSeguroTipoFreteSeeder extends Seeder
 {
@@ -38,6 +37,5 @@ class PagSeguroTipoFreteSeeder extends Seeder
                 'nome' => 'Tipo de frete não especificado',
             ]
         );
-
     }
 }

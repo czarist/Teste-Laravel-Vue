@@ -13,8 +13,10 @@ class CoautorOrientadorSubCentrooeste extends Model
         'submissao_id',
         'nome_completo',
         'cpf',
-        'categoria'
+        'categoria',
     ];
 
+    public function submissao(){
+        return $this->hasOne(SubmissaoRegionalCentrooeste::class, 'id', 'submissao_id');
+    }
 }
-

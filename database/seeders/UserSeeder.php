@@ -15,12 +15,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-
         User::updateOrCreate(
             ['id'=>1],
             ['id'=>1,
                 'name' => 'Admin',
-                'email' => "murilo@mercuriotecnologia.com.br",
+                'email' => 'murilo@mercuriotecnologia.com.br',
                 'password' => Hash::make('123456'),
                 'data_nascimento' => '1990-01-01',
                 'estrangeiro' => false,
@@ -32,6 +31,5 @@ class UserSeeder extends Seeder
                 'sexo_id' => 1,
             ]
         );
-
     }
 }

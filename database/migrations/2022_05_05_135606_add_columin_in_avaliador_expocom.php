@@ -17,7 +17,6 @@ class AddColuminInAvaliadorExpocom extends Migration
             $table->boolean('nacional_gp')->after('avaliador_junior')->default(false);
             $table->boolean('nacional_ij')->after('nacional_gp')->default(false);
             $table->boolean('nacional_publicom')->after('nacional_ij')->default(false);
-
         });
     }
 
@@ -32,7 +31,6 @@ class AddColuminInAvaliadorExpocom extends Migration
             $table->dropColumn('nacional_gp');
             $table->dropColumn('nacional_ij');
             $table->dropColumn('nacional_publicom');
-
         });
     }
 }

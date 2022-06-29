@@ -9,29 +9,8 @@ use Illuminate\Support\Facades\Log;
 
 class RelatoriosController extends Controller
 {
-    public function index(){
-        $users = User::select('id', 'name', 'cpf', 'email')
-            ->with(
-                'associado',
-                'vendas',
-                'vendas.vendas_item',
-                'vendas.pagamento',
-                'todos_tipos',
-                'todos_tipos_pagamentos'
-                )
-            ->wherehas('todos_tipos', function ($query) {
-                $query->whereIn('tipo_id', [6]);
-            })
-            
-        ->get();
-
-        $tipo = 6;
-
-        return view('financeiro.relatorios.index', compact('users', 'tipo'));
-
-    }
-
-    public function get(Request $request){
+    public function index()
+    {
         $users = User::select('id', 'name', 'cpf', 'email')
             ->with(
                 'associado',
@@ -41,53 +20,73 @@ class RelatoriosController extends Controller
                 'todos_tipos',
                 'todos_tipos_pagamentos'
             )
-            ->when($request->tipo, function ($query) use ($request){
-                if($request->tipo == 0){
+            ->wherehas('todos_tipos', function ($query) {
+                $query->whereIn('tipo_id', [6]);
+            })
+
+        ->get();
+
+        $tipo = 6;
+
+        return view('financeiro.relatorios.index', compact('users', 'tipo'));
+    }
+
+    public function get(Request $request)
+    {
+        $users = User::select('id', 'name', 'cpf', 'email')
+            ->with(
+                'associado',
+                'vendas',
+                'vendas.vendas_item',
+                'vendas.pagamento',
+                'todos_tipos',
+                'todos_tipos_pagamentos'
+            )
+            ->when($request->tipo, function ($query) use ($request) {
+                if ($request->tipo == 0) {
                     $query->orWherehas('todos_tipos', function ($query) {
                         $query->whereIn('tipo_id', [6]);
                     });
                 }
-                if($request->tipo == 6){
+                if ($request->tipo == 6) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', "=", 6);
+                        $query->where('tipo_id', '=', 6);
                     });
                 }
 
-                if($request->tipo == 7){
+                if ($request->tipo == 7) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', "=", 7);
+                        $query->where('tipo_id', '=', 7);
                     });
                 }
 
-                if($request->tipo == 8){
+                if ($request->tipo == 8) {
                     $query->whereHas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', "=", 8);
+                        $query->where('tipo_id', '=', 8);
                     });
                 }
 
-                if($request->tipo == 9){
+                if ($request->tipo == 9) {
                     $query->Wherehas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', "=", 9);
+                        $query->where('tipo_id', '=', 9);
                     });
                 }
 
-                if($request->tipo == 10){
+                if ($request->tipo == 10) {
                     $query->Wherehas('todos_tipos', function ($query) {
-                        $query->where('tipo_id', "=", 10);
+                        $query->where('tipo_id', '=', 10);
                     });
                 }
-
             })
             ->get();
 
-            $tipo = $request->tipo;
+        $tipo = $request->tipo;
 
         return view('financeiro.relatorios.index', compact('users', 'tipo'));
-
-
     }
 
-    public function excel2(Request $request){
+    public function excel2(Request $request)
+    {
         //     $users = User::select('id', 'name', 'cpf', 'email')
         //     ->with(
         //         'associado',
@@ -208,11 +207,10 @@ class RelatoriosController extends Controller
         //     Log::info('User: "' . Auth::id() . '" Fez o download Excel');
 
         //     return $html;
-
-
     }
 
-    public function excel(Request $request){
+    public function excel(Request $request)
+    {
         $users = User::select('id', 'name', 'cpf', 'email')
         ->with(
             'associado',
@@ -222,42 +220,41 @@ class RelatoriosController extends Controller
             'todos_tipos',
             'todos_tipos_pagamentos'
         )
-        ->when($request->tipo, function ($query) use ($request){
-            if($request->tipo == 0){
+        ->when($request->tipo, function ($query) use ($request) {
+            if ($request->tipo == 0) {
                 $query->orWherehas('todos_tipos', function ($query) {
                     $query->whereIn('tipo_id', [6]);
                 });
             }
-            if($request->tipo == 6){
+            if ($request->tipo == 6) {
                 $query->whereHas('todos_tipos', function ($query) {
-                    $query->where('tipo_id', "=", 6);
+                    $query->where('tipo_id', '=', 6);
                 });
             }
 
-            if($request->tipo == 7){
+            if ($request->tipo == 7) {
                 $query->whereHas('todos_tipos', function ($query) {
-                    $query->where('tipo_id', "=", 7);
+                    $query->where('tipo_id', '=', 7);
                 });
             }
 
-            if($request->tipo == 8){
+            if ($request->tipo == 8) {
                 $query->whereHas('todos_tipos', function ($query) {
-                    $query->where('tipo_id', "=", 8);
+                    $query->where('tipo_id', '=', 8);
                 });
             }
 
-            if($request->tipo == 9){
+            if ($request->tipo == 9) {
                 $query->Wherehas('todos_tipos', function ($query) {
-                    $query->where('tipo_id', "=", 9);
+                    $query->where('tipo_id', '=', 9);
                 });
             }
 
-            if($request->tipo == 10){
+            if ($request->tipo == 10) {
                 $query->Wherehas('todos_tipos', function ($query) {
-                    $query->where('tipo_id', "=", 10);
+                    $query->where('tipo_id', '=', 10);
                 });
             }
-
         })
         ->get();
 
@@ -266,19 +263,16 @@ class RelatoriosController extends Controller
         $html = view('financeiro.relatorios.excel', compact('users', 'tipo'))->render();
         $nome_arquivo = 'Relatorio-Inscritos.xls';
 
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Pragma: no-cache");
-        header("Content-type: application/x-msexcel");
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: '.gmdate('D,d M YH:i:s').' GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-type: application/x-msexcel');
         header("Content-Disposition: attachment; filename=\"{$nome_arquivo}\"");
-        header("Content-Description: PHP Generated Data");
+        header('Content-Description: PHP Generated Data');
 
-        Log::info('User: "' . Auth::id() . '" Fez o download Excel');
+        Log::info('User: "'.Auth::id().'" Fez o download Excel');
 
         return $html;
-
-
     }
-
 }

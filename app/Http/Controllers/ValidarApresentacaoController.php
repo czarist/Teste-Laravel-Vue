@@ -20,11 +20,13 @@ use Illuminate\Support\Facades\Log;
 
 class ValidarApresentacaoController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('validar-apresentacao.index');
     }
 
-    public function inscrito_nordeste(){
+    public function inscrito_nordeste()
+    {
         return User::select('id', 'name', 'email', 'cpf')
         ->with(
             'todos_tipos:id,descricao',
@@ -41,7 +43,8 @@ class ValidarApresentacaoController extends Controller
         );
     }
 
-    public function inscrito_norte(){
+    public function inscrito_norte()
+    {
         return User::select('id', 'name', 'email', 'cpf')
         ->with(
             'todos_tipos:id,descricao',
@@ -58,7 +61,8 @@ class ValidarApresentacaoController extends Controller
         );
     }
 
-    public function inscrito_sul(){
+    public function inscrito_sul()
+    {
         return User::select('id', 'name', 'email', 'cpf')
         ->with(
             'todos_tipos:id,descricao',
@@ -75,7 +79,8 @@ class ValidarApresentacaoController extends Controller
         );
     }
 
-    public function inscrito_sudeste(){
+    public function inscrito_sudeste()
+    {
         return User::select('id', 'name', 'email', 'cpf')
         ->with(
             'todos_tipos:id,descricao',
@@ -92,7 +97,8 @@ class ValidarApresentacaoController extends Controller
         );
     }
 
-    public function inscrito_centrooeste(){
+    public function inscrito_centrooeste()
+    {
         return User::select('id', 'name', 'email', 'cpf')
         ->with(
             'todos_tipos:id,descricao',
@@ -109,40 +115,41 @@ class ValidarApresentacaoController extends Controller
         );
     }
 
-    public function get(Request $request){
-        if(Auth::user() && Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo != "Expocom"){
-            if(Auth::user()->coordenador_regional->regiao == "Nordeste"){
+    public function get(Request $request)
+    {
+        if (Auth::user() && Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo != 'Expocom') {
+            if (Auth::user()->coordenador_regional->regiao == 'Nordeste') {
                 return $this->inscrito_nordeste()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
                     ->whereHas('todos_tipos', function ($query) {
                         $query->where('tipo_id', 7);
                     })
-                    ->whereHas('regional_nordeste', function ($query){
-                        $query->wherehas('submissaoMesa', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                    ->whereHas('regional_nordeste', function ($query) {
+                        $query->wherehas('submissaoMesa', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoDt', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoDt', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoJunior', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoJunior', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
                     })
@@ -158,22 +165,22 @@ class ValidarApresentacaoController extends Controller
                                 $query->where('dt', '=', $request->modalidade);
                             });
                         });
-                    })    
+                    })
                 ->paginate(20);
             }
 
-            if(Auth::user()->coordenador_regional->regiao == "Sudeste"){
+            if (Auth::user()->coordenador_regional->regiao == 'Sudeste') {
                 return $this->inscrito_sudeste()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
@@ -181,19 +188,19 @@ class ValidarApresentacaoController extends Controller
                         $query->where('tipo_id', 8);
                     })
                     ->whereHas('regional_suldeste', function ($query) {
-                        $query->wherehas('submissaoMesa', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->wherehas('submissaoMesa', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoDt', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoDt', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoJunior', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoJunior', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
                     })
@@ -209,22 +216,22 @@ class ValidarApresentacaoController extends Controller
                                 $query->where('dt', '=', $request->modalidade);
                             });
                         });
-                    })    
+                    })
                 ->paginate(20);
             }
 
-            if(Auth::user()->coordenador_regional->regiao == "Centrooeste"){
+            if (Auth::user()->coordenador_regional->regiao == 'Centrooeste') {
                 return $this->inscrito_centrooeste()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
@@ -232,19 +239,19 @@ class ValidarApresentacaoController extends Controller
                         $query->where('tipo_id', 9);
                     })
                     ->whereHas('regional_centrooeste', function ($query) {
-                        $query->wherehas('submissaoMesa', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->wherehas('submissaoMesa', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoDt', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoDt', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoJunior', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoJunior', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
                     })
@@ -260,22 +267,22 @@ class ValidarApresentacaoController extends Controller
                                 $query->where('dt', '=', $request->modalidade);
                             });
                         });
-                    })    
+                    })
                 ->paginate(20);
             }
 
-            if(Auth::user()->coordenador_regional->regiao == "Sul"){
+            if (Auth::user()->coordenador_regional->regiao == 'Sul') {
                 return $this->inscrito_sul()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
@@ -283,19 +290,19 @@ class ValidarApresentacaoController extends Controller
                         $query->where('tipo_id', 6);
                     })
                     ->whereHas('regional_sul', function ($query) {
-                        $query->wherehas('submissaoMesa', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->wherehas('submissaoMesa', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoDt', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoDt', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoJunior', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoJunior', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
                     })
@@ -311,22 +318,22 @@ class ValidarApresentacaoController extends Controller
                                 $query->where('dt', '=', $request->modalidade);
                             });
                         });
-                    })                        
+                    })
                 ->paginate(20);
             }
 
-            if(Auth::user()->coordenador_regional->regiao == "Norte"){
+            if (Auth::user()->coordenador_regional->regiao == 'Norte') {
                 return $this->inscrito_norte()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
@@ -334,19 +341,19 @@ class ValidarApresentacaoController extends Controller
                         $query->where('tipo_id', 10);
                     })
                     ->whereHas('regional_norte', function ($query) {
-                        $query->wherehas('submissaoMesa', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->wherehas('submissaoMesa', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoDt', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoDt', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
-                        $query->orWhereHas('submissaoJunior', function ($query){
-                            $query->wherehas('avaliacao', function ($query){
-                                $query->where('status_coordenador', "Aceito");
+                        $query->orWhereHas('submissaoJunior', function ($query) {
+                            $query->wherehas('avaliacao', function ($query) {
+                                $query->where('status_coordenador', 'Aceito');
                             });
                         });
                     })
@@ -362,25 +369,26 @@ class ValidarApresentacaoController extends Controller
                                 $query->where('dt', '=', $request->modalidade);
                             });
                         });
-                    })                        
+                    })
                 ->paginate(20);
             }
         }
     }
 
-    public function confirmar_apresentacao(Request $request){
-        try { 
-            if(isset($request->regiao) && $request->regiao == "Nordeste"){
+    public function confirmar_apresentacao(Request $request)
+    {
+        try {
+            if (isset($request->regiao) && $request->regiao == 'Nordeste') {
                 $regional = RegionalNordeste::where('id', $request->inscricao)->first();
-                if($regional && $regional->presenca == 0){
+                if ($regional && $regional->presenca == 0) {
                     $regional->update(['presenca' => 1]);
-                    Log::info('Regional Nordeste: '.$request->inscricao .' confirmado presença');
+                    Log::info('Regional Nordeste: '.$request->inscricao.' confirmado presença');
                 }
 
                 $submissao = SubmissaoRegionalNordestes::where('id', $request->submissao)->first();
-                if($submissao && $submissao->apresentacao == 0){
+                if ($submissao && $submissao->apresentacao == 0) {
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Nordeste: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Nordeste: '.$request->submissao.' confirmado apresentacao de trabalho');
                 }
 
                 $user = User::select('id', 'name', 'email', 'cpf')
@@ -396,20 +404,21 @@ class ValidarApresentacaoController extends Controller
                 )
                 ->whereId($request->user_id)
                 ->first();
+
                 return response()->json(['message' => 'success', 'response' => $user], 200);
             }
 
-            if(isset($request->regiao) && $request->regiao == "Norte"){
+            if (isset($request->regiao) && $request->regiao == 'Norte') {
                 $regional = RegionalNorte::where('id', $request->inscricao)->first();
-                if($regional && $regional->presenca == 0){
+                if ($regional && $regional->presenca == 0) {
                     $regional->update(['presenca' => 1]);
-                    Log::info('Regional Norte: '.$request->inscricao .' confirmado presença');
+                    Log::info('Regional Norte: '.$request->inscricao.' confirmado presença');
                 }
 
                 $submissao = SubmissaoRegionalNorte::where('id', $request->submissao)->first();
-                if($submissao && $submissao->apresentacao == 0){
+                if ($submissao && $submissao->apresentacao == 0) {
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Norte: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Norte: '.$request->submissao.' confirmado apresentacao de trabalho');
                 }
 
                 $user = User::select('id', 'name', 'email', 'cpf')
@@ -425,20 +434,21 @@ class ValidarApresentacaoController extends Controller
                 )
                 ->whereId($request->user_id)
                 ->first();
+
                 return response()->json(['message' => 'success', 'response' => $user], 200);
             }
 
-            if(isset($request->regiao) && $request->regiao == "Centro-Oeste"){
+            if (isset($request->regiao) && $request->regiao == 'Centro-Oeste') {
                 $regional = RegionalCentrooeste::where('id', $request->inscricao)->first();
-                if($regional && $regional->presenca == 0){
+                if ($regional && $regional->presenca == 0) {
                     $regional->update(['presenca' => 1]);
-                    Log::info('Regional Centro-Oeste: '.$request->inscricao .' confirmado presença');
+                    Log::info('Regional Centro-Oeste: '.$request->inscricao.' confirmado presença');
                 }
 
                 $submissao = SubmissaoRegionalCentroOeste::where('id', $request->submissao)->first();
-                if($submissao && $submissao->apresentacao == 0){
+                if ($submissao && $submissao->apresentacao == 0) {
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Centro-Oeste: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Centro-Oeste: '.$request->submissao.' confirmado apresentacao de trabalho');
                 }
                 $user = User::select('id', 'name', 'email', 'cpf')
                 ->with(
@@ -453,19 +463,20 @@ class ValidarApresentacaoController extends Controller
                 )
                 ->whereId($request->user_id)
                 ->first();
+
                 return response()->json(['message' => 'success', 'response' => $user], 200);
             }
 
-            if(isset($request->regiao) && $request->regiao == "Sudeste"){
+            if (isset($request->regiao) && $request->regiao == 'Sudeste') {
                 $regional = RegionalSuldeste::where('id', $request->inscricao)->first();
-                if($regional && $regional->presenca == 0){
+                if ($regional && $regional->presenca == 0) {
                     $regional->update(['presenca' => 1]);
-                    Log::info('Regional Sudeste: '.$request->inscricao .' confirmado presença');
+                    Log::info('Regional Sudeste: '.$request->inscricao.' confirmado presença');
                 }
                 $submissao = SubmissaoRegionalSudeste::where('id', $request->submissao)->first();
-                if($submissao && $submissao->apresentacao == 0){
+                if ($submissao && $submissao->apresentacao == 0) {
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Sudeste: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Sudeste: '.$request->submissao.' confirmado apresentacao de trabalho');
                 }
 
                 $user = User::select('id', 'name', 'email', 'cpf')
@@ -481,19 +492,20 @@ class ValidarApresentacaoController extends Controller
                 )
                 ->whereId($request->user_id)
                 ->first();
+
                 return response()->json(['message' => 'success', 'response' => $user], 200);
             }
 
-            if(isset($request->regiao) && $request->regiao == "Sul"){
+            if (isset($request->regiao) && $request->regiao == 'Sul') {
                 $regional = RegionalSul::where('id', $request->inscricao)->first();
-                if($regional && $regional->presenca == 0){
+                if ($regional && $regional->presenca == 0) {
                     $regional->update(['presenca' => 1]);
-                    Log::info('Regional Sul: '.$request->inscricao .' confirmado presença');
+                    Log::info('Regional Sul: '.$request->inscricao.' confirmado presença');
                 }
                 $submissao = SubmissaoRegionalSul::where('id', $request->submissao)->first();
-                if($submissao && $submissao->apresentacao == 0){
+                if ($submissao && $submissao->apresentacao == 0) {
                     $submissao->update(['apresentacao' => 1]);
-                    Log::info('Submissao Sul: '.$request->submissao .' confirmado apresentacao de trabalho');
+                    Log::info('Submissao Sul: '.$request->submissao.' confirmado apresentacao de trabalho');
                 }
 
                 $user = User::select('id', 'name', 'email', 'cpf')
@@ -509,16 +521,16 @@ class ValidarApresentacaoController extends Controller
                 )
                 ->whereId($request->user_id)
                 ->first();
+
                 return response()->json(['message' => 'success', 'response' => $user], 200);
             }
 
             return response()->json(['error'=>'Nenhuma inscrição atualizada']);
-
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
+
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
-
 }

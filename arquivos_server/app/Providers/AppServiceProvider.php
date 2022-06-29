@@ -29,9 +29,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         // // DESCOMENTAR PARA PRODUÇÃO
-        $this->app->bind('path.public', function() {
+        $this->app->bind('path.public', function () {
             return '../www';
-
         });
     }
 }

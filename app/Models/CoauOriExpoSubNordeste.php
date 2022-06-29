@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class CoauOriExpoSubNordeste extends Model
 {
     use SoftDeletes;
@@ -13,6 +14,10 @@ class CoauOriExpoSubNordeste extends Model
         'nome_completo',
         'cpf',
         'categoria',
-        'curso_coautor'
+        'curso_coautor',
     ];
+
+    public function submissao(){
+        return $this->hasOne(SubmissaoExpocomRegionalNordeste::class, 'id', 'submissao_id');
+    }
 }

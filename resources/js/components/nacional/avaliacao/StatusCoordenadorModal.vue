@@ -140,9 +140,28 @@
         },
         methods: {
             find_dt(post){
-                if(post && post.dt){
+                if(post && this.tipo == "Grupo de Pesquisa"){
+                    let selectedDt =  this.gps.find(gp => gp.id === post.dt)
+                    let dt = selectedDt ? selectedDt.gp : ''
+                    let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                    let returno = dt+' - '+dt_descricao
+                    return returno ? returno : "NI"
+                }
+
+                if(post && this.tipo == "Intercom Júnior"){
+                    let selectedDt =  this.divisoes_tematicas_jr.find(dt => dt.id === post.dt)
+                    let dt = selectedDt ? selectedDt.dt : ''
+                    let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                    let returno = dt+' - '+dt_descricao
+                    return returno ? returno : "NI"
+                }
+
+                if(post && this.tipo == "Publicom"){
                     let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
+                    let dt = selectedDt ? selectedDt.dt : ''
+                    let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                    let returno = dt+' - '+dt_descricao
+                    return returno ? returno : "NI"
                 }
             },    
             async save() {
@@ -152,7 +171,7 @@
                         this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
 
                         setTimeout(() => {
-                            axios.post(`${process.env.MIX_BASE_URL}/avaliacao/coordenador/save`, this.post).then( res => {
+                            axios.post(`${process.env.MIX_BASE_URL}/avaliacao_nacional/coordenador/save`, this.post).then( res => {
                                 
                                 this.clear()
                                 if(res.status == 201) {
@@ -191,40 +210,6 @@
                     }
                 })
             },
-            getDivisoesTematicas(){
-                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetDivisoesTematicas,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.divisoes_tematicas = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
-            },
-            getAvaliadores(){
-                let urlgetavaliadores = this.baseUrl+"/get/avaliadores";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetavaliadores,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.avaliadores = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
-            },
             clear() {
                 this.post.id = null
                 this.post.name = null
@@ -233,9 +218,6 @@
             }
         },
         created() {
-            this.getDivisoesTematicas(),
-            this.getAvaliadores()
-
         },
 
     }

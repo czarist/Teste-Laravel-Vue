@@ -29,21 +29,21 @@ class SubmissaoExpocomRegionalNorte extends Model
 
     public function coautorOrientadorSubNortes()
     {
-        return $this->hasMany(CoauOriExpoSubNorte::class,  'submissao_id', 'id');
+        return $this->hasMany(CoauOriExpoSubNorte::class, 'submissao_id', 'id');
     }
 
     public function coautorOrientadorSubNorte()
     {
-        return $this->hasMany(CoauOriExpoSubNorte::class,  'submissao_id', 'id');
+        return $this->hasMany(CoauOriExpoSubNorte::class, 'submissao_id', 'id');
     }
 
-
-    public function avaliacao(){
+    public function avaliacao()
+    {
         return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
     }
 
-    public function inscricao(){
+    public function inscricao()
+    {
         return $this->belongsTo(RegionalNorte::class, 'inscricao_id', 'id');
     }
-
 }

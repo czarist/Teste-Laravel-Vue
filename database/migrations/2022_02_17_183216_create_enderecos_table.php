@@ -25,7 +25,7 @@ class CreateEnderecosTable extends Migration
             $table->string('cep')->nullable();
             $table->string('pais_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

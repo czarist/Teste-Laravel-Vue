@@ -10,14 +10,14 @@ class Tipo extends Model
     use SoftDeletes;
 
     protected $table = 'tipos';
+
     protected $fillable = [
         'nome',
-        'descricao'
+        'descricao',
     ];
 
     public function users()
     {
         return $this->belongsToMany(User::class);
     }
-
 }

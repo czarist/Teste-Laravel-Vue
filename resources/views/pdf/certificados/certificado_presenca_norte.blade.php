@@ -36,7 +36,7 @@
     <div class="main">
         <div align="center" style="">Certificamos que</div>
         <div align="center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; ">{{  $certificado['user']['name'] }}</div>
-        <div align="center" style="">participou do XXII Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da Comunicação - INTERCOM e realizado pela Ucsal - Universidade Católica de Salvador, entre os dias 18 a 20 de maio, na Cidade de Salvador/BA, como
+        <div align="center" style="">participou do XIX Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da Comunicação - INTERCOM e realizado pela UFT - Universidade Federal do Tocantins, entre os dias de 2 a 4 de junho, na Cidade de Palmas/TO, como
     CONGRESSISTA.</div>
     <br>
     Carga horária: 30 horas.

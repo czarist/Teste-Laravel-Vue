@@ -29,15 +29,16 @@ class SubmissaoExpocomRegionalSul extends Model
 
     public function coautorOrientadorSubSuls()
     {
-        return $this->hasMany(CoauOriExpoSubSul::class,  'submissao_id', 'id');
+        return $this->hasMany(CoauOriExpoSubSul::class, 'submissao_id', 'id');
     }
 
-    public function avaliacao(){
+    public function avaliacao()
+    {
         return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
     }
 
-    public function inscricao(){
+    public function inscricao()
+    {
         return $this->belongsTo(RegionalSul::class, 'inscricao_id', 'id');
     }
-
 }

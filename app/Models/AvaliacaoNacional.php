@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AvaliacaoNacional extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'avaliacao_nacional';
 
     protected $fillable = [
         'avaliador_1',
@@ -21,33 +23,36 @@ class AvaliacaoNacional extends Model
         'justificativa_avaliador_3',
         'status_coordenador',
         'justificativa_coordenador',
-        'edit'
+        'edit',
     ];
 
-    public function avaliador_1(){
+    public function avaliador_1()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_1');
     }
 
-    public function avaliador_2(){
+    public function avaliador_2()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_2');
     }
 
-    public function avaliador_3(){
+    public function avaliador_3()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_3');
     }
 
-    public function sub_gp(){
+    public function sub_gp()
+    {
         return $this->hasOne(SubmissaoNacional::class, 'avaliacao', 'id')->whereTipo('Grupo de Pesquisa');
     }
 
-    public function sub_ij(){
+    public function sub_ij()
+    {
         return $this->hasOne(SubmissaoNacional::class, 'avaliacao', 'id')->whereTipo('Intercom Júnior');
     }
 
-    public function sub_publicom(){
+    public function sub_publicom()
+    {
         return $this->hasOne(SubmissaoNacional::class, 'avaliacao', 'id')->whereTipo('Publicom');
     }
-
-
-
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class CoautorOrientadorSubSudeste extends Model
 {
     use SoftDeletes;
@@ -17,5 +16,7 @@ class CoautorOrientadorSubSudeste extends Model
         'categoria',
     ];
 
+    public function submissao(){
+        return $this->hasOne(SubmissaoRegionalSudeste::class, 'id', 'submissao_id');
+    }
 }
-

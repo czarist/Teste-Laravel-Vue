@@ -16,5 +16,7 @@ class CoautorOrientadorSubNordeste extends Model
         'categoria',
     ];
 
+    public function submissao(){
+        return $this->hasOne(SubmissaoRegionalNordestes::class, 'id', 'submissao_id');
+    }
 }
-

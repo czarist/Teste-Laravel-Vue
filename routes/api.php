@@ -20,4 +20,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('pagseguro/retorno', [PagSeguroController::class, 'retorno'])->name('pagseguro.retorno');
-

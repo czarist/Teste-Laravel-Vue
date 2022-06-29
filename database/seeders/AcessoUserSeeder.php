@@ -14,7 +14,7 @@ class AcessoUserSeeder extends Seeder
             [
                 'id'  => 1,
                 'acesso_id' => '1',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -23,7 +23,7 @@ class AcessoUserSeeder extends Seeder
             [
                 'id'  => 2,
                 'acesso_id' => '2',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -32,7 +32,7 @@ class AcessoUserSeeder extends Seeder
             [
                 'id'  => 3,
                 'acesso_id' => '3',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -41,7 +41,7 @@ class AcessoUserSeeder extends Seeder
             [
                 'id'  => 4,
                 'acesso_id' => '4',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -50,11 +50,8 @@ class AcessoUserSeeder extends Seeder
             [
                 'id'  => 5,
                 'acesso_id' => '5',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
-
-
-
     }
 }

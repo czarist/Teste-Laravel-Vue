@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cidade extends Model
 {
     protected $fillable = [
-        'estado_id', 'codigo', 'nome'
+        'estado_id', 'codigo', 'nome',
     ];
 
     public function estado()

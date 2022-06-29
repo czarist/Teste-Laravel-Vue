@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PagSeguroPgto extends Model
 {
@@ -20,7 +20,7 @@ class PagSeguroPgto extends Model
         'venda_id',
         'tipo_pagto_id',
         'status_id',
-        'user_id'
+        'user_id',
     ];
 
     public function status()
@@ -42,6 +42,4 @@ class PagSeguroPgto extends Model
     {
         return $this->belongsTo(Venda::class, 'venda_id', 'id');
     }
-
-
 }

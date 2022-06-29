@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DivisoesTematicasJr extends Model
 {
@@ -11,6 +11,6 @@ class DivisoesTematicasJr extends Model
 
     protected $fillable = [
         'dt',
-        'descricao'
+        'descricao',
     ];
 }

@@ -17,10 +17,10 @@ class InstituicaoController extends Controller
 
     public function get(Request $request)
     {
-        $titulacooes = Instituicao::select('id','instituicao','sigla_instituicao')
+        $titulacooes = Instituicao::select('id', 'instituicao', 'sigla_instituicao')
                         ->when($request->search, function ($query) use ($request) {
-                            $query->where(function($q) use ($request) {
-                                $q->where('instituicao', 'like', '%'. $request->search . '%');
+                            $query->where(function ($q) use ($request) {
+                                $q->where('instituicao', 'like', '%'.$request->search.'%');
                             });
                         })
                         ->when($request->sort == 'id', function ($query) {
@@ -30,7 +30,8 @@ class InstituicaoController extends Controller
                             $query->orderBy('instituicao', $request->asc == 'true' ? 'ASC' : 'DESC');
                         })
                         ->paginate(20);
-        return response()->json($titulacooes,201);
+
+        return response()->json($titulacooes, 201);
     }
 
     public function store(Request $request)
@@ -38,26 +39,30 @@ class InstituicaoController extends Controller
         try {
             $data = $request->all();
             $instituicao = Instituicao::create($data);
-            Log::info('User: ' . Auth::user() . ' | Create instituicao | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' => $instituicao],201);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Create instituicao | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' => $instituicao], 201);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Create instituicao | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Create instituicao | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         try {
             $data = $request->all();
             $instituicao = Instituicao::findOrFail($id);
             $instituicao->update($data);
-            Log::info('User: ' . Auth::user() . ' | Update instituicao | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' =>$instituicao],200);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Update instituicao | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' =>$instituicao], 200);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Update instituicao | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Update instituicao | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
@@ -67,9 +72,10 @@ class InstituicaoController extends Controller
         try {
             $instituicao = Instituicao::select('id')->findOrFail($id);
             $instituicao->delete();
-            Log::info('Usuário ' .Auth::user() . ' Deletou a instituicao | '  . __METHOD__ . ' |' .json_encode($instituicao));
-        }catch(Exception $exception) {
+            Log::info('Usuário '.Auth::user().' Deletou a instituicao | '.__METHOD__.' |'.json_encode($instituicao));
+        } catch (Exception $exception) {
             Log::error($exception);
+
             return response()->json(['message' => $exception->getMessage()], 400);
         }
     }

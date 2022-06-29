@@ -106,7 +106,7 @@ export default {
             this.$validator.validateAll().then(valid => {
                 if (valid) {
                     this.loading = true;
-                    axios.post(`${this.baseUrl}/coordenador/avaliador/send/message`, this.selectedChat).then( res =>{
+                    axios.post(`${this.baseUrl}/coordenador/nacional/avaliador/send/message`, this.selectedChat).then( res =>{
                         this.loading = false;
                         if(res.status == 201){
                             this.mensagens.push(res.data);

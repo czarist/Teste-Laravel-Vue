@@ -778,17 +778,30 @@
                                 <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao-expocom.index') }}">Validar Apresentação de Trabalhos e Vencedor Expocom</a> 
 
                             @endif
+                            <hr>
 
                             @if (Auth::user()->coordenador_regional && Auth::user()->coordenador_regional->tipo != "Expocom")
                                 <h5 class="text-center">Regional - DT, IJ e MESA</h5>
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacao.index') }}">Distribuição de trabalhos para avaliadores - DT, IJ e MESA</a>
                                 <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao.index') }}">Validar Apresentação de Trabalhos e Vencedor</a> 
                             @endif
+                            <hr>
+                            @if (Auth::user()->is_coordenador_nacional_2022)
 
-                            @if (Auth::user()->nacional && Auth::user()->nacional->tipo = 2)
-                                <h5 class="text-center">Nacional Intercom Júnior</h5>
+                                @if (Auth::user()->is_coordenador_nacional_2022 == 'coordenador_ij')
+                                    <h5 class="text-center">Nacional Intercom Júnior</h5>                                    
+                                @endif
+
+                                @if (Auth::user()->is_coordenador_nacional_2022 == 'coordenador_gp')
+                                    <h5 class="text-center">Nacional Gp´s</h5>                                    
+                                @endif
+
+                                @if (Auth::user()->is_coordenador_nacional_2022 == 'coordenador_expocom')
+                                    <h5 class="text-center">Nacional Expocom</h5>                                    
+                                @endif
+
                                 <a class="btn btn-primary m-1" href="{{ route('avaliacao_nacional.index') }}">Avaliação de trabalho - Nacional</a>
-                                <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao-nacional.index') }}">Validar Apresentação de Trabalhos e Vencedor</a> 
+                                {{-- <a class="btn btn-primary m-1" href="{{ route('validar-apresentacao-nacional.index') }}">Validar Apresentação de Trabalhos e Vencedor</a>  --}}
                             @endif
 
                         </div>

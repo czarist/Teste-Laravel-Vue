@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Produto extends Model
 {
@@ -12,6 +12,6 @@ class Produto extends Model
     protected $fillable = [
         'categoria',
         'nome',
-        'valor'
+        'valor',
     ];
 }

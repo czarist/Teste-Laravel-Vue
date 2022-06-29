@@ -448,165 +448,201 @@
 
                         <!-- DT - COAUTOR -->
                         <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-if="user && user.is_coautor_norte_2022">
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Norte - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_norte_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_norte_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Norte - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_norte_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_coautor(user.id, coautor.submissao.id,'norte')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_norte_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_coautor(user.id, 'norte')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-if="user && user.is_coautor_nordeste_2022">
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_nordeste_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_nordeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_nordeste_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_coautor(user.id, coautor.submissao.id,'nordeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_nordeste_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_coautor(user.id, 'nordeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-if="user && user.is_coautor_sudeste_2022">
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_centrooeste_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_centrooeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_centrooeste_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_coautor(user.id, coautor.submissao.id, 'centrooeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sudeste_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_coautor(user.id, 'sudeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-if="user && user.is_coautor_sul_2022">
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sul - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sul_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_sul_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sul - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sul_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_coautor(user.id, coautor.submissao.id, 'sul')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sul_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_coautor(user.id, 'sul')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-if="user && user.is_coautor_centrooeste_2022">
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sudeste_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_sudeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sudeste_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_coautor(user.id, coautor.submissao.id, 'sudeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_centrooeste_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_coautor(user.id, 'centrooeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -826,175 +862,195 @@
 
                         <!-- COAUTOR EXPOCOM -->
                         <div class="row">
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_nordeste_expo_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_nordeste_expo_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_nordeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_nordeste_expo_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_expocom_coautor(user.id, coautor.submissao.id,'nordeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_nordeste_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_expocom_coautor(user.id, 'nordeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_sudeste_expo_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_norte_expo_2022">
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_norte_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Norte - Coautor - {{ coautor.submissao.id }}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_norte_expo_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_expocom_coautor(user.id, coautor.submissao.id, 'norte')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sudeste_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_expocom_coautor(user.id, 'suldeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_norte_expo_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Norte - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sudeste_expo_2022">
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_sudeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor - {{ coautor.submissao.id }}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sudeste_expo_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_expocom_coautor(user.id, coautor.submissao.id, 'sudeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_norte_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_expocom_coautor(user.id, 'norte')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_sul_expo_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sul - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sul_expo_2022">
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_sul_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sul - Coautor - {{ coautor.submissao.id }}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sul_expo_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_expocom_coautor(user.id, coautor.submissao.id, 'sul')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sul_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_expocom_coautor(user.id, 'sul')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_centrooeste_expo_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_centrooeste_expo_2022">
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_centrooeste_2022" :key="index" v-show="coautor.submissao.apresentacao === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor - {{ coautor.submissao.id }}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_centrooeste_expo_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado de Apresentação de trabalho expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado de Apresentação de trabalho expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_apresentacao_expocom_coautor(user.id, coautor.submissao.id, 'centrooeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_centrooeste_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de Apresentação de trabalho expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de Apresentação de trabalho expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_apresentacao_expocom_coautor(user.id, 'centrooeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1246,181 +1302,201 @@
 
                         <!-- COAUTOR -->
                         <div class="row">
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_nordeste_expo_vencedor_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor</h4>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_nordeste_expo_vencedor_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_nordeste_2022" :key="index" v-show="coautor.submissao.vencedor === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Nordeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_nordeste_expo_vencedor_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado vencedor expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado vencedor expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_vencedor_expocom_coautor(user.id, coautor.submissao.id,'nordeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_nordeste_expo_vencedor_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado vencedor expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado vencedor expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_vencedor_expocom_coautor(user.id, 'nordeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_sudeste_expo_vencedor_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sudeste_expo_vencedor_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_sudeste_2022" :key="index" v-show="coautor.submissao.vencedor === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sudeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sudeste_expo_vencedor_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado vencedor expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado vencedor expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_vencedor_expocom_coautor(user.id, coautor.submissao.id,'suldeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sudeste_expo_vencedor_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado vencedor expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado vencedor expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_vencedor_expocom_coautor(user.id, 'suldeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_norte_expo_vencedor_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Norte - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_norte_expo_vencedor_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_norte_2022" :key="index" v-show="coautor.submissao.vencedor === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Norte - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_norte_expo_vencedor_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado vencedor expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado vencedor expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_vencedor_expocom_coautor(user.id, coautor.submissao.id,'norte')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_norte_expo_vencedor_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado vencedor expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado vencedor expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_vencedor_expocom_coautor(user.id, 'norte')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_centrooeste_expo_vencedor_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_centrooeste_expo_vencedor_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_centrooeste_2022" :key="index" v-show="coautor.submissao.vencedor === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Centro Oeste - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_centrooeste_expo_vencedor_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado vencedor expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado vencedor expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_vencedor_expocom_coautor(user.id, coautor.submissao.id, 'centrooeste')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_centrooeste_expo_vencedor_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado vencedor expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado vencedor expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_vencedor_expocom_coautor(user.id, 'centrooeste')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.is_coautor_sul_expo_vencedor_2022"
-                            >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">Regional Sul - Coautor</h4>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" v-if="user && user.is_coautor_sul_expo_vencedor_2022" >
+                                <div class="row">
+                                    <div v-for="(coautor, index) in user.coautor_expo_sul_2022" :key="index" v-show="coautor.submissao.vencedor === 1"
+                                        class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing">
+                                        <div  v-if="coautor && coautor.submissao && coautor.submissao.apresentacao">
+                                            <div class="widget widget-account-invoice-two">
+                                                <div class="widget-content">
+                                                    <div class="account-box">
+                                                        <div class="info">
+                                                            <div class="inv-title">
+                                                                <h4 class="" style="color:#FFF;">Regional Sul - Coautor - {{ coautor.submissao.id}}</h4>
+                                                            </div>
+                                                            <div class="inv-balance-info">
+                                                            </div>
+                                                        </div>
+                                                        <div class="acc-action">
+                                                            <button
+                                                                v-if="user && user.is_coautor_sul_expo_vencedor_2022"
+                                                                v-tooltip.bottom="{
+                                                                content: 'Certificado vencedor expocom',
+                                                                delay: 0,
+                                                                class: 'tooltip-custom tooltip-arrow'
+                                                                }"
+                                                                title="Certificado vencedor expocom"
+                                                                class="btn btn-info btn-sm m-1 text-white"
+                                                                :disabled="loading"
+                                                                @click="certificado_vencedor_expocom_coautor(user.id, coautor.submissao.id, 'sul')"
+                                                                >
+                                                                Baixar
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.is_coautor_sul_expo_vencedor_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado vencedor expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado vencedor expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_vencedor_expocom_coautor(user.id, 'sul')"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -1428,41 +1504,52 @@
             <hr>
 
         <!-- CERTIFICADOS PARECERISTA DT -->
-            <div v-if="user && user.avaliou_trabalho_expo_2022 || user && user.avaliou_trabalho_dt_2022">
+            <div v-if="user && user.avaliou_trabalho_expo_2022 || user && user.avaliou_trabalho_2022">
                 <div class="card">
                     <div class="card-header">Certificado de parecerista</div>
                     <div class="card-body pb-2">
                         <!-- DT -->
                         <div class="row">
                             <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
+                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing"
+                                
                                 v-if="user && user.avaliou_trabalho_expo_2022"
                             >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">PARECERISTA EXPOCOM</h4>
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-for="(avaliacao, index) in user.avaliou_trabalho_expo_2022" :key="index" v-show="user.avaliou_trabalho_expo_2022">
+                                        <div class="widget widget-account-invoice-two">
+                                            <div class="widget-content">
+                                                <div class="account-box">
+                                                    <div class="info">
+                                                        <div class="inv-title">
+                                                            <h4 class="" style="color:#FFF;">PARECERISTA EXPOCOM
+                                                                <div v-if="avaliacao == 'sul'">Sul</div>
+                                                                <div v-if="avaliacao == 'sudeste'">Sudeste</div>
+                                                                <div v-if="avaliacao == 'norte'">Norte</div>
+                                                                <div v-if="avaliacao == 'nordeste'">Nordeste</div>
+                                                                <div v-if="avaliacao == 'centrooeste'">Centro-Oeste</div>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="inv-balance-info">
+                                                        </div>
+                                                    </div>
+                                                    <div class="acc-action">
+                                                        <button
+                                                            v-if="user && user.avaliou_trabalho_expo_2022"
+                                                            v-tooltip.bottom="{
+                                                            content: 'Certificado de parecerista expocom',
+                                                            delay: 0,
+                                                            class: 'tooltip-custom tooltip-arrow'
+                                                            }"
+                                                            title="Certificado de parecerista expocom"
+                                                            class="btn btn-info btn-sm m-1 text-white"
+                                                            :disabled="loading"
+                                                            @click="certificado_parecerista_expocom(user.id, avaliacao)"
+                                                            >
+                                                            Baixar
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.avaliou_trabalho_expo_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de parecerista expocom',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de parecerista expocom"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_parecerista_expocom(user.id)"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1470,34 +1557,44 @@
                             </div>
 
                             <div 
-                                class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing"
-                                v-if="user && user.avaliou_trabalho_dt_2022"
+                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing"
+                                v-if="user && user.avaliou_trabalho_2022"
                             >
-                                <div class="widget widget-account-invoice-two">
-                                    <div class="widget-content">
-                                        <div class="account-box">
-                                            <div class="info">
-                                                <div class="inv-title">
-                                                    <h4 class="" style="color:#FFF;">PARECERISTA</h4>
+                                <div class="row" >
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 layout-spacing" v-for="(avaliacao, index) in user.avaliou_trabalho_2022" :key="index" v-show="user.avaliou_trabalho_2022">
+                                        <div class="widget widget-account-invoice-two">
+                                            <div class="widget-content">
+                                                <div class="account-box">
+                                                    <div class="info">
+                                                        <div class="inv-title">
+                                                            <h4 class="" style="color:#FFF;">PARECERISTA
+                                                                <div v-if="avaliacao == 'sul'">Sul</div>
+                                                                <div v-if="avaliacao == 'sudeste'">Sudeste</div>
+                                                                <div v-if="avaliacao == 'norte'">Norte</div>
+                                                                <div v-if="avaliacao == 'nordeste'">Nordeste</div>
+                                                                <div v-if="avaliacao == 'centrooeste'">Centro-Oeste</div>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="inv-balance-info">
+                                                        </div>
+                                                    </div>
+                                                    <div class="acc-action">
+                                                        <button
+                                                            v-if="user && user.avaliou_trabalho_2022"
+                                                            v-tooltip.bottom="{
+                                                            content: 'Certificado de parecerista',
+                                                            delay: 0,
+                                                            class: 'tooltip-custom tooltip-arrow'
+                                                            }"
+                                                            title="Certificado de parecerista"
+                                                            class="btn btn-info btn-sm m-1 text-white"
+                                                            :disabled="loading"
+                                                            @click="certificado_parecerista(user.id, avaliacao)"
+                                                            >
+                                                            Baixar
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="inv-balance-info">
-                                                </div>
-                                            </div>
-                                            <div class="acc-action">
-                                                <button
-                                                    v-if="user && user.avaliou_trabalho_dt_2022"
-                                                    v-tooltip.bottom="{
-                                                    content: 'Certificado de parecerista',
-                                                    delay: 0,
-                                                    class: 'tooltip-custom tooltip-arrow'
-                                                    }"
-                                                    title="Certificado de parecerista"
-                                                    class="btn btn-info btn-sm m-1 text-white"
-                                                    :disabled="loading"
-                                                    @click="certificado_parecerista(user.id)"
-                                                    >
-                                                    Baixar
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1564,9 +1661,9 @@
                     }
                 })
             },
-            certificado_apresentacao_coautor(user_id, regiao){
+            certificado_apresentacao_coautor(user_id, submissao, regiao){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_coautor/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_coautor/pdf/${user_id}/${submissao}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);
@@ -1599,9 +1696,9 @@
                     }
                 })
             },
-            certificado_apresentacao_expocom_coautor(user_id, regiao){
+            certificado_apresentacao_expocom_coautor(user_id, submissao, regiao){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_expocom_coautor/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_apresentacao_expocom_coautor/pdf/${user_id}/${submissao}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);
@@ -1634,9 +1731,9 @@
                 })
             },
 
-            certificado_vencedor_expocom_coautor(user_id, regiao){
+            certificado_vencedor_expocom_coautor(user_id, submissao, regiao){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_vencedor_expocom_coautor/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_vencedor_expocom_coautor/pdf/${user_id}/${submissao}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);
@@ -1651,9 +1748,9 @@
                     }
                 })
             },
-            certificado_parecerista_expocom(user_id){
+            certificado_parecerista_expocom(user_id, regiao){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_parecerista_expocom/pdf/${user_id}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_parecerista_expocom/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);
@@ -1668,9 +1765,9 @@
                     }
                 })
             },
-            certificado_parecerista(user_id){
+            certificado_parecerista(user_id, regiao){
                 this.loading = true
-                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_parecerista/pdf/${user_id}`, {responseType: 'blob'}).then(res => {
+                axios.get(`${process.env.MIX_BASE_URL}/certificados/certificado_parecerista/pdf/${user_id}/${regiao}`, {responseType: 'blob'}).then(res => {
                     if(res.data){
                         var newBlob = new Blob([res.data], {type: "application/pdf"})
                         const data = window.URL.createObjectURL(newBlob);

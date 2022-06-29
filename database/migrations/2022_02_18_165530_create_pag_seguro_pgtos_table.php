@@ -18,10 +18,10 @@ class CreatePagSeguroPgtosTable extends Migration
             $table->bigInteger('tipo_pgto_detalhe');
             $table->string('transacao');
             $table->bigInteger('parcelas');
-            $table->decimal('valor_parcela', 15,2);	
-            $table->decimal('valor_total', 15,2);	
-            $table->decimal('valor_juros', 15,2);	
-            $table->decimal('valor_receber', 15,2);	
+            $table->decimal('valor_parcela', 15, 2);
+            $table->decimal('valor_total', 15, 2);
+            $table->decimal('valor_juros', 15, 2);
+            $table->decimal('valor_receber', 15, 2);
             $table->bigInteger('venda_id')->unsigned();
             $table->foreign('venda_id')->references('id')->on('vendas');
             $table->bigInteger('tipo_pagto_id')->unsigned();
@@ -31,7 +31,7 @@ class CreatePagSeguroPgtosTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

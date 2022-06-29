@@ -12,21 +12,20 @@ use Illuminate\Support\Facades\Log;
 
 class AssociadoController extends Controller
 {
-     public function index()
+    public function index()
     {
         return view('admin.associado.index');
     }
 
     public function get(Request $request)
     {
-        $associados = Associado::select('id', 'numero_socio', 'anuidade','divisao_tematica','obs_isentamos', 'titulacao_id', 'instituicao_id')
+        $associados = Associado::select('id', 'numero_socio', 'anuidade', 'divisao_tematica', 'obs_isentamos', 'titulacao_id', 'instituicao_id')
                         ->with('titulacao', 'instituicao')
                         ->when($request->search, function ($query) use ($request) {
-                            $query->where(function($q) use ($request) {
-                                $q->orWhere('numero_socio', 'like', '%'. $request->search . '%')
-                                ->orWhere(DB::raw("(DATE_FORMAT(anuidade,'%d/%m/%Y'))"),'LIKE', '%'. $request->search . '%')
-                                ->orWhere('divisao_tematica', 'like', '%'. $request->search . '%');
-                              
+                            $query->where(function ($q) use ($request) {
+                                $q->orWhere('numero_socio', 'like', '%'.$request->search.'%')
+                                ->orWhere(DB::raw("(DATE_FORMAT(anuidade,'%d/%m/%Y'))"), 'LIKE', '%'.$request->search.'%')
+                                ->orWhere('divisao_tematica', 'like', '%'.$request->search.'%');
                             });
                         })
                         ->when($request->sort == 'id', function ($query) {
@@ -36,7 +35,8 @@ class AssociadoController extends Controller
                             $query->orderBy('numero_socio', $request->asc == 'true' ? 'ASC' : 'DESC');
                         })
                         ->paginate(20);
-        return response()->json($associados,201);
+
+        return response()->json($associados, 201);
     }
 
     public function store(Request $request)
@@ -45,27 +45,31 @@ class AssociadoController extends Controller
             $data = $request->all();
             $associado = Associado::create($data);
             $associado->load('titulacao', 'instituicao');
-            Log::info('User: ' . Auth::user() . ' | Create associado | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' => $associado],201);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Create associado | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' => $associado], 201);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Create associado | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Create associado | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         try {
             $data = $request->all();
             $associado = Associado::findOrFail($id);
             $associado->update($data);
             $associado->load('titulacao', 'instituicao');
-            Log::info('User: ' . Auth::user() . ' | Update associado | '  . __METHOD__ . ' | Request Send to: ' . json_encode($data));
-            return  response()->json(['response' =>$associado],200);
-        }catch(Exception $exception) {
+            Log::info('User: '.Auth::user().' | Update associado | '.__METHOD__.' | Request Send to: '.json_encode($data));
+
+            return  response()->json(['response' =>$associado], 200);
+        } catch (Exception $exception) {
             Log::error($exception);
-            Log::error('User: ' . Auth::user() . ' | Error Update associado | Request Send to: ' . json_encode($data));
+            Log::error('User: '.Auth::user().' | Error Update associado | Request Send to: '.json_encode($data));
+
             return  response()->json(['status' => 'Server Error'], 400);
         }
     }
@@ -75,9 +79,10 @@ class AssociadoController extends Controller
         try {
             $associado = Associado::select('id')->findOrFail($id);
             $associado->delete();
-            Log::info('Usuário ' .Auth::user() . ' Deletou a associado | '  . __METHOD__ . ' |' .json_encode($associado));
-        }catch(Exception $exception) {
+            Log::info('Usuário '.Auth::user().' Deletou a associado | '.__METHOD__.' |'.json_encode($associado));
+        } catch (Exception $exception) {
             Log::error($exception);
+
             return response()->json(['message' => $exception->getMessage()], 400);
         }
     }
@@ -85,10 +90,10 @@ class AssociadoController extends Controller
     public function check(Request $request)
     {
         try {
-            Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode($request->all()));
+            Log::info('User: '.Auth::user()->id.' | '.__METHOD__.' | '.json_encode($request->all()));
             $numero = Associado::select('id', 'numero_socio')->whereNumeroSocio($request->numero_socio)->withTrashed();
-            if($numero->first()) {
-                if($numero->first()->id == $request->id[0]) {
+            if ($numero->first()) {
+                if ($numero->first()->id == $request->id[0]) {
                     return response()->json(true);
                 } else {
                     return response()->json(false);
@@ -97,26 +102,27 @@ class AssociadoController extends Controller
                 return response()->json(true);
             }
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
+
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500, $this->header, JSON_UNESCAPED_UNICODE);
         }
     }
 
     public function area()
     {
-        if(Auth::user()){
-
-            $user = User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
-                ->with('acessos:id,pagina,link',
-                        'todos_tipos:id,descricao',
-                        'enderecos',
-                        'enderecos.municipio',
-                        'enderecos.municipio.estado')
+        if (Auth::user()) {
+            $user = User::select('id', 'name', 'email', 'ativo', 'sexo_id', 'estrangeiro', 'passaporte', 'cpf', 'rg', 'orgao_expedidor', 'telefone', 'celular', 'data_nascimento')
+                ->with(
+                    'acessos:id,pagina,link',
+                    'todos_tipos:id,descricao',
+                    'enderecos',
+                    'enderecos.municipio',
+                    'enderecos.municipio.estado'
+                )
                 ->whereId(Auth::user()->id)->first();
 
             return view('associado.index', compact('user'));
-
         }
 
         return view('associado.index');

@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class SubmissaoExpocomRegionalSulController extends Controller
 {
-    public function store(Request $request){
-
-        try{
+    public function store(Request $request)
+    {
+        try {
             $post = json_decode($request->post);
 
             $user = User::findOrFail(Auth::user()->id);
@@ -25,12 +25,11 @@ class SubmissaoExpocomRegionalSulController extends Controller
             $coautor_ids = array_map(function ($res) {
                 return $res->id ?? null;
             }, $post->coautoresOrientadores);
-    
-            if(!empty($submissao)){
 
+            if (! empty($submissao)) {
                 $coautores = CoauOriExpoSubSul::where('submissao_id', $submissao->id)->get();
-                foreach($coautores as $coautor){
-                    if(!in_array($coautor->id, $coautor_ids)){
+                foreach ($coautores as $coautor) {
+                    if (! in_array($coautor->id, $coautor_ids)) {
                         $coautor->delete();
                     }
                 }
@@ -38,8 +37,8 @@ class SubmissaoExpocomRegionalSulController extends Controller
 
             $now = Carbon::now()->format('Y-m-d H:i:s');
 
-            if($now <= '2022-05-10 00:00:00'){
-                if(empty($submissao)){
+            if ($now <= '2022-05-10 00:00:00') {
+                if (empty($submissao)) {
                     $submissao_save = SubmissaoExpocomRegionalSul::create([
                         'inscricao_id' => $user->regional_sul->id,
                         'tipo' => $post->tipo->name,
@@ -54,17 +53,16 @@ class SubmissaoExpocomRegionalSulController extends Controller
                         'regiao' => 1,
                     ]);
 
-                    if($request->hasFile('file')){
+                    if ($request->hasFile('file')) {
                         $file = $request->file('file');
-                        $name = date('mdYHis') . uniqid();
-                        $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022/" , $name);
+                        $name = date('mdYHis').uniqid();
+                        $file->move(public_path().'/pdf/submissao_expocom_regional_sul_2022/', $name);
                         $submissao_save->link_trabalho = $name;
                         $submissao_save->save();
                     }
 
-                    foreach($post->coautoresOrientadores as $coautor){
-                        if(!empty($coautor->id)){
-
+                    foreach ($post->coautoresOrientadores as $coautor) {
+                        if (! empty($coautor->id)) {
                             $coautor_save = CoauOriExpoSubSul::findOrFail($coautor->id);
 
                             $coautor_save->update([
@@ -72,24 +70,24 @@ class SubmissaoExpocomRegionalSulController extends Controller
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
                                 'categoria' => $coautor->categoria,
-                                'curso_coautor' => $coautor->curso_coautor
+                                'curso_coautor' => $coautor->curso_coautor,
                             ]);
                         }
 
-                        if(empty($coautor->id)){
+                        if (empty($coautor->id)) {
                             $coautor_save = CoauOriExpoSubSul::create([
                                 'submissao_id' => $submissao_save->id,
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
                                 'categoria' => $coautor->categoria,
-                                'curso_coautor' => $coautor->curso_coautor
+                                'curso_coautor' => $coautor->curso_coautor,
                             ]);
                         }
                     }
                 }
             }
 
-            if(!empty($submissao)){
+            if (! empty($submissao)) {
                 $submissao->update([
                     'tipo' => $post->tipo->name,
                     'ciente' => $post->ciente,
@@ -102,17 +100,16 @@ class SubmissaoExpocomRegionalSulController extends Controller
                     'autorizacao' => $post->autorizacao,
                 ]);
 
-                if($request->hasFile('file')){
+                if ($request->hasFile('file')) {
                     $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_expocom_regional_sul_2022/" , $name);
+                    $name = date('mdYHis').uniqid();
+                    $file->move(public_path().'/pdf/submissao_expocom_regional_sul_2022/', $name);
                     $submissao->link_trabalho = $name;
                     $submissao->save();
                 }
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
-
+                foreach ($post->coautoresOrientadores as $coautor) {
+                    if (! empty($coautor->id)) {
                         $coautor_save = CoauOriExpoSubSul::findOrFail($coautor->id);
 
                         $coautor_save->update([
@@ -124,28 +121,25 @@ class SubmissaoExpocomRegionalSulController extends Controller
                         ]);
                     }
 
-                    if(empty($coautor->id)){
+                    if (empty($coautor->id)) {
                         $coautor_save = CoauOriExpoSubSul::create([
                             'submissao_id' => $submissao->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
                             'categoria' => $coautor->categoria,
-                            'curso_coautor' => $coautor->curso_coautor
+                            'curso_coautor' => $coautor->curso_coautor,
                         ]);
                     }
                 }
-                
             }
 
-            Log::info('User: '. Auth::user()->id . ' | Regional Sul 2022 | Submeteu seu trabalho: ' . json_encode($post));
-    
+            Log::info('User: '.Auth::user()->id.' | Regional Sul 2022 | Submeteu seu trabalho: '.json_encode($post));
+
             return response()->json(['message' => 'success', 'response' => $submissao], 201);
-
-
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }

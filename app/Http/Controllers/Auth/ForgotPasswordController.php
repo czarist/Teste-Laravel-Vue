@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 // use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-
 class ForgotPasswordController extends Controller
 {
-
     // use SendsPasswordResetEmails;
 
     public function showForgetPasswordForm()
@@ -34,7 +32,7 @@ class ForgotPasswordController extends Controller
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
         ]);
 
         Mail::send('email.forgetPassword', ['token' => $token], function ($message) use ($request) {
@@ -50,23 +48,22 @@ class ForgotPasswordController extends Controller
         return view('auth.forgetPasswordLink', ['token' => $token]);
     }
 
-
     public function submitResetPasswordForm(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required|string|confirmed',
-            'password_confirmation' => 'required'
+            'password_confirmation' => 'required',
         ]);
 
         $updatePassword = DB::table('password_resets')
             ->where([
                 'email' => $request->email,
-                'token' => $request->token
+                'token' => $request->token,
             ])
             ->first();
 
-        if (!$updatePassword) {
+        if (! $updatePassword) {
             return back()->withInput()->with('error', 'Token inválido!');
         }
 

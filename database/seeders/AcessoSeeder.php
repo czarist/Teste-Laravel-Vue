@@ -19,7 +19,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 1,
                 'pagina' => 'Tipo Sexo',
-                'link' => 'admin/sexo'
+                'link' => 'admin/sexo',
             ]
         );
 
@@ -28,7 +28,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 2,
                 'pagina' => 'Associados',
-                'link' => 'admin/associado'
+                'link' => 'admin/associado',
             ]
         );
 
@@ -37,7 +37,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 3,
                 'pagina' => 'Usuários',
-                'link' => 'admin/usuarios'
+                'link' => 'admin/usuarios',
             ]
         );
 
@@ -46,7 +46,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 4,
                 'pagina' => 'Instituição',
-                'link' => 'admin/instituicao'
+                'link' => 'admin/instituicao',
             ]
         );
 
@@ -55,7 +55,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 5,
                 'pagina' => 'Titulação',
-                'link' => 'admin/titulacao'
+                'link' => 'admin/titulacao',
             ]
         );
 
@@ -64,7 +64,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 6,
                 'pagina' => 'Coordenador',
-                'link' => 'admin/coordenador'
+                'link' => 'admin/coordenador',
             ]
         );
 
@@ -73,7 +73,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 7,
                 'pagina' => 'Pagamentos',
-                'link' => 'admin/pagamento'
+                'link' => 'admin/pagamento',
             ]
         );
 
@@ -82,7 +82,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 8,
                 'pagina' => 'Indicação Expocom',
-                'link' => 'admin/indicacao'
+                'link' => 'admin/indicacao',
             ]
         );
 
@@ -91,7 +91,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 9,
                 'pagina' => 'Dashboard',
-                'link' => 'admin/dashboard'
+                'link' => 'admin/dashboard',
             ]
         );
 
@@ -100,7 +100,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 10,
                 'pagina' => 'Validar Presenca Regional',
-                'link' => 'admin/validar-presenca'
+                'link' => 'admin/validar-presenca',
             ]
         );
 
@@ -109,7 +109,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 11,
                 'pagina' => 'Validar Apresentação Expocom',
-                'link' => 'admin/validar-apresentacao-expocom'
+                'link' => 'admin/validar-apresentacao-expocom',
             ]
         );
 
@@ -118,7 +118,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 12,
                 'pagina' => 'Lista de Trabalho Expocom',
-                'link' => 'admin/lista-trabalho-expocom'
+                'link' => 'admin/lista-trabalho-expocom',
             ]
         );
 
@@ -127,7 +127,7 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 13,
                 'pagina' => 'Relatórios',
-                'link' => 'financeiro/relatorios'
+                'link' => 'financeiro/relatorios',
             ]
         );
 
@@ -136,9 +136,8 @@ class AcessoSeeder extends Seeder
             [
                 'id'  => 14,
                 'pagina' => 'Coordenador Nacional',
-                'link' => 'admin/coordenador/nacional'
+                'link' => 'admin/coordenador/nacional',
             ]
         );
-
     }
 }

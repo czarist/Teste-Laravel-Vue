@@ -19,20 +19,21 @@ class CoordenadorController extends Controller
 
     public function usuarios()
     {
-        return User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
-            ->with('acessos:id,pagina,link',
-                    'associado',   
-                    'avaliador_expocom',
-                    'coordenador_regional',
-                    'todos_tipos:id,descricao',
-                    'todos_divisoes_tematicas:id,descricao',
-                    'todos_divisoes_tematicas_jr:id,descricao',
-                    'todos_cinema_audiovisual:id,descricao',
-                    'todos_jornalismo:id,descricao',
-                    'todos_publicidade_propaganda:id,descricao',
-                    'todos_relacoes_publicas:id,descricao',
-                    'todos_producao_editorial:id,descricao',
-                    'todos_radio_internet:id,descricao',    
+        return User::select('id', 'name', 'email', 'ativo', 'sexo_id', 'estrangeiro', 'passaporte', 'cpf', 'rg', 'orgao_expedidor', 'telefone', 'celular', 'data_nascimento')
+            ->with(
+                'acessos:id,pagina,link',
+                'associado',
+                'avaliador_expocom',
+                'coordenador_regional',
+                'todos_tipos:id,descricao',
+                'todos_divisoes_tematicas:id,descricao',
+                'todos_divisoes_tematicas_jr:id,descricao',
+                'todos_cinema_audiovisual:id,descricao',
+                'todos_jornalismo:id,descricao',
+                'todos_publicidade_propaganda:id,descricao',
+                'todos_relacoes_publicas:id,descricao',
+                'todos_producao_editorial:id,descricao',
+                'todos_radio_internet:id,descricao',
             );
     }
 
@@ -40,15 +41,15 @@ class CoordenadorController extends Controller
     {
         return $this->usuarios()
             ->when($request->search, function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {    
+                $query->where(function ($query) use ($request) {
                     $query->when($request->type == 'name', function ($query) use ($request) {
-                        $query->where('name', 'like', '%' . $request->search . '%');
+                        $query->where('name', 'like', '%'.$request->search.'%');
                     });
                     $query->when($request->type == 'cpf', function ($query) use ($request) {
-                        $query->where('cpf', 'like', '%' . $request->search . '%');
+                        $query->where('cpf', 'like', '%'.$request->search.'%');
                     });
                     $query->when($request->type == 'email', function ($query) use ($request) {
-                        $query->where('email', 'like', '%' . $request->search . '%');
+                        $query->where('email', 'like', '%'.$request->search.'%');
                     });
                 });
             })
@@ -58,7 +59,7 @@ class CoordenadorController extends Controller
             ->when($request->sort == 'name', function ($query) use ($request) {
                 $query->orderBy('name', $request->asc == 'true' ? 'ASC' : 'DESC');
             })
-            ->when($request->status == 0, function ($query) use ($request) {
+            ->when($request->status == 0, function ($query) {
                 $query->whereHas('coordenador_regional');
             })
 
@@ -67,7 +68,7 @@ class CoordenadorController extends Controller
 
     public function store(Request $request)
     {
-        try{
+        try {
             $post = $request->all();
             $coordenador = Coordenador::create([
                 'user_id' => $post['user_id'],
@@ -82,7 +83,6 @@ class CoordenadorController extends Controller
 
             //Enviar e-mail informando que foi selecionado como Coordenador
             try {
-
                 $user = User::findOrFail($post['user_id']);
                 $dados_coordenador['email'] = $user->email;
                 $dados_coordenador['name'] = $user->name;
@@ -95,20 +95,18 @@ class CoordenadorController extends Controller
                     } else {
                         $email->to('murilo@kirc.com.br');
                     }
-                        $email->subject('Cadastro de Coordenador | Intercom');
-                    Log::info('E-mail Enviado para o usuario informando que ele foi cadastrado como coordenador' . json_encode($dados_coordenador));
+                    $email->subject('Cadastro de Coordenador | Intercom');
+                    Log::info('E-mail Enviado para o usuario informando que ele foi cadastrado como coordenador'.json_encode($dados_coordenador));
                 });
             } catch (Exception $e) {
-                Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: '.$e->getMessage().'  |  Linha: '.$e->getLine().' | Arquivo: '.$e->getFile());
             }
 
             return response()->json(['message' => 'success', 'response' => $coordenador], 201);
-    
         } catch (Exception $exception) {
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
@@ -118,7 +116,7 @@ class CoordenadorController extends Controller
     {
         $coordenador = Coordenador::findOrFail($request->id);
 
-        try{
+        try {
             $coordenador->update([
                 'tipo' => $request->tipo,
                 'regiao' => $request->regiao ?? null,
@@ -128,13 +126,12 @@ class CoordenadorController extends Controller
             ]);
 
             Log::info('Coordenador updated: '.$coordenador->id.' | Request: '.json_encode($request->all()));
+
             return response()->json(['message' => 'success', 'response' => $coordenador], 201);
-
         } catch (Exception $exception) {
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }

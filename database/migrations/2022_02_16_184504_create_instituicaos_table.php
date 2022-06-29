@@ -18,7 +18,7 @@ class CreateInstituicaosTable extends Migration
             $table->string('instituicao');
             $table->string('sigla_instituicao');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

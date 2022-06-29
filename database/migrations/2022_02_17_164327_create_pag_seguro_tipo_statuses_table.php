@@ -13,7 +13,7 @@ class CreatePagSeguroTipoStatusesTable extends Migration
             $table->string('nome');
             $table->string('memo');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

@@ -45,8 +45,8 @@
             <div align="center" style=" font-size: 15px;">
         @endif
 
-            participou do XXII Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da 
-            Comunicação - INTERCOM e realizado pela Ucsal - Universidade Católica de Salvador, entre os dias 18 a 20 de maio, na Cidade de Salvador/BA, como 
+            participou do XIX Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da 
+            Comunicação - INTERCOM e realizado pela UFT - Universidade Federal do Tocantins, entre os dias de 2 a 4 de junho, na Cidade de Palmas/TO, como 
             Expositor(a) - Exposição de Pesquisa e Produção Experimental em Comunicação, na Região {{$certificado['regiao']}}, 
             com o trabalho "{{ $certificado['titulo']}}", no 
             {{ $certificado['tipo']}} - {{ $certificado['categoria']}}, 

@@ -169,7 +169,7 @@ export default {
         },
         async getChat(avaliacao, indexChat) {
             if(avaliacao && avaliacao.id){
-                await axios.get(`${this.baseUrl}/coordenador/get/chat/avaliador/${avaliacao.id}`)
+                await axios.get(`${this.baseUrl}/coordenador/nacional/get/chat/avaliador/${avaliacao.id}`)
                 .then(res =>{
                     if(res.data.length > 0){
                         this.mensagens = res.data

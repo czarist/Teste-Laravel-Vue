@@ -14,7 +14,7 @@ class ChatAvaliacaoExpocom extends Model
         'avaliador_id',
         'coordenador_id',
         'mensagem',
-        'send_avaliador'
+        'send_avaliador',
     ];
 
     public function avaliacao()
@@ -31,5 +31,4 @@ class ChatAvaliacaoExpocom extends Model
     {
         return $this->belongsTo(User::class, 'avaliador_id');
     }
-
 }

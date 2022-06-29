@@ -45,8 +45,8 @@
             <div align="center" style=" font-size: 15px;">
         @endif
 
-            participou do XXII Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da Comunicação - 
-            INTERCOM e realizado pela Ucsal - Universidade Católica de Salvador, entre os dias 18 a 20 de maio, na Cidade de Salvador/BA, como Vencedor(a) do PRÊMIO EXPOCOM - 
+            participou do XIX Congresso de Ciências da Comunicação na Região {{$certificado['regiao']}}, promovido pela Sociedade Brasileira de Estudos Interdisciplinares da Comunicação - 
+            INTERCOM e realizado pela UFT - Universidade Federal do Tocantins, entre os dias de 2 a 4 de junho, na Cidade de Palmas/TO, como Vencedor(a) do PRÊMIO EXPOCOM - 
             Exposição de Pesquisa e Produção Experimental em Comunicação, na Região {{$certificado['regiao']}}, 
             com o trabalho "{{ $certificado['titulo']}}", 
             na Categoria {{ $certificado['categoria']}}, 
@@ -55,16 +55,10 @@
                 @if (isset($certificado['coautores']) && count($certificado['coautores']))
              
                     @foreach ($certificado['coautores'] as $coautor)
-                        @if(!$loop->first)
-                            {{ $coautor }},
-                        @endif
-
-                        @if(!$loop->even)
-                            {{ $coautor }},
-                        @endif
-
                         @if($loop->last)
                             {{ $coautor }}.
+                        @else
+                            {{ $coautor }},
                         @endif
                     @endforeach
                 @endif

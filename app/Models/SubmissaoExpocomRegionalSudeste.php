@@ -29,15 +29,16 @@ class SubmissaoExpocomRegionalSudeste extends Model
 
     public function coautorOrientadorSubSudeste()
     {
-        return $this->hasMany(CoauOriExpoSubSudeste::class,  'submissao_id', 'id');
+        return $this->hasMany(CoauOriExpoSubSudeste::class, 'submissao_id', 'id');
     }
 
-    public function avaliacao(){
+    public function avaliacao()
+    {
         return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
     }
 
-    public function inscricao(){
+    public function inscricao()
+    {
         return $this->belongsTo(RegionalSuldeste::class, 'inscricao_id', 'id');
     }
-
 }

@@ -285,6 +285,5 @@ class PagSeguroTipoPagtoDetalheSeeder extends Seeder
                 'nome' => 'Depósito em conta - Banco do Brasil',
             ]
         );
-
     }
 }

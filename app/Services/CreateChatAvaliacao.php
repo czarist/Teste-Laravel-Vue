@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\ChatAvaliacao;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CreateChatAvaliacao
 {
@@ -19,9 +19,9 @@ class CreateChatAvaliacao
             'mensagem' => $mensagem,
         ]);
 
-        if(Auth::user()->id){
-            Log::info('User: '.Auth::user(). ' | Create conversa, avaliaçao ID: '. $avaliacao_id . ' | Avaliado: '. $avaliado_id ?? null . ' | Avaliador: '. $avaliador_id ?? null
-            . ' | Coordenador: '. $coordenador_id ?? null . ' | Mensagem: '. $mensagem );
+        if (Auth::user()->id) {
+            Log::info('User: '.Auth::user().' | Create conversa, avaliaçao ID: '.$avaliacao_id.' | Avaliado: '.$avaliado_id ?? null.' | Avaliador: '.$avaliador_id ?? null
+            .' | Coordenador: '.$coordenador_id ?? null.' | Mensagem: '.$mensagem);
         }
     }
 

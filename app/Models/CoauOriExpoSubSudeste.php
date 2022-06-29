@@ -14,6 +14,10 @@ class CoauOriExpoSubSudeste extends Model
         'nome_completo',
         'cpf',
         'categoria',
-        'curso_coautor'
+        'curso_coautor',
     ];
+
+    public function submissao(){
+        return $this->hasOne(SubmissaoExpocomRegionalSudeste::class, 'id', 'submissao_id');
+    }
 }

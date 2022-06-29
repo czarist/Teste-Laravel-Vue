@@ -196,40 +196,6 @@
                     })
                 }
             },
-            getDivisoesTematicas(){
-                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetDivisoesTematicas,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.divisoes_tematicas = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
-            },
-            getAvaliadores(){
-                let urlgetavaliadores = this.baseUrl+"/get/avaliadores";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetavaliadores,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.avaliadores = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
-            },
             clear() {
                 this.post.id = null
                 this.post.name = null
@@ -238,9 +204,6 @@
             }
         },
         created() {
-            this.getDivisoesTematicas(),
-            this.getAvaliadores()
-
         },
 
     }

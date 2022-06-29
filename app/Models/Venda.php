@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venda extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id'
+        'user_id',
     ];
 
     public function vendas_item()
@@ -20,7 +20,7 @@ class Venda extends Model
 
     public function pagamento()
     {
-        return $this->hasOne(PagSeguroPgto::class );
+        return $this->hasOne(PagSeguroPgto::class);
     }
 
     public function user()

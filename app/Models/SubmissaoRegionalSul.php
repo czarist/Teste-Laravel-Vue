@@ -26,28 +26,31 @@ class SubmissaoRegionalSul extends Model
         'palavra_chave_5',
         'termo_autoria',
         'autorizacao',
-        'link_trabalho'
+        'link_trabalho',
     ];
 
     public function coautorOrientadorSubSuls()
     {
-        return $this->hasMany(CoautorOrientadorSubSul::class,  'submissao_id', 'id');
+        return $this->hasMany(CoautorOrientadorSubSul::class, 'submissao_id', 'id');
     }
 
-    public function avaliacao(){
+    public function avaliacao()
+    {
         return $this->hasOne(DistribuicaoTipo123::class, 'id', 'avaliacao');
     }
 
-    public function inscricao(){
+    public function inscricao()
+    {
         return $this->belongsTo(RegionalSul::class, 'inscricao_id', 'id');
     }
 
-    public function divisao_tematica(){
+    public function divisao_tematica()
+    {
         return $this->belongsTo(DivisoesTematicas::class, 'dt', 'id');
     }
 
-    public function divisao_tematica_jr(){
+    public function divisao_tematica_jr()
+    {
         return $this->belongsTo(DivisoesTematicasJr::class, 'dt', 'id');
     }
-
 }

@@ -14,6 +14,11 @@ class CoauOriExpoSubNorte extends Model
         'nome_completo',
         'cpf',
         'categoria',
-        'curso_coautor'
+        'curso_coautor',
     ];
+
+    public function submissao(){
+        return $this->hasOne(SubmissaoExpocomRegionalNorte::class, 'id', 'submissao_id');
+    }
+
 }

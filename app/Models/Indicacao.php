@@ -37,5 +37,4 @@ class Indicacao extends Model
     {
         return $this->hasOne(EnderecoIndicacao::class, 'id', 'endereco_id');
     }
-
 }

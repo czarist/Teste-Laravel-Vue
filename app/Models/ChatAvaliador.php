@@ -14,7 +14,7 @@ class ChatAvaliador extends Model
         'avaliador_id',
         'coordenador_id',
         'mensagem',
-        'send_avaliador'
+        'send_avaliador',
     ];
 
     public function avaliacao()

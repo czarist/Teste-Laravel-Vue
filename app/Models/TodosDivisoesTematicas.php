@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TodosDivisoesTematicas extends Model
 {
     use SoftDeletes;
 
     protected $table = 'todos_divisoes_tematicas';
+
     protected $fillable = [
         'dt_id',
         'user_id',
@@ -19,5 +20,4 @@ class TodosDivisoesTematicas extends Model
     {
         return $this->belongsToMany(User::class);
     }
-
 }

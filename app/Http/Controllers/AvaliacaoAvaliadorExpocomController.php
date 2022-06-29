@@ -41,36 +41,32 @@ class AvaliacaoAvaliadorExpocomController extends Controller
             'status_coordenador',
             'justificativa_coordenador',
             'media_final',
-            'edit'            
-            )
+            'edit'
+        )
         ->with(
-            'avaliador_1_obj', 
-            'avaliador_2_obj', 
+            'avaliador_1_obj',
+            'avaliador_2_obj',
             'avaliador_3_obj',
             'submissaoNordeste:id,avaliacao,inscricao_id,link_trabalho,regiao,campus,desc_obj_estudo,desc_pesquisa,desc_producao,ano',
             'submissaoNordeste.coautorOrientadorSubNordeste',
             'submissaoNordeste.inscricao:id,categoria_inscricao,user_id',
             'submissaoNordeste.inscricao.user:id,cpf',
             'submissaoNordeste.inscricao.user.indicacao',
-
             'submissaoSul:id,avaliacao,inscricao_id,link_trabalho,regiao,campus,desc_obj_estudo,desc_pesquisa,desc_producao,ano',
             'submissaoSul.coautorOrientadorSubSuls',
             'submissaoSul.inscricao:id,categoria_inscricao,user_id',
             'submissaoSul.inscricao.user:id,cpf',
             'submissaoSul.inscricao.user.indicacao',
-
             'submissaoSudeste:id,avaliacao,inscricao_id,link_trabalho,regiao,campus,desc_obj_estudo,desc_pesquisa,desc_producao,ano',
             'submissaoSudeste.coautorOrientadorSubSudeste',
             'submissaoSudeste.inscricao:id,categoria_inscricao,user_id',
             'submissaoSudeste.inscricao.user:id,cpf',
             'submissaoSudeste.inscricao.user.indicacao',
-
             'submissaoCentroOeste:id,avaliacao,inscricao_id,link_trabalho,regiao,campus,desc_obj_estudo,desc_pesquisa,desc_producao,ano',
             'submissaoCentroOeste.coautorOrientadorSubCentroOeste',
             'submissaoCentroOeste.inscricao:id,categoria_inscricao,user_id',
             'submissaoCentroOeste.inscricao.user:id,cpf',
             'submissaoCentroOeste.inscricao.user.indicacao',
-
             'submissaoNorte:id,avaliacao,inscricao_id,link_trabalho,regiao,campus,desc_obj_estudo,desc_pesquisa,desc_producao,ano',
             'submissaoNorte.coautorOrientadorSubNortes',
             'submissaoNorte.inscricao:id,categoria_inscricao,user_id',
@@ -79,7 +75,8 @@ class AvaliacaoAvaliadorExpocomController extends Controller
         );
     }
 
-    public function get(Request $request){
+    public function get(Request $request)
+    {
         return $this->avaliacoes()
             ->when($request->sort == 'id', function ($query) use ($request) {
                 $query->orderBy('id', $request->asc == 'true' ? 'ASC' : 'DESC');
@@ -90,7 +87,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
             ->when($request->sort == 'status_coordenador', function ($query) use ($request) {
                 $query->orderBy('status_coordenador', $request->asc == 'true' ? 'ASC' : 'DESC');
             })
-            ->when($request->categoria, function ($query) use ($request){
+            ->when($request->categoria, function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
                     $query->wherehas('submissaoNordeste', function ($query) use ($request) {
                         $query->wherehas('inscricao', function ($query) use ($request) {
@@ -138,9 +135,8 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         });
                     });
                 });
-
             })
-            ->when($request->modalidade, function ($query) use ($request){
+            ->when($request->modalidade, function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
                     $query->wherehas('submissaoNordeste', function ($query) use ($request) {
                         $query->wherehas('inscricao', function ($query) use ($request) {
@@ -188,7 +184,6 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         });
                     });
                 });
-
             })
             ->when($request->search, function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
@@ -196,7 +191,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                    $query->where('titulo_trabalho', 'like', '%'.$request->search.'%');
                                 });
                             });
                         });
@@ -205,7 +200,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                    $query->where('titulo_trabalho', 'like', '%'.$request->search.'%');
                                 });
                             });
                         });
@@ -214,7 +209,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                    $query->where('titulo_trabalho', 'like', '%'.$request->search.'%');
                                 });
                             });
                         });
@@ -223,7 +218,7 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                    $query->where('titulo_trabalho', 'like', '%'.$request->search.'%');
                                 });
                             });
                         });
@@ -232,18 +227,17 @@ class AvaliacaoAvaliadorExpocomController extends Controller
                         $query->wherehas('inscricao', function ($query) use ($request) {
                             $query->wherehas('user', function ($query) use ($request) {
                                 $query->wherehas('indicacao', function ($query) use ($request) {
-                                    $query->where('titulo_trabalho', 'like', '%' . $request->search . '%');
+                                    $query->where('titulo_trabalho', 'like', '%'.$request->search.'%');
                                 });
                             });
                         });
                     });
                 });
-
             })
             ->where(function ($query) {
-                $query->where('avaliador_1', "=", Auth::user()->id)
-                    ->orWhere('avaliador_2', "=", Auth::user()->id)
-                    ->orWhere('avaliador_3', "=", Auth::user()->id);
+                $query->where('avaliador_1', '=', Auth::user()->id)
+                    ->orWhere('avaliador_2', '=', Auth::user()->id)
+                    ->orWhere('avaliador_3', '=', Auth::user()->id);
             })
         ->paginate(20);
     }

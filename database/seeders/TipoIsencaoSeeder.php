@@ -45,8 +45,5 @@ class TipoIsencaoSeeder extends Seeder
                 'descricao' => 'Convidado Associado Intercom',
             ]
         );
-
-
-
     }
 }

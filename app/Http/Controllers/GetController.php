@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Instituicao;
 use App\Models\Acesso;
 use App\Models\CategoriaCinemaAudiovisual;
 use App\Models\CategoriaJornalismo;
@@ -16,6 +15,7 @@ use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
 use App\Models\GrupoPesquisa;
 use App\Models\Indicacao;
+use App\Models\Instituicao;
 use App\Models\Municipio;
 use App\Models\PagSeguroTipoStatus;
 use App\Models\Produto;
@@ -32,30 +32,30 @@ class GetController extends Controller
     {
         if (Auth::user() && Auth::user()->id) {
             $user_id = Auth::user()->id;
-        } 
+        }
 
-        if(!empty($user_id)) {
+        if (! empty($user_id)) {
             return $user::select('id', 'name', 'email', 'password', 'created_at')
-                ->with('acessos','todos_tipos')
+                ->with('acessos', 'todos_tipos')
             ->findOrFail($user_id);
         }
     }
 
     public function getUsers(User $user)
     {
-        return $user->select('id','name', 'ativo')->orderBy('name')->get();
+        return $user->select('id', 'name', 'ativo')->orderBy('name')->get();
     }
 
     public function getTitulacoes(Titulacao $user)
     {
-        return $user->select('id','titulacao')->orderBy('titulacao')->get();
+        return $user->select('id', 'titulacao')->orderBy('titulacao')->get();
     }
 
     public function getInstituicoes(Instituicao $user)
     {
-        return $user->select('id','instituicao', 'sigla_instituicao')->orderBy('instituicao')->get();
+        return $user->select('id', 'instituicao', 'sigla_instituicao')->orderBy('instituicao')->get();
     }
-    
+
     public function tiposUsuarios(Tipo $tipoUser)
     {
         return $tipoUser->select('descricao', 'id')->orderBy('descricao')->get();
@@ -66,12 +66,12 @@ class GetController extends Controller
         return $tipo_isencao->select('descricao', 'id')->orderBy('descricao')->get();
     }
 
-
     public function acessos(Acesso $acesso)
     {
-        if (!Auth::user()->is_root && !Auth::user()->is_admin) {
+        if (! Auth::user()->is_root && ! Auth::user()->is_admin) {
             return abort(403);
         }
+
         return $acesso->select('pagina', 'id')->orderBy('pagina')->get();
     }
 
@@ -165,7 +165,8 @@ class GetController extends Controller
         return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Regional-Centro-Oeste')->get();
     }
 
-    public function getProdutosNacional(Produto $produtos){
+    public function getProdutosNacional(Produto $produtos)
+    {
         return $produtos->select('id', 'categoria', 'nome', 'valor')->whereCategoria('Nacional')->get();
     }
 
@@ -174,33 +175,32 @@ class GetController extends Controller
         return $produtos->select('id', 'categoria', 'nome', 'valor')->get();
     }
 
-    public function getIndicacaoExpocom2022(Indicacao $indicacao){
+    public function getIndicacaoExpocom2022(Indicacao $indicacao)
+    {
 
         // return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
 
-        if(Auth::user() && Auth::user()->cpf){
+        if (Auth::user() && Auth::user()->cpf) {
             return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->where('cpf_autor', Auth::user()->cpf)->first();
 
-            if(!empty($indicacao) && $indicacao->cpf_autor){
+            if (! empty($indicacao) && $indicacao->cpf_autor) {
                 return $indicacao;
-            }
-            else{
+            } else {
                 return response()->json(['error' => 'Nenhuma indicação encontrada'], 404);
             }
         }
-        return response()->json(['error' => 'Sem usuario logado'], 404);
 
+        return response()->json(['error' => 'Sem usuario logado'], 404);
     }
 
-    public function getAdminIndicacaoExpocom2022($id, Indicacao $indicacao){
-
+    public function getAdminIndicacaoExpocom2022($id, Indicacao $indicacao)
+    {
         return $indicacao::with('enderecos', 'enderecos.municipio', 'enderecos.municipio.estado')->findOrFail($id);
-
     }
 
     public function getAvaliadores(User $user)
     {
-        return $user->select('id','name')
+        return $user->select('id', 'name')
                     ->with(
                         'avaliador_expocom',
                         'todos_divisoes_tematicas:id,descricao',
@@ -222,7 +222,7 @@ class GetController extends Controller
 
     public function getAvaliadoresExpocom(User $user)
     {
-        return $user->select('id','name')
+        return $user->select('id', 'name')
                     ->with(
                         'avaliador_expocom',
                         'todos_divisoes_tematicas:id,descricao',
@@ -242,6 +242,26 @@ class GetController extends Controller
                     ->orderBy('name')->get();
     }
 
+    public function getAvaliadoresNacional(User $user){
+        return $user->select('id', 'name')
+            ->with(
+                'avaliador_expocom:id,user_id,nacional_gp,nacional_ij,nacional_publicom',
+                'todos_divisoes_tematicas:id,descricao',
+                'todos_divisoes_tematicas_jr:id,descricao',
+                'todos_gps:id,descricao',
+                )
+            ->whereHas('avaliador_expocom', function ($query) {
+                // $query->where('nacional_gp', 1);
+                // $query->orWhere('nacional_ij', 1);
+                // $query->orWhere('nacional_publicom', 1);
+                $query->where(function($q){
+                    $q->where('nacional_gp', 1)
+                    ->orWhere('nacional_ij', 1)
+                    ->orWhere('nacional_publicom', 1);
+                });
+            })
+            ->orderBy('name')->get();
+    }
 
     public function getCoordenador(Coordenador $coordenador, $id)
     {
@@ -256,4 +276,3 @@ class GetController extends Controller
         return $pagSeguroTipoStatus->select('id', 'nome')->get();
     }
 }
-

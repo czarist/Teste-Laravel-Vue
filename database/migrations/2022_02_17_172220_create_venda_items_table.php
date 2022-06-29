@@ -16,14 +16,14 @@ class CreateVendaItemsTable extends Migration
         Schema::create('venda_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('qtd');
-            $table->float('valor', 15,2);
-            $table->decimal('valor_total', 15,2);
+            $table->float('valor', 15, 2);
+            $table->decimal('valor_total', 15, 2);
             $table->bigInteger('venda_id')->unsigned();
             $table->foreign('venda_id')->references('id')->on('vendas');
             $table->bigInteger('produto_id')->unsigned();
             $table->foreign('produto_id')->references('id')->on('produtos');
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
         });
     }
 

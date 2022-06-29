@@ -13,7 +13,6 @@ class CoautorOrganizadoresSubNaci extends Model
         'submissao_id',
         'nome_completo',
         'cpf',
-        'categoria'
+        'categoria',
     ];
-
 }

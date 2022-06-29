@@ -67,7 +67,7 @@ class ProdutoSeeder extends Seeder
                 'categoria' => 'Regional-Sul',
                 'nome' => 'Professores e pesquisadores',
                 'valor' => 220.00,
-                ]
+            ]
         );
 
         //Regional Nordeste

@@ -9,7 +9,6 @@ class GrupoPequisaSeeder extends Seeder
 {
     public function run()
     {
-
         GrupoPesquisa::updateOrCreate(
             ['id' => 1],
             [
@@ -306,6 +305,5 @@ class GrupoPequisaSeeder extends Seeder
                 'descricao' => 'Teorias do Jornalismo',
             ]
         );
-
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DistribuicaoTipo123 extends Model
 {
@@ -21,39 +21,46 @@ class DistribuicaoTipo123 extends Model
         'justificativa_avaliador_3',
         'status_coordenador',
         'justificativa_coordenador',
-        'edit'
+        'edit',
     ];
 
-    public function avaliador_1_obj(){
+    public function avaliador_1_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_1');
     }
 
-    public function avaliador_2_obj(){
+    public function avaliador_2_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_2');
     }
 
-    public function avaliador_3_obj(){
+    public function avaliador_3_obj()
+    {
         return $this->hasOne(User::class, 'id', 'avaliador_3');
     }
 
-    public function submissaoNordeste(){
+    public function submissaoNordeste()
+    {
         return $this->hasOne(SubmissaoRegionalNordestes::class, 'avaliacao', 'id');
     }
 
-    public function submissaoSul(){
+    public function submissaoSul()
+    {
         return $this->hasOne(SubmissaoRegionalSul::class, 'avaliacao', 'id');
     }
 
-    public function submissaoSudeste(){
+    public function submissaoSudeste()
+    {
         return $this->hasOne(SubmissaoRegionalSudeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoCentroOeste(){
+    public function submissaoCentroOeste()
+    {
         return $this->hasOne(SubmissaoRegionalCentrooeste::class, 'avaliacao', 'id');
     }
 
-    public function submissaoNorte(){
+    public function submissaoNorte()
+    {
         return $this->hasOne(SubmissaoRegionalNorte::class, 'avaliacao', 'id');
     }
-
 }

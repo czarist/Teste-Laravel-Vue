@@ -16,5 +16,7 @@ class CoautorOrientadorSubSul extends Model
         'categoria',
     ];
 
+    public function submissao(){
+        return $this->hasOne(SubmissaoRegionalSul::class, 'id', 'submissao_id');
+    }
 }
-

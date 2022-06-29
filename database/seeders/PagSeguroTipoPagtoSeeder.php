@@ -37,6 +37,5 @@ class PagSeguroTipoPagtoSeeder extends Seeder
                 'nome' => 'Cartão de Débito',
             ]
         );
-
     }
 }

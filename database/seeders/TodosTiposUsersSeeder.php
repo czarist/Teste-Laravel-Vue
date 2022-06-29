@@ -14,7 +14,7 @@ class TodosTiposUsersSeeder extends Seeder
             [
                 'id'  => 1,
                 'tipo_id' => '1',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -23,7 +23,7 @@ class TodosTiposUsersSeeder extends Seeder
             [
                 'id'  => 2,
                 'tipo_id' => '2',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -32,7 +32,7 @@ class TodosTiposUsersSeeder extends Seeder
             [
                 'id'  => 3,
                 'tipo_id' => '3',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
 
@@ -41,7 +41,7 @@ class TodosTiposUsersSeeder extends Seeder
             [
                 'id'  => 4,
                 'tipo_id' => '4',
-                'user_id' => '1'
+                'user_id' => '1',
             ]
         );
     }

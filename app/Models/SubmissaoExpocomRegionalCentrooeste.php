@@ -30,15 +30,16 @@ class SubmissaoExpocomRegionalCentrooeste extends Model
 
     public function coautorOrientadorSubCentrooeste()
     {
-        return $this->hasMany(CoauOriExpoSubCentrooeste::class,  'submissao_id', 'id');
+        return $this->hasMany(CoauOriExpoSubCentrooeste::class, 'submissao_id', 'id');
     }
 
-    public function avaliacao(){
+    public function avaliacao()
+    {
         return $this->hasOne(DistribuicaoTipoExpocom::class, 'id', 'avaliacao');
     }
 
-    public function inscricao(){
+    public function inscricao()
+    {
         return $this->belongsTo(RegionalCentrooeste::class, 'inscricao_id', 'id');
     }
-
 }

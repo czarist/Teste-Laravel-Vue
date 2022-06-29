@@ -36,8 +36,8 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>4],
             ['id'=>4,
-            'nome' => 'nordeste_pago_2022',
-            'descricao' => 'Fez Pagamento do Regional Nordeste 2022',
+                'nome' => 'nordeste_pago_2022',
+                'descricao' => 'Fez Pagamento do Regional Nordeste 2022',
             ]
         );
 
@@ -60,8 +60,8 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>7],
             ['id'=>7,
-            'nome' => 'sudeste_pago_2022',
-            'descricao' => 'Fez Pagamento do Regional Sudeste 2022',
+                'nome' => 'sudeste_pago_2022',
+                'descricao' => 'Fez Pagamento do Regional Sudeste 2022',
             ]
         );
 
@@ -84,8 +84,8 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>10],
             ['id'=>10,
-            'nome' => 'centro_oeste_pago_2022',
-            'descricao' => 'Fez Pagamento do Regional Centro-Oeste 2022',
+                'nome' => 'centro_oeste_pago_2022',
+                'descricao' => 'Fez Pagamento do Regional Centro-Oeste 2022',
             ]
         );
 
@@ -108,8 +108,8 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>13],
             ['id'=>13,
-            'nome' => 'norte_pago_2022',
-            'descricao' => 'Fez Pagamento do Regional Norte 2022',
+                'nome' => 'norte_pago_2022',
+                'descricao' => 'Fez Pagamento do Regional Norte 2022',
             ]
         );
 
@@ -132,8 +132,8 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>16],
             ['id'=>16,
-            'nome' => 'nacional_pago_2022',
-            'descricao' => 'Fez Pagamento do Nacional 2022',
+                'nome' => 'nacional_pago_2022',
+                'descricao' => 'Fez Pagamento do Nacional 2022',
             ]
         );
 
@@ -148,10 +148,9 @@ class TipoPagamentoSeeder extends Seeder
         TipoPagamento::updateOrCreate(
             ['id'=>18],
             ['id'=>18,
-            'nome' => 'nacional_associado_2022',
-            'descricao' => 'Associado Isento Nacional 2022',
-        ]
+                'nome' => 'nacional_associado_2022',
+                'descricao' => 'Associado Isento Nacional 2022',
+            ]
         );
-
     }
 }

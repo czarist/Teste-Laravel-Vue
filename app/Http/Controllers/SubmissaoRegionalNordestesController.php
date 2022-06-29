@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Nette\Utils\Random;
 
 class SubmissaoRegionalNordestesController extends Controller
 {
-    public function usuario(){
+    public function usuario()
+    {
         return User::select('id', 'name')
             ->with(
                 'todos_tipos:id,descricao',
@@ -42,11 +42,12 @@ class SubmissaoRegionalNordestesController extends Controller
                 'regional_nordeste.submissaoJunior.coautorOrientadorSubNordeste',
                 'regional_nordeste.submissaoMesa.coautorOrientadorSubNordeste',
                 'regional_nordeste.submissaoExpocom.coautorOrientadorSubNordeste'
-                )
+            )
                 ->find(Auth::user()->id);
     }
 
-    public function submissaoJuniorRegionalNordeste(){
+    public function submissaoJuniorRegionalNordeste()
+    {
         $user = $this->usuario();
         $regiao = 2;
         $tipo = 1;
@@ -54,7 +55,8 @@ class SubmissaoRegionalNordestesController extends Controller
         return view('regionais.nordeste.submissaoJunior', compact('user', 'regiao', 'tipo'));
     }
 
-    public function submissaoRegionalNordeste(){
+    public function submissaoRegionalNordeste()
+    {
         $user = $this->usuario();
         $regiao = 2;
         $tipo = 2;
@@ -62,7 +64,8 @@ class SubmissaoRegionalNordestesController extends Controller
         return view('regionais.nordeste.submissao', compact('user', 'regiao', 'tipo'));
     }
 
-    public function submissaoMesaRegionalNordeste(){
+    public function submissaoMesaRegionalNordeste()
+    {
         $user = $this->usuario();
         $regiao = 2;
         $tipo = 3;
@@ -70,7 +73,8 @@ class SubmissaoRegionalNordestesController extends Controller
         return view('regionais.nordeste.submissaoMesa', compact('user', 'regiao', 'tipo'));
     }
 
-    public function submissaoExpocomRegionalNordeste(){
+    public function submissaoExpocomRegionalNordeste()
+    {
         $user = $this->usuario();
         $regiao = 2;
         $tipo = 4;
@@ -78,8 +82,9 @@ class SubmissaoRegionalNordestesController extends Controller
         return view('regionais.nordeste.submissaoExpocom', compact('user', 'regiao', 'tipo'));
     }
 
-    public function store(Request $request){
-        try{
+    public function store(Request $request)
+    {
+        try {
             $post = json_decode($request->post);
             $user = User::findOrFail(Auth::user()->id);
 
@@ -92,15 +97,15 @@ class SubmissaoRegionalNordestesController extends Controller
             )
             ->findOrFail($user->id);
 
-            if($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoMesa){
+            if ($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoMesa) {
                 $post->id = $user_sub->regional_nordeste->submissaoMesa->id;
-            } 
-            if($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoDt){
+            }
+            if ($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoDt) {
                 $post->id = $user_sub->regional_nordeste->submissaoDt->id;
-            } 
-            if($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoJunior){
+            }
+            if ($post->id == null && $user_sub && $user_sub->regional_nordeste && $user_sub->regional_nordeste->submissaoJunior) {
                 $post->id = $user_sub->regional_nordeste->submissaoJunior->id;
-            } 
+            }
 
             $submissao = SubmissaoRegionalNordestes::where('id', $post->id ?? null)->first();
 
@@ -108,12 +113,11 @@ class SubmissaoRegionalNordestesController extends Controller
             $coautor_ids = array_map(function ($res) {
                 return $res->id ?? null;
             }, $post->coautoresOrientadores);
-    
-            if(!empty($submissao) && $submissao->tipo == $post->tipo->name)
-            {
+
+            if (! empty($submissao) && $submissao->tipo == $post->tipo->name) {
                 $coautores = CoautorOrientadorSubNordeste::where('submissao_id', $submissao->id)->get();
-                foreach($coautores as $coautor){
-                    if(!in_array($coautor->id, $coautor_ids)){
+                foreach ($coautores as $coautor) {
+                    if (! in_array($coautor->id, $coautor_ids)) {
                         $coautor->delete();
                     }
                 }
@@ -121,9 +125,8 @@ class SubmissaoRegionalNordestesController extends Controller
 
             $now = Carbon::now()->format('Y-m-d H:i:s');
 
-            if($now <= '2022-04-11 00:00:00'){
-
-                if(empty($submissao) || $submissao->tipo != $post->tipo->name){
+            if ($now <= '2022-04-11 00:00:00') {
+                if (empty($submissao) || $submissao->tipo != $post->tipo->name) {
                     $submissao_save = SubmissaoRegionalNordestes::create([
                         'inscricao_id' => $user->regional_nordeste->id,
                         'dt' => $post->divisoes_tematicas[0],
@@ -137,43 +140,42 @@ class SubmissaoRegionalNordestesController extends Controller
                         'palavra_chave_5' => $post->palavra_chave_5,
                         'termo_autoria' => $post->termo_autoria,
                         'autorizacao' => $post->autorizacao,
-                        'regiao' => 2
+                        'regiao' => 2,
                     ]);
 
-                    if($request->hasFile('file')){
+                    if ($request->hasFile('file')) {
                         $file = $request->file('file');
-                        $name = date('mdYHis') . uniqid();
-                        $file->move(public_path()."/pdf/submissao_regional_nordeste_2022/" , $name);
+                        $name = date('mdYHis').uniqid();
+                        $file->move(public_path().'/pdf/submissao_regional_nordeste_2022/', $name);
                         $submissao_save->link_trabalho = $name;
                         $submissao_save->save();
                     }
 
-                    foreach($post->coautoresOrientadores as $coautor){
-                        if(!empty($coautor->id)){
-
+                    foreach ($post->coautoresOrientadores as $coautor) {
+                        if (! empty($coautor->id)) {
                             $coautor_save = CoautorOrientadorSubNordeste::findOrFail($coautor->id);
 
                             $coautor_save->update([
                                 'submissao_id' => $submissao_save->id,
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
-                                'categoria' => $coautor->categoria
+                                'categoria' => $coautor->categoria,
                             ]);
                         }
 
-                        if(empty($coautor->id)){
+                        if (empty($coautor->id)) {
                             $coautor_save = CoautorOrientadorSubNordeste::create([
                                 'submissao_id' => $submissao_save->id,
                                 'nome_completo' => $coautor->nome_completo,
                                 'cpf' => $coautor->cpf,
-                                'categoria' => $coautor->categoria
+                                'categoria' => $coautor->categoria,
                             ]);
                         }
                     }
                 }
             }
 
-            if(!empty($submissao) && $submissao->tipo == $post->tipo->name){
+            if (! empty($submissao) && $submissao->tipo == $post->tipo->name) {
                 $submissao->update([
                     'dt' => $post->divisoes_tematicas[0],
                     'ciente' => $post->ciente,
@@ -186,68 +188,67 @@ class SubmissaoRegionalNordestesController extends Controller
                     'palavra_chave_5' => $post->palavra_chave_5,
                     'termo_autoria' => $post->termo_autoria,
                     'autorizacao' => $post->autorizacao,
-                    'regiao' => 2
+                    'regiao' => 2,
                 ]);
 
-                if($request->hasFile('file')){
+                if ($request->hasFile('file')) {
                     $file = $request->file('file');
-                    $name = date('mdYHis') . uniqid();
-                    $file->move(public_path()."/pdf/submissao_regional_nordeste_2022/" , $name);
+                    $name = date('mdYHis').uniqid();
+                    $file->move(public_path().'/pdf/submissao_regional_nordeste_2022/', $name);
                     $submissao->link_trabalho = $name;
                     $submissao->save();
                 }
 
-                foreach($post->coautoresOrientadores as $coautor){
-                    if(!empty($coautor->id)){
-
+                foreach ($post->coautoresOrientadores as $coautor) {
+                    if (! empty($coautor->id)) {
                         $coautor_save = CoautorOrientadorSubNordeste::findOrFail($coautor->id);
 
                         $coautor_save->update([
                             'submissao_id' => $submissao->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
+                            'categoria' => $coautor->categoria,
                         ]);
                     }
 
-                    if(empty($coautor->id)){
+                    if (empty($coautor->id)) {
                         $coautor_save = CoautorOrientadorSubNordeste::create([
                             'submissao_id' => $submissao->id,
                             'nome_completo' => $coautor->nome_completo,
                             'cpf' => $coautor->cpf,
-                            'categoria' => $coautor->categoria
+                            'categoria' => $coautor->categoria,
                         ]);
                     }
                 }
 
-                if($submissao && $submissao->id){
+                if ($submissao && $submissao->id) {
                     $sub = SubmissaoRegionalNordestes::select('id', 'avaliacao')
                         ->with('avaliacao')
                         ->whereId($submissao->id)
                     ->first();
-    
+
                     $avaliacao = DistribuicaoTipo123::where('id', $sub->avaliacao)->first();
 
-                    if(!empty($avaliacao) && $avaliacao->edit == 1){
+                    if (! empty($avaliacao) && $avaliacao->edit == 1) {
                         //Enviar Email para o coordenador que a submissao foi alterada
-                        try{
-                            if($sub->avaliacao){
+                        try {
+                            if ($sub->avaliacao) {
                                 $coordenador_id = ChatAvaliacao::select('id', 'coordenador_id')
                                 ->whereAvaliacaoId($sub->avaliacao)
                                 ->whereNotNull('coordenador_id')->first();
-        
-                                if($coordenador_id && $coordenador_id->coordenador_id){
+
+                                if ($coordenador_id && $coordenador_id->coordenador_id) {
                                     $coordenador = Coordenador::findOrFail($coordenador_id->coordenador_id);
                                 }
-            
+
                                 $dados['user'] = User::findOrFail($coordenador->user_id);
                                 $emails = $dados['user']->email;
-    
-                                if($submissao){
+
+                                if ($submissao) {
                                     $dados['titulo'] = $submissao->titulo;
                                 }
-                
-                                if(!empty($emails)){
+
+                                if (! empty($emails)) {
                                     Mail::send('email.submissao_alterada', $dados, function ($email) use ($emails, $dados) {
                                         if (App::environment('production')) {
                                             $email->to($emails);
@@ -255,33 +256,31 @@ class SubmissaoRegionalNordestesController extends Controller
                                             $email->to('murilo@kirc.com.br');
                                         }
                                         $email->subject('Nova mensagem recebida | Intercom');
-                
-                                        Log::info('E-mail Enviado para o coordenador informando que tem uma mensagem nova no chat | Dados: ' . json_encode($dados));
-                                    });    
-                                }            
+
+                                        Log::info('E-mail Enviado para o coordenador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
+                                    });
+                                }
                             }
                         } catch (Exception $e) {
-                            Log::error('Não foi possível enviar e-mail para o usuario ERRO: ' . $e->getMessage() .  '  |  Linha: ' . $e->getLine() . ' | Arquivo: ' . $e->getFile());
+                            Log::error('Não foi possível enviar e-mail para o usuario ERRO: '.$e->getMessage().'  |  Linha: '.$e->getLine().' | Arquivo: '.$e->getFile());
                         }
                     }
 
-                    if(!empty($avaliacao)){
+                    if (! empty($avaliacao)) {
                         $avaliacao->update([
                             'edit' => 0,
                         ]);
-                    }                    
-                }                   
+                    }
+                }
             }
 
-            Log::info('User: '. Auth::user()->id . ' | Regional Nordeste 2022 | Submeteu seu trabalho: ' . json_encode($post));
-    
+            Log::info('User: '.Auth::user()->id.' | Regional Nordeste 2022 | Submeteu seu trabalho: '.json_encode($post));
+
             return response()->json(['message' => 'success', 'response' => $user], 201);
-
-
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }

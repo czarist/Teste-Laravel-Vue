@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Associado;
 use App\Models\Endereco;
 use App\Models\User;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +15,16 @@ class UserController extends Controller
 {
     public function usuarios()
     {
-        return User::select('id', 'name', 'email','ativo', 'sexo_id', 'estrangeiro','passaporte','cpf','rg','orgao_expedidor','telefone','celular','data_nascimento')
-                        ->with('acessos:id,pagina,link',
-                                'todos_tipos:id,descricao',
-                                'todos_tipos_isencao:id,descricao',
-                                'enderecos',
-                                'enderecos.municipio',
-                                'enderecos.municipio.estado',
-                                'associado',                
-                                );
+        return User::select('id', 'name', 'email', 'ativo', 'sexo_id', 'estrangeiro', 'passaporte', 'cpf', 'rg', 'orgao_expedidor', 'telefone', 'celular', 'data_nascimento')
+                        ->with(
+                            'acessos:id,pagina,link',
+                            'todos_tipos:id,descricao',
+                            'todos_tipos_isencao:id,descricao',
+                            'enderecos',
+                            'enderecos.municipio',
+                            'enderecos.municipio.estado',
+                            'associado',
+                        );
     }
 
     public function index()
@@ -36,15 +36,15 @@ class UserController extends Controller
     {
         return $this->usuarios()
                     ->when($request->search, function ($query) use ($request) {
-                        $query->where(function ($query) use ($request) {    
+                        $query->where(function ($query) use ($request) {
                             $query->when($request->type == 'name', function ($query) use ($request) {
-                                $query->where('name', 'like', '%' . $request->search . '%');
+                                $query->where('name', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'cpf', function ($query) use ($request) {
-                                $query->where('cpf', 'like', '%' . $request->search . '%');
+                                $query->where('cpf', 'like', '%'.$request->search.'%');
                             });
                             $query->when($request->type == 'email', function ($query) use ($request) {
-                                $query->where('email', 'like', '%' . $request->search . '%');
+                                $query->where('email', 'like', '%'.$request->search.'%');
                             });
                         });
                     })
@@ -60,27 +60,24 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        try { 
+        try {
             $post = $request->all();
             $post['password'] = Hash::make($post['password']);
-            
+
             $user = User::create($post);
-            $todos_tipos = [0 => 4];  
+            $todos_tipos = [0 => 4];
             $user->todos_tipos()->sync($todos_tipos);
             $user->acessos()->sync($post['acessos']);
 
-            Log::info('User criado: ' . json_encode($post));
+            Log::info('User criado: '.json_encode($post));
 
             return response()->json(['message' => 'success', 'response' => $user], 201);
-
         } catch (Exception $exception) {
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
 
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
 
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
-
         }
     }
 
@@ -88,48 +85,47 @@ class UserController extends Controller
     {
         $post = $request->all();
 
-        try { 
-
+        try {
             $user = User::with(
                 'todos_tipos:id,descricao',
-                'todos_tipos_isencao:id,descricao',    
-                'associado', 
-                'nacional', 
-                'regional_sul', 
-                'regional_centrooeste', 
-                'regional_nordeste', 
-                'regional_norte', 
+                'todos_tipos_isencao:id,descricao',
+                'associado',
+                'nacional',
+                'regional_sul',
+                'regional_centrooeste',
+                'regional_nordeste',
+                'regional_norte',
                 'regional_suldeste'
             )
             ->findOrFail($post['id']);
 
-            if($user && $user->associado != null){
-                if($user && $user->nacional && $user->nacional->categoria_inscricao && $user->nacional->categoria_inscricao != null){
+            if ($user && $user->associado != null) {
+                if ($user && $user->nacional && $user->nacional->categoria_inscricao && $user->nacional->categoria_inscricao != null) {
                     $user->nacional->categoria_inscricao = $post['titulacao_id'];
                     $user->nacional->save();
                 }
 
-                if($user && $user->regional_sul && $user->regional_sul->categoria_inscricao && $user->regional_sul->categoria_inscricao != null){
-                    $user->regional_sul->categoria_inscricao  = $post['titulacao_id'];
+                if ($user && $user->regional_sul && $user->regional_sul->categoria_inscricao && $user->regional_sul->categoria_inscricao != null) {
+                    $user->regional_sul->categoria_inscricao = $post['titulacao_id'];
                     $user->regional_sul->save();
                 }
 
-                if($user && $user->regional_centrooeste && $user->regional_centrooeste->categoria_inscricao && $user->regional_centrooeste->categoria_inscricao != null){
-                    $user->regional_centrooeste->categoria_inscricao  = $post['titulacao_id'];
+                if ($user && $user->regional_centrooeste && $user->regional_centrooeste->categoria_inscricao && $user->regional_centrooeste->categoria_inscricao != null) {
+                    $user->regional_centrooeste->categoria_inscricao = $post['titulacao_id'];
                     $user->regional_centrooeste->save();
                 }
 
-                if($user && $user->regional_nordeste && $user->regional_nordeste->categoria_inscricao && $user->regional_nordeste->categoria_inscricao != null){
+                if ($user && $user->regional_nordeste && $user->regional_nordeste->categoria_inscricao && $user->regional_nordeste->categoria_inscricao != null) {
                     $user->regional_nordeste->categoria_inscricao = $post['titulacao_id'];
                     $user->regional_nordeste->save();
                 }
 
-                if($user && $user->regional_norte && $user->regional_norte->categoria_inscricao && $user->regional_norte->categoria_inscricao != null){
+                if ($user && $user->regional_norte && $user->regional_norte->categoria_inscricao && $user->regional_norte->categoria_inscricao != null) {
                     $user->regional_norte->categoria_inscricao = $post['titulacao_id'];
                     $user->regional_norte->save();
                 }
 
-                if($user && $user->regional_suldeste && $user->regional_suldeste->categoria_inscricao && $user->regional_suldeste->categoria_inscricao != null){
+                if ($user && $user->regional_suldeste && $user->regional_suldeste->categoria_inscricao && $user->regional_suldeste->categoria_inscricao != null) {
                     $user->regional_suldeste->categoria_inscricao = $post['titulacao_id'];
                     $user->regional_suldeste->save();
                 }
@@ -137,18 +133,17 @@ class UserController extends Controller
 
             $endereco = Endereco::whereUserId($user->id)->first();
 
-            $associado = Associado::whereUserId($user->id)->first();   
+            $associado = Associado::whereUserId($user->id)->first();
 
-            if(isset($post['password']) && !empty($post['password'])) {
+            if (isset($post['password']) && ! empty($post['password'])) {
                 $post['password'] = Hash::make($post['password']);
             }
-            
-            if(!isset($post['password']) || empty($post['password'])) {
+
+            if (! isset($post['password']) || empty($post['password'])) {
                 $post['password'] = $user->password;
             }
 
-            if(!empty($user))
-            {
+            if (! empty($user)) {
                 $user->update([
                     'name' => $post['name'],
                     'email' => $post['email'],
@@ -161,14 +156,13 @@ class UserController extends Controller
                     'rg' => $post['rg'],
                     'orgao_expedidor' => $post['orgao_expedidor'],
                     'sexo_id' => $post['sexo_id'],
-                    'ativo' => $post['ativo']
+                    'ativo' => $post['ativo'],
                 ]);
             }
 
             unset($post['password']);
-    
-            if(empty($endereco))
-            {
+
+            if (empty($endereco)) {
                 $endereco = Endereco::create([
                     'user_id' => $user->id,
                     'logradouro' => $post['enderecos']['logradouro'] ?? null,
@@ -179,8 +173,7 @@ class UserController extends Controller
                     'cep' => $post['enderecos']['cep'] ?? null,
                     'pais_id' => $post['enderecos']['pais'] ?? null,
                 ]);
-        
-            }else {
+            } else {
                 $endereco->update([
                     'logradouro' => $post['enderecos']['logradouro'] ?? null,
                     'numero' => $post['enderecos']['numero'] ?? null,
@@ -192,29 +185,27 @@ class UserController extends Controller
                 ]);
             }
 
-            if(empty($associado))
-            {
+            if (empty($associado)) {
                 $associado = Associado::create([
                     'user_id' => $user->id,
                     'instituicao_id' => $post['instituicao_id'],
                     'titulacao_id' => $post['titulacao_id'],
                     'anuidade' => $post['anuidade'],
                     'numero_socio' => $post['numero_socio'],
-                    'obs_isentamos' => $post['obs_isentamos']
+                    'obs_isentamos' => $post['obs_isentamos'],
                 ]);
-            }else
-            {
+            } else {
                 $associado->update([
-                        'user_id' => $user->id,
-                        'instituicao_id' => $post['instituicao_id'],
-                        'titulacao_id' => $post['titulacao_id'],
-                        'anuidade' => $post['anuidade'],
-                        'numero_socio' => $post['numero_socio'],
-                        'obs_isentamos' => $post['obs_isentamos']
-                ]);    
+                    'user_id' => $user->id,
+                    'instituicao_id' => $post['instituicao_id'],
+                    'titulacao_id' => $post['titulacao_id'],
+                    'anuidade' => $post['anuidade'],
+                    'numero_socio' => $post['numero_socio'],
+                    'obs_isentamos' => $post['obs_isentamos'],
+                ]);
             }
 
-            if($post['todos_isencoes_id'] != null && $user && $user->todos_tipos && !in_array(7, $user->todos_tipos->toArray())){
+            if ($post['todos_isencoes_id'] != null && $user && $user->todos_tipos && ! in_array(7, $user->todos_tipos->toArray())) {
                 $post['todos_tipos_id'][] = 11;
             }
 
@@ -222,36 +213,41 @@ class UserController extends Controller
             $user->todos_tipos_isencao()->sync($post['todos_isencoes_id']);
             $user->acessos()->sync($post['acessos']);
 
-            $user->load('acessos:id,pagina,link',
-            'todos_tipos:id,descricao',
-            'todos_tipos_isencao:id,descricao',
-            'enderecos',
-            'enderecos.municipio',
-            'enderecos.municipio.estado',
-            'associado',                
+            $user->load(
+                'acessos:id,pagina,link',
+                'todos_tipos:id,descricao',
+                'todos_tipos_isencao:id,descricao',
+                'enderecos',
+                'enderecos.municipio',
+                'enderecos.municipio.estado',
+                'associado',
             );
 
-            Log::info('User UPDATE: ' . json_encode($post));
+            Log::info('User UPDATE: '.json_encode($post));
+
             return response()->json(['message' => 'success', 'response' => $user], 200);
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
+
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
 
     public function destroy($id)
     {
-        try { 
+        try {
             $user = User::select('id')->findOrFail($id);
             $user->acessos()->sync([]);
             $user->todos_tipos()->sync([]);
             $user->delete();
-            Log::info('User: '. Auth::user()->id . ' | ' . __METHOD__ . ' | ' . json_encode(['id' => $id]));
+            Log::info('User: '.Auth::user()->id.' | '.__METHOD__.' | '.json_encode(['id' => $id]));
+
             return response()->json(['message' => 'success'], 200);
         } catch (Exception $exception) {
-            $exception_message = !empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
-            Log::error($exception_message. " in file " .$exception->getFile(). " on line " .$exception->getLine());
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
+
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }

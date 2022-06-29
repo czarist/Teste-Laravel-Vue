@@ -71,7 +71,6 @@
                     </b-form-group>
                 </b-col>
 
-
                 <b-col cols="12" sm="6" lg="6">
                     <b-form-group label="Avaliador 3" label-class="font-weight-bold">
                         <b-form-select
@@ -93,9 +92,7 @@
                         </span>
                     </b-form-group>
                 </b-col>
-
             </b-row>
-
         </template>
             <template #modal-footer="{ cancel }">
                 <b-button size="md" variant="outline-danger" @click="cancel()" :disabled="loading">
@@ -111,7 +108,7 @@
 <script>
   import MixinsGlobal from  '../../mixins/global-mixins'
       export default {
-        props: ['selectedIndicar', 'id'],
+        props: ['selectedIndicar', 'avaliadores_all', 'divisoes_tematicas', 'divisoes_tematicas_jr', 'gps'],
         mixins: [
             MixinsGlobal
         ],
@@ -120,8 +117,6 @@
                 baseUrl: process.env.MIX_BASE_URL,
                 loading: false,
                 verify: null,
-                divisoes_tematicas: [],
-                avaliadores_all: [],
                 avaliadores: [],
                 tipo: null,
                 categoria: null,
@@ -149,61 +144,82 @@
                     this.post.regiao = this.selectedIndicar ? this.selectedIndicar.regiao : null
                     this.post.titulo = this.selectedIndicar ? this.selectedIndicar.titulo : null
                     this.post.dt = this.selectedIndicar ? this.selectedIndicar.dt : null
-                    this.post.avaliador_1 = this.selectedIndicar && this.selectedIndicar.avaliacao  ? this.selectedIndicar.avaliacao.avaliador_1_obj : null
-                    this.post.avaliador_2 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_2_obj : null
-                    this.post.avaliador_3 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_3_obj : null
+                    this.post.avaliador_1 = this.selectedIndicar && this.selectedIndicar.avaliacao  ? this.selectedIndicar.avaliacao.avaliador_1 : null
+                    this.post.avaliador_2 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_2 : null
+                    this.post.avaliador_3 = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao.avaliador_3 : null
                     this.post.avaliacao = this.selectedIndicar && this.selectedIndicar.avaliacao ? this.selectedIndicar.avaliacao : null
                     this.post._method = this.post && this.post.id ? 'put' : 'post'
                     this.tipo = this.selectedIndicar && this.selectedIndicar.tipo ? this.selectedIndicar.tipo : null
                     this.categoria = this.selectedIndicar && this.selectedIndicar.dt ? this.selectedIndicar.dt : null
 
-                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null){
-                        if(this.tipo == "Intercom Júnior"){
-                            let avaliador = []
+                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null && this.avaliadores_all && this.avaliadores_all !=null){
+                        let avaliador = []
 
+                        if(this.tipo == "Intercom Júnior"){
                             this.avaliadores_all.forEach(ava => {
                                 if(ava.todos_divisoes_tematicas_jr.find(dtij => dtij.id  == this.categoria)){
                                     avaliador.push(ava)
                                 }
                             })
-                            this.avaliadores = avaliador
                         }
 
-                    }
+                        if(this.tipo == "Grupo de Pesquisa"){
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_gps.find(gp => gp.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                        }
 
-                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null){
-                        if(this.tipo == "Mesa" || this.tipo == "Divisões Temáticas"){
-                            let avaliador = []
-
+                        if(this.tipo == "Publicom"){
                             this.avaliadores_all.forEach(ava => {
                                 if(ava.todos_divisoes_tematicas.find(dt => dt.id  == this.categoria)){
                                     avaliador.push(ava)
                                 }
                             })
-                            this.avaliadores = avaliador
                         }
+
+                        this.avaliadores = avaliador
                     }
 
                 } else {
                     this.clear()
                 }
             },
-            post: {
-                handler:function(newVal) {
+            avaliadores_all(){
+                if(this.avaliadores_all && this.avaliadores_all != null) {
+                    this.$forceUpdate()
+                    if(this.categoria && this.categoria != null && this.tipo && this.tipo != null){
+                        let avaliador = []
 
-                    if(newVal && newVal.avaliador_1){
-                        this.post.status_avaliador_1 = "Em Análise"
+                        if(this.tipo == "Intercom Júnior"){
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_divisoes_tematicas_jr.find(dtij => dtij.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                        }
+
+                        if(this.tipo == "Grupo de Pesquisa"){
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_gps.find(gp => gp.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                        }
+
+                        if(this.tipo == "Publicom"){
+                            this.avaliadores_all.forEach(ava => {
+                                if(ava.todos_divisoes_tematicas.find(dt => dt.id  == this.categoria)){
+                                    avaliador.push(ava)
+                                }
+                            })
+                        }
+
+                        this.avaliadores = avaliador
                     }
-                    if(newVal && newVal.avaliador_2){
-                        this.post.status_avaliador_2 = "Em Análise"
-                    }
-                    if(newVal && newVal.avaliador_3){
-                        this.post.status_avaliador_3 = "Em Análise"
-                    }                  
-                },
-                deep:true
+                }
             }
-
         },
         computed: {
             url() {
@@ -213,93 +229,68 @@
         },
         methods: {
             find_dt(post){
-                if(post && post.dt){
-                    let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
-                    return selectedDt ? selectedDt.descricao : "NI"
-                }
+                if(post && this.tipo == "Grupo de Pesquisa"){
+                        let selectedDt =  this.gps.find(gp => gp.id === post.dt)
+                        let dt = selectedDt ? selectedDt.gp : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+                    }
+
+                    if(post && this.tipo == "Intercom Júnior"){
+                        let selectedDt =  this.divisoes_tematicas_jr.find(dt => dt.id === post.dt)
+                        let dt = selectedDt ? selectedDt.dt : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+                    }
+
+                    if(post && this.tipo == "Publicom"){
+                        let selectedDt =  this.divisoes_tematicas.find(dt => dt.id === post.dt)
+                        let dt = selectedDt ? selectedDt.dt : ''
+                        let dt_descricao = selectedDt ? selectedDt.descricao : ''
+                        let returno = dt+' - '+dt_descricao
+                        return returno ? returno : "NI"
+                    }
+
             },    
             async save() {
                 this.loading = true
-                if(this.post.dt.length > 1){
-                    this.message('Erro', 'Selecione uma divisão temática apenas!', 'error');
-                    this.loading = false
-                    return
+                    this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
+                await this.$validator.validateAll().then((valid) => {
+                    if(valid) {
+                        setTimeout(() => {
+                            axios.post(`${process.env.MIX_BASE_URL}/avaliacao_nacional${this.url}`, this.post).then( res => {
+                                
+                                this.clear()
+                                this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
+                                window.location.reload()
+                                this.$bvModal.hide('modalIndicar')
 
-                }else{
-                    await this.$validator.validateAll().then((valid) => {
-                        if(valid) {
-                            this.message('Aguarde...', 'Estamos salvando suas informações', 'info', -1);
-
-                            setTimeout(() => {
-                                axios.post(`${process.env.MIX_BASE_URL}/avaliacao${this.url}`, this.post).then( res => {
-                                    
-                                    this.clear()
-
-                                    this.message('Sucesso', res.status == 201 ? 'Usuário cadastrado.' : 'Usuário atualizado.', 'success');
-                                    
-                                    window.location.reload()
-
-                                    this.$bvModal.hide('modalIndicar')
-
-                                }).catch(error => {
-                                    if(error.response.status == 422) {
-                                        if(error.response.data.message == "The given data was invalid.") {
-                                            this.loading = false
-                                            return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
-                                        }
-                                    }
-                                    if(error.response.status == 500) {
+                            }).catch(error => {
+                                if(error.response.status == 422) {
+                                    if(error.response.data.message == "The given data was invalid.") {
                                         this.loading = false
-                                        this.message('Erro', 'Por favor tente novamente.', 'error');
+                                        return this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
                                     }
-                                    if(error.response.status == 403) {
-                                        if(error.response.data.message == "This action is unauthorized.") {
-                                            this.loading = false
-                                            this.message('Erro', 'Ação não autorizada.', 'error');
-                                        }
+                                }
+                                if(error.response.status == 500) {
+                                    this.loading = false
+                                    this.message('Erro', 'Por favor tente novamente.', 'error');
+                                }
+                                if(error.response.status == 403) {
+                                    if(error.response.data.message == "This action is unauthorized.") {
+                                        this.loading = false
+                                        this.message('Erro', 'Ação não autorizada.', 'error');
                                     }
-                                })
-                            },1000)
-                        } else {
-                            this.loading = false
-                            this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
-                        }
-                    })
-                }
-            },
-            getDivisoesTematicas(){
-                let urlgetDivisoesTematicas = this.baseUrl+"/get/divisoes-tematicas";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetDivisoesTematicas,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.divisoes_tematicas = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
+                                }
+                            })
+                        },1000)
+                    } else {
+                        this.loading = false
+                        this.message('Campos Obrigatórios', 'Preencha todos os campos obrigatórios', 'error');
                     }
-                }); 
-            },
-            getAvaliadores(){
-                let urlgetavaliadores = this.baseUrl+"/get/avaliadores";
-
-                $.ajax({
-                    method: "GET",
-                    url: urlgetavaliadores,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    success: (res) => {
-                        this.avaliadores_all = res
-                    },
-                    error: (res) => {
-                        console.log(res)
-                        
-                    }
-                }); 
+                })
             },
             clear() {
                 this.post.id = null
@@ -309,11 +300,8 @@
             }
         },
         created() {
-            this.getDivisoesTematicas(),
-            this.getAvaliadores()
 
         },
-
     }
 </script>
 

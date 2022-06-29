@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GrupoPesquisa extends Model
 {
@@ -11,6 +11,6 @@ class GrupoPesquisa extends Model
 
     protected $fillable = [
         'gp',
-        'descricao'
+        'descricao',
     ];
 }

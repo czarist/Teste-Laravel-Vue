@@ -10,7 +10,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
     public function run()
     {
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 1],
+            ['id' => 1],
             [
                 'id' => 1,
                 'descricao' => 'Agência Escola/Júnior de Publicidade e Propaganda (conjunto/série)',
@@ -18,7 +18,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 2],
+            ['id' => 2],
             [
                 'id' => 2,
                 'descricao' => 'Anúncio impresso (avulso)',
@@ -26,7 +26,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 3],
+            ['id' => 3],
             [
                 'id' => 3,
                 'descricao' => 'Campanha Publicitária (conjunto/série)',
@@ -34,7 +34,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 4],
+            ['id' => 4],
             [
                 'id' => 4,
                 'descricao' => 'Cartaz (avulso)',
@@ -42,7 +42,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 5],
+            ['id' => 5],
             [
                 'id' => 5,
                 'descricao' => 'Estratégia Publicitária para Mídia Digital (avulso ou conjunto/série)',
@@ -50,7 +50,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 6],
+            ['id' => 6],
             [
                 'id' => 6,
                 'descricao' => 'Fotografia Publicitária (avulso)',
@@ -58,7 +58,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 7],
+            ['id' => 7],
             [
                 'id' => 7,
                 'descricao' => 'Jingle (avulso)',
@@ -66,7 +66,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 8],
+            ['id' => 8],
             [
                 'id' => 8,
                 'descricao' => 'Outdoor (avulso)',
@@ -74,7 +74,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 9],
+            ['id' => 9],
             [
                 'id' => 9,
                 'descricao' => 'Pesquisa mercadológica (avulso)',
@@ -82,7 +82,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 10],
+            ['id' => 10],
             [
                 'id' => 10,
                 'descricao' => 'Planejamento Promocional (conjunto/série)',
@@ -90,7 +90,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 11],
+            ['id' => 11],
             [
                 'id' => 11,
                 'descricao' => 'Produção Publiciária Audiovisual para Internet (avulso)',
@@ -98,7 +98,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 12],
+            ['id' => 12],
             [
                 'id' => 12,
                 'descricao' => 'Produção Publicitária Audiovisual Para TV e Cinema (avulso)',
@@ -106,7 +106,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 13],
+            ['id' => 13],
             [
                 'id' => 13,
                 'descricao' => 'Publicidade em Mídia Alternativa (avulso)',
@@ -114,7 +114,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 14],
+            ['id' => 14],
             [
                 'id' => 14,
                 'descricao' => 'Spot (avulso)',
@@ -122,7 +122,7 @@ class CategoriaPublicidadePropagandaSeeder extends Seeder
         );
 
         CategoriaPublicidadePropaganda::updateOrCreate(
-            [ 'id' => 15],
+            ['id' => 15],
             [
                 'id' => 15,
                 'descricao' => 'TCC/Projeto Experimental em Publicidade e Propaganda',

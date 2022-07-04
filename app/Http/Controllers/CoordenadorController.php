@@ -93,7 +93,7 @@ class CoordenadorController extends Controller
                     if (App::environment('production')) {
                         $email->to($dados_coordenador['email']);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Cadastro de Coordenador | Intercom');
                     Log::info('E-mail Enviado para o usuario informando que ele foi cadastrado como coordenador'.json_encode($dados_coordenador));

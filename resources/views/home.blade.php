@@ -741,6 +741,14 @@
                             </a>
 
                         </div>
+                        <hr>
+                        @if (Auth::user()->is_avaliador_nacional_2022)
+                            <div class="d-grid gap-2 text-center">
+                                @if (Auth::user()->avaliador_expocom && Auth::user()->avaliador_expocom->avaliador == 1)
+                                    <a class="btn btn-primary m-1" href="{{ route('avaliador.nacional.index') }}">Acesso aos trabalhos designados para a sua avaliação - Nacional</a>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

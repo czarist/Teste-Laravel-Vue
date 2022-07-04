@@ -6,6 +6,7 @@ use App\Http\Controllers\AvaliacaoAvaliadorController;
 use App\Http\Controllers\AvaliacaoAvaliadorExpocomController;
 use App\Http\Controllers\AvaliacaoNacionalController;
 use App\Http\Controllers\AvaliadorExpocomController;
+use App\Http\Controllers\AvaliadorNacionalController;
 use App\Http\Controllers\CadastroController;
 use App\Http\Controllers\CertificadosController;
 use App\Http\Controllers\ChatAvaliacaoController;
@@ -66,6 +67,11 @@ Route::get('/configclear', function(){
 
 Route::get('/viewclear', function(){
     \Illuminate\Support\Facades\Artisan::call('view:clear');
+});
+
+Route::get('/migrate', function(){
+    \Illuminate\Support\Facades\Artisan::call('migrate',['--force' => true] );
+    dd('migrated!');
 });
 
 Auth::routes();
@@ -307,6 +313,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('avaliador-expocom', AvaliacaoAvaliadorExpocomController::class)->except(['show', 'create', 'edit']);
     Route::get('avaliador-expocom/get', [AvaliacaoAvaliadorExpocomController::class, 'get'])->name('avaliador.get');
 
+    //GRID AVALIADOR NACIONAL
+    Route::resource('avaliador/nacional', AvaliadorNacionalController::class)->except(['index','show', 'create', 'edit']);
+    Route::get('avaliador/nacional', [AvaliadorNacionalController::class, 'index'])->name('avaliador.nacional.index');
+    Route::get('avaliador/nacional/get', [AvaliadorNacionalController::class, 'get'])->name('avaliador.get');
+    
     //CHAT TIPO 1,2,3
     Route::get('coordenador/get/chat/{id}', [ChatAvaliacaoController::class, 'getChat'])->name('chatcoordenador.get.chat');
     Route::post('coordenador/send/message', [ChatAvaliacaoController::class, 'sendMensagem'])->name('chatcoordenador.send.message');
@@ -327,6 +338,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('coordenador/nacional/get/chat/avaliador/{id}', [ChatAvaliacaoController::class, 'getChatAvaliadorNacional'])->name('chatcoordenador.nacional.get.chat.avaliador');
     Route::post('coordenador/nacional/avaliador/send/message', [ChatAvaliacaoController::class, 'sendMensagemAvaliadorNacional'])->name('chatcoordenador.nacional.avaliador.send.message');
     
+    //GRID AUTOR (AVALIADO)
+    Route::resource('submissao/nacional', SubmissaoController::class)->except(['show', 'create', 'edit']);
+    Route::get('submissao/nacional/get', [SubmissaoController::class, 'get'])->name('submissao.get');
+    Route::post('submissao/nacional/edit', [SubmissaoController::class, 'edit'])->name('submissao.edit');
+    Route::get('submissao/nacional/carta_aceite/pdf/{regiao}/{id}', [SubmissaoController::class, 'carta_aceite'])->name('submissao.carta_aceite');
     
     //GRID AUTOR (AVALIADO)
     Route::resource('submissao', SubmissaoController::class)->except(['show', 'create', 'edit']);
@@ -399,6 +415,7 @@ Route::prefix('get')->group(function () {
     Route::get('avaliadores-expocom', [GetController::class, 'getAvaliadoresExpocom'])->name('get.avaliadores.expocom');
     Route::get('avaliadores-nacional', [GetController::class, 'getAvaliadoresNacional'])->name('get.avaliadores.nacional');
     Route::get('coordenador/{id}', [GetController::class, 'getCoordenador'])->name('get.coordenador');
+    Route::get('coordenador/nacional/{id}', [GetController::class, 'getCoordenadorNacional'])->name('get.nacional.coordenador');
     Route::get('status-pagamento', [GetController::class, 'getPagamentosStatuses'])->name('get.status-pagamento');
 });
 

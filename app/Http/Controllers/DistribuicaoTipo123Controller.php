@@ -604,7 +604,7 @@ class DistribuicaoTipo123Controller extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -624,7 +624,7 @@ class DistribuicaoTipo123Controller extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -644,7 +644,7 @@ class DistribuicaoTipo123Controller extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -826,7 +826,7 @@ class DistribuicaoTipo123Controller extends Controller
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Indicação de Avaliador | Intercom');
                     Log::info('E-mail Enviado para o usuario informando que o status foi alterado | E-mail:'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -926,7 +926,7 @@ class DistribuicaoTipo123Controller extends Controller
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Status do trabalho | Intercom');
                     Log::info('E-mail Enviado para o autor do trabalho com a informação do status | Email: '.$emails);

@@ -10,6 +10,7 @@ use App\Models\CategoriaRadioInternet;
 use App\Models\CategoriaRelacoesPublicas;
 use App\Models\CatProdEditProdTransComunic;
 use App\Models\Coordenador;
+use App\Models\CoordenadorNacional;
 use App\Models\DivisoesTematicas;
 use App\Models\DivisoesTematicasJr;
 use App\Models\Estado;
@@ -25,6 +26,7 @@ use App\Models\TipoIsencao;
 use App\Models\Titulacao;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class GetController extends Controller
 {
@@ -260,12 +262,20 @@ class GetController extends Controller
                     ->orWhere('nacional_publicom', 1);
                 });
             })
-            ->orderBy('name')->get();
+            ->get();
     }
 
     public function getCoordenador(Coordenador $coordenador, $id)
     {
         return $coordenador->select('id', 'user_id', 'tipo', 'regiao', 'dt')
+            ->with('user:id,name')
+            ->whereUserId($id)
+            ->first();
+    }
+
+    public function getCoordenadorNacional(CoordenadorNacional $coordenador, $id)
+    {
+        return $coordenador->select('id', 'user_id', 'tipo', 'gps', 'dt', 'ij', 'ano')
             ->with('user:id,name')
             ->whereUserId($id)
             ->first();

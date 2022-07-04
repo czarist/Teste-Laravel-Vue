@@ -615,6 +615,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, {
         text: 'Expocom',
         value: 3
+      }, {
+        text: 'Publicom',
+        value: 4
       }]
     };
   },

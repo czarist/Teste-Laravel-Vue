@@ -155,11 +155,11 @@
                                     <td class="align-middle text-center">
                                         {{ registro && registro.coordenador_nacional ? "Sim" : "Não" }}
                                     </td>
-                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.geral ? "Sim" : "Não" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.geral == 1 ? "Sim" : "Não" }}</td>
                                     <td class="align-middle text-center">{{ find_tipo(registro) }}</td>
-                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.gps ? "Sim" : "Não" }}</td>
-                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.ij ? "Sim" : "Não" }}</td>
-                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.dt ? "Sim" : "Não" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.gps == 1 ? "Sim" : "Não" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.ij == 1 ? "Sim" : "Não" }}</td>
+                                    <td class="align-middle text-center">{{ registro && registro.coordenador_nacional && registro.coordenador_nacional.dt == 1 ? "Sim" : "Não" }}</td>
                                     <td class="align-middle text-center">{{ registro && registro.coordenador_nacional ? registro.coordenador_nacional.ano : "NI" }}</td>
 
                                     <td class="align-middle text-center">

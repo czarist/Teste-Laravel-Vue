@@ -38,7 +38,7 @@ class CadastroController extends Controller
                 if (App::environment('production')) {
                     $email->to($user['email']);
                 } else {
-                    $email->to('murilo@kirc.com.br');
+                    //$email->to('murilo@kirc.com.br');
                 }
                 Log::info('E-mail enviado apos o cadastro para :'.$user['nome'].' com o email: '.json_encode($user['email']));
             });

@@ -12,10 +12,8 @@ class CreateChatNacionalTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('avaliacao_id');
             $table->foreign('avaliacao_id')->references('id')->on('avaliacao_nacional');
-            $table->unsignedBigInteger('avaliado_id')->nullable();
-            $table->foreign('avaliado_id')->references('id')->on('users');
-            $table->unsignedBigInteger('coordenador_id')->nullable();
-            $table->foreign('coordenador_id')->references('id')->on('coordenador_nacional');
+            $table->bigInteger('avaliado_id')->nullable();
+            $table->bigInteger('coordenador_id')->nullable();
             $table->string('mensagem')->nullable();
             $table->timestamps();
             $table->softDeletes();

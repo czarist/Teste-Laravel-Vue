@@ -252,7 +252,7 @@ class SubmissaoRegionalSudesteController extends Controller
                                         if (App::environment('production')) {
                                             $email->to($emails);
                                         } else {
-                                            $email->to('murilo@kirc.com.br');
+                                            //$email->to('murilo@kirc.com.br');
                                         }
                                         $email->subject('Nova mensagem recebida | Intercom');
 

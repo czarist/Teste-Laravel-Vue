@@ -6,15 +6,18 @@ use App\Models\AvaliacaoNacional;
 use App\Models\CoordenadorNacional;
 use App\Models\SubmissaoNacional;
 use App\Models\User;
+use App\Services\CreateChatAvaliacaoNacionalAvaliador;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AvaliacaoNacionalController extends Controller
 {
+
     public function index()
     {
         return view('nacional.avaliacao.index');
@@ -38,8 +41,7 @@ class AvaliacaoNacionalController extends Controller
     public function get(Request $request)
     {
         $tipo_coordenador = Auth::user()->is_coordenador_nacional_2022;
-        $coordenador = CoordenadorNacional::findOrFail(Auth::user()->id);
-
+        $coordenador = CoordenadorNacional::where('user_id',Auth::user()->id)->first();
         if (Auth::user() && Auth::user()->is_coordenador_nacional_2022 != false && $coordenador && $coordenador != null) {
             return $this->submissao()
                 ->when($request->sort == 'id', function ($query) use ($request) {
@@ -60,13 +62,15 @@ class AvaliacaoNacionalController extends Controller
                 })
                 ->when($tipo_coordenador == 'coordenador_gp', function ($query) use ($coordenador) {
                     $query->where('tipo', 'Grupo de Pesquisa');
-                    $query->where('dt', $coordenador->gp);
+                    $query->where('dt', $coordenador->gps);
                 })
                 ->when($tipo_coordenador == 'coordenador_ij', function ($query) use ($coordenador) {
                     $query->where('tipo', 'Intercom Júnior');
                     $query->where('dt', $coordenador->ij);
                 })
                 ->when($tipo_coordenador == 'coordenador_expocom', function ($query) use ($request) {
+                })
+                ->when($tipo_coordenador == 'coordenador_publicom', function ($query) use ($request) {
                     $query->where('tipo', 'Publicom');
                 })
             ->paginate(20);
@@ -124,7 +128,7 @@ class AvaliacaoNacionalController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -144,7 +148,7 @@ class AvaliacaoNacionalController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -164,7 +168,7 @@ class AvaliacaoNacionalController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Indicação de Avaliador | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que ele foi selecionado como avaliador em uma submissao'.json_encode($emails).' | Dados: '.json_encode($dados));
@@ -274,10 +278,171 @@ class AvaliacaoNacionalController extends Controller
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Status do trabalho | Intercom');
                     Log::info('E-mail Enviado para o autor do trabalho com a informação do status | Email: '.$emails);
+                });
+            } catch (Exception $e) {
+                Log::error('Não foi possível enviar e-mail para o usuario ERRO: '.$e->getMessage().'  |  Linha: '.$e->getLine().' | Arquivo: '.$e->getFile());
+            }
+
+            return response()->json(['message' => 'success', 'response' => $avaliacao], 201);
+        } catch (Exception $exception) {
+            $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
+
+            Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
+
+            return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
+        }
+    }
+
+    public function avaliadorSave(Request $request)
+    {
+        if($request && $request->submissao && $request->submissao['tipo'] && $request->submissao['tipo'] == 'Grupo de Pesquisa'){
+            if (! $request->filled('id', 'status_avaliador', 'pergunta_1', 'pergunta_2', 'pergunta_3', 'pergunta_4', 'pergunta_5', 'pergunta_6', 'pergunta_7'
+            , 'pergunta_8', 'pergunta_9', 'pergunta_10', 'pergunta_11')) {
+                return response()->json(['message' => 'The given data was invalid', 'response' => $request->all(), 'status' => 422], 422);
+                exit();
+            }
+        }else{
+            if (! $request->filled('id', 'status_avaliador')) {
+                return response()->json(['message' => 'The given data was invalid', 'response' => $request->all(), 'status' => 422], 422);
+                exit();
+            }
+        }
+
+        $avaliacao = AvaliacaoNacional::findOrFail($request->id);
+
+        try {
+            $post = $request->all();
+
+            if ($avaliacao->avaliador_1 == Auth::user()->id) {
+                $avaliacao->update([
+                    'status_avaliador_1' => $post['status_avaliador'],
+                    'justificativa_avaliador_1' => $post['justificativa_avaliador'] ?? null,
+                    'pergunta_1_1' => $post['pergunta_1'] ?? null,
+                    'pergunta_1_2' => $post['pergunta_2'] ?? null,
+                    'pergunta_1_3' => $post['pergunta_3'] ?? null,
+                    'pergunta_1_4' => $post['pergunta_4'] ?? null,
+                    'pergunta_1_5' => $post['pergunta_5'] ?? null,
+                    'pergunta_1_6' => $post['pergunta_6'] ?? null,
+                    'pergunta_1_7' => $post['pergunta_7'] ?? null,
+                    'pergunta_1_8' => $post['pergunta_8'] ?? null,
+                    'pergunta_1_9' => $post['pergunta_9'] ?? null,
+                    'pergunta_1_10' => $post['pergunta_10'] ?? null,
+                    'pergunta_1_11' => $post['pergunta_11'] ?? null,
+                ]);
+
+                $chat = CreateChatAvaliacaoNacionalAvaliador::create(
+                    $avaliacao->id,
+                    $avaliacao->avaliador_1,
+                    null,
+                    $post['justificativa_avaliador'] ?? null,
+                    1
+                );
+
+                $updated = 1;
+            }
+
+            if ($avaliacao->avaliador_2 == Auth::user()->id) {
+                $avaliacao->update([
+                    'status_avaliador_2' => $post['status_avaliador'],
+                    'justificativa_avaliador_2' => $post['justificativa_avaliador'] ?? null,
+                    'pergunta_2_1' => $post['pergunta_1'] ?? null,
+                    'pergunta_2_2' => $post['pergunta_2'] ?? null,
+                    'pergunta_2_3' => $post['pergunta_3'] ?? null,
+                    'pergunta_2_4' => $post['pergunta_4'] ?? null,
+                    'pergunta_2_5' => $post['pergunta_5'] ?? null,
+                    'pergunta_2_6' => $post['pergunta_6'] ?? null,
+                    'pergunta_2_7' => $post['pergunta_7'] ?? null,
+                    'pergunta_2_8' => $post['pergunta_8'] ?? null,
+                    'pergunta_2_9' => $post['pergunta_9'] ?? null,
+                    'pergunta_2_10' => $post['pergunta_10'] ?? null,
+                    'pergunta_2_11' => $post['pergunta_11'] ?? null,
+                ]);
+
+                $chat = CreateChatAvaliacaoNacionalAvaliador::create(
+                    $avaliacao->id,
+                    $avaliacao->avaliador_2,
+                    null,
+                    $post['justificativa_avaliador'] ?? null,
+                    2
+                );
+
+                $updated = 2;
+            }
+
+            if ($avaliacao->avaliador_3 == Auth::user()->id) {
+                $avaliacao->update([
+                    'status_avaliador_3' => $post['status_avaliador'],
+                    'justificativa_avaliador_3' => $post['justificativa_avaliador'] ?? null,
+                    'pergunta_3_1' => $post['pergunta_1'] ?? null,
+                    'pergunta_3_2' => $post['pergunta_2'] ?? null,
+                    'pergunta_3_3' => $post['pergunta_3'] ?? null,
+                    'pergunta_3_4' => $post['pergunta_4'] ?? null,
+                    'pergunta_3_5' => $post['pergunta_5'] ?? null,
+                    'pergunta_3_6' => $post['pergunta_6'] ?? null,
+                    'pergunta_3_7' => $post['pergunta_7'] ?? null,
+                    'pergunta_3_8' => $post['pergunta_8'] ?? null,
+                    'pergunta_3_9' => $post['pergunta_9'] ?? null,
+                    'pergunta_3_10' => $post['pergunta_10'] ?? null,
+                    'pergunta_3_11' => $post['pergunta_11'] ?? null,
+                ]);
+
+                $chat = CreateChatAvaliacaoNacionalAvaliador::create(
+                    $avaliacao->id,
+                    $avaliacao->avaliador_3,
+                    null,
+                    $post['justificativa_avaliador'] ?? null,
+                    3
+                );
+
+                $updated = 3;
+            }
+
+            Log::info('Avalicao de trabalho Nacional status e justificativa avaliador updated: '.$avaliacao->id.' | Request: '.json_encode($request->all()));
+
+            //Enviar e-mail informando ao coordenador que o status foi alterado
+            try {
+
+                $submissao = SubmissaoNacional::select('id', 'avaliacao', 'tipo', 'titulo')
+                    ->where('avaliacao', '=', $avaliacao->id)
+                ->first();
+
+                $coordenadores = CoordenadorNacional::where(['tipo', '<>', 'Expocom'])->get();
+
+                $dados['status_avaliador'] = $post['status_avaliador'];
+                $dados['justificativa_avaliador'] = $post['justificativa_avaliador'];
+
+                if (! empty($updated) && $updated = 1) {
+                    $dados['avaliador'] = User::findOrFail($avaliacao->avaliador_1);
+                }
+
+                if (! empty($updated) && $updated = 2) {
+                    $dados['avaliador'] = User::findOrFail($avaliacao->avaliador_2);
+                }
+
+                if (! empty($updated) && $updated = 3) {
+                    $dados['avaliador'] = User::findOrFail($avaliacao->avaliador_3);
+                }
+
+                if (! empty($submissao)) {
+                    $dados['submissao'] = $submissao;
+                }
+                $emails = [];
+                foreach ($coordenadores as $coordenador) {
+                    $emails[] = User::findOrFail($coordenador->user_id)->email;
+                }
+
+                Mail::send('email.avaliacao_avaliador', $dados, function ($email) use ($emails, $dados) {
+                    if (App::environment('production')) {
+                        $email->to($emails);
+                    } else {
+                        //$email->to('murilo@kirc.com.br');
+                    }
+                    $email->subject('Indicação de Avaliador | Intercom');
+                    Log::info('E-mail Enviado para o usuario informando que o status foi alterado | E-mail:'.json_encode($emails).' | Dados: '.json_encode($dados));
                 });
             } catch (Exception $e) {
                 Log::error('Não foi possível enviar e-mail para o usuario ERRO: '.$e->getMessage().'  |  Linha: '.$e->getLine().' | Arquivo: '.$e->getFile());

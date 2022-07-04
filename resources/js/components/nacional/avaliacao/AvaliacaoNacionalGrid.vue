@@ -1,7 +1,11 @@
 <template>
     <div class="mt-4">
         <h5 class="col-12 d-flex justify-content-between">
-            Área do Coordenador - Avaliação de Trabalho Intercom Júnior - Nacional
+            Área do Coordenador - Avaliação de Trabalho 
+            {{ coordenador && coordenador.tipo && coordenador.tipo == 1 ? 'GP' : '' }}
+            {{ coordenador && coordenador.tipo && coordenador.tipo == 2 ? 'Intercom Júnior' : '' }}
+            {{ coordenador && coordenador.tipo && coordenador.tipo == 4 ? 'Publicom' : '' }}
+             - Nacional
         </h5>
         <div class="col-12">
             <div class="card">
@@ -13,7 +17,7 @@
                    
                     <div class="row d-flex align-items-center mb-3" v-if="!loading">
 
-                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos para Itercom Júnior, Divisões Temáticas e Mesas </label>
+                        <label class="invalid-feedback font-weight-bold">* Clique em "Buscar Categoria" para filtra os trabalhos</label>
 
                         <div class="input-group input-group-sm col-6 col-sm-6 col-md-6 col-lg-6 mb-1">
                             <div class="input-group-prepend mb-2">
@@ -361,7 +365,7 @@
         },
         methods: {
             EditTrabalho(registro, index){
-                axios.post(this.baseUrl + '/submissao/edit', {
+                axios.post(this.baseUrl + '/submissao/nacional/edit', {
                     id: registro.avaliacao.id,
                     edit: registro.avaliacao.edit == 1 ? 0 : 1
                 }).then(response => {
@@ -390,7 +394,7 @@
                         if(res.data.length > 0){
                             this.mensagens = res.data ;
                             this.selectedChat.avaliacao_id = res.data && res.data[0] ? res.data[0].avaliacao_id : null;
-                            this.selectedChat.coordenador_id = this.users && this.coordenador.id ? this.coordenador.id : null
+                            this.selectedChat.coordenador_id = this.coordenador && this.coordenador.id ? this.coordenador.id : null
                             this.selectedChat.coordenador = this.coordenador && this.coordenador ? this.coordenador : null
                             this.selectedChat.mensagem = null;
                             this.$validator.reset('mensagens');
@@ -559,7 +563,7 @@
                 }); 
             },
             getCoordenador(){
-                let urlgetCoordenador = this.baseUrl+"/get/coordenador/"+this.user.id;
+                let urlgetCoordenador = this.baseUrl+"/get/coordenador/nacional/"+this.user.id;
 
                 $.ajax({
                     method: "GET",
@@ -575,7 +579,6 @@
                     }
                 }); 
             }
-
         },
         async created() {
             await this.getLoggedUser().then(() => this.get())

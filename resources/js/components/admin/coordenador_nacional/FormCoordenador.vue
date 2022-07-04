@@ -212,6 +212,7 @@
                     { text: 'GPs', value: 1 },
                     { text: 'Intercom Junior', value: 2 },
                     { text: 'Expocom', value: 3 },
+                    { text: 'Publicom', value: 4 },
                 ],
             }
         },

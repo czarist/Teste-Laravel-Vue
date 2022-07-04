@@ -180,7 +180,7 @@ class RegionalNorteController extends Controller
                         if (App::environment('production')) {
                             $email->to($dados_inscricao['post']['email']);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Inscrição Regional | Intercom');
                         Log::info('E-mail Enviado para o usuario informando que foi inscrito'.json_encode($dados_inscricao));

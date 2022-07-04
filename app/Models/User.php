@@ -306,13 +306,15 @@ class User extends Authenticatable
                 if($coordenador && $coordenador->tipo == 3){
                     return 'coordenador_expocom'; 
                 }
+                if($coordenador && $coordenador->tipo == 4){
+                    return 'coordenador_publicom'; 
+                }
             }
         }
 
         return false;
     }
-
-
+    
     public function getIsAvaliador2022Attribute()
     {
         if (Auth::user()) {

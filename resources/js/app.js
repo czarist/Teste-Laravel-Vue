@@ -345,6 +345,9 @@ import AvalicaoNacionalGrid from './components/nacional/avaliacao/AvaliacaoNacio
 //AREA DO AVALIADOR
 import AvaliadorGrid from './components/regionais/avaliador/AvaliadorGrid.vue'
 
+//AREA DO AVALIADOR NACIONAL
+import AvaliadorNacionalGrid from './components/nacional/avaliador/AvaliadorNacionalGrid.vue'
+
 //GRID AVALIADO (AUTOR DA SUBMISSAO)
 import AvaliadoGrid from './components/regionais/avaliado/AvaliadoGrid.vue'
 
@@ -456,6 +459,7 @@ const app = new Vue({
 
         //AVALIACAO NACIONAL
         'avaliacao-nacional-grid':AvalicaoNacionalGrid,
+        'avaliador-nacional-grid':AvaliadorNacionalGrid,
 
         //GRID AVALIADO (AUTOR DA SUBMISSAO)
         'submissao-grid':AvaliadoGrid,

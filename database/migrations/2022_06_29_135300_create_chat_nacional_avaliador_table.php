@@ -13,8 +13,7 @@ class CreateChatNacionalAvaliadorTable extends Migration
             $table->unsignedBigInteger('avaliacao_id');
             $table->foreign('avaliacao_id')->references('id')->on('avaliacao_nacional');
             $table->bigInteger('avaliador_id')->nullable();
-            $table->unsignedBigInteger('coordenador_id')->nullable();
-            $table->foreign('coordenador_id')->references('id')->on('coordenador_nacional');
+            $table->bigInteger('coordenador_id')->nullable();
             $table->bigInteger('send_avaliador')->nullable();
             $table->string('mensagem')->nullable();
             $table->timestamps();

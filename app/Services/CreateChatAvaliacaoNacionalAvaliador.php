@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\ChatAvaliacaoExpocom;
-use App\Models\ChatNacional;
 use App\Models\ChatNacionalAvaliador;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class CreateChatAvaliacaoNacionalAvaliador
 {
+    
     public static function create($avaliacao_id, $avaliador_id, $coordenador_id, $mensagem, $send_avaliador)
     {
         return ChatNacionalAvaliador::create([

@@ -101,7 +101,7 @@ class ChatAvaliacaoController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Mensagem Avaliação | Intercom');
                         Log::info('E-mail Enviado para o avaliador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
@@ -137,7 +137,7 @@ class ChatAvaliacaoController extends Controller
                             if (App::environment('production')) {
                                 $email->to($emails);
                             } else {
-                                $email->to('murilo@kirc.com.br');
+                                //$email->to('murilo@kirc.com.br');
                             }
                             $email->subject('Nova mensagem recebida | Intercom');
 
@@ -226,7 +226,7 @@ class ChatAvaliacaoController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Mensagem Avaliação | Intercom');
                         Log::info('E-mail Enviado para o avaliador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
@@ -262,7 +262,7 @@ class ChatAvaliacaoController extends Controller
                             if (App::environment('production')) {
                                 $email->to($emails);
                             } else {
-                                $email->to('murilo@kirc.com.br');
+                                //$email->to('murilo@kirc.com.br');
                             }
                             $email->subject('Nova mensagem recebida | Intercom');
 
@@ -363,7 +363,7 @@ class ChatAvaliacaoController extends Controller
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Status do trabalho | Intercom');
                     Log::info('E-mail Enviado para o avaliador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
@@ -399,7 +399,7 @@ class ChatAvaliacaoController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Nova mensagem recebida | Intercom');
 
@@ -485,7 +485,7 @@ class ChatAvaliacaoController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Mensagem Avaliação | Intercom');
                         Log::info('E-mail Enviado para o avaliador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
@@ -521,7 +521,7 @@ class ChatAvaliacaoController extends Controller
                             if (App::environment('production')) {
                                 $email->to($emails);
                             } else {
-                                $email->to('murilo@kirc.com.br');
+                                //$email->to('murilo@kirc.com.br');
                             }
                             $email->subject('Nova mensagem recebida | Intercom');
 
@@ -617,7 +617,7 @@ class ChatAvaliacaoController extends Controller
                     if (App::environment('production')) {
                         $email->to($emails);
                     } else {
-                        $email->to('murilo@kirc.com.br');
+                        //$email->to('murilo@kirc.com.br');
                     }
                     $email->subject('Status do trabalho | Intercom');
                     Log::info('E-mail Enviado para o avaliador informando que tem uma mensagem nova no chat | Dados: '.json_encode($dados));
@@ -653,7 +653,7 @@ class ChatAvaliacaoController extends Controller
                         if (App::environment('production')) {
                             $email->to($emails);
                         } else {
-                            $email->to('murilo@kirc.com.br');
+                            //$email->to('murilo@kirc.com.br');
                         }
                         $email->subject('Nova mensagem recebida | Intercom');
 

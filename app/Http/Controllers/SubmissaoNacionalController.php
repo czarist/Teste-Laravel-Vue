@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AvaliacaoNacional;
 use App\Models\CoautorOrganizadoresSubNaci;
 use App\Models\SubmissaoNacional;
 use App\Models\User;
@@ -193,4 +194,17 @@ class SubmissaoNacionalController extends Controller
             return response()->json(['message' => config('app.debug') ? $exception_message : 'Server Error'], 500);
         }
     }
+
+    public function edit(Request $request)
+    {
+        $avaliacao = AvaliacaoNacional::findOrFail($request->id);
+        $avaliacao->update([
+            'edit' => $request->edit,
+        ]);
+
+        Log::info('User: '.Auth::user()->id.' | Avaliação Nacional editada | ID: '.json_encode($request->all()));
+
+        return response()->json(['success' => true, $avaliacao]);
+    }
+
 }

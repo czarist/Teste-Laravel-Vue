@@ -22,28 +22,8 @@ class CadastroController extends Controller
     public function store(Request $request)
     {
         try {
-            $post = $request->all();
-            $senha = $post['password'];
-            $post['password'] = Hash::make($post['password']);
-            $post['todos_tipos_id'] = [0 => 4];
-            $user = User::create($post);
-            $user->todos_tipos()->sync($post['todos_tipos_id']);
 
-            Log::info('Cadastro de usuario: '.json_encode($post));
-
-            $data = ['user' => $user, 'senha' => $senha];
-
-            Mail::send('cadastro.email', $data, function ($email) use ($user) {
-                $email->subject('Cadastro de Usuário - Intercom');
-                if (App::environment('production')) {
-                    $email->to($user['email']);
-                } else {
-                    //$email->to('murilo@kirc.com.br');
-                }
-                Log::info('E-mail enviado apos o cadastro para :'.$user['nome'].' com o email: '.json_encode($user['email']));
-            });
-
-            return response()->json(['message' => 'success', 'response' => $user], 201);
+            return response()->json(['message' => 'success', 'response' => 'user'], 201);
         } catch (Exception $exception) {
             $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
             Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
@@ -57,16 +37,7 @@ class CadastroController extends Controller
     public function emailCheck(Request $request)
     {
         try {
-            $usuario = User::select('id', 'email')->whereEmail($request->email)->withTrashed();
-            if ($usuario->first()) {
-                if ($usuario->first()->email === $request->email) {
-                    return response()->json(false);
-                } else {
-                    return response()->json(true);
-                }
-            } else {
                 return response()->json(true);
-            }
         } catch (Exception $exception) {
             $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
             Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
@@ -81,17 +52,8 @@ class CadastroController extends Controller
     public function cpfCheck(Request $request)
     {
         try {
-            $usuario = User::select('id', 'cpf')->whereCpf($request->cpf)->withTrashed();
+            return response()->json(false);
 
-            if ($usuario->first()) {
-                if ($usuario->first()->cpf == $request->cpf) {
-                    return response()->json(false);
-                } else {
-                    return response()->json(true);
-                }
-            } else {
-                return response()->json(true);
-            }
         } catch (Exception $exception) {
             $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
             Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());
@@ -106,16 +68,8 @@ class CadastroController extends Controller
     public function passaporteCheck(Request $request)
     {
         try {
-            $usuario = User::select('id', 'passaporte')->whereCpf($request->passaporte)->withTrashed();
-            if ($usuario->first()) {
-                if ($usuario->first()->passaporte == $request->passaporte) {
-                    return response()->json(false);
-                } else {
-                    return response()->json(true);
-                }
-            } else {
-                return response()->json(true);
-            }
+            return response()->json(true);
+            
         } catch (Exception $exception) {
             $exception_message = ! empty($exception->getMessage()) ? trim($exception->getMessage()) : 'App Error Exception';
             Log::error($exception_message.' in file '.$exception->getFile().' on line '.$exception->getLine());

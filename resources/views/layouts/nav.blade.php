@@ -65,48 +65,6 @@
                         @if (Auth::user()->is_root || in_array('admin/usuarios', Auth::user()->roles()))
                             <li> <a href="{{ route('usuarios.index') }}"> Usuários </a> </li>
                         @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/pagamento', Auth::user()->roles()))
-                            <li> <a href="{{ route('pagamentos.index') }}"> Pagamentos </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/indicacao', Auth::user()->roles()))
-                            <li> <a href="{{ route('admin.indicacao.index') }}"> Indicacão Expocom </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/validar-presenca', Auth::user()->roles()))
-                            <li> <a href="{{ route('admin.validar-presenca.index') }}"> Validar Presença </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/lista-trabalho-expocom', Auth::user()->roles()))
-                            <li> <a href="{{ route('admin.lista-trabalho-expocom.index') }}">Trabalhos Expocom</a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/dashboard', Auth::user()->roles()))
-                            <li> <a href="{{ route('dashboard.index') }}"> Dashboard </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/coordenador', Auth::user()->roles()))
-                            <li> <a href="{{ route('coordenador.index') }}"> Coordenador Regional</a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/coordenador/nacional', Auth::user()->roles()))
-                            <li> <a href="{{ route('coordenador_nacional.index') }}"> Coordenador Nacional </a> </li>
-                        @endif
-
-
-                        @if (Auth::user()->is_root || in_array('admin/sexo', Auth::user()->roles()))
-                            <li> <a href="{{ route('sexo.index') }}"> Gêneros </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/instituicao', Auth::user()->roles()))
-                            <li> <a href="{{ route('instituicao.index') }}"> Instituição </a> </li>
-                        @endif
-
-                        @if (Auth::user()->is_root || in_array('admin/titulacao', Auth::user()->roles()))
-                            <li> <a href="{{ route('titulacao.index') }}"> Titulação </a> </li>
-                        @endif
-
                     </ul>
                 </li>
             @endif
@@ -154,12 +112,6 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
-                    <li>
-                        <a href="{{ route('certificados.index') }}" > Certificados</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('pagamento.index') }}" > Meus Pagamentos</a>
-                    </li>
                     <li>
                         <a href="{{ route('perfil') }}"> Editar Dados </a>
                     </li>

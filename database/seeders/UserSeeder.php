@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             ['id'=>1],
             ['id'=>1,
                 'name' => 'Admin',
-                'email' => 'murilo@mercuriotecnologia.com.br',
+                'email' => 'teste@teste.com.br',
                 'password' => Hash::make('123456'),
                 'data_nascimento' => '1990-01-01',
                 'estrangeiro' => false,
@@ -28,7 +28,6 @@ class UserSeeder extends Seeder
                 'orgao_expedidor' => 'SSP',
                 'telefone' => '123456789',
                 'celular' => '123456789',
-                'sexo_id' => 1,
             ]
         );
     }

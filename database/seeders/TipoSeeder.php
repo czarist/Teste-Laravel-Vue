@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Tipo;
+use App\Models\TipoPagamento;
 use Illuminate\Database\Seeder;
 
 class TipoSeeder extends Seeder
@@ -49,52 +50,13 @@ class TipoSeeder extends Seeder
             ]
         );
 
-        Tipo::updateOrCreate(
-            ['id'=>6],
-            ['id'=>6,
-                'nome' => 'Regional_Sul_2022',
-                'descricao' => 'Regional Sul 2022',
+        TipoPagamento::updateOrCreate(
+            ['id'=>1],
+            ['id'=>1,
+                'nome' => 'sul_pago_2022',
+                'descricao' => 'Fez Pagamento do Regional Sul 2022',
             ]
         );
 
-        Tipo::updateOrCreate(
-            ['id'=>7],
-            ['id'=>7,
-                'nome' => 'Regional_Nordeste_2022',
-                'descricao' => 'Regional Nordeste 2022',
-            ]
-        );
-
-        Tipo::updateOrCreate(
-            ['id'=>8],
-            ['id'=>8,
-                'nome' => 'Regional_Suldeste_2022',
-                'descricao' => 'Regional Suldeste 2022',
-            ]
-        );
-
-        Tipo::updateOrCreate(
-            ['id'=>9],
-            ['id'=>9,
-                'nome' => 'Regional_Centro_Oeste_2022',
-                'descricao' => 'Regional Centro-Oeste 2022',
-            ]
-        );
-
-        Tipo::updateOrCreate(
-            ['id'=>10],
-            ['id'=>10,
-                'nome' => 'Regional_Norte_2022',
-                'descricao' => 'Regional Norte 2022',
-            ]
-        );
-
-        Tipo::updateOrCreate(
-            ['id'=>11],
-            ['id'=>11,
-                'nome' => 'Nacional',
-                'descricao' => 'Nacional 2022',
-            ]
-        );
     }
 }

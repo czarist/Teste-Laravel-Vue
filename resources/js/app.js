@@ -277,208 +277,18 @@ Validator.localize({
 
 Validator.localize('pt_BR', pt_BR)
 
-import SexoGrid from './components/admin/sexo/SexoGrid.vue'
-import InstituicaoGrid from './components/admin/instituicao/InstituicaoGrid.vue'
-import TitulacaoGrid from './components/admin/titulacao/TitulacaoGrid.vue'
-import AssociadoGrid from './components/admin/associado/AssociadoGrid.vue'
 import UsuarioGrid from './components/admin/usuario/UsuarioGrid.vue'
 import FormPerfil from './components/perfil/FormPerfil.vue'
-import FormCadastro from './components/cadastro/FormCadastro.vue'
-import PagamentosGrid from './components/admin/pagamentos/PagamentosGrid.vue'
-import IndicacaoExpocomGrid from "./components/admin/indicacao/IndicacaoExpocomGrid.vue"
-import ValidarPresencaGrid from "./components/admin/validar-presenca/ValidarPresencaGrid.vue"
-import ValidarApresentacaoExpocomGrid from "./components/admin/validar-apresentacao-expocom/ValidarApresentacaoExpocomGrid.vue"
-import ValidarApresentacaoGrid from "./components/admin/validar-apresentacao/ValidarApresentacaoGrid.vue"
+import FormCadastro from './components/admin/usuario/FormUsuario.vue'
 
-// import PagarModal from './components/cadastro/PagarModal.vue'
-import FilieseCadastro from './components/cadastro/FilieseCadastro.vue'
-import AssociadoArea from './components/associado/AssociadoArea.vue'
-import PagamentoGrid from './components/pagamento/PagamentoGrid.vue'
-import AnuidadeCadastro from './components/associado/AnuidadeCadastro.vue'
-import FormAvaliador from './components/ficha_avaliador/FormAvaliador.vue'
-import FormAvaliadorNacional from './components/ficha_avaliador/FormAvaliadorNacional.vue'
-import FormIndicacao from './components/indicacao/FormIndicacao.vue'
 
-//FORM INSCRICOES 
-import RegionalSulForm from './components/regionais/sul/RegionalSulForm.vue'
-import RegionalNorteForm from './components/regionais/norte/RegionalNorteForm.vue'
-import RegionalNordesteForm from './components/regionais/nordeste/RegionalNordesteForm.vue'
-import RegionalSuldesteForm from './components/regionais/suldeste/RegionalSuldesteForm.vue'
-import RegionalCentrooesteForm from './components/regionais/centrooeste/RegionalCentrooesteForm.vue'
-import InscricaoNacionalForm from './components/nacional/InscricaoNacionalForm.vue'
-
-//SUBMISSAO NACIONAL
-import SubmissaoNacionalForm from './components/nacional/SubmissaoNacionalForm.vue'
-
-//SUBMICOES SUL
-import SubmissaoSul from './components/regionais/sul/SubmissaoSul.vue'
-import SubmissaoExpocomSul from './components/regionais/sul/SubmissaoExpocomSul.vue'
-
-//SUBMICOES SUDESTE
-import SubmissaoSudeste from './components/regionais/suldeste/SubmissaoSudeste.vue'
-import SubmissaoExpocomSudeste from './components/regionais/suldeste/SubmissaoExpocomSudeste.vue'
-
-//SUBMICOES NORTE
-import SubmissaoNorte from './components/regionais/norte/SubmissaoNorte.vue'
-import SubmissaoExpocomNorte from './components/regionais/norte/SubmissaoExpocomNorte.vue'
-
-//SUBMICOES NORDESTE
-import SubmissaoNordeste from './components/regionais/nordeste/SubmissaoNordeste.vue'
-import SubmissaoExpocomNordeste from './components/regionais/nordeste/SubmissaoExpocomNordeste.vue'
-
-//SUBMICOES CENTRO-OESTE
-import SubmissaoCentrooeste from './components/regionais/centrooeste/SubmissaoCentrooeste.vue'
-import SubmissaoExpocomCentrooeste from './components/regionais/centrooeste/SubmissaoExpocomCentrooeste.vue'
-
-//CADASTRO COORDENADOR 
-import CoordenadorGrid from './components/admin/coordenador/CoordenadorGrid.vue'
-
-//CADASTRO COORDENADOR 
-import CoordenadorNacionalGrid from './components/admin/coordenador_nacional/CoordenadorNacionalGrid.vue'
-
-//AVALIACAO DE TRABALHOS
-import AvaliacaoGrid from './components/regionais/avaliacao/AvaliacaoGrid.vue'
-
-//AVALIACAO NACIONAL
-import AvalicaoNacionalGrid from './components/nacional/avaliacao/AvaliacaoNacionalGrid.vue'
-
-//AREA DO AVALIADOR
-import AvaliadorGrid from './components/regionais/avaliador/AvaliadorGrid.vue'
-
-//AREA DO AVALIADOR NACIONAL
-import AvaliadorNacionalGrid from './components/nacional/avaliador/AvaliadorNacionalGrid.vue'
-
-//GRID AVALIADO (AUTOR DA SUBMISSAO)
-import AvaliadoGrid from './components/regionais/avaliado/AvaliadoGrid.vue'
-
-                    //AVALIACAO EXPOCOM//
-
-//AVALIACAO DE TRABALHOS EXPOCOM
-import AvaliacaoExpocomGrid from './components/regionais/avaliacaoExpocom/AvaliacaoExpocomGrid.vue'
-
-//AREA DO AVALIADOR EXPOCOM
-import AvaliadorExpocomGrid from './components/regionais/avaliadorExpocom/AvaliadorExpocomGrid.vue'
-
-//GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM
-import AvaliadoExpocomGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomGrid.vue'
-
-//GRID AVALIADO (AUTOR DA SUBMISSAO) EXPOCOM SEM VIDEO
-import AvaliadoExpocomSemVideoGrid from './components/regionais/avaliadoExpocom/AvaliadoExpocomSemVideoGrid.vue'
-
-//DASHBOARD
-import DashboardPage from './components/admin/dashboard/DashboardPage.vue'
-
-//GRID TRABALHOS ACEITOS EXPOCOM
-import ListaTrabalhosExpocomGrid from './components/admin/lista_trabalhos_aceitos_expocom/ListaTrabalhosExpocomGrid.vue'
-
-//GRID TRABALHOS ACEITOS
-import ListaTrabalhosGrid from './components/lista_trabalhos_aceitos/ListaTrabalhosGrid.vue'
-
-//GRID CERTIFICADOS
-import CertificadosGrid from './components/certificados/CertificadosGrid.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
         'form-perfil': FormPerfil,
-        'sexo-grid': SexoGrid,
-        'instituicao-grid': InstituicaoGrid,
-        'titulacao-grid': TitulacaoGrid,
-        'associado-grid': AssociadoGrid,
         'usuario-grid': UsuarioGrid,
-        'form-cadastro': FormCadastro,
-        'validar-presenca-grid': ValidarPresencaGrid,
-        'validar-apresentacao-expocom-grid': ValidarApresentacaoExpocomGrid,
-        'validar-apresentacao-grid': ValidarApresentacaoGrid,
-
-
-        // 'pagar-modal': PagarModal,
-        'filiese-cadastro': FilieseCadastro,
-        'associado-area': AssociadoArea,
-
-        // 'pagar-modal-anuidade': PagarModalAnuidade,
-        'pagamento-grid': PagamentoGrid,
-        'anuidade-cadastro': AnuidadeCadastro,
-        'form-avaliador': FormAvaliador,
-        'form-avaliador-nacional': FormAvaliadorNacional,
-        'form-indicacao': FormIndicacao,
-
-        //ADMIN PAGAMENTOS
-        'pagamentos-grid': PagamentosGrid,
-
-        //ADMIN INDICACAO
-        'indicacao_expocom-grid': IndicacaoExpocomGrid,
-        
-        //USER CERTIFICADO
-        'certificados-grid': CertificadosGrid,
-
-        //INSCRICOES
-        'regional-sulform': RegionalSulForm,
-        'regional-norteform': RegionalNorteForm,
-        'regional-nordesteform': RegionalNordesteForm,
-        'regional-suldesteform': RegionalSuldesteForm,
-        'regional-centrooeste': RegionalCentrooesteForm,
-        'inscricao-nacional': InscricaoNacionalForm,
-
-        //SUBMISSAO NACIONAL 2022
-        'submissao-nacional': SubmissaoNacionalForm,
-
-        //SUBMISSOES SUL 2022
-        'submissao-sul':SubmissaoSul,
-        'submissao-expocom-sul':SubmissaoExpocomSul,
-
-        //SUBMISSOES SUDESTE 2022
-        'submissao-sudeste':SubmissaoSudeste,
-        'submissao-expocom-sudeste':SubmissaoExpocomSudeste,
-        
-        //SUBMISSOES NORTE 2022
-        'submissao-norte':SubmissaoNorte,
-        'submissao-expocom-norte':SubmissaoExpocomNorte,
-
-        //SUBMISSOES NORDESTE 2022 
-        'submissao-nordeste':SubmissaoNordeste,
-        'submissao-expocom-nordeste':SubmissaoExpocomNordeste,
-
-        //SUBMISSOES CENTRO-OESTE 2022 
-        'submissao-centrooeste':SubmissaoCentrooeste,
-        'submissao-expocom-centrooeste':SubmissaoExpocomCentrooeste,
-
-        //CADASTRO COORDENADOR 
-        'coordenador-grid': CoordenadorGrid,
-
-        //CADASTRO COORDENADOR NACIONAL
-        'coordenador-nacional-grid': CoordenadorNacionalGrid,
-
-        //AVALIACAO DE TRABALHOS
-        'avaliacao-grid':AvaliacaoGrid,
-        'avaliador-grid':AvaliadorGrid,
-
-        //AVALIACAO DE TRABALHOS EXPOCOM
-        'avaliacao-expocom-grid':AvaliacaoExpocomGrid,
-        'avaliador-expocom-grid':AvaliadorExpocomGrid,        
-
-        //AVALIACAO NACIONAL
-        'avaliacao-nacional-grid':AvalicaoNacionalGrid,
-        'avaliador-nacional-grid':AvaliadorNacionalGrid,
-
-        //GRID AVALIADO (AUTOR DA SUBMISSAO)
-        'submissao-grid':AvaliadoGrid,
-
-        //GRID AVALIADO EXPOCOM (AUTOR DA SUBMISSAO)
-        'submissao-expocom-grid':AvaliadoExpocomGrid,
-
-        //GRID AVALIADO EXPOCOM SEM VIDEO
-        'submissao-expocom-sem-video-grid':AvaliadoExpocomSemVideoGrid,
-
-        //DASHBOARD
-        'dashboard-page': DashboardPage,
-
-        //GRID TRABALHOS ACEITOS EXPOCOM
-        'lista-trabalhos-expocom-grid': ListaTrabalhosExpocomGrid,
-
-        //GRID TRABALHOS ACEITOS
-        'lista-trabalhos-grid': ListaTrabalhosGrid
-
+        'form-cadastro': FormCadastro
     }
 });
 
@@ -486,5 +296,4 @@ window.axios.defaults.headers = {
     "Access-Control-Allow-Origin": "*",
     'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-
 };

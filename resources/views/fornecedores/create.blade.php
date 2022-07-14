@@ -29,68 +29,69 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>CNPJ:</strong>
-                    <input type="text" name="cnpj" class="form-control" v-mask='" ##.##.###/####-## "'
-                        placeholder="CNPJ" maxlength="17">
+                    <input required id="cnpj" type="text" name="cnpj" class="form-control"
+                        v-mask='"##.##.###/####-## "' placeholder="CNPJ" maxlength="17">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Razão Social:</strong>
-                    <input type="text" name="razao_social" class="form-control" placeholder="Razão Social">
+                    <input required type="text" name="razao_social" class="form-control" placeholder="Razão Social">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Nome Fantasia:</strong>
-                    <input type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia">
+                    <input required type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>E-mail:</strong>
-                    <input type="email" name="email" class="form-control" placeholder="E-mail">
+                    <input required type="email" name="email" class="form-control" placeholder="E-mail">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Telefone:</strong>
-                    <input type="telefone" name="telefone" class="form-control" placeholder="Telefone">
+                    <input required type="telefone" name="telefone" class="form-control" placeholder="Telefone">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Dados Bancarios:</strong>
-                    <input type="text" name="dados_bancarios" class="form-control" placeholder="Dados Bancarios">
+                    <input required type="text" name="dados_bancarios" class="form-control"
+                        placeholder="Dados Bancarios">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Estado:</strong>
-                    <input type="text" name="estado" class="form-control" placeholder="Estado">
+                    <input required type="text" name="estado" class="form-control" placeholder="Estado">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Cidade:</strong>
-                    <input type="text" name="cidade" class="form-control" placeholder="Cidade">
+                    <input required type="text" name="cidade" class="form-control" placeholder="Cidade">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Bairro:</strong>
-                    <input type="text" name="bairro" class="form-control" placeholder="Bairro">
+                    <input required type="text" name="bairro" class="form-control" placeholder="Bairro">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Endereço:</strong>
-                    <input type="text" name="endereco" class="form-control" placeholder="Endereço">
+                    <input required type="text" name="endereco" class="form-control" placeholder="Endereço">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>CEP:</strong>
-                    <input type="text" name="CEP" class="form-control" placeholder="CEP">
+                    <input required type="text" name="CEP" class="form-control" placeholder="CEP">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">

@@ -6,24 +6,25 @@ use App\Http\Controllers\GetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RelatoriosController;
+use App\Http\Controllers\FornecedoresController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/clear', function(){
+Route::get('/clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
 });
 
-Route::get('/configclear', function(){
+Route::get('/configclear', function () {
     \Illuminate\Support\Facades\Artisan::call('config:clear');
 });
 
-Route::get('/viewclear', function(){
+Route::get('/viewclear', function () {
     \Illuminate\Support\Facades\Artisan::call('view:clear');
 });
 
-Route::get('/migrate', function(){
-    \Illuminate\Support\Facades\Artisan::call('migrate',['--force' => true] );
+Route::get('/migrate', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
     dd('migrated!');
 });
 
@@ -33,7 +34,11 @@ Route::match(['get', 'post'], 'register', function () {
     return redirect('/login');
 });
 
+
+
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('fornecedores', FornecedoresController::class);
 
     // Route::get('/', [PerfilController::class , 'perfil']);
     Route::get('perfil', [PerfilController::class, 'perfil'])->name('perfil');
@@ -98,4 +103,3 @@ Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
-
